@@ -1,5 +1,4 @@
-function optoAnalysis(number_mice,pathsave)
-
+function optoAnalysis(number_mice,pathsave,datapath,nFiles,plot_indiv_data,plot_lick_psth,savefig)
 
 nSubj = length(number_mice);
 subjlist = cell(1,nSubj);
@@ -29,10 +28,6 @@ struclist = [... % AC = 1, VC =2
     1 1 1 1];
 strucNames = {'AC'};
 
-plot_indiv_data = false;
-plot_lick_psth = false;
-savefig = true;
-nFiles = 16; % = nb of days of behavior
 
 % Initialization of variables
 rdprime = nan(nSubj,nFiles);
@@ -72,12 +67,12 @@ MAT = cell(nSubj,1);
 for nbsubj = 1:nSubj % through animals
     % Localize data
     subj = subjlist{nbsubj}; 
-    if (str2double(subj(end-1:end))>=67 && str2double(subj(end-1:end))<=72) ||...
-            str2double(subj(end-1:end))>76 || str2double(subj(end-2:end))>=100
-        path = 'T:\su\DATA\behaviorData\opto\cohort1\'; % data 16
-    else
-        path = 'T:\su\DATA\behaviorData\opto\cohort1\'; % data 11
-    end
+%     if (str2double(subj(end-1:end))>=67 && str2double(subj(end-1:end))<=72) ||...
+%             str2double(subj(end-1:end))>76 || str2double(subj(end-2:end))>=100
+%         path = 'P:\su\DATA\behaviorData\opto\cohort2\'; % data 16
+%     else
+%         path = 'P:\su\DATA\behaviorData\opto\cohort2\'; % data 11
+%     end
     
 %     if str2double(subj(end-2:end)) == 123
 %         subj = '217';
@@ -94,9 +89,9 @@ for nbsubj = 1:nSubj % through animals
 %         subj = lower(subj);
 %     end  
     if nbsubj > 30 || explist(nbsubj)>= 10
-        subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\']; 
+        subjPath = [datapath subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\']; 
     else
-        subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\'];
+        subjPath = [datapath subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\'];
     end
     files = dir([subjPath '*.mat']); 
     nFiles = length(files);
@@ -398,12 +393,17 @@ for nbsubj = 1:nSubj % through animals
 %             saveas(fig,[subjlist{nbsubj} '-' ...
 %                 strucNames{struclist(nbsubj)} '_' expNames{explist(nbsubj)} '_' ...
 %                 genNames{genlist(nbsubj)} '-ActionAndPerformance.pdf']);
+%             set(gcf, 'PaperUnits', 'inches');
+%             x_width=7.25 ;y_width=9.125;
+%             set(gcf, 'PaperPosition', [0 0 x_width y_width]); %
             saveas(fig,[subjlist{nbsubj} '-' genNames{genlist(nbsubj)} '-ActionAndPerformance.fig']);
             saveas(fig,[subjlist{nbsubj} '-' ...
                 genNames{genlist(nbsubj)} '-ActionAndPerformance.pdf']);close(fig);
         end
-        frow=ndays/7;
-        fcol=ndays/frow;
+%         frow=ndays/7;
+        frow=6;
+        fcol=4;
+%         fcol=ndays/frow;
         if plot_lick_psth
             fig=figure;hold on;
             for d=1:ndays
@@ -419,6 +419,9 @@ for nbsubj = 1:nSubj % through animals
             fig.Position = [100 100 1200 500];
             if savefig
                 cd(pathsave);
+                set(gcf, 'PaperUnits', 'inches');
+                x_width=7.25 ;y_width=9.125;
+                set(gcf, 'PaperPosition', [0 0 x_width y_width]); %
                 saveas(fig,[subjlist{nbsubj} '-LickPSTHreinforced-'...
                     num2str(nbins) 'bins.fig']);
                 saveas(fig,[subjlist{nbsubj} '-LickPSTHreinforced-' ...
@@ -438,6 +441,9 @@ for nbsubj = 1:nSubj % through animals
             fig.Position = [100 100 1200 500];
             if savefig
                 cd(pathsave);
+                set(gcf, 'PaperUnits', 'inches');
+                x_width=7.25 ;y_width=9.125;
+                set(gcf, 'PaperPosition', [0 0 x_width y_width]); %
                 saveas(fig,[subjlist{nbsubj} '-LickPSTHprobe-' num2str(nbins) 'bins.fig']);
                 saveas(fig,[subjlist{nbsubj} '-LickPSTHprobe-' ...
                     num2str(nbins) 'bins.pdf']);
@@ -531,13 +537,22 @@ ppc = (phit+(1-pfa))/2*100;
 %% Let's correct d' and percent correct in probe: fix after max
 pdrimeOrignial = pdprime;
 pdprime = pdrimeOrignial;
-[~,wm] = max(pdprime(:,1:10),[],2);
+if size(pdprime,2)<10
+    [~,wm]=max(pdprime(:,:),[],2);
+else
+    [~,wm] = max(pdprime(:,1:10),[],2);
+end
 for i=1:nSubj
     pdprime(i,wm(i):end) = pdprime(i,wm(i));
 end    
 
 ppcOrignial = ppc;
-[~,wm] = max(ppc(:,1:10),[],2);
+if size(pdprime,2)<10
+    [~,wm]=max(ppc(:,:),[],2);
+else
+    [~,wm] = max(ppc(:,1:10),[],2);
+end
+
 for i=1:nSubj
     ppc(i,wm(i):end) = ppc(i,wm(i));
 end    
@@ -551,35 +566,35 @@ condNames = {'Reinf OFF','Reinf ON','Probe'};
 varNames = {'hit','fa','dprime','PercentCorrect','Criterion'};
 savefig = true;
 
-% for i=1:nExp
-%     ok = explist==i;
-%     nStruc = numel(unique(struclist(ok)));
-%     for j=1:nStruc
-%         ok = explist==i & struclist==j;
-%         for v=1:size(var,2)             
-%             fig = figure;
-%             set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
-%             var = VAR(v,:);
-%             for c=1:3 % loop trough conditions, i.e. reinf, opto, probe
-%                 if c==3 
-%                     taken = (status==1 | status==2)';
-%                 else
-%                     taken = (status==1)';
-%                 end
-%                 groups = genlist(ok & taken);            
-%                 data = var{c}(ok & taken,:);
-%                 subplot(2,size(var,2),c);hold on;
-%                 plot(data(groups==2,:)','k');
-%                 plot(data(groups==1,:)','c');
-%                 title([expNames{i} '-' strucNames{j} ', ' condNames{c} ' (ctl=' num2str(sum(groups==2))...
-%                     ', test=' num2str(sum(groups==1)) ')']);
-%                 ylabel(varNames{v});
-%                 xlabel('Days');
-%                 ylim(ylims(v,:));
-%             end
-%         end        
-%     end
-% end
+for i=1:nExp
+    ok = explist==i;
+    nStruc = numel(unique(struclist(ok)));
+    for j=1:nStruc
+        ok = explist==i & struclist==j;
+        for v=1:size(var,2)             
+            fig = figure;
+            set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
+            var = VAR(v,:);
+            for c=1:3 % loop trough conditions, i.e. reinf, opto, probe
+                if c==3 
+                    taken = (status==1 | status==2)';
+                else
+                    taken = (status==1)';
+                end
+                groups = genlist(ok & taken);            
+                data = var{c}(ok & taken,:);
+                subplot(2,size(var,2),c);hold on;
+                plot(data(groups==2,:)','k');
+                plot(data(groups==1,:)','c');
+                title([expNames{i} '-' strucNames{j} ', ' condNames{c} ' (ctl=' num2str(sum(groups==2))...
+                    ', test=' num2str(sum(groups==1)) ')']);
+                ylabel(varNames{v});
+                xlabel('Days');
+                ylim(ylims(v,:));
+            end
+        end        
+    end
+end
 
 for i=1:nExp
     ok = explist==2;
@@ -664,57 +679,57 @@ for i=1:nExp
     end        
 end
 
-%% Plot catch trials
-savefig = false;
-for i=1:nExp
-%     ok = explist==i;
-    ok=explist==i+1;
-    nStruc = numel(unique(struclist(ok)));
-    for j=1:nStruc
-%         ok = explist==i & struclist==j;
-        ok=explist==i+1;
-        fig = figure;
-        set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
-        orient(fig,'landscape');
-        taken = (status==1)';        
-        groups = genlist(ok & taken);   
-        dataOFF = cofffa(ok & taken,:);   
-        dataON = confa(ok & taken,:);  
-        
-        subplot(2,2,1);hold on;
-        doff = dataOFF(groups==2,:)';
-        don = dataON(groups==2,:)';            
-        if ismember(i,[1:nExp])
-            doff(22:end,:) = nan;don(22:end,:) = nan;
-        end
-        bar([1 2],nanmean([doff(:) don(:)])');
-        plot([doff(:) don(:)]','k.-');
-        ylabel('FA catch');ylim([0 1]);
-        [~,p] = ttest(doff(:),don(:));
-        set(gca,'xtick',[1 2],'xticklabel',{'OFF','ON'});
-        title([expNames{i} '-' strucNames{j} ', CTL (n=' num2str(sum(groups==2)) ', ttestpaired=' num2str(p) ')']);
-
-        subplot(2,2,2);hold on;
-        doff = dataOFF(groups==1,:)';
-        don = dataON(groups==1,:)';    
-        if ismember(i,[1:nExp])
-            doff(22,:) = nan;don(22,:) = nan;
-        end
-        bar([1 2],nanmean([doff(:) don(:)])');
-        plot([doff(:) don(:)]','k.-');
-        ylabel('FA catch');ylim([0 1]);
-        [~,p] = ttest(doff(:),don(:));
-        set(gca,'xtick',[1 2],'xticklabel',{'OFF','ON'});
-        title([expNames{i} '-' strucNames{j} ', TEST (n=' num2str(sum(groups==2)) ', ttestpaired=' num2str(p) ')']);      
-        
-        if savefig
-            cd(pathsave);
-            t = [expNames{i} '-' strucNames{j} '-Catch_Trials'];
-            saveas(fig,[t '.pdf']);
-            close(fig);
-        end
-    end
-end
+% %% Plot catch trials
+% savefig = true;
+% for i=1:nExp
+% %     ok = explist==i;
+%     ok=explist==i+1;
+%     nStruc = numel(unique(struclist(ok)));
+%     for j=1:nStruc
+% %         ok = explist==i & struclist==j;
+%         ok=explist==i+1;
+%         fig = figure;
+%         set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
+%         orient(fig,'landscape');
+%         taken = (status==1)';        
+%         groups = genlist(ok & taken);   
+%         dataOFF = cofffa(ok & taken,:);   
+%         dataON = confa(ok & taken,:);  
+%         
+%         subplot(2,2,1);hold on;
+%         doff = dataOFF(groups==2,:)';
+%         don = dataON(groups==2,:)';            
+%         if ismember(i,[1:nExp])
+%             doff(22:end,:) = nan;don(22:end,:) = nan;
+%         end
+%         bar([1 2],nanmean([doff(:) don(:)])');
+%         plot([doff(:) don(:)]','k.-');
+%         ylabel('FA catch');ylim([0 1]);
+%         [~,p] = ttest(doff(:),don(:));
+%         set(gca,'xtick',[1 2],'xticklabel',{'OFF','ON'});
+%         title([expNames{i} '-' strucNames{j} ', CTL (n=' num2str(sum(groups==2)) ', ttestpaired=' num2str(p) ')']);
+% 
+%         subplot(2,2,2);hold on;
+%         doff = dataOFF(groups==1,:)';
+%         don = dataON(groups==1,:)';    
+%         if ismember(i,[1:nExp])
+%             doff(22,:) = nan;don(22,:) = nan;
+%         end
+%         bar([1 2],nanmean([doff(:) don(:)])');
+%         plot([doff(:) don(:)]','k.-');
+%         ylabel('FA catch');ylim([0 1]);
+%         [~,p] = ttest(doff(:),don(:));
+%         set(gca,'xtick',[1 2],'xticklabel',{'OFF','ON'});
+%         title([expNames{i} '-' strucNames{j} ', TEST (n=' num2str(sum(groups==2)) ', ttestpaired=' num2str(p) ')']);      
+%         
+%         if savefig
+%             cd(pathsave);
+%             t = [expNames{i} '-' strucNames{j} '-Catch_Trials'];
+%             saveas(fig,[t '.pdf']);
+%             close(fig);
+%         end
+%     end
+% end
 
 %% Lick rate and lick latency
 
@@ -772,9 +787,9 @@ end
 
 %% Plot difference performance light-off light-on
 
-maxday = 16;
+maxday = nFiles;
 days = 1:maxday;
-savefig = false; 
+savefig = true; 
 for i=1:nExp
 %     ok = explist==i;
     ok = explist==i+1;
@@ -848,7 +863,8 @@ for i=1:nExp
 %             totest = find(groups==1);
             lightdriven = zeros(1,length(groups));
 %             lightdriven([7;8;9;10]) = 1;
-            lightdriven([7;9;10;21]) = 1; % Need to manually change
+                % uncomment the below line when you have more days
+%             lightdriven([7;9;10;21]) = 1; % Need to manually change
             lightdriven = logical(lightdriven);
             plot(dataR(groups==1 & lightdriven,days),dataO(groups==1 & lightdriven,days)...
                 ,'b.','markersize',10);         
@@ -1303,574 +1319,574 @@ for i=[1 4]
         
     end
 end
-%% Plot difference performance light-off light-on, 10-90, ctl grouped VC and AC
-
-maxday = 21;
-days = 1:maxday;
-savefig = false;
-AC = 1;VC =2;
-for i=3
-    ok = explist==i;
-    fig = figure;
-    set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
-    orient(fig,'landscape');
-    taken = (status==1)';        
-    groups = genlist(ok & taken);    
-    lists = struclist(ok & taken);    
-
-    subplot(2,2,1);hold on;
-    data = opc(ok & taken,days)-rpc(ok & taken,days);  
-%     data = opc(ok & taken,days);  
-    plot(nanmean(data(groups==2 & lists==AC,:))','k','linewidth',3);
-    plot(nanmean(data(groups==2 & lists==AC,:))'+nansem(data(groups==2,:))','k');
-    plot(nanmean(data(groups==2 & lists==AC,:))'-nansem(data(groups==2,:))','k');
-    plot(nanmean(data(groups==1 & lists==AC,:))','c','linewidth',3);
-    plot(nanmean(data(groups==1 & lists==AC,:))'+nansem(data(groups==1 & lists==AC,:))','c');
-    plot(nanmean(data(groups==1 & lists==AC,:))'-nansem(data(groups==1 & lists==AC,:))','c');
-    PlotHVLines(0,'h','k');
-    ylim([-50 10]);
-%     ylim([50 100]);
-    ylabel('Diff percent correct');
-    xlabel([0 22]);xlabel('Days');
-    title([expNames{i} '-' strucNames{1} ' (ctl=' num2str(sum(groups==2 & lists==AC)) ...
-        ', test=' num2str(sum(groups==1 & lists==AC)) ') - AC only']);   
-    d = [data(groups==2 & lists==AC,:)' data(groups==1 & lists==AC,:)'];
-    g = [ones(sum(groups==2 & lists==AC),1);2*ones(sum(groups==1 & lists==AC),1)]';
-    g = repmat(g,size(d,1),1);
-%     days = repmat((1:21)',1,size(d,2));        
-%     [p,~,stats] = anovan(d(:),{g(:) days(:)});
-%         multcompare(stats);
-%     [p,~,stats] = anova1(d(:),g(:),'off');
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-%         [~,tablep(pp)] = ttest2(data(groups==2 & lists==AC,pp)',data(groups==1 & lists==AC,pp)');
-        tablep(pp) = rndttest(data(groups==2 & lists==AC,pp)',data(groups==1 & lists==AC,pp)');
-    end
-    if sum(tablep<0.05)~=0
-        plot(find(tablep<0.05),-20,'r*');
-    end
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-        [~,tablep(pp)] = ttest(data(groups==2 & lists==AC,pp)');
-    end
-    if sum(tablep<0.05)~=0
-        plot(find(tablep<0.05),-25,'k*');
-    end
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-        [~,tablep(pp)] = ttest(data(groups==1 & lists==AC,pp)');
-    end
-    if sum(tablep<0.05)~=0
-        plot(find(tablep<0.05),-30,'c*');
-    end
-    
-    subplot(2,2,2);hold on;
-    plot(nanmean(data(groups==2,:))','k','linewidth',3);
-    plot(nanmean(data(groups==2,:))'+nansem(data(groups==2,:))','k');
-    plot(nanmean(data(groups==2,:))'-nansem(data(groups==2,:))','k');
-    plot(nanmean(data(groups==1 & lists==AC,:))','c','linewidth',3);
-    plot(nanmean(data(groups==1 & lists==AC,:))'+nansem(data(groups==1 & lists==AC,:))','c');
-    plot(nanmean(data(groups==1 & lists==AC,:))'-nansem(data(groups==1 & lists==AC,:))','c');
-    PlotHVLines(0,'h','k');
-    ylim([-50 10]);
-%     ylim([50 100]);
-    ylabel('Diff percent correct');
-    xlabel([0 22]);xlabel('Days');
-    title([expNames{i} '-' strucNames{1} ' (ctl=' num2str(sum(groups==2)) ...
-        ', test=' num2str(sum(groups==1 & lists==AC)) ') - AC + VC ctl ']);   
-    d = [data(groups==2,:)' data(groups==1 & lists==AC,:)'];
-    g = [ones(sum(groups==2),1);2*ones(sum(groups==1 & lists==AC),1)]';
-    g = repmat(g,size(d,1),1);
-%     days = repmat((1:21)',1,size(d,2));        
-%     [p,~,stats] = anovan(d(:),{g(:) days(:)});
-%         multcompare(stats);
-%     [p,~,stats] = anova1(d(:),g(:),'off');
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-%         [~,tablep(pp)] = ttest2(data(groups==2,pp)',data(groups==1 & lists==AC,pp)');
-        tablep(pp) = rndttest(data(groups==2,pp)',data(groups==1 & lists==AC,pp)');
-    end
-    plot(find(tablep<0.05),-20,'r*');
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-        [~,tablep(pp)] = ttest(data(groups==2,pp)');
-    end
-    plot(find(tablep<0.05),-25,'k*');
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-        [~,tablep(pp)] = ttest(data(groups==1 & lists==AC,pp)');
-    end
-    plot(find(tablep<0.05),-30,'c*');
-    
-    subplot(2,2,3);hold on;
-    plot(nanmean(data(groups==2 | (groups==1 & lists==VC),:))','k','linewidth',3);
-    plot(nanmean(data(groups==2 | (groups==1 & lists==VC),:))'+nansem(data(groups==2,:))','k');
-    plot(nanmean(data(groups==2 | (groups==1 & lists==VC),:))'-nansem(data(groups==2,:))','k');
-    plot(nanmean(data(groups==1 & lists==AC,:))','c','linewidth',3);
-    plot(nanmean(data(groups==1 & lists==AC,:))'+nansem(data(groups==1 & lists==AC,:))','c');
-    plot(nanmean(data(groups==1 & lists==AC,:))'-nansem(data(groups==1 & lists==AC,:))','c');
-    PlotHVLines(0,'h','k');
-    ylim([-50 10]);
-%     ylim([50 100]);
-    ylabel('Diff percent correct');
-    xlabel([0 22]);xlabel('Days');
-    title([expNames{i} '-' strucNames{1} ' (ctl=' num2str(sum(groups==2 | (groups==1 & lists==VC))) ...
-        ', test=' num2str(sum(groups==1 & lists==AC)) ') - AC + VC ctl&test']);   
-    d = [data(groups==2 | (groups==1 & lists==VC),:)' data(groups==1 & lists==AC,:)'];
-    g = [ones(sum(groups==2 | (groups==1 & lists==VC)),1);2*ones(sum(groups==1 & lists==AC),1)]';
-    g = repmat(g,size(d,1),1);
-%     days = repmat((1:21)',1,size(d,2));        
-%     [p,~,stats] = anovan(d(:),{g(:) days(:)});
-%         multcompare(stats);
-%     [p,~,stats] = anova1(d(:),g(:),'off');
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-%         [~,tablep(pp)] = ttest2(data(groups==2 | (groups==1 & lists==VC),pp)',...
+% %% Plot difference performance light-off light-on, 10-90, ctl grouped VC and AC
+% 
+% maxday = 21;
+% days = 1:maxday;
+% savefig = false;
+% AC = 1;VC =2;
+% for i=3
+%     ok = explist==i;
+%     fig = figure;
+%     set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
+%     orient(fig,'landscape');
+%     taken = (status==1)';        
+%     groups = genlist(ok & taken);    
+%     lists = struclist(ok & taken);    
+% 
+%     subplot(2,2,1);hold on;
+%     data = opc(ok & taken,days)-rpc(ok & taken,days);  
+% %     data = opc(ok & taken,days);  
+%     plot(nanmean(data(groups==2 & lists==AC,:))','k','linewidth',3);
+%     plot(nanmean(data(groups==2 & lists==AC,:))'+nansem(data(groups==2,:))','k');
+%     plot(nanmean(data(groups==2 & lists==AC,:))'-nansem(data(groups==2,:))','k');
+%     plot(nanmean(data(groups==1 & lists==AC,:))','c','linewidth',3);
+%     plot(nanmean(data(groups==1 & lists==AC,:))'+nansem(data(groups==1 & lists==AC,:))','c');
+%     plot(nanmean(data(groups==1 & lists==AC,:))'-nansem(data(groups==1 & lists==AC,:))','c');
+%     PlotHVLines(0,'h','k');
+%     ylim([-50 10]);
+% %     ylim([50 100]);
+%     ylabel('Diff percent correct');
+%     xlabel([0 22]);xlabel('Days');
+%     title([expNames{i} '-' strucNames{1} ' (ctl=' num2str(sum(groups==2 & lists==AC)) ...
+%         ', test=' num2str(sum(groups==1 & lists==AC)) ') - AC only']);   
+%     d = [data(groups==2 & lists==AC,:)' data(groups==1 & lists==AC,:)'];
+%     g = [ones(sum(groups==2 & lists==AC),1);2*ones(sum(groups==1 & lists==AC),1)]';
+%     g = repmat(g,size(d,1),1);
+% %     days = repmat((1:21)',1,size(d,2));        
+% %     [p,~,stats] = anovan(d(:),{g(:) days(:)});
+% %         multcompare(stats);
+% %     [p,~,stats] = anova1(d(:),g(:),'off');
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+% %         [~,tablep(pp)] = ttest2(data(groups==2 & lists==AC,pp)',data(groups==1 & lists==AC,pp)');
+%         tablep(pp) = rndttest(data(groups==2 & lists==AC,pp)',data(groups==1 & lists==AC,pp)');
+%     end
+%     if sum(tablep<0.05)~=0
+%         plot(find(tablep<0.05),-20,'r*');
+%     end
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+%         [~,tablep(pp)] = ttest(data(groups==2 & lists==AC,pp)');
+%     end
+%     if sum(tablep<0.05)~=0
+%         plot(find(tablep<0.05),-25,'k*');
+%     end
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+%         [~,tablep(pp)] = ttest(data(groups==1 & lists==AC,pp)');
+%     end
+%     if sum(tablep<0.05)~=0
+%         plot(find(tablep<0.05),-30,'c*');
+%     end
+%     
+%     subplot(2,2,2);hold on;
+%     plot(nanmean(data(groups==2,:))','k','linewidth',3);
+%     plot(nanmean(data(groups==2,:))'+nansem(data(groups==2,:))','k');
+%     plot(nanmean(data(groups==2,:))'-nansem(data(groups==2,:))','k');
+%     plot(nanmean(data(groups==1 & lists==AC,:))','c','linewidth',3);
+%     plot(nanmean(data(groups==1 & lists==AC,:))'+nansem(data(groups==1 & lists==AC,:))','c');
+%     plot(nanmean(data(groups==1 & lists==AC,:))'-nansem(data(groups==1 & lists==AC,:))','c');
+%     PlotHVLines(0,'h','k');
+%     ylim([-50 10]);
+% %     ylim([50 100]);
+%     ylabel('Diff percent correct');
+%     xlabel([0 22]);xlabel('Days');
+%     title([expNames{i} '-' strucNames{1} ' (ctl=' num2str(sum(groups==2)) ...
+%         ', test=' num2str(sum(groups==1 & lists==AC)) ') - AC + VC ctl ']);   
+%     d = [data(groups==2,:)' data(groups==1 & lists==AC,:)'];
+%     g = [ones(sum(groups==2),1);2*ones(sum(groups==1 & lists==AC),1)]';
+%     g = repmat(g,size(d,1),1);
+% %     days = repmat((1:21)',1,size(d,2));        
+% %     [p,~,stats] = anovan(d(:),{g(:) days(:)});
+% %         multcompare(stats);
+% %     [p,~,stats] = anova1(d(:),g(:),'off');
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+% %         [~,tablep(pp)] = ttest2(data(groups==2,pp)',data(groups==1 & lists==AC,pp)');
+%         tablep(pp) = rndttest(data(groups==2,pp)',data(groups==1 & lists==AC,pp)');
+%     end
+%     plot(find(tablep<0.05),-20,'r*');
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+%         [~,tablep(pp)] = ttest(data(groups==2,pp)');
+%     end
+%     plot(find(tablep<0.05),-25,'k*');
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+%         [~,tablep(pp)] = ttest(data(groups==1 & lists==AC,pp)');
+%     end
+%     plot(find(tablep<0.05),-30,'c*');
+%     
+%     subplot(2,2,3);hold on;
+%     plot(nanmean(data(groups==2 | (groups==1 & lists==VC),:))','k','linewidth',3);
+%     plot(nanmean(data(groups==2 | (groups==1 & lists==VC),:))'+nansem(data(groups==2,:))','k');
+%     plot(nanmean(data(groups==2 | (groups==1 & lists==VC),:))'-nansem(data(groups==2,:))','k');
+%     plot(nanmean(data(groups==1 & lists==AC,:))','c','linewidth',3);
+%     plot(nanmean(data(groups==1 & lists==AC,:))'+nansem(data(groups==1 & lists==AC,:))','c');
+%     plot(nanmean(data(groups==1 & lists==AC,:))'-nansem(data(groups==1 & lists==AC,:))','c');
+%     PlotHVLines(0,'h','k');
+%     ylim([-50 10]);
+% %     ylim([50 100]);
+%     ylabel('Diff percent correct');
+%     xlabel([0 22]);xlabel('Days');
+%     title([expNames{i} '-' strucNames{1} ' (ctl=' num2str(sum(groups==2 | (groups==1 & lists==VC))) ...
+%         ', test=' num2str(sum(groups==1 & lists==AC)) ') - AC + VC ctl&test']);   
+%     d = [data(groups==2 | (groups==1 & lists==VC),:)' data(groups==1 & lists==AC,:)'];
+%     g = [ones(sum(groups==2 | (groups==1 & lists==VC)),1);2*ones(sum(groups==1 & lists==AC),1)]';
+%     g = repmat(g,size(d,1),1);
+% %     days = repmat((1:21)',1,size(d,2));        
+% %     [p,~,stats] = anovan(d(:),{g(:) days(:)});
+% %         multcompare(stats);
+% %     [p,~,stats] = anova1(d(:),g(:),'off');
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+% %         [~,tablep(pp)] = ttest2(data(groups==2 | (groups==1 & lists==VC),pp)',...
+% %             data(groups==1 & lists==AC,pp)');
+%         tablep(pp) = rndttest(data(groups==2 | (groups==1 & lists==VC),pp)',...
 %             data(groups==1 & lists==AC,pp)');
-        tablep(pp) = rndttest(data(groups==2 | (groups==1 & lists==VC),pp)',...
-            data(groups==1 & lists==AC,pp)');
-    end
-    plot(find(tablep<0.05),-20,'r*');
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-        [~,tablep(pp)] = ttest(data(groups==2 | (groups==1 & lists==VC),pp)');
-    end
-    plot(find(tablep<0.05),-25,'k*');
-    tablep = nan(size(d,1),1);
-    for pp=1:size(d,1)
-        [~,tablep(pp)] = ttest(data(groups==1 & lists==AC,pp)');
-    end
-    plot(find(tablep<0.05),-30,'c*');
-    
-    if savefig
-        cd(pathsave);
-        t = [expNames{i} '-' strucNames{1} '-10-90-VCandAC_ctl_grouped'];
-        saveas(fig,[t '.pdf']);
-        close(fig);
-    end  
-end
-
-%% Plot cumulative difference FA rate light-off light-on, 10-90, ctl grouped VC and AC
-
-maxday = 16;
-days = 1:maxday;
-savefig = false;
-AC = 1;VC =2;
-for i=2
-    ok = explist==i;
-    fig = figure;
-    set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
-    orient(fig,'landscape');
-    taken = (status==1)';        
-    groups = genlist(ok & taken);    
-    lists = struclist(ok & taken);    
-    
-    data = ofa(ok & taken,days)-rfa(ok & taken,days);
-    datahit = rhit(ok & taken,days);
-    
-    [~,findmaxprobe] = max(ppc,[],2);
-    
-    % POST ACQUI
-    subplot(4,3,1);hold on;
-    dctl = data(groups==2,:)';
-    start_ctl = findmaxprobe(groups==2);
-    cumsumdctl = nan(size(dctl));
-    for cc=1:size(dctl,2)
-        le = size(dctl,1)-start_ctl(cc)+1;
-        cumsumdctl(1:le,cc) = cumsum(dctl(start_ctl(cc):end,cc));
-    end
-    plot(cumsumdctl);
-    ylim([-3 3]);    
-    xlabel('Days post acquisition');
-    title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
-    ylabel('Cum sum of FA rate difference ON-OFF');
-    
-    subplot(4,3,2);hold on;
-    dtestAC = data(groups==1 & lists==AC,:)';
-    start_test = findmaxprobe(groups==1 & lists==AC);
-    cumsumdtest = nan(size(dtestAC));
-    for cc=1:size(dtestAC,2)
-        le = size(dtestAC,1)-start_test(cc)+1;
-        cumsumdtest(1:le,cc) = cumsum(dtestAC(start_test(cc):end,cc));
-    end
-    plot(cumsumdtest);
-    ylim([-3 3]);    
-    xlabel('Days post acquisition');
-    title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
-    
-    subplot(4,3,3);hold on;
-    plot(nanmean(cumsumdctl,2),'k','linewidth',2);
-    plot(nanmean(cumsumdctl,2)+nansem(cumsumdctl')','k');
-    plot(nanmean(cumsumdctl,2)-nansem(cumsumdctl')','k');
-    plot(nanmean(cumsumdtest,2),'c','linewidth',2);
-    plot(nanmean(cumsumdtest,2)+nansem(cumsumdtest')','c');
-    plot(nanmean(cumsumdtest,2)-nansem(cumsumdtest')','c');
-    ylim([-3 3]);    
-    xlabel('Days post acquisition');
-    
-    % DAYS
-    subplot(4,3,4);hold on;
-    dctl = data(groups==2,:)';
-    cumsumdctl = cumsum(dctl);
-    plot(cumsumdctl);
-    ylim([-3 3]);    
-    xlabel('Days');
-    title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
-    ylabel('Cum sum of FA rate difference ON-OFF');
-    
-    subplot(4,3,5);hold on;
-    dtestAC = data(groups==1 & lists==AC,:)';
-    cumsumdtest = cumsum(dtestAC);
-    plot(cumsumdtest);
-    ylim([-3 3]);    
-    xlabel('Days');
-    title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
-    
-    subplot(4,3,6);hold on;
-    plot(nanmean(cumsumdctl,2),'k','linewidth',2);
-    plot(nanmean(cumsumdctl,2)+nansem(cumsumdctl')','k');
-    plot(nanmean(cumsumdctl,2)-nansem(cumsumdctl')','k');
-    plot(nanmean(cumsumdtest,2),'c','linewidth',2);
-    plot(nanmean(cumsumdtest,2)+nansem(cumsumdtest')','c');
-    plot(nanmean(cumsumdtest,2)-nansem(cumsumdtest')','c');
-    ylim([-3 3]);    
-    xlabel('Days');
-    
-    % POST ACQUI, HIGH HIT ONLY (>0.95)
-    subplot(4,3,7);hold on;
-    dctl = data(groups==2,:)';
-    start_ctl = findmaxprobe(groups==2);
-    highHIT_ctl = datahit(groups==2,:)'>=0.95;    
-    cumsumdctl = nan(size(dctl));
-    for cc=1:size(dctl,2)
-        ddd = dctl(start_ctl(cc):end,cc);
-        okk = highHIT_ctl(start_ctl(cc):end,cc);
-        cumsumdctl(1:sum(okk),cc) = cumsum(ddd(okk));
-    end
-    plot(cumsumdctl);
-    ylim([-3 3]);    
-    xlabel('Days post acquisition');
-    title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
-    ylabel('Cum sum of FA diff, HIT>=0.95');
-    
-    subplot(4,3,8);hold on;
-    dtestAC = data(groups==1 & lists==AC,:)';
-    start_test = findmaxprobe(groups==1 & lists==AC);
-    highHIT_test = datahit(groups==1 & lists==AC,:)'>=0.95;    
-    cumsumdtest = nan(size(dtestAC));
-    for cc=1:size(dtestAC,2)
-        ddd = dtestAC(start_test(cc):end,cc);
-        okk = highHIT_test(start_test(cc):end,cc);
-        cumsumdtest(1:sum(okk),cc) = cumsum(ddd(okk));
-    end
-    plot(cumsumdtest);
-    ylim([-3 3]);    
-    xlabel('Days post acquisition');
-    title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
-    
-    subplot(4,3,9);hold on;
-    plot(nanmean(cumsumdctl,2),'k','linewidth',2);
-    plot(nanmean(cumsumdctl,2)+nansem(cumsumdctl')','k');
-    plot(nanmean(cumsumdctl,2)-nansem(cumsumdctl')','k');
-    plot(nanmean(cumsumdtest,2),'c','linewidth',2);
-    plot(nanmean(cumsumdtest,2)+nansem(cumsumdtest')','c');
-    plot(nanmean(cumsumdtest,2)-nansem(cumsumdtest')','c');
-    ylim([-3 3]);    
-    xlabel('Days post acquisition');
-    
-    % DAYS
-    subplot(4,3,10);hold on;
-    plot(data(groups==2,:)');
-    ylim([-1 0.5]);    
-    xlabel('Days');
-    title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
-    ylabel('FA rate difference ON-OFF');
-    
-    subplot(4,3,11);hold on;
-    plot(data(groups==1 & lists==AC,:)');
-    ylim([-1 0.5]);    
-    xlabel('Days');
-    title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
-    
-    subplot(4,3,12);hold on;
-    plot(nanmean(data(groups==2,:)),'k','linewidth',2);
-    plot(nanmean(data(groups==2,:))+nansem(data(groups==2,:)),'k');
-    plot(nanmean(data(groups==2,:))-nansem(data(groups==2,:)),'k');
-    plot(nanmean(data(groups==1 & lists==AC,:)),'c','linewidth',2);
-    plot(nanmean(data(groups==1 & lists==AC,:))+nansem(data(groups==1 & lists==AC,:)),'c');
-    plot(nanmean(data(groups==1 & lists==AC,:))-nansem(data(groups==1 & lists==AC,:)),'c');
-    ylim([-1 0.5]);    
-    xlabel('Days');
- 
-    if savefig
-        cd(pathsave);
-        t = [expNames{i} '-DiffFA'];
-        saveas(fig,[t '.pdf']);
-        close(fig);
-    end  
-end
-
-%% Comparison between controls in all experiments
-
-VAR = {rhit ohit phit; rfa ofa pfa; rdprime odprime pdprime; rpc opc ppc;...
-    rcriterion ocriterion pcriterion};
-ylims = [[0 1];[0 1];[-1 5];[40 100];[-2 2]];
-nExp = numel(unique(explist));
-condNames = {'Reinf OFF','Reinf ON','Probe'};
-varNames = {'hit','fa','dprime','PercentCorrect','Criterion'};
-savefig = true;
-
-fig = figure;
-set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
-orient(fig,'landscape')
-colors = {'k','g','r','b'};
-styles = {'-',':'};
-names = {};
-for i=1:nExp
-    ok = explist==i+1;
-    nStruc = numel(unique(struclist(ok)));
-    for j=1:nStruc
-        ok = explist==i & struclist==j;
-        for v=1:size(VAR,1)             
-            
-            var = VAR(v,:);
-            for c=1:3 % loop trough conditions, i.e. reinf, opto, probe
-                if c==3 
-                    taken = (status==1 | status==2)';
-                else
-                    taken = (status==1)';
-                end
-                groups = genlist(ok & taken);            
-                data = var{c}(ok & taken,:);
-                subplot(3,5,v+((c-1)*size(VAR,1)));hold on;
-                subplot(2,size(var,2),c);hold on;
-                plot(nanmean(data(groups==2,:))','color',colors{i},'linestyle',styles{j},'linewidth',1);
-                plot(nanmean(data(groups==2,:))'+nansem(data(groups==2,:))','color',colors{i});
-                plot(nanmean(data(groups==2,:))'-nansem(data(groups==2,:))','color',colors{i});
-                
-                title([expNames{i} '-' strucNames{j} ', ' condNames{c} ' (ctl=' num2str(sum(groups==2))...
-                    ', test=' num2str(sum(groups==1)) ')']);
-                if v==1
-                    ylabel([condNames{c} ' - ' varNames{v}]);
-                else
-                    ylabel(varNames{v});
-                end
-                xlabel('Days');
-                ylim(ylims(v,:));
-                xlim([0 30]);
-%                 if v==5, PlotHVLines(0,'h','k'); end
-            end
-        end   
-        names = [names [expNames{i} '-' strucNames{j} ' (' num2str(sum(groups==2)) ')']];
-    end
-end
-legend(names)
-if savefig
-    cd(pathsave);
-    t = 'Comparison-Controls-All-Exp';
-    saveas(fig,[t '.pdf']);
-    close(fig);
-end 
-
-% % stats
-% d = VAR{4,1};
-% ok = status==1;
-% code = [explist' struclist'];
-% [~,w] = unique(code,'rows');
-% newcode = nan(size(code,1),1);
-% for l=1:length(w)
-%    newcode(w(l):end) = l*ones(abs(diff([size(code,1);w(l)]))+1,1);
+%     end
+%     plot(find(tablep<0.05),-20,'r*');
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+%         [~,tablep(pp)] = ttest(data(groups==2 | (groups==1 & lists==VC),pp)');
+%     end
+%     plot(find(tablep<0.05),-25,'k*');
+%     tablep = nan(size(d,1),1);
+%     for pp=1:size(d,1)
+%         [~,tablep(pp)] = ttest(data(groups==1 & lists==AC,pp)');
+%     end
+%     plot(find(tablep<0.05),-30,'c*');
+%     
+%     if savefig
+%         cd(pathsave);
+%         t = [expNames{i} '-' strucNames{1} '-10-90-VCandAC_ctl_grouped'];
+%         saveas(fig,[t '.pdf']);
+%         close(fig);
+%     end  
 % end
-% newcode = repmat(newcode,1,size(d,2));
-% dd = d(ok & genlist'==2,:);
-% gg = newcode(ok & genlist'==2,:);
-% [p,~,stats] = anova1(dd(:),gg(:));
-% multcompare(stats)
 
+% %% Plot cumulative difference FA rate light-off light-on, 10-90, ctl grouped VC and AC
+% 
+% maxday = 16;
+% days = 1:maxday;
+% savefig = false;
+% AC = 1;VC =2;
+% for i=2
+%     ok = explist==i;
+%     fig = figure;
+%     set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
+%     orient(fig,'landscape');
+%     taken = (status==1)';        
+%     groups = genlist(ok & taken);    
+%     lists = struclist(ok & taken);    
+%     
+%     data = ofa(ok & taken,days)-rfa(ok & taken,days);
+%     datahit = rhit(ok & taken,days);
+%     
+%     [~,findmaxprobe] = max(ppc,[],2);
+%     
+%     % POST ACQUI
+%     subplot(4,3,1);hold on;
+%     dctl = data(groups==2,:)';
+%     start_ctl = findmaxprobe(groups==2);
+%     cumsumdctl = nan(size(dctl));
+%     for cc=1:size(dctl,2)
+%         le = size(dctl,1)-start_ctl(cc)+1;
+%         cumsumdctl(1:le,cc) = cumsum(dctl(start_ctl(cc):end,cc));
+%     end
+%     plot(cumsumdctl);
+%     ylim([-3 3]);    
+%     xlabel('Days post acquisition');
+%     title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
+%     ylabel('Cum sum of FA rate difference ON-OFF');
+%     
+%     subplot(4,3,2);hold on;
+%     dtestAC = data(groups==1 & lists==AC,:)';
+%     start_test = findmaxprobe(groups==1 & lists==AC);
+%     cumsumdtest = nan(size(dtestAC));
+%     for cc=1:size(dtestAC,2)
+%         le = size(dtestAC,1)-start_test(cc)+1;
+%         cumsumdtest(1:le,cc) = cumsum(dtestAC(start_test(cc):end,cc));
+%     end
+%     plot(cumsumdtest);
+%     ylim([-3 3]);    
+%     xlabel('Days post acquisition');
+%     title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
+%     
+%     subplot(4,3,3);hold on;
+%     plot(nanmean(cumsumdctl,2),'k','linewidth',2);
+%     plot(nanmean(cumsumdctl,2)+nansem(cumsumdctl')','k');
+%     plot(nanmean(cumsumdctl,2)-nansem(cumsumdctl')','k');
+%     plot(nanmean(cumsumdtest,2),'c','linewidth',2);
+%     plot(nanmean(cumsumdtest,2)+nansem(cumsumdtest')','c');
+%     plot(nanmean(cumsumdtest,2)-nansem(cumsumdtest')','c');
+%     ylim([-3 3]);    
+%     xlabel('Days post acquisition');
+%     
+%     % DAYS
+%     subplot(4,3,4);hold on;
+%     dctl = data(groups==2,:)';
+%     cumsumdctl = cumsum(dctl);
+%     plot(cumsumdctl);
+%     ylim([-3 3]);    
+%     xlabel('Days');
+%     title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
+%     ylabel('Cum sum of FA rate difference ON-OFF');
+%     
+%     subplot(4,3,5);hold on;
+%     dtestAC = data(groups==1 & lists==AC,:)';
+%     cumsumdtest = cumsum(dtestAC);
+%     plot(cumsumdtest);
+%     ylim([-3 3]);    
+%     xlabel('Days');
+%     title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
+%     
+%     subplot(4,3,6);hold on;
+%     plot(nanmean(cumsumdctl,2),'k','linewidth',2);
+%     plot(nanmean(cumsumdctl,2)+nansem(cumsumdctl')','k');
+%     plot(nanmean(cumsumdctl,2)-nansem(cumsumdctl')','k');
+%     plot(nanmean(cumsumdtest,2),'c','linewidth',2);
+%     plot(nanmean(cumsumdtest,2)+nansem(cumsumdtest')','c');
+%     plot(nanmean(cumsumdtest,2)-nansem(cumsumdtest')','c');
+%     ylim([-3 3]);    
+%     xlabel('Days');
+%     
+%     % POST ACQUI, HIGH HIT ONLY (>0.95)
+%     subplot(4,3,7);hold on;
+%     dctl = data(groups==2,:)';
+%     start_ctl = findmaxprobe(groups==2);
+%     highHIT_ctl = datahit(groups==2,:)'>=0.95;    
+%     cumsumdctl = nan(size(dctl));
+%     for cc=1:size(dctl,2)
+%         ddd = dctl(start_ctl(cc):end,cc);
+%         okk = highHIT_ctl(start_ctl(cc):end,cc);
+%         cumsumdctl(1:sum(okk),cc) = cumsum(ddd(okk));
+%     end
+%     plot(cumsumdctl);
+%     ylim([-3 3]);    
+%     xlabel('Days post acquisition');
+%     title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
+%     ylabel('Cum sum of FA diff, HIT>=0.95');
+%     
+%     subplot(4,3,8);hold on;
+%     dtestAC = data(groups==1 & lists==AC,:)';
+%     start_test = findmaxprobe(groups==1 & lists==AC);
+%     highHIT_test = datahit(groups==1 & lists==AC,:)'>=0.95;    
+%     cumsumdtest = nan(size(dtestAC));
+%     for cc=1:size(dtestAC,2)
+%         ddd = dtestAC(start_test(cc):end,cc);
+%         okk = highHIT_test(start_test(cc):end,cc);
+%         cumsumdtest(1:sum(okk),cc) = cumsum(ddd(okk));
+%     end
+%     plot(cumsumdtest);
+%     ylim([-3 3]);    
+%     xlabel('Days post acquisition');
+%     title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
+%     
+%     subplot(4,3,9);hold on;
+%     plot(nanmean(cumsumdctl,2),'k','linewidth',2);
+%     plot(nanmean(cumsumdctl,2)+nansem(cumsumdctl')','k');
+%     plot(nanmean(cumsumdctl,2)-nansem(cumsumdctl')','k');
+%     plot(nanmean(cumsumdtest,2),'c','linewidth',2);
+%     plot(nanmean(cumsumdtest,2)+nansem(cumsumdtest')','c');
+%     plot(nanmean(cumsumdtest,2)-nansem(cumsumdtest')','c');
+%     ylim([-3 3]);    
+%     xlabel('Days post acquisition');
+%     
+%     % DAYS
+%     subplot(4,3,10);hold on;
+%     plot(data(groups==2,:)');
+%     ylim([-1 0.5]);    
+%     xlabel('Days');
+%     title([expNames{i} ' - AC+VC ctl (n=' num2str(sum(groups==2)) ')']);
+%     ylabel('FA rate difference ON-OFF');
+%     
+%     subplot(4,3,11);hold on;
+%     plot(data(groups==1 & lists==AC,:)');
+%     ylim([-1 0.5]);    
+%     xlabel('Days');
+%     title([expNames{i} ' - AC test (n=' num2str(sum(groups==1 & lists==AC)) ')']);
+%     
+%     subplot(4,3,12);hold on;
+%     plot(nanmean(data(groups==2,:)),'k','linewidth',2);
+%     plot(nanmean(data(groups==2,:))+nansem(data(groups==2,:)),'k');
+%     plot(nanmean(data(groups==2,:))-nansem(data(groups==2,:)),'k');
+%     plot(nanmean(data(groups==1 & lists==AC,:)),'c','linewidth',2);
+%     plot(nanmean(data(groups==1 & lists==AC,:))+nansem(data(groups==1 & lists==AC,:)),'c');
+%     plot(nanmean(data(groups==1 & lists==AC,:))-nansem(data(groups==1 & lists==AC,:)),'c');
+%     ylim([-1 0.5]);    
+%     xlabel('Days');
+%  
+%     if savefig
+%         cd(pathsave);
+%         t = [expNames{i} '-DiffFA'];
+%         saveas(fig,[t '.pdf']);
+%         close(fig);
+%     end  
+% end
 
-i=2; % 90-10 experiment
-ok = explist==i;
-maxday = 21;
-criteriamethod = 'percent'; % 'percent' or 'dprime' or 'maxpercent'
-criteriapercent = 70;
-criteriadprime = 1.5;
-nStruc = numel(unique(struclist(ok)));
-fig = figure;
+% %% Comparison between controls in all experiments
+% 
+% VAR = {rhit ohit phit; rfa ofa pfa; rdprime odprime pdprime; rpc opc ppc;...
+%     rcriterion ocriterion pcriterion};
+% ylims = [[0 1];[0 1];[-1 5];[40 100];[-2 2]];
+% nExp = numel(unique(explist));
+% condNames = {'Reinf OFF','Reinf ON','Probe'};
+% varNames = {'hit','fa','dprime','PercentCorrect','Criterion'};
+% savefig = true;
+% 
+% fig = figure;
 % set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
-% orient(fig,'landscape');
-for j=1:nStruc
-    ok = explist==i & struclist==j;
-    taken = (status==1)';
-    groups = genlist(ok & taken);
-    n = sum(ok & taken);
-    if strcmp(criteriamethod,'percent')
-        v = 4; % percent correct
-        var = VAR(v,:);
-        thresh = var{3}(ok & taken,1:maxday)>=criteriapercent;
-    elseif strcmp(criteriamethod,'dprime')
-        v = 3; % d'
-        var = VAR(v,:);
-        thresh = var{3}(ok & taken,1:maxday)>=criteriadprime;
-    elseif strcmp(criteriamethod,'maxpercent')
-        v = 4; % percent correct
-        var = VAR(v,:);
-        [~,where] = max(var{3}(ok & taken,1:maxday),[],2);
-        thresh = zeros(n,maxday);
-        for t=1:n
-            thresh(t,where(t):end)=1;
-        end
-        thresh = logical(thresh);
-    end
-    day_criteria = nan(n,1);
-    for t=1:n
-        dc = strfind(thresh(t,:),[0 1]);
-        if ~isempty(dc)
-            day_criteria(t) = dc(1);
-        elseif strfind(thresh(t,:),1)==1
-            day_criteria(t) = 1;
-        end
-    end
-    dc_ctl = day_criteria(groups==2);
-    dc_test = day_criteria(groups==1);
-    subplot(2,2,1);hold on;
-    histogram(dc_ctl,'Normalization','cdf','DisplayStyle','stairs','EdgeColor','k');
-    histogram(dc_test,'Normalization','cdf','DisplayStyle','stairs','EdgeColor','c');
-    ylabel('Cum fraction of mice');
-    if strcmp(criteriamethod,'percent')
-        xlabel(['Probe day > ' num2str(criteriapercent) '%']);
-        title([expNames{i} '-' strucNames{j} ' (ctl=' num2str(length(dc_ctl)) ...
-            ', test=' num2str(length(dc_test)) ')']);
-    elseif strcmp(criteriamethod,'dprime')
-        xlabel(['Probe day d" > ' num2str(criteriadprime)]);
-        title([expNames{i} '-' strucNames{j} ' (ctl=' num2str(length(dc_ctl)) ...
-            ', test=' num2str(length(dc_test)) ')']);
-    elseif strcmp(criteriamethod,'maxpercent')
-        xlabel('Probe day max %');
-        title([expNames{i} '-' strucNames{j} ' (ctl=' num2str(length(dc_ctl)) ...
-            ', test=' num2str(length(dc_test)) ')']);
-    end
-    subplot(2,2,2);hold on;
-    v = 4; % percent correct
-    var = VAR(v,:);
-    percentReinflightOFF = var{1}(ok & taken,1:maxday);
-    align_perf = nan(n,maxday);
-    for t=1:n
-        si = maxday-day_criteria(t)+1;
-        if isnan(si), continue, end
-        align_perf(t,1:si) = percentReinflightOFF(t,day_criteria(t):end);
-    end
-    if j == 1
-        plot(align_perf(groups==2,:)','k');
-        plot(align_perf(groups==1,:)','c');
-        ylim([40 100]);ylabel('% correct');
-        title('Reinforce light-off');
-        if strcmp(criteriamethod,'percent')
-            xlabel(['Day from probe day > ' num2str(criteriapercent) '%']);
-        elseif strcmp(criteriamethod,'dprime')
-            xlabel(['Day from probe day d" > ' num2str(criteriadprime)]);
-        elseif strcmp(criteriamethod,'maxpercent')
-            xlabel('Day from max % probe');
-        end
-        subplot(2,2,3);hold on;
-        plot(nanmean(align_perf(groups==2,:)),'k','linewidth',2);
-        plot(nanmean(align_perf(groups==2,:))+nansem(align_perf(groups==2,:)),'k');
-        plot(nanmean(align_perf(groups==2,:))-nansem(align_perf(groups==2,:)),'k');
-        plot(nanmean(align_perf(groups==1,:)),'Color', [0.5 0.5 0.5],'linewidth',2);
-        plot(nanmean(align_perf(groups==1,:))+nansem(align_perf(groups==1,:)),'c');
-        plot(nanmean(align_perf(groups==1,:))-nansem(align_perf(groups==1,:)),'c');
-        ylim([40 100]);ylabel('% correct');
-        title('Reinforce light-off');
-        if strcmp(criteriamethod,'percent')
-            xlabel(['Day from probe day > ' num2str(criteriapercent) '%']);
-        elseif strcmp(criteriamethod,'dprime')
-            xlabel(['Day from probe day d" > ' num2str(criteriadprime)]);
-        elseif strcmp(criteriamethod,'maxpercent')
-            xlabel('Day from max % probe');
-        end
-    else
-        plot(nanmean(align_perf(groups==2,:)),'k','linewidth',2);
-    plot(nanmean(align_perf(groups==2,:))+nansem(align_perf(groups==2,:)),'k');
-    plot(nanmean(align_perf(groups==2,:))-nansem(align_perf(groups==2,:)),'k');
-    plot(nanmean(align_perf(groups==1,:)),'Color', [0.5 0.5 0.5],'linewidth',2);
-    plot(nanmean(align_perf(groups==1,:))+nansem(align_perf(groups==1,:)),'c');
-    plot(nanmean(align_perf(groups==1,:))-nansem(align_perf(groups==1,:)),'c');
-    ylim([40 100]);ylabel('% correct');
-    title('Reinforce light-off');
-    if strcmp(criteriamethod,'percent')
-        xlabel(['Day from probe day > ' num2str(criteriapercent) '%']);
-    elseif strcmp(criteriamethod,'dprime')
-        xlabel(['Day from probe day d" > ' num2str(criteriadprime)]);
-	elseif strcmp(criteriamethod,'maxpercent')
-        xlabel('Day from max % probe');
-    end
-    end
-end
-
-
-maxdays = 30;
-rhit = nan(nSubj,maxdays);
-rfa = nan(nSubj,maxdays);
-phit = nan(nSubj,maxdays);
-pfa = nan(nSubj,maxdays);
-ohit = nan(nSubj,maxdays);
-ofa = nan(nSubj,maxdays);
-cofffa = nan(nSubj,maxdays);
-confa = nan(nSubj,maxdays);
-for s=1:nSubj
-    if isempty(tempsubjrates{s}), continue, end
-    n = size(tempsubjrates{s},1);
-    rhit(s,1:n) = tempsubjrates{s}(:,1);
-    rfa(s,1:n) = tempsubjrates{s}(:,2);
-    phit(s,1:n) = tempsubjrates{s}(:,3);
-    pfa(s,1:n) = tempsubjrates{s}(:,4);
-    ohit(s,1:n) = tempsubjrates{s}(:,5);
-    ofa(s,1:n) = tempsubjrates{s}(:,6);
-    cofffa(s,1:n) = tempsubjrates{s}(:,9);
-    confa(s,1:n) = tempsubjrates{s}(:,10);
-end
-% Compute percent correct
-rpc = (rhit+(1-rfa))/2*100;
-opc = (ohit+(1-ofa))/2*100;
-starts = find(sum(isnan(opc))~=nSubj);
-starts(end)=[]; % remove light outside the brain
-figure;
-for s=1:nSubj
-    subplot(2,2,s);hold on;
-    plot([rpc(s,starts)' opc(s,starts)']','k.-');
-    xlim([0.5 2.5]);
-    set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
-    ylim([0 100]);ylabel('Proportion correct');
-    [~,p] = ttest(rpc(s,starts)',opc(s,starts)');
-    title([subjlist{s} ', p=' num2str(p)]);
-end
-figure;hold on;
-subplot(2,2,1);hold on;
-lightoff = rpc(:,starts)';
-lighton = opc(:,starts)';
-plot([lightoff(:) lighton(:)]','k.-');
-plot([1 2],[nanmean(lightoff(:)) nanmean(lighton(:))],'b.','markersize',15);
-xlim([0.5 2.5]);
-set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
-ylim([0 100]);ylabel('Proportion correct');
-subplot(2,2,2);hold on;
-colors = {'c','y','b','g'};
-plot([1 2],[nanmean(lightoff(:)) nanmean(lighton(:))],'k.','markersize',15);
-for s=1:nSubj
-    lightoff = nanmean(rpc(s,starts),2);
-    lighton = nanmean(opc(s,starts),2);
-    plot([lightoff lighton]','.-','color',colors{s});
-end
-xlim([0.5 2.5]);
-set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
-ylim([0 100]);ylabel('Proportion correct');
-subplot(2,2,3);hold on;
-title('Light outside the brain');
-outside = find(sum(isnan(opc))~=nSubj);
-outside = outside(end);
-lightoff = rpc(:,outside)';
-lighton = opc(:,outside)';
-plot([lightoff(:) lighton(:)]','k.-');
-plot([1 2],[nanmean(lightoff(:)) nanmean(lighton(:))],'b.','markersize',15);
-xlim([0.5 2.5]);
-set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
-ylim([0 100]);ylabel('Proportion correct');
+% orient(fig,'landscape')
+% colors = {'k','g','r','b'};
+% styles = {'-',':'};
+% names = {};
+% for i=1:nExp
+%     ok = explist==i+1;
+%     nStruc = numel(unique(struclist(ok)));
+%     for j=1:nStruc
+%         ok = explist==i & struclist==j;
+%         for v=1:size(VAR,1)             
+%             
+%             var = VAR(v,:);
+%             for c=1:3 % loop trough conditions, i.e. reinf, opto, probe
+%                 if c==3 
+%                     taken = (status==1 | status==2)';
+%                 else
+%                     taken = (status==1)';
+%                 end
+%                 groups = genlist(ok & taken);            
+%                 data = var{c}(ok & taken,:);
+%                 subplot(3,5,v+((c-1)*size(VAR,1)));hold on;
+%                 subplot(2,size(var,2),c);hold on;
+%                 plot(nanmean(data(groups==2,:))','color',colors{i},'linestyle',styles{j},'linewidth',1);
+%                 plot(nanmean(data(groups==2,:))'+nansem(data(groups==2,:))','color',colors{i});
+%                 plot(nanmean(data(groups==2,:))'-nansem(data(groups==2,:))','color',colors{i});
+%                 
+%                 title([expNames{i} '-' strucNames{j} ', ' condNames{c} ' (ctl=' num2str(sum(groups==2))...
+%                     ', test=' num2str(sum(groups==1)) ')']);
+%                 if v==1
+%                     ylabel([condNames{c} ' - ' varNames{v}]);
+%                 else
+%                     ylabel(varNames{v});
+%                 end
+%                 xlabel('Days');
+%                 ylim(ylims(v,:));
+%                 xlim([0 30]);
+% %                 if v==5, PlotHVLines(0,'h','k'); end
+%             end
+%         end   
+%         names = [names [expNames{i} '-' strucNames{j} ' (' num2str(sum(groups==2)) ')']];
+%     end
+% end
+% legend(names)
+% if savefig
+%     cd(pathsave);
+%     t = 'Comparison-Controls-All-Exp';
+%     saveas(fig,[t '.pdf']);
+%     close(fig);
+% end 
+% 
+% % % stats
+% % d = VAR{4,1};
+% % ok = status==1;
+% % code = [explist' struclist'];
+% % [~,w] = unique(code,'rows');
+% % newcode = nan(size(code,1),1);
+% % for l=1:length(w)
+% %    newcode(w(l):end) = l*ones(abs(diff([size(code,1);w(l)]))+1,1);
+% % end
+% % newcode = repmat(newcode,1,size(d,2));
+% % dd = d(ok & genlist'==2,:);
+% % gg = newcode(ok & genlist'==2,:);
+% % [p,~,stats] = anova1(dd(:),gg(:));
+% % multcompare(stats)
+% 
+% 
+% i=2; % 90-10 experiment
+% ok = explist==i;
+% maxday = 21;
+% criteriamethod = 'percent'; % 'percent' or 'dprime' or 'maxpercent'
+% criteriapercent = 70;
+% criteriadprime = 1.5;
+% nStruc = numel(unique(struclist(ok)));
+% fig = figure;
+% % set(fig, 'units','normalized','outerposition',[0 0.5 0.5 0.5]);
+% % orient(fig,'landscape');
+% for j=1:nStruc
+%     ok = explist==i & struclist==j;
+%     taken = (status==1)';
+%     groups = genlist(ok & taken);
+%     n = sum(ok & taken);
+%     if strcmp(criteriamethod,'percent')
+%         v = 4; % percent correct
+%         var = VAR(v,:);
+%         thresh = var{3}(ok & taken,1:maxday)>=criteriapercent;
+%     elseif strcmp(criteriamethod,'dprime')
+%         v = 3; % d'
+%         var = VAR(v,:);
+%         thresh = var{3}(ok & taken,1:maxday)>=criteriadprime;
+%     elseif strcmp(criteriamethod,'maxpercent')
+%         v = 4; % percent correct
+%         var = VAR(v,:);
+%         [~,where] = max(var{3}(ok & taken,1:maxday),[],2);
+%         thresh = zeros(n,maxday);
+%         for t=1:n
+%             thresh(t,where(t):end)=1;
+%         end
+%         thresh = logical(thresh);
+%     end
+%     day_criteria = nan(n,1);
+%     for t=1:n
+%         dc = strfind(thresh(t,:),[0 1]);
+%         if ~isempty(dc)
+%             day_criteria(t) = dc(1);
+%         elseif strfind(thresh(t,:),1)==1
+%             day_criteria(t) = 1;
+%         end
+%     end
+%     dc_ctl = day_criteria(groups==2);
+%     dc_test = day_criteria(groups==1);
+%     subplot(2,2,1);hold on;
+%     histogram(dc_ctl,'Normalization','cdf','DisplayStyle','stairs','EdgeColor','k');
+%     histogram(dc_test,'Normalization','cdf','DisplayStyle','stairs','EdgeColor','c');
+%     ylabel('Cum fraction of mice');
+%     if strcmp(criteriamethod,'percent')
+%         xlabel(['Probe day > ' num2str(criteriapercent) '%']);
+%         title([expNames{i} '-' strucNames{j} ' (ctl=' num2str(length(dc_ctl)) ...
+%             ', test=' num2str(length(dc_test)) ')']);
+%     elseif strcmp(criteriamethod,'dprime')
+%         xlabel(['Probe day d" > ' num2str(criteriadprime)]);
+%         title([expNames{i} '-' strucNames{j} ' (ctl=' num2str(length(dc_ctl)) ...
+%             ', test=' num2str(length(dc_test)) ')']);
+%     elseif strcmp(criteriamethod,'maxpercent')
+%         xlabel('Probe day max %');
+%         title([expNames{i} '-' strucNames{j} ' (ctl=' num2str(length(dc_ctl)) ...
+%             ', test=' num2str(length(dc_test)) ')']);
+%     end
+%     subplot(2,2,2);hold on;
+%     v = 4; % percent correct
+%     var = VAR(v,:);
+%     percentReinflightOFF = var{1}(ok & taken,1:maxday);
+%     align_perf = nan(n,maxday);
+%     for t=1:n
+%         si = maxday-day_criteria(t)+1;
+%         if isnan(si), continue, end
+%         align_perf(t,1:si) = percentReinflightOFF(t,day_criteria(t):end);
+%     end
+%     if j == 1
+%         plot(align_perf(groups==2,:)','k');
+%         plot(align_perf(groups==1,:)','c');
+%         ylim([40 100]);ylabel('% correct');
+%         title('Reinforce light-off');
+%         if strcmp(criteriamethod,'percent')
+%             xlabel(['Day from probe day > ' num2str(criteriapercent) '%']);
+%         elseif strcmp(criteriamethod,'dprime')
+%             xlabel(['Day from probe day d" > ' num2str(criteriadprime)]);
+%         elseif strcmp(criteriamethod,'maxpercent')
+%             xlabel('Day from max % probe');
+%         end
+%         subplot(2,2,3);hold on;
+%         plot(nanmean(align_perf(groups==2,:)),'k','linewidth',2);
+%         plot(nanmean(align_perf(groups==2,:))+nansem(align_perf(groups==2,:)),'k');
+%         plot(nanmean(align_perf(groups==2,:))-nansem(align_perf(groups==2,:)),'k');
+%         plot(nanmean(align_perf(groups==1,:)),'Color', [0.5 0.5 0.5],'linewidth',2);
+%         plot(nanmean(align_perf(groups==1,:))+nansem(align_perf(groups==1,:)),'c');
+%         plot(nanmean(align_perf(groups==1,:))-nansem(align_perf(groups==1,:)),'c');
+%         ylim([40 100]);ylabel('% correct');
+%         title('Reinforce light-off');
+%         if strcmp(criteriamethod,'percent')
+%             xlabel(['Day from probe day > ' num2str(criteriapercent) '%']);
+%         elseif strcmp(criteriamethod,'dprime')
+%             xlabel(['Day from probe day d" > ' num2str(criteriadprime)]);
+%         elseif strcmp(criteriamethod,'maxpercent')
+%             xlabel('Day from max % probe');
+%         end
+%     else
+%         plot(nanmean(align_perf(groups==2,:)),'k','linewidth',2);
+%     plot(nanmean(align_perf(groups==2,:))+nansem(align_perf(groups==2,:)),'k');
+%     plot(nanmean(align_perf(groups==2,:))-nansem(align_perf(groups==2,:)),'k');
+%     plot(nanmean(align_perf(groups==1,:)),'Color', [0.5 0.5 0.5],'linewidth',2);
+%     plot(nanmean(align_perf(groups==1,:))+nansem(align_perf(groups==1,:)),'c');
+%     plot(nanmean(align_perf(groups==1,:))-nansem(align_perf(groups==1,:)),'c');
+%     ylim([40 100]);ylabel('% correct');
+%     title('Reinforce light-off');
+%     if strcmp(criteriamethod,'percent')
+%         xlabel(['Day from probe day > ' num2str(criteriapercent) '%']);
+%     elseif strcmp(criteriamethod,'dprime')
+%         xlabel(['Day from probe day d" > ' num2str(criteriadprime)]);
+% 	elseif strcmp(criteriamethod,'maxpercent')
+%         xlabel('Day from max % probe');
+%     end
+%     end
+% end
+% 
+% 
+% maxdays = 30;
+% rhit = nan(nSubj,maxdays);
+% rfa = nan(nSubj,maxdays);
+% phit = nan(nSubj,maxdays);
+% pfa = nan(nSubj,maxdays);
+% ohit = nan(nSubj,maxdays);
+% ofa = nan(nSubj,maxdays);
+% cofffa = nan(nSubj,maxdays);
+% confa = nan(nSubj,maxdays);
+% for s=1:nSubj
+%     if isempty(tempsubjrates{s}), continue, end
+%     n = size(tempsubjrates{s},1);
+%     rhit(s,1:n) = tempsubjrates{s}(:,1);
+%     rfa(s,1:n) = tempsubjrates{s}(:,2);
+%     phit(s,1:n) = tempsubjrates{s}(:,3);
+%     pfa(s,1:n) = tempsubjrates{s}(:,4);
+%     ohit(s,1:n) = tempsubjrates{s}(:,5);
+%     ofa(s,1:n) = tempsubjrates{s}(:,6);
+%     cofffa(s,1:n) = tempsubjrates{s}(:,9);
+%     confa(s,1:n) = tempsubjrates{s}(:,10);
+% end
+% % Compute percent correct
+% rpc = (rhit+(1-rfa))/2*100;
+% opc = (ohit+(1-ofa))/2*100;
+% starts = find(sum(isnan(opc))~=nSubj);
+% starts(end)=[]; % remove light outside the brain
+% figure;
+% for s=1:nSubj
+%     subplot(2,2,s);hold on;
+%     plot([rpc(s,starts)' opc(s,starts)']','k.-');
+%     xlim([0.5 2.5]);
+%     set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
+%     ylim([0 100]);ylabel('Proportion correct');
+%     [~,p] = ttest(rpc(s,starts)',opc(s,starts)');
+%     title([subjlist{s} ', p=' num2str(p)]);
+% end
+% figure;hold on;
+% subplot(2,2,1);hold on;
+% lightoff = rpc(:,starts)';
+% lighton = opc(:,starts)';
+% plot([lightoff(:) lighton(:)]','k.-');
+% plot([1 2],[nanmean(lightoff(:)) nanmean(lighton(:))],'b.','markersize',15);
+% xlim([0.5 2.5]);
+% set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
+% ylim([0 100]);ylabel('Proportion correct');
+% subplot(2,2,2);hold on;
+% colors = {'c','y','b','g'};
+% plot([1 2],[nanmean(lightoff(:)) nanmean(lighton(:))],'k.','markersize',15);
+% for s=1:nSubj
+%     lightoff = nanmean(rpc(s,starts),2);
+%     lighton = nanmean(opc(s,starts),2);
+%     plot([lightoff lighton]','.-','color',colors{s});
+% end
+% xlim([0.5 2.5]);
+% set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
+% ylim([0 100]);ylabel('Proportion correct');
+% subplot(2,2,3);hold on;
+% title('Light outside the brain');
+% outside = find(sum(isnan(opc))~=nSubj);
+% outside = outside(end);
+% lightoff = rpc(:,outside)';
+% lighton = opc(:,outside)';
+% plot([lightoff(:) lighton(:)]','k.-');
+% plot([1 2],[nanmean(lightoff(:)) nanmean(lighton(:))],'b.','markersize',15);
+% xlim([0.5 2.5]);
+% set(gca,'xtick',[1 2],'xticklabel',{'light-off','light-on'});
+% ylim([0 100]);ylabel('Proportion correct');
