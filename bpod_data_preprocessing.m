@@ -15,7 +15,7 @@ function data=bpod_data_preprocessing(rawdata_folder,GNG_protocol,Animals)
 %each session
 
 % clear all
-% addpath('\\pbs-srv2.win.ad.jhu.edu\kishorelab\Sharlen\Bpod_scripts') %path of your preprocessing functions
+addpath('W:\su\CODE\behaviorAnalysis') %path of your preprocessing functions
 % addpath('/Users/shar/Documents/APP_project')
 % addpath('/Users/shar/Documents/Analysis_APP_project/Behavior_bpod')
 % addpath('A:\Sharlen\Behavior\CitricAcid')
@@ -74,8 +74,8 @@ addpath(rawdata_folder) %path where your data is stored
 % save_folder=rawdata_folder;
 
 dob={'02/16/2021','02/16/2021','02/16/2021','02/16/2021'};
-sex=[2,2,2,2]; %2 male, 1 female
-genotype=[1,1,1,1]; %1=85% WR, 2=CA, 3=95% WR
+sex=[2,2,2]; %2 male, 1 female
+genotype=[1,1,1]; %1=85% WR, 2=CA, 3=95% WR
 save_name='data_GNG_Normal'; %'data_GNG_Reverse';
 save_folder=rawdata_folder;
 
@@ -93,7 +93,7 @@ for fi=1:length(Animals)
     if ~exist([foldertouse 'SessionsOut'])
         mkdir(foldertouse, 'SessionsOut') %makes directory to add here files that have less than 10 trials to be excluded from analysis
     end 
-    cd([foldertouse 'Session Data' filesep]);
+    cd([foldertouse 'Session Data - Copy' filesep]);
     matfiles2 = dir('*.mat'); %finds all GNG sessions for the selected animal
     
     %to make sure files with less than 10 trials are not taken into

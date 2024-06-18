@@ -1,0 +1,174 @@
+---
+title: "KKLab-Strat"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+setwd('T:/su/DATA/behaviorData')
+miceAll<-read.csv('dataMouse.csv',header=TRUE)
+mice<-miceAll[ ,2:13]
+miceWRN<-read.csv('dataMouseWR.csv',header=TRUE)
+miceWR<-miceWRN[ ,2:11]
+summary(mice)
+#mice<-scale(mice)
+head(mice,n=3)
+
+#install.packages("factoextra")
+library('stats')
+library(factoextra)
+library(gridExtra)
+```
+
+
+```{r}
+library('tidyverse')
+
+set.seed(123)
+
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(mice, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:8
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+plot(k.values, wss_values,
+       type="b", pch = 19, frame = FALSE, 
+       xlab="Number of clusters K",
+       ylab="Total within-clusters sum of squares")
+
+```
+
+
+```{r pressure, echo=FALSE}
+
+
+#fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+#Visualize distance matrix--red means large dissimilarities, teal means more similar
+
+set.seed(123)
+
+k2<-kmeans(mice, 2, iter.max = 10, nstart = 1)
+k3<-kmeans(mice, 3, iter.max = 10, nstart = 1)
+k4<-kmeans(mice, 4, iter.max = 10, nstart = 1)
+k5<-kmeans(mice, 5, iter.max = 10, nstart = 1)
+#distance<-get_dist(mice)
+
+
+
+p2<-fviz_cluster(k2,geom = "point", data = mice) + ggtitle("k = 2")
+p3<-fviz_cluster(k3,geom = "point", data = mice) + ggtitle("k = 3")
+p4<-fviz_cluster(k4,geom = "point", data = mice) + ggtitle("k = 4")
+p5<-fviz_cluster(k5,geom = "point", data = mice) + ggtitle("k = 5")
+#(p2)
+
+grid.arrange(p2,p3,p4,p5,nrow=2)
+
+#fviz_nbclust(k1,data=mice) 
+```
+
+
+
+```{r pressure, echo=FALSE}
+
+
+#fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+#Visualize distance matrix--red means large dissimilarities, teal means more similar
+
+set.seed(123)
+
+k2<-kmeans(miceWR, 2, iter.max = 10, nstart = 1)
+k3<-kmeans(miceWR, 3, iter.max = 10, nstart = 1)
+k4<-kmeans(miceWR, 4, iter.max = 10, nstart = 1)
+k5<-kmeans(miceWR, 5, iter.max = 10, nstart = 1)
+distance<-get_dist(miceWR)
+
+library(gridExtra)
+
+p2<-fviz_cluster(k2,geom = "point", data = miceWR) + ggtitle("k = 2")
+p3<-fviz_cluster(k3,geom = "point", data = miceWR) + ggtitle("k = 3")
+p4<-fviz_cluster(k4,geom = "point", data = miceWR) + ggtitle("k = 4")
+p5<-fviz_cluster(k5,geom = "point", data = miceWR) + ggtitle("k = 5")
+#(p2)
+
+grid.arrange(p2,p3,p4,nrow=2)
+
+#fviz_nbclust(k1,data=mice) 
+```
+
+```{r}
+#k2
+library('plotly')
+
+
+
+plot_ly(x=miceWR$Day.animal.80..R, y=miceWR$FA.Rate.first.day, z=miceWR$Day.animal.achieves..30..FA, type="scatter3d", mode="markers", color=k2$cluster)
+
+plot_ly(x=mice$Day.animal.80..R, y=mice$FA.Rate.first.day, z=mice$Day.animal.achieves..30..FA, type="scatter3d", mode="markers", color=k2$cluster)
+```
+```{r}
+#k2
+#library('plotly')
+library('dplyr')
+library('ggplot2')
+mice %>%
+  as_tibble() %>%
+  mutate(cluster = k2$cluster,
+         Mouse = row.names(mice$Mouse)) %>%
+  ggplot(aes(Day.animal.80..R,FA.Rate.first.day,color = factor(cluster), label = mice$Mouse)) +
+  geom_text()
+
+```
+
+
+```{r pressure, echo=FALSE}
+install.packages('cluster')
+library('cluster')
+#fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+#Visualize distance matrix--red means large dissimilarities, teal means more similar
+
+set.seed(123)
+
+k2<-kmeans(mice, 2, iter.max = 10, nstart = 1)
+k3<-kmeans(mice, 3, iter.max = 10, nstart = 1)
+k4<-kmeans(mice, 4, iter.max = 10, nstart = 1)
+k5<-kmeans(mice, 5, iter.max = 10, nstart = 1)
+distance<-get_dist(mice)
+
+
+fviz_nbclust(miceWR, kmeans, method = "silhouette")
+
+gap_stat <- clusGap(mice, FUN = kmeans, nstart = 25,
+                    K.max = 7, B = 50)
+
+fviz_gap_stat(gap_stat)
+```
+
+```{r pressure, echo=FALSE}
+
+# center your predictors (subtract mean from each score)
+# this way the 0 value is the mean. makes stuff more interpretable
+
+library(dplyr)
+summary(mice)
+
+mice<-mice%>%
+  mutate(x=x-mean(x),y=y-mean(y),z=z-mean(z))
+# predict sound tuning from spatial location
+
+m3<-lm(sound ~ x*y*z, data=mice)
+```

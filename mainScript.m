@@ -5,8 +5,10 @@
 % mice numbers to analyze
 
 % where you want to save the data
-pathsave = 'P:\su\DATA\behaviorData\opto\cohort2\results';
-datapath = 'P:\su\DATA\behaviorData\opto\cohort2\';
+% pathsave = 'P:\su\DATA\behaviorData\opto\cohort2\results';
+% datapath = 'P:\su\DATA\behaviorData\opto\cohort2\';
+pathsave = 'P:\su\DATA\behaviorData\opto\cohort1\results';
+datapath = 'P:\su\DATA\behaviorData\opto\cohort1\';
 % fill mouse metadata to excel spreadsheet
 % settings={};
 
@@ -26,10 +28,10 @@ datapath = 'P:\su\DATA\behaviorData\opto\cohort2\';
 % optoAnalysis(number_mice,pathsave,settings)
 
 % mice numbers to analyze
-% number_mice = [37,39,41,42, 43, 44, 45, 46];
-number_mice=[49,50,51,52,53,54,55,56];
+number_mice = [37,39,41,42, 43, 44, 45, 46];
+% number_mice=[49,50,51,52,53,54,55,56];
 nFiles=23; %days of behavior
-% nFiles=7;
+% nFiles=12;
 plot_indiv_data = true;
 plot_lick_psth = true;
 savefig = true;

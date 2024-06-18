@@ -109,6 +109,7 @@ H.mainLine=plot(x,y,lineProps{:});
 % de-saturated solid colour for the patch surface .
 
 col=get(H.mainLine,'color');
+% col=cell2mat(col);
 edgeColor=col+(1-col)*0.55;
 patchSaturation=0.15; %How de-saturated or transparent to make patch
 if transparent
@@ -144,7 +145,9 @@ yP(isnan(yP))=[];
 H.patch=patch(xP,yP,1,'facecolor',patchColor,...
               'edgecolor','none',...
               'facealpha',faceAlpha);
-
+% H.patch=patch(xP(1:2),yP,1,'facecolor',patchColor(1,:),...
+%               'edgecolor','none',...
+%               'facealpha',faceAlpha);
 
 %Make pretty edges around the patch. 
 % H.edge(1)=plot(x,lE,'-','color',edgeColor);
