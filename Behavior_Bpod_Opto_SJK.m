@@ -580,7 +580,7 @@ for nbsubj = 1:nSubj % through animals
         facolor=[0.93,0.69,0.3];
         plot(1:days,rates(1:days,1),'LineWidth',2,'color',hitcolor);
         plot(1:days,rates(1:days,2),'LineWidth',2,'color',facolor);
-        legend('hit','fa');
+        legend('hit','fa','location','best');
         curtick = get(gca, 'xTick');
         xticks(unique(round(curtick)));
         ylim([0 1]);
@@ -612,7 +612,7 @@ for nbsubj = 1:nSubj % through animals
         end
     else
     end
-optoplot=1;
+optoplot=0;
 if optoplot==1
     %% now make bar graphs, averaged, for all conditions 
     
