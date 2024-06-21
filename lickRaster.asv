@@ -78,7 +78,6 @@ end
 
 % ###############################################################
 % now plot foil and target licks per day per animal
-% ###############################################################
 colorsmat2=[[155, 204, 85]./255; [228, 87, 46]./255; [179, 201, 174]./255; [239, 149, 137]./255];
 % colorsmat2=[[179, 201, 174]./255; [239, 149, 137]./255];
 
@@ -124,12 +123,12 @@ for ii=1:length(data)
         ylabel('Time')
         xlim([-0.5 4]); ylim([0 350])
         if ismember(ii,wt)
-            title(['\color{Blue}' char(Animals(ii,:)) ' / ' num2str(di)])
-%             title(['\color{Blue}' char(Animals(1,ii)) ' / ' num2str(di)])
-        elseif ismember(ii,ext)
-            title(['\color{Black}' char(Animals(ii,:)) ' / ' num2str(di)])
-        elseif ismember(ii,mut)
-            title(['\color{Yellow}' char(Animals(ii,:)) ' / ' num2str(di)])
+%             title(['\color{Blue}' char(Animals(ii,:)) ' / ' num2str(di)])
+            title(['\color{Blue}' char(Animals(1,ii)) ' / ' num2str(di)])
+%         elseif ismember(ii,ext)
+%             title(['\color{Black}' char(Animals(ii,:)) ' / ' num2str(di)])
+%         elseif ismember(ii,mut)
+%             title(['\color{Yellow}' char(Animals(ii,:)) ' / ' num2str(di)])
         end
         
         subplot(2,1,2)
@@ -150,9 +149,7 @@ end
 
 
 
-% ###############################################################
 % Heatmaps of all training days and plots of performance
-% ###############################################################
 for ii=1:length(data)
     h=figure(ii);
     h.Position=[50 380 1300 300];
@@ -233,11 +230,7 @@ for ii=1:length(data)
     title('d-prime')
 end
 
-
-
-% ###############################################################
-% Mean licks per day per group
-% ###############################################################
+%% Mean licks per day per group
 cooolor=[33, 158, 188; 255, 183, 3]./255;
 
 for di=1:12
@@ -255,6 +248,7 @@ for di=1:12
 %             mut_lickF=[mut_lickF; LickDayMat_Foils{ii}(di,:)];
         end
     end
+    
     
     figure(1023)
     subplot(6,2,di)
