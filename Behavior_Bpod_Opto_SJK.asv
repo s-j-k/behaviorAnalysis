@@ -126,10 +126,10 @@ for nbsubj = 1:nSubj % through animals
     for i=1:nFiles
 
         if ~exist([subjPath 'bad']) % TRYING TO remove files that are too
-%         small so I don't do it manually...
+        small so I don't do it manually...
             mkdir(subjPath, 'bad') %makes directory to add here files that have less than 10 trials to be excluded from analysis
         end 
-        cd(subjPath)
+        cd([subjPath 'Session Data' filesep]);
         matfiles2 = dir('*.mat'); %finds all GNG sessions for the selected animal
 
         %to make sure files with less than 10 trials are not taken into
@@ -138,17 +138,12 @@ for nbsubj = 1:nSubj % through animals
             clear namemat
             namemat=matfiles2(maf).name;
             load(namemat);
-            if SessionData.nTrials<100
+            if SessionData.nTrials<10
                 movefolder= ([subjPath 'bad']);
                 movefile(namemat, movefolder) %moves files to sessionOut folder per animal
             end
-            cd(subjPath);
+            cd([subjPath 'Session Data' filesep]);
         end
-    end
-    
-    files = dir([subjPath '*.mat']); % do it again to get the new file list
-    nFiles = length(files);
-    for i=1:nFiles
         filenames{i} = [subjPath files(i).name];
         load(filenames{i}); 
         
@@ -597,7 +592,7 @@ for nbsubj = 1:nSubj % through animals
         subplot(3,1,2);
         plot(1:days,rdprime(nbsubj,1:days),'LineWidth',2,'color',[0 0 0]); hold on;
         plot(1:days,pdprime(nbsubj,1:days),'LineWidth',2,'color',[0.7 0.7 0.7]);
-        legend('Reinforced','Probe','location','best');ylim([0 5]);
+        legend('Reinforced','Probe');ylim([0 5]);
         title('d prime');xlabel('days');
         curtick = get(gca, 'xTick');
         xticks(unique(round(curtick)));

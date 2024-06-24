@@ -165,12 +165,8 @@ newBinRates=binRates;
 % newBinRates=cellfun(@changem,newBinRates,'UniformOutput',false);
 
 for uu=2:size(binRates,1)
-    for yy=2:size(binRates,2)
-        dimSub=length(binRates{uu,yy});
-        binRates{uu,yy}=changem(cell2mat(binRates{uu,yy}),1,(dimSub-1)/dimSub);
-        binRates{uu,yy}=changem(cell2mat(binRates{uu,yy}),0,1/dimSub);
-    end
-end
+    for yy=1
+    
 
 for tt=2:size(binRates,1)
     cohensDTest{pp,1}=binRates{tt,1};
