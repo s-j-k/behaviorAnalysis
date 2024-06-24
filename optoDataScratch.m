@@ -197,67 +197,126 @@ for tt=2:size(binRates,1)
         binRates{tt,10},'paired'); % Choice Opto FA
     pp=pp+1;
 end
-%%
-nn=1:20;figure;
+%%    % how many samples do i need for each value??? % Inputs for sample size est.
+nn=1:200; count=-1;
+figure(tt);
 for tt=2:size(binRates,1)
-    % how many samples do i need for each value??? % Inputs for sample size est.
+     %hits first
+    subplot(3,3,tt+count);
     nout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
         mean(binRates{tt,5}),0.80); % % (type of test, [mean1 stdev], mean2, power)
     pwrout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
         mean(binRates{tt,5}),[],nn); 
+    nout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
+    mean(binRates{tt,5}),0.90); 
+    pwrout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
+    mean(binRates{tt,5}),[],nn);
 
-    nout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.90); 
-    pwrout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn);
     nout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.95); 
+    mean(binRates{tt,5}),0.95); 
     pwrout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn); % this ishow to do it using matlab
-    subplot(1,3,1);plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
+    mean(binRates{tt,5}),[],nn);
+    plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
+    plot(nn,pwrout95,'b-',nout95,0.95,'ro');ylim([0.65 1]);
+    plot(nn,pwrout9,'b-',nout9,0.9,'ro');
+    if tt==4
+        xlim([0 10]);
+    else
+    end
+    title([char(binRates{tt,1}) 'MGB Hit Full Power vs. Sample size']);
+    xlabel('sample size (bins of 5 trials)');ylabel('power');
+    
+    nout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,7})))) mgbRHitStd], ...
+        mean(binRates{tt,7}),0.80); 
+    pwrout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,7})))) mgbRHitStd], ...
+        mean(binRates{tt,7}),[],nn); 
+    nout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,7})))) mgbRHitStd], ...
+        mean(binRates{tt,7}),0.90); 
+    pwrout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,7})))) mgbRHitStd], ...
+        mean(binRates{tt,7}),[],nn);
+    nout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,7})))) mgbRHitStd], ...
+        mean(binRates{tt,7}),0.95); 
+    pwrout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,7})))) mgbRHitStd], ...
+        mean(binRates{tt,7}),[],nn);
+    count=count+1; subplot(3,3,tt+count);plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
+    plot(nn,pwrout9,'b-',nout9,0.9,'ro');
+    plot(nn,pwrout95,'b-',nout95,0.95,'ro');xlim([0 10]);
+    title('MGB Hit Tone Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
+
+    nout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,8})))) mgbRHitStd], ...
+        mean(binRates{tt,8}),0.80); 
+    pwrout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,8})))) mgbRHitStd], ...
+        mean(binRates{tt,8}),[],nn); 
+    nout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,8})))) mgbRHitStd], ...
+        mean(binRates{tt,8}),0.90); 
+    pwrout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,8})))) mgbRHitStd], ...
+        mean(binRates{tt,8}),[],nn);
+    nout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,8})))) mgbRHitStd], ...
+        mean(binRates{tt,8}),0.95); 
+    pwrout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,8})))) mgbRHitStd], ...
+        mean(binRates{tt,8}),[],nn); 
+    count=count+1;subplot(3,3,tt+count); plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
+    plot(nn,pwrout9,'b-',nout9,0.9,'ro');
+    plot(nn,pwrout95,'b-',nout95,0.95,'ro');xlim([0 10]);
+    title('MGB Hit Choice Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
+end
+
+nn=1:55; count=-1;
+figure(tt+1);
+for tt=2:size(binRates,1)
+    subplot(3,3,tt+count);
+    nout8=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,6})))) mgbRFaStd], ...
+    mean(binRates{tt,4}),0.80);
+    pwrout8=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,6})))) mgbRFaStd], ...
+    mean(binRates{tt,6}),[],nn); 
+    nout9=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,6})))) mgbRFaStd], ...
+    mean(binRates{tt,6}),0.90); 
+    pwrout9=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,6})))) mgbRFaStd], ...
+    mean(binRates{tt,6}),[],nn);
+    nout95=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,6})))) mgbRFaStd], ...
+    mean(binRates{tt,6}),0.95); 
+    pwrout95=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,6})))) mgbRFaStd], ...
+    mean(binRates{tt,6}),[],nn); 
+    plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
+    plot(nn,pwrout95,'b-',nout95,0.95,'ro');ylim([0.65 1]);
+    plot(nn,pwrout9,'b-',nout9,0.9,'ro');
+    title([char(binRates{tt,1}) 'MGB FA Full Power vs. Sample size']);
+    xlabel('sample size (bins of 5 trials)');ylabel('power');
+    
+    nout8=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,8})))) mgbRFaStd], ...
+        mean(binRates{tt,8}),0.80); 
+    pwrout8=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,8})))) mgbRFaStd], ...
+        mean(binRates{tt,8}),[],nn); 
+    nout9=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,8})))) mgbRFaStd], ...
+        mean(binRates{tt,8}),0.90); 
+    pwrout9=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,8})))) mgbRFaStd], ...
+        mean(binRates{tt,8}),[],nn);
+    nout95=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,8})))) mgbRFaStd], ...
+        mean(binRates{tt,8}),0.95); 
+    pwrout95=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,8})))) mgbRFaStd], ...
+        mean(binRates{tt,8}),[],nn);
+    count=count+1; subplot(3,3,tt+count);plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
     plot(nn,pwrout9,'b-',nout9,0.9,'ro');
     plot(nn,pwrout95,'b-',nout95,0.95,'ro');
-    title([char(optomeanMat{binRates(tt),1}) 'MGB Hit Full Opto Power vs. Sample size']);xlabel('sample size (bins of 5 trials)');ylabel('power');
-    % (type of test, [mean1 stdev], mean2, power)
+    title('MGB FA Tone Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
     
-        % how many samples do i need for each value??? % Inputs for sample size est.
-    nout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.80); % % (type of test, [mean1 stdev], mean2, power)
-    pwrout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn); 
-    nout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.90); 
-    pwrout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn);
-    nout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.95); 
-    pwrout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn); % this ishow to do it using matlab
-    subplot(1,3,1);plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
+    nout8=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,10})))) mgbRFaStd], ...
+        mean(binRates{tt,10}),0.80); 
+    pwrout8=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,10})))) mgbRFaStd], ...
+        mean(binRates{tt,10}),[],nn); 
+    nout9=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,10})))) mgbRFaStd], ...
+        mean(binRates{tt,10}),0.90); 
+    pwrout9=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,10})))) mgbRFaStd], ...
+        mean(binRates{tt,10}),[],nn);
+    nout95=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,10})))) mgbRFaStd], ...
+        mean(binRates{tt,10}),0.95); 
+    pwrout95=sampsizepwr('t',[mean(binRates{tt,4}(1:(length(binRates{tt,10})))) mgbRFaStd], ...
+        mean(binRates{tt,10}),[],nn); 
+    count=count+1;subplot(3,3,tt+count); 
+    plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
     plot(nn,pwrout9,'b-',nout9,0.9,'ro');
     plot(nn,pwrout95,'b-',nout95,0.95,'ro');
-    title([char(optomeanMat{binRates(tt),1}) 'MGB Hit Tone Opto Power vs. Sample size']);xlabel('sample size (bins of 5 trials)');ylabel('power');
-    % (type of test, [mean1 stdev], mean2, power)
-    
-        % how many samples do i need for each value??? % Inputs for sample size est.
-    nout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.80); % % (type of test, [mean1 stdev], mean2, power)
-    pwrout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn); 
-    nout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.90); 
-    pwrout9=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn);
-    nout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),0.95); 
-    pwrout95=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,5})))) mgbRHitStd], ...
-        mean(binRates{tt,5}),[],nn); % this ishow to do it using matlab
-    subplot(1,3,1);plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
-    plot(nn,pwrout9,'b-',nout9,0.9,'ro');
-    plot(nn,pwrout95,'b-',nout95,0.95,'ro');
-    title([char(optomeanMat{binRates(tt),1}) 'MGB Hit Full Opto Power vs. Sample size']);xlabel('sample size (bins of 5 trials)');ylabel('power');
-    % (type of test, [mean1 stdev], mean2, power)
-    
+    title('MGB FA Choice Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
 end
 
 
