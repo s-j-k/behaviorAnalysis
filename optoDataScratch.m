@@ -161,14 +161,21 @@ cohensDTest{1,7}={'MGB Choice Opto FA'};
 pp=2;
 
 % correct for high and low values
-newBinRates=binRates;
-% newBinRates=cellfun(@changem,newBinRates,'UniformOutput',false);
+% newBinRates is uncorrected, binRates is corrected
 
+% newBinRates=binRates;
+uu=2;yy=3;
 for uu=2:size(binRates,1)
-    for yy=2:size(binRates,2)
+    for yy=3:size(binRates,2)
         dimSub=length(binRates{uu,yy});
-        binRates{uu,yy}=changem(cell2mat(binRates{uu,yy}),1,(dimSub-1)/dimSub);
-        binRates{uu,yy}=changem(cell2mat(binRates{uu,yy}),0,1/dimSub);
+        if find(cell2mat(binRates(uu,yy))==1)
+            idx=find(cell2mat(binRates(uu,yy))==1);
+            binRates{uu,yy}(idx)=(dimSub-1)/dimSub;
+        elseif find(cell2mat(binRates(uu,yy))==0)
+            idx=find(cell2mat(binRates(uu,yy))==0);
+            binRates{uu,yy}(idx)=1/dimSub;
+        else
+        end
     end
 end
 
