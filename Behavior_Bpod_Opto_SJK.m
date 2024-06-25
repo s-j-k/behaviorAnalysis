@@ -617,8 +617,16 @@ for nbsubj = 1:nSubj % through animals
         end
     else
     end
-optoplot=0;
-if optoplot==1
+    
+if nbsubj==2
+    optoplot=1;
+elseif nbsubj==8
+    optoplot=1;
+else
+    optoplot=0;
+end
+
+    if optoplot==1
     %% now make bar graphs, averaged, for all conditions 
     
 %           rates(i,:) = [rhit rfa phit pfa ohit ofa ...
@@ -699,7 +707,24 @@ if optoplot==1
             icDays=logical(icDays);
             expRange=15:22;  % cohort 3 sk179
         end
-
+    elseif contains(path,'4')==1
+        if nbsubj==2 %sk183
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 1 ];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 ];
+            icDays=logical(icDays);
+            expRange=length(mgbDays); % cohort 3 sk183
+        elseif nbsubj==8
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 1 ];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 ];
+            icDays=logical(icDays);
+            expRange=length(mgbDays); % cohort 3 sk183  
+        end
     end
     
     mgbDays=mgbDays(expRange);
