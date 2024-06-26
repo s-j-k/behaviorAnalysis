@@ -95,9 +95,9 @@ for ww=1:length(testIdx)
     ocfoil=mgbTempMat((mgbTempMat(:,CTXT)==6 & mgbTempMat(:,TONE)==2),:);
     otfoil=mgbTempMat((mgbTempMat(:,CTXT)==5 & mgbTempMat(:,TONE)==2),:);
     numBins=size(target,1)/binRateSize; % bins need to fit the dimensions of how many total trials of that type tehre are
-    bincounter=1; otbin=1;ocbin=1;
+    bincounter=1; obin=1;otbin=1;ocbin=1;
     binSess={};
-    binRange=binRateSize;otbinRange=binRateSize;ocbinRange=binRateSize;
+    binRange=binRateSize;obinRange=binRateSize;otbinRange=binRateSize;ocbinRange=binRateSize;
     yy=1;
     for yy=1:numBins 
         binRhit(1,yy)=sum((target((bincounter:binRange),OUTCOME)==1 & target((bincounter:binRange),CTXT)==2)) / ...
@@ -110,10 +110,12 @@ for ww=1:length(testIdx)
     end
     numBins=size(otarget,1)/binRateSize;yy=1;
     for yy=1:numBins 
-        binOhit(1,yy) =  sum((otarget(otbin:otbinRange,OUTCOME)==1 & otarget(otbin:otbinRange,CTXT)==1)) / ...
-            sum(otarget(otbin:otbinRange,CTXT)==1); % hit in opto (i.e. reinforced light on)
-        binOfa(1,yy) = sum(ofoil(otbin:otbinRange,OUTCOME)==3 & ofoil(otbin:otbinRange,CTXT)==1) / ...
-            sum(ofoil(otbin:otbinRange,CTXT)==1);
+        binOhit(1,yy) =  sum((otarget((obin:obinRange),OUTCOME)==1 & otarget((obin:obinRange),CTXT)==1)) / ...
+            sum(otarget((obin:obinRange),CTXT)==1); % hit in opto (i.e. reinforced light on)
+        binOfa(1,yy) = sum(ofoil(obin:obinRange,OUTCOME)==3 & ofoil(obin:obinRange,CTXT)==1) / ...
+            sum(ofoil(obin:obinRange,CTXT)==1);
+        obin=obin+binRateSize;
+        obinRange=obinRange+binRateSize;
     end
     numBins=size(ottarget,1)/binRateSize;yy=1;
     for yy=numBins
@@ -241,7 +243,7 @@ for tt=2:size(binRates,1)
     count=count+1; subplot(3,3,tt+count);plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
     plot(nn,pwrout9,'b-',nout9,0.9,'ro');
     plot(nn,pwrout95,'b-',nout95,0.95,'ro');xlim([0 10]);
-    title('MGB Hit Tone Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
+    title('Hit Tone Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
 
     nout8=sampsizepwr('t',[mean(binRates{tt,3}(1:(length(binRates{tt,9})))) mgbRHitStd], ...
         mean(binRates{tt,9}),0.80); 
@@ -258,7 +260,7 @@ for tt=2:size(binRates,1)
     count=count+1;subplot(3,3,tt+count); plot(nn,pwrout8,'b-',nout8,0.8,'ro');hold on;
     plot(nn,pwrout9,'b-',nout9,0.9,'ro');
     plot(nn,pwrout95,'b-',nout95,0.95,'ro');xlim([0 10]);
-    title('MGB Hit Choice Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
+    title('Hit Choice Power vs. Sample size');xlabel('sample size (bins of 5 trials)');ylabel('power');
 end
 
 nn=1:55; count=-1;
