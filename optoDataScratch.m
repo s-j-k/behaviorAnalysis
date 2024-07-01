@@ -200,7 +200,7 @@ for tt=2:size(binRates,1)
     pp=pp+1;
 end
 %%    % how many samples do i need for each value??? % Inputs for sample size est.
-nn=1:200; count=-1;
+nn=1:20; count=-1;
 figure(tt);
 for tt=2:size(binRates,1)
      %hits first
