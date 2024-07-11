@@ -622,6 +622,8 @@ if nbsubj==2
     optoplot=1;
 elseif nbsubj==8
     optoplot=1;
+elseif nbsubj==5
+    optoplot=1;
 else
     optoplot=0;
 end
@@ -710,20 +712,30 @@ end
     elseif contains(path,'4')==1
         if nbsubj==2 %sk183
             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 1 1 0 0];
+                0 0 1 1 0 0 1 1 0 0];
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 1 1];
+                0 0 0 0 1 1 0 0 1 1];
             icDays=logical(icDays);
             expRange=13:length(mgbDays); % cohort 3 sk183
-        elseif nbsubj==8
+        elseif nbsubj==5
             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 1 1 0 0];
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 1];
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 1 1];
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 0];
             icDays=logical(icDays);
-            expRange=13:length(mgbDays); % cohort 3 sk183  
+            expRange=length(mgbDays); % cohort 3 sk186   
+        elseif nbsubj==8
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 1 1 0 0 1 1 1 0];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 1 1 0 0 0 1];
+            icDays=logical(icDays);
+            expRange=13:length(mgbDays); % cohort 3 sk189        
         end
     end
     
