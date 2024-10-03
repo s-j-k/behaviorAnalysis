@@ -21,38 +21,6 @@ addpath('W:\su\CODE\behaviorAnalysis') %path of your preprocessing functions
 % addpath('A:\Sharlen\Behavior\CitricAcid')
 addpath(rawdata_folder) %path where your data is stored
 
-
-%AARON'S MICE: 
-% AW={'AW017', 'AW018', 'AW019', 'AW020', 'AW021', 'AW022','AW023', 'AW024', 'AW025', 'AW026', 'AW027', 'AW028', 'AW029', 'AW030', 'AW031'}; 
-% %KELLY'S MICE: 
-% KF={'KF022', 'KF023', 'KF024', 'KF026', 'KF028'};
-% %FANGCHEN's MICE: 
-% FZ={'FZ007', 'FZ008', 'FZ009', 'FZ010'}; %'FZ001', 'FZ002', 'FZ003', 'FZ004', 'FZ005', 'FZ006', 
-% %AM MICE: 
-% AM={'AM015', 'AM017', 'AM018', 'AM019', 'AM020', 'AM022', 'AM023', 'AM024'};
-
-%CITRIC ACID VS WATER RESTRICTION MICE COHORT 2 (after covid):
-% CA={'SM039', 'SM040', 'SM041', 'SM042', 'SM043', 'SM044', 'SM045', 'SM046'};
-% dob={'04/28/2020','04/28/2020','04/28/2020','04/28/2020','04/28/2020','04/28/2020','04/28/2020','04/28/2020'};
-% genotype={'WR','WR','CA','CA','WR','WR','CA', 'CA'};
-
-%CITRIC ACID VS WATER RESTRICTION MICE COHORT 3 (after covid):
-% CA2={'SM049', 'SM050', 'SM051', 'SM052', 'SM053', 'SM054', 'SM055', 'SM056'};
-% dob={'06/30/2020','06/30/2020','06/30/2020','06/30/2020','06/30/2020','06/30/2020','06/30/2020','06/30/2020'};
-% genotype={'CA','CA','CA','CA','WR','WR','WR','WR'};
-
-%APP MICE 10-12MO COHORT 
-% APP10to12={'SM062', 'SM063', 'SM064', 'SM065', 'SM066', 'SM067'};
-% dob={'01/07/2020','01/07/2020','01/07/2020','01/07/2020','01/07/2020','01/16/2020'};
-% sex=[2,2,2,2,2,2];
-% genotype=[2,2,1,1,1,1];    
-
-%APP MICE 6-8MO COHORT 
-% APP6to8={'SM068', 'SM069', 'SM070'};
-% dob={'04/26/2020','04/26/2020','04/30/2020'};
-% sex=[2,2,2];
-% genotype=[1,2,1];    
-
 %DSP4 vs Saline mice (Zyan/Angel)
 % DSP4={'AL001', 'AL002', 'ZW001','ZW002','ZW003'};
 % dob={'10/11/2020','10/11/2020','10/11/2020','10/11/2020','10/11/2020'};
