@@ -11,30 +11,38 @@ cohort3=optomeanMat;
 cd('O:\sjk\Behavior\MGBIC_4')
 load('summaryData.mat');
 cohort4=optomeanMat;
-cd('O:\sjk\Figures\MGB IC Opto');
-allCohorts={};
-allCohorts=cohort1;
+
+% cd('O:\sjk\Behavior\MGBIC_5')
+% load('summaryData.mat');
+% cohort5=optomeanMat;
+
+
+% allCohorts=cohort1;
+% dim=size(allCohorts);
+% dimToAdd=size(cohort2);
+% allCohorts(dim+1:dim+dimToAdd(1)-1,1:dim(2))=cohort2(2:dimToAdd(1),1:dim(2));
+% dimToAdd=size(cohort3);
+% dim=size(allCohorts);
+% allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort3(2:dimToAdd(1),1:dim(2));
+% dimToAdd=size(cohort4);
+% dim=size(allCohorts);
+% allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort4(2:dimToAdd(1),1:dim(2));
+% save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5');
+
+%% here is to load the data from the most recent summary file for cohorts 1-4
+% load the summary data
+cd('C:\Users\sjkim1\Desktop\OptoData')
+load('allOptoCohortData.mat');
+
+% add cohort 5
+cd('C:\Users\sjkim1\Desktop\OptoData\MGBIC_5')
+load('summaryData.mat');
+cohort5=optomeanMat;
+cd('C:\Users\sjkim1\Desktop\OptoData');
+dimToAdd=size(cohort5);
 dim=size(allCohorts);
-dimToAdd=size(cohort2);
-allCohorts(dim+1:dim+dimToAdd(1)-1,1:dim(2))=cohort2(2:dimToAdd(1),1:dim(2));
-dimToAdd=size(cohort3);
-dim=size(allCohorts);
-allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort3(2:dimToAdd(1),1:dim(2));
-dimToAdd=size(cohort4);
-dim=size(allCohorts);
-allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort4(2:dimToAdd(1),1:dim(2));
-% allCohorts{1,27}='Opsin'; allCohorts{1,28}='Animal';
-% allCohorts{2:9,27}='PV-ai'; allCohorts{2:9,28}=1; % 1 is CTL
-% allCohorts{10:11,27}='PV-ai'; allCohorts{10:11,28}=2; % 2 is test
-% allCohorts{12:13,27}='PV-ai'; allCohorts{12:13,28}=1; % 1 is CTL
-% allCohorts{14:15,27}='GtACR'; allCohorts{14:15,28}=1; 
-% allCohorts{16:19,27}='GtACR'; allCohorts{16:19,28}=2; 
-% allCohorts{20:21,27}='GtACR'; allCohorts{20:21,28}=1; 
-% allCohorts{22:23,27}='GtACR'; allCohorts{22:23,28}=2; 
-% allCohorts{24:25,27}='GtACR'; allCohorts{24:25,28}=1; 
-% need to correct for 1's and 0's in the action rate data; these will make
-% the cohens d values later calculate as infinite
-save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4');
+allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort5(2:dimToAdd(1),1:dim(2));
+save('allOptoCohortData.mat','allCohorts','cohort5');
 %%
 % compute cohen's d
 % medium effect of 0.5 is visible to the naked eye
@@ -1287,18 +1295,14 @@ end
 subplot(1,3,1)
 ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
 ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),5,1), ...
-    rhit(1:5),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
-scatter(repmat(ppp(1).XEndPoints(2),5,2), ...
-    ohit(1:5),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor1);
-scatter(repmat(ppp(1).XEndPoints(1),5,1), ...
-    rhit(6:10),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor2);
-scatter(repmat(ppp(1).XEndPoints(2),5,2), ...
-    ohit(6:10),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor2);
-scatter(repmat(ppp(1).XEndPoints(1),6,1), ...
-    rhit(11:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor3);
-scatter(repmat(ppp(1).XEndPoints(2),6,2), ...
-    ohit(11:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor3);
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+    rhit(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
+scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
+    ohit(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 sigstar({[1,2],[3,4]}, [pHit pFA])
@@ -1323,18 +1327,14 @@ end
 subplot(1,3,2)
 ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
 ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),5,1), ...
-    rhit(1:5),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
-scatter(repmat(ppp(1).XEndPoints(2),5,2), ...
-    ohit(1:5),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor1);
-scatter(repmat(ppp(1).XEndPoints(1),5,1), ...
-    rhit(6:10),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor2);
-scatter(repmat(ppp(1).XEndPoints(2),5,2), ...
-    ohit(6:10),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor2);
-scatter(repmat(ppp(1).XEndPoints(1),6,1), ...
-    rhit(11:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor3);
-scatter(repmat(ppp(1).XEndPoints(2),6,2), ...
-    ohit(11:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor3);
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+    rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 sigstar({[1,2],[3,4]}, [pHit pFA])
@@ -1359,18 +1359,14 @@ end
 subplot(1,3,3)
 ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
 ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),5,1), ...
-    rhit(1:5),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
-scatter(repmat(ppp(1).XEndPoints(2),5,2), ...
-    ohit(1:5),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor1);
-scatter(repmat(ppp(1).XEndPoints(1),5,1), ...
-    rhit(6:10),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor2);
-scatter(repmat(ppp(1).XEndPoints(2),5,2), ...
-    ohit(6:10),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor2);
-scatter(repmat(ppp(1).XEndPoints(1),6,1), ...
-    rhit(11:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor3);
-scatter(repmat(ppp(1).XEndPoints(2),6,2), ...
-    ohit(11:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor3);
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+    rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 sigstar({[1,2],[3,4]}, [pHit pFA])
@@ -1905,7 +1901,7 @@ for jj=2:4
     [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmco_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('mean lick latency');
-    title([allDataTestsOnly{jj,1} ' MGB Choice Inactivation']);
+    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
     lickFig.Position(3:4)=[725 275];
     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_LickLat_Opto']);
@@ -1957,7 +1953,7 @@ for jj=2:4
     [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlco_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('mean lick rate');
-    title([allDataTestsOnly{jj,1} ' MGB Choice Inactivation']);
+    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
     lickFigl.Position(3:4)=[725 275];
     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_LickRate_Opto']);
