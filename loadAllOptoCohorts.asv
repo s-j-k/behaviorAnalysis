@@ -1,0 +1,44 @@
+function loadAllOptoCohorts(cohortRange)
+% takes input of an array which is the cohort number, and loads data from
+% those cohorts specified
+    for ii=1:length(cohortRange)
+        if cohortRange(ii)==1
+                cd('O:\sjk\Behavior\OptoMGBIC_1')
+                load('summaryData.mat');
+                cohort1=optomeanMat;
+        elseif cohortRange(ii)==2
+                cd('O:\sjk\Behavior\OptoMGBIC_2')
+                load('summaryData.mat');
+                cohort2=optomeanMat;
+        elseif cohortRange(ii)==3
+                cd('O:\sjk\Behavior\OptoMGBIC_3')
+                load('summaryData.mat');
+                cohort3=optomeanMat;
+        elseif cohortRange(ii)==4
+                cd('O:\sjk\Behavior\MGBIC_4')
+                load('summaryData.mat');
+                cohort4=optomeanMat;
+        elseif cohortRange(ii)==5
+                cd('O:\sjk\Behavior\MGBIC_5')
+                load('summaryData.mat');
+                cohort5=optomeanMat;
+                
+        else disp('Cohort not found')
+            
+        end
+    end
+    cd('O:\sjk\Behavior')
+    
+    % now make a concatenated variable of the cohorts called, and call each
+    % of them to create the allCohorts variable 
+    allCohorts={};
+    
+    % the variables have different columns but they shouldn't. need to
+    % rerun the extraction for cohort1&2 to have the rates column, and
+    % cohort 3
+    allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5);
+    
+    save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5');
+    cd('O:\sjk\Figures\MGB IC Opto')
+    clear cohort1 cohort2 cohort3 cohort4 cohort 5 optomeanMat
+end

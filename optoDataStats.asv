@@ -1,49 +1,10 @@
-% load the data
-cd('O:\sjk\Behavior\OptoMGBIC_1')
-load('summaryData.mat');
-cohort1=optomeanMat;
-cd('O:\sjk\Behavior\OptoMGBIC_2')
-load('summaryData.mat');
-cohort2=optomeanMat;
-cd('O:\sjk\Behavior\OptoMGBIC_3')
-load('summaryData.mat');
-cohort3=optomeanMat;
-cd('O:\sjk\Behavior\MGBIC_4')
-load('summaryData.mat');
-cohort4=optomeanMat;
+%% behavior stats analysis
 
-% cd('O:\sjk\Behavior\MGBIC_5')
-% load('summaryData.mat');
-% cohort5=optomeanMat;
+% load the data for each cohort
+cohortRange=1:5;
+allCohorts=loadAllOptoCohorts(cohortRange);
 
-
-% allCohorts=cohort1;
-% dim=size(allCohorts);
-% dimToAdd=size(cohort2);
-% allCohorts(dim+1:dim+dimToAdd(1)-1,1:dim(2))=cohort2(2:dimToAdd(1),1:dim(2));
-% dimToAdd=size(cohort3);
-% dim=size(allCohorts);
-% allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort3(2:dimToAdd(1),1:dim(2));
-% dimToAdd=size(cohort4);
-% dim=size(allCohorts);
-% allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort4(2:dimToAdd(1),1:dim(2));
-% save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5');
-
-%% here is to load the data from the most recent summary file for cohorts 1-4
-% load the summary data
-cd('C:\Users\sjkim1\Desktop\OptoData')
-load('allOptoCohortData.mat');
-
-% add cohort 5
-cd('C:\Users\sjkim1\Desktop\OptoData\MGBIC_5')
-load('summaryData.mat');
-cohort5=optomeanMat;
-cd('C:\Users\sjkim1\Desktop\OptoData');
-dimToAdd=size(cohort5);
-dim=size(allCohorts);
-allCohorts(dim(1)+1:dim(1)+dimToAdd(1)-1,1:dim(2))=cohort5(2:dimToAdd(1),1:dim(2));
-save('allOptoCohortData.mat','allCohorts','cohort5');
-%%
+%% bin the data in order to compute cohen's d
 % compute cohen's d
 % medium effect of 0.5 is visible to the naked eye
 % condition=[0 0 1 0 1 0 1 0 1 ...

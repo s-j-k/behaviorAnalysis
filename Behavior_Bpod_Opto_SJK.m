@@ -27,8 +27,8 @@ switch cohort
     explist=[1 2 1 1 1 1 1 2];
     
     case 5
-%     pathsave='O:\sjk\Behavior\MGBIC_5\';
-    pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
+    pathsave='O:\sjk\Behavior\MGBIC_5\';
+%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
     subjlist={'sk190','sk191','sk192','sk193','sk194','sk195','sk196','sk197'}; %GTACR
     explist=[2 2 1 1 1 1 1 1];
     
