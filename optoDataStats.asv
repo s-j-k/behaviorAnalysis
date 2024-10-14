@@ -1,8 +1,6 @@
 %% behavior stats analysis
-%first preprocess the data for a given cohort
-cohort=5;
-Behavior_Bpod_Opto_SJK(cohort)
-%% now load the data for each cohort and make one big file called allCohorts
+
+% load the data for each cohort
 cohortRange=1:5;
 allCohorts=loadAllOptoCohorts(cohortRange);
 condition=[0 0 1 0 1 0 1 0 1 ...
@@ -11,21 +9,8 @@ condition=[0 0 1 0 1 0 1 0 1 ...
 testIdx=find(condition==2);
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
-
-% for each animal, record whether it's a test or ctl 
-condition=[0 0 1 0 1 0 1 0 1 ...
-    0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
-    0 2 0 1 0 1 0 1 0 1 0 1 0 ... 
-    1 0 1 0 1 0 2 0 2 0 2 0]; % cohort 5 last row
-
-testIdx=find(condition==2);
-allDataTestsOnly=allCohorts(1,:);
-allDataTestsOnly(2:length(testIdx)+1,:)=allCohorts(testIdx,:);
-ctlIdx=[21,25,27,31,33,35]; % not all controls are good
-allDataCtlOnly=allCohorts(1,:);
-allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
-
-%% plot catch trials
+    
+%% catch trials
 % inherited from celine code... 
 % coded as conffa (catch light on false alarm)
 % within the rates variable, conffa is the 10th column
@@ -74,9 +59,24 @@ for ww=1:length(animalIdx)
         close(yyyFig);
 
 end
+%%
+% 1 is ctl, 2 is test
+condition=[0 0 1 0 1 0 1 0 1 ...
+    0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
+    0 2 0 1 0 1 0 1 0 1 0 1 0 ... 
+    1 0 1 0 1 0 2 0 2 0 2 0]; % cohort 5 last row
 
-%% make plot to compare percentage correct when light is on vs. off
-% Compute percent correct, by session
+testIdx=find(condition==2);
+allDataTestsOnly=allCohorts(1,:);
+allDataTestsOnly(2:length(testIdx)+1,:)=allCohorts(testIdx,:);
+
+ctlIdx=[21,25,27,31, 33, 35];
+allDataCtlOnly=allCohorts(1,:);
+allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
+
+%%
+% make plto to compare percentage correct when light is on vs. off
+% Compute percent correct for each session
 allDataTestsOnly{1,27}='RPC MGB Full Trial';
 allDataTestsOnly{1,28}='OPC MGB Full Trial';
 allDataTestsOnly{1,29}='RPC MGB Tone Trial';
@@ -393,7 +393,8 @@ for jj=2:size(allDataCtlOnly,1) % control animals
     saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_PercentCorrect_Opto.png']);
 end
 
-%% make plots to compare hit and fa rate with light on vs light off
+%%
+% make plto to compare hit and fa rate with light on vs light off
 for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj+3);hold on;
     rhit=allDataTestsOnly{jj,10}; % full trial MGB
@@ -707,12 +708,86 @@ end
 
 %% all animal summary analysis
 % group by animal
-
 clear rpc opc % not sure if this works--check. 
-[allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
+[allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly);
 
-clear rpc opc % now group by session, percent correct for Test
-[allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
+% now group by session, percent correct for Test
+reinfcolor1= [0.2,0.2,0.2];
+reinfcolor2= [0.45,0.45,0.45];
+reinfcolor3= [0.7,0.7,0.7];
+optocolor1=[0/255 89/255 178/255];
+optocolor2=[65/255 161/255 255/255];
+optocolor3=[181/255 216/255 255/255];
+
+clear rpc opc 
+[allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly);
+
+%% controls by session percent correect
+allDataCtlOnly{5,27}=allDataCtlOnly{5,27}';
+allDataCtlOnly{5,28}=allDataCtlOnly{5,28}';
+
+clear rpc opc
+rpc=NaN;opc=NaN;
+for jj=2:size(allDataCtlOnly,1)
+    rpc=cat(1,rpc,allDataCtlOnly{jj,27});
+    opc=cat(1,opc,allDataCtlOnly{jj,28});
+end
+wwFig=figure(10);
+subplot(1,3,1)
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
+    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+[h,p,ci,stats] = ttest2(rpc,opc);
+sigstar({[1,2]}, p)
+ylabel('percent correct');
+title(['MGB Full Trial Inactivation']);
+xticklabels({'light off', 'light on'});
+allDataCtlOnly{jj,27}=rpc;
+allDataCtlOnly{jj,28}=opc;
+
+
+clear rpc opc
+rpc=NaN;opc=NaN;
+for jj=2:size(allDataCtlOnly,1)
+    rpc=cat(1,rpc,allDataCtlOnly{jj,29});
+    opc=cat(1,opc,allDataCtlOnly{jj,30});
+end
+subplot(1,3,2)
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
+    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+[h,p,ci,stats] = ttest2(rpc,opc);
+sigstar({[1,2]}, p)
+title(['MGB Tone Inactivation']);
+xticklabels({'light off', 'light on'});
+
+
+clear rpc opc
+rpc=NaN;opc=NaN;
+for jj=2:size(allDataCtlOnly,1)
+    rpc=cat(1,rpc,allDataCtlOnly{jj,31});
+    opc=cat(1,opc,allDataCtlOnly{jj,32});
+end
+subplot(1,3,3)
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
+    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+[h,p,ci,stats] = ttest2(rpc,opc);
+sigstar({[1,2]}, p)
+title(['MGB Choice Inactivation']);
+xticklabels({'light off', 'light on'});
+wwFig.Position(3:4)=[725 275];
+saveas(gcf,['BySess_C_MGB_PercentCorrect_Opto']);
+saveas(gcf,['BySess_C_MGB_PercentCorrect_Opto.png']);
 
  %% now do by animal for hit and FA for Test animals
 

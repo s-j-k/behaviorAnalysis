@@ -1,4 +1,13 @@
-function [allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly)
+function [allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+
+% reinfcolor1= [0.2,0.2,0.2]; %this is to plot each animal as a different
+% color
+% reinfcolor2= [0.45,0.45,0.45];
+% reinfcolor3= [0.7,0.7,0.7];
+% optocolor1=[0/255 89/255 178/255];
+% optocolor2=[65/255 161/255 255/255];
+% optocolor3=[181/255 216/255 255/255];
+
 for jj=2:size(allDataTestsOnly,1) % test MGB Full
     rpc(jj-1)=nanmean(allDataTestsOnly{jj,27});
     opc(jj-1)=nanmean(allDataTestsOnly{jj,28});
