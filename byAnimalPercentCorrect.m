@@ -225,3 +225,4 @@ xticklabels({'light off', 'light on'});
 wwFig.Position(3:4)=[725 275];
 saveas(gcf,['ByAnimal_C_MGB_IC_PercentCorrect_Opto']);
 saveas(gcf,['ByAnimal_C_MGB_IC_PercentCorrect_Opto.png']);
+end
