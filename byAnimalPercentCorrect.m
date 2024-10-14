@@ -14,7 +14,7 @@ for jj=2:size(allDataTestsOnly,1) % test MGB Full
 end
 wwFig=figure(10);
 subplot(2,3,1)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -34,7 +34,7 @@ for jj=2:size(allDataTestsOnly,1) % MGB Tone
     opc(jj-1)=nanmean(allDataTestsOnly{jj,30});
 end
 subplot(2,3,2)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -51,7 +51,7 @@ for jj=2:size(allDataTestsOnly,1) % MGB Choice
     opc(jj-1)=nanmean(allDataTestsOnly{jj,32});
 end
 subplot(2,3,3)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -68,7 +68,7 @@ for jj=2:size(allDataTestsOnly,1) % test IC Full
     opc(jj-1)=nanmean(allDataTestsOnly{jj,34});
 end
 subplot(2,3,4)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -88,7 +88,7 @@ for jj=2:size(allDataTestsOnly,1) % IC Tone
     opc(jj-1)=nanmean(allDataTestsOnly{jj,36});
 end
 subplot(2,3,5)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -105,7 +105,7 @@ for jj=2:size(allDataTestsOnly,1) % IC Choice
     opc(jj-1)=nanmean(allDataTestsOnly{jj,38});
 end
 subplot(2,3,6)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -126,9 +126,9 @@ for jj=2:size(allDataCtlOnly,1)
     rpc(jj-1)=nanmean(allDataCtlOnly{jj,27});
     opc(jj-1)=nanmean(allDataCtlOnly{jj,28});
 end
-wwFig=figure(10);
+wwFig=figure(11);
 subplot(2,3,1)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -148,7 +148,7 @@ for jj=2:size(allDataCtlOnly,1)
     opc(jj-1)=nanmean(allDataCtlOnly{jj,30});
 end
 subplot(2,3,2)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -165,7 +165,7 @@ for jj=2:size(allDataCtlOnly,1) % MGB Choice
     opc(jj-1)=nanmean(allDataCtlOnly{jj,32});
 end
 subplot(2,3,3)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -181,9 +181,8 @@ for jj=2:size(allDataCtlOnly,1)
     rpc(jj-1)=nanmean(allDataCtlOnly{jj,33});
     opc(jj-1)=nanmean(allDataCtlOnly{jj,34});
 end
-wwFig=figure(10);
 subplot(2,3,4)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -203,7 +202,7 @@ for jj=2:size(allDataCtlOnly,1)
     opc(jj-1)=nanmean(allDataCtlOnly{jj,36});
 end
 subplot(2,3,5)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -220,7 +219,7 @@ for jj=2:size(allDataCtlOnly,1)
     opc(jj-1)=nanmean(allDataCtlOnly{jj,38});
 end
 subplot(2,3,6)
-qqq=bar([mean(rpc) mean(opc)]); hold on;
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -231,7 +230,7 @@ sigstar({[1,2]}, p)
 title(['IC Choice Inactivation']);
 xticklabels({'light off', 'light on'});
 
-wwFig.Position(3:4)=[725 275];
+wwFig.Position(3:4)=[725 475];
 saveas(gcf,['ByAnimal_C_MGB_IC_PercentCorrect_Opto']);
 saveas(gcf,['ByAnimal_C_MGB_IC_PercentCorrect_Opto.png']);
 end

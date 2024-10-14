@@ -10,17 +10,27 @@ function [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly
 
 rpc=NaN;opc=NaN;
 for jj=2:size(allDataTestsOnly,1)
-    rpc=cat(1,rpc,allDataTestsOnly{jj,27});
-    opc=cat(1,opc,allDataTestsOnly{jj,28});
+    if size(allDataTestsOnly{jj,27},2)>1
+        allDataTestsOnly{jj,27}=allDataTestsOnly{jj,27}';
+        rpc=cat(1,rpc,allDataTestsOnly{jj,27});
+    else
+        rpc=cat(1,rpc,allDataTestsOnly{jj,27});
+    end
+    if size(allDataTestsOnly{jj,28},2)>1
+        allDataTestsOnly{jj,28}=allDataTestsOnly{jj,28}';
+        opc=cat(1,opc,allDataTestsOnly{jj,28});
+    else
+        opc=cat(1,opc,allDataTestsOnly{jj,28});
+    end
 end
-wwFig=figure(10);
+wwFig=figure(12);
 subplot(2,3,1)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-    opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
 %     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
@@ -51,10 +61,10 @@ end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-    opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
 %     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
@@ -82,10 +92,10 @@ end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-    opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
 %     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
@@ -112,10 +122,10 @@ end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-    opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
 %     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
@@ -145,10 +155,10 @@ end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-    opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
 %     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
@@ -176,10 +186,10 @@ end
 subplot(2,3,6)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-    opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
 %     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
 % scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
@@ -208,10 +218,20 @@ allDataCtlOnly{5,28}=allDataCtlOnly{5,28}';
 clear rpc opc
 rpc=NaN;opc=NaN;
 for jj=2:size(allDataCtlOnly,1)
-    rpc=cat(1,rpc,allDataCtlOnly{jj,27});
-    opc=cat(1,opc,allDataCtlOnly{jj,28});
+    if size(allDataCtlOnly{jj,27},2)>1
+        allDataCtlOnly{jj,27}=allDataCtlOnly{jj,27}';
+        rpc=cat(1,rpc,allDataCtlOnly{jj,27});
+    else
+        rpc=cat(1,rpc,allDataCtlOnly{jj,27});
+    end
+    if size(allDataCtlOnly{jj,28},2)>1
+        allDataCtlOnly{jj,28}=allDataCtlOnly{jj,28}';
+        opc=cat(1,opc,allDataCtlOnly{jj,28});
+    else
+        opc=cat(1,opc,allDataCtlOnly{jj,28});
+    end
 end
-wwFig=figure(10);
+wwFig=figure(13);
 subplot(2,3,1)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;

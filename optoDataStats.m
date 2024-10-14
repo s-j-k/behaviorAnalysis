@@ -182,8 +182,8 @@ for jj=2:size(allDataTestsOnly,1)
     ylabel('percent correct');
     title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataTestsOnly{jj,27}=rpc;
-    allDataTestsOnly{jj,28}=opc;
+    allDataTestsOnly{jj,33}=rpc;
+    allDataTestsOnly{jj,34}=opc;
 
     rhit=allDataTestsOnly{jj,18}; % tone IC
     rfa=allDataTestsOnly{jj,19};
@@ -204,8 +204,8 @@ for jj=2:size(allDataTestsOnly,1)
     sigstar({[1,2]}, p)
     title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataTestsOnly{jj,29}=rpc;
-    allDataTestsOnly{jj,30}=opc;
+    allDataTestsOnly{jj,35}=rpc;
+    allDataTestsOnly{jj,36}=opc;
 
     rhit=allDataTestsOnly{jj,18}; % choice IC
     rfa=allDataTestsOnly{jj,19};
@@ -215,8 +215,8 @@ for jj=2:size(allDataTestsOnly,1)
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
     opc = (ohit+(1-ofa))/2*100; 
-    allDataTestsOnly{jj,31}=rpc;
-    allDataTestsOnly{jj,32}=opc;
+    allDataTestsOnly{jj,37}=rpc;
+    allDataTestsOnly{jj,38}=opc;
     
     subplot(2,3,6)
     eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -306,7 +306,6 @@ for jj=2:size(allDataCtlOnly,1) % control animals
     opc = (ohit+(1-ofa))/2*100; 
     allDataCtlOnly{jj,31}=rpc;
     allDataCtlOnly{jj,32}=opc;
-    
     subplot(2,3,3)
     eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
     eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
@@ -318,7 +317,6 @@ for jj=2:size(allDataCtlOnly,1) % control animals
     sigstar({[1,2]}, p)
     title([allDataCtlOnly{jj,1} ' MGB Choice Inactivation']);
     xticklabels({'light off', 'light on'});
-    
     
     rhit=allDataCtlOnly{jj,18}; % full IC
     rfa=allDataCtlOnly{jj,19};
@@ -340,8 +338,8 @@ for jj=2:size(allDataCtlOnly,1) % control animals
     ylabel('percent correct');
     title([allDataCtlOnly{jj,1} ' IC Full Trial Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataCtlOnly{jj,27}=rpc;
-    allDataCtlOnly{jj,28}=opc;
+    allDataCtlOnly{jj,33}=rpc;
+    allDataCtlOnly{jj,34}=opc;
 
     rhit=allDataCtlOnly{jj,18}; % tone IC
     rfa=allDataCtlOnly{jj,19};
@@ -362,8 +360,8 @@ for jj=2:size(allDataCtlOnly,1) % control animals
     sigstar({[1,2]}, p)
     title([allDataCtlOnly{jj,1} ' IC Tone Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataCtlOnly{jj,29}=rpc;
-    allDataCtlOnly{jj,30}=opc;
+    allDataCtlOnly{jj,35}=rpc;
+    allDataCtlOnly{jj,36}=opc;
 
     rhit=allDataCtlOnly{jj,18}; % choice IC
     rfa=allDataCtlOnly{jj,19};
@@ -373,8 +371,8 @@ for jj=2:size(allDataCtlOnly,1) % control animals
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
     opc = (ohit+(1-ofa))/2*100; 
-    allDataCtlOnly{jj,31}=rpc;
-    allDataCtlOnly{jj,32}=opc;
+    allDataCtlOnly{jj,37}=rpc;
+    allDataCtlOnly{jj,38}=opc;
     
     subplot(2,3,6)
     eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -394,6 +392,7 @@ for jj=2:size(allDataCtlOnly,1) % control animals
 end
 
 %% make plots to compare hit and fa rate with light on vs light off
+
 for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj+3);hold on;
     rhit=allDataTestsOnly{jj,10}; % full trial MGB
@@ -549,9 +548,10 @@ for jj=2:size(allDataTestsOnly,1)
     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_HitFARate_Opto.png']);
 end
 
+clear eee eeFig 
 %CONTROLS
 for jj=2:size(allDataCtlOnly,1)
-    eeFig=figure(jj+3);hold on;
+    eeFig=figure(jj+10);hold on;
     rhit=allDataCtlOnly{jj,10}; % full trial MGB
     rfa=allDataCtlOnly{jj,11};
     ohit = allDataCtlOnly{jj,12};
@@ -626,7 +626,7 @@ for jj=2:size(allDataCtlOnly,1)
     title([allDataCtlOnly{jj,1} ' MGB Choice Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
     
-     rhit=allDataCtlOnly{jj,18}; % full trial IC
+    rhit=allDataCtlOnly{jj,18}; % full trial IC
     rfa=allDataCtlOnly{jj,19};
     ohit = allDataCtlOnly{jj,20};
     ofa = allDataCtlOnly{jj,21};
@@ -707,11 +707,9 @@ end
 
 %% all animal summary analysis
 % group by animal
-
-clear rpc opc % not sure if this works--check. 
+clear qqq wwFig rpc opc
 [allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
-
-clear rpc opc % now group by session, percent correct for Test
+clear qqq wwFig rpc opc % now group by session, percent correct for Test
 [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
 
  %% now do by animal for hit and FA for Test animals
