@@ -63,9 +63,14 @@ title(['MGB Choice Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc
-for jj=2:size(allDataTestsOnly,1) % test IC Full
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,33});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,34});
+% for jj=2:size(allDataTestsOnly,1) % test IC Full
+% use only sk175 and sk195
+tempTestsOnly(1,:)=allDataTestsOnly(1,:);
+tempTestsOnly(2,:)=allDataTestsOnly(3,:);
+tempTestsOnly(3,:)=allDataTestsOnly(6,:);
+for jj=2:size(tempTestsOnly,1)
+    rpc(jj-1)=nanmean(tempTestsOnly{jj,33});
+    opc(jj-1)=nanmean(tempTestsOnly{jj,34});
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -83,9 +88,9 @@ allDataTestsOnly{jj,27}=rpc;
 allDataTestsOnly{jj,28}=opc;
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % IC Tone
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,35});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,36});
+for jj=2:size(tempTestsOnly,1) % IC Tone
+    rpc(jj-1)=nanmean(tempTestsOnly{jj,35});
+    opc(jj-1)=nanmean(tempTestsOnly{jj,36});
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -100,9 +105,9 @@ title(['IC Tone Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % IC Choice
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,37});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,38});
+for jj=2:size(tempTestsOnly,1) % IC Choice
+    rpc(jj-1)=nanmean(tempTestsOnly{jj,37});
+    opc(jj-1)=nanmean(tempTestsOnly{jj,38});
 end
 subplot(2,3,6)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;

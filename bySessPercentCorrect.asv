@@ -84,10 +84,14 @@ xticklabels({'light off', 'light on'});
 
 
 clear rpc opc
-rpc=NaN;opc=NaN; 
+rpc=NaN;opc=NaN; % For IC, use only sk175 and sk195
+tempTestsOnly{1,:}=allDataTestsOnly(1,:);
+tempTestsOnly{2,:}=allDataTestsOnly(3,:);
+tempTestsOnly{3,:}=allDataTestsOnly(6,:);
+
 for jj=2:4
-    rpc=cat(1,rpc,allDataTestsOnly{jj,31});
-    opc=cat(1,opc,allDataTestsOnly{jj,32});
+    rpc=cat(1,rpc,tempTestsOnly{jj,31});
+    opc=cat(1,opc,tempTestsOnly{jj,32});
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -114,13 +118,10 @@ title(['MGB Choice Inactivation']);
 xticklabels({'light off', 'light on'});
 
 % now do the IC
-rpc=NaN;opc=NaN; % For IC, use only sk175 and sk195
-tempTestsOnly(1,:)=allDataTestsOnly(1,:);
-tempTestsOnly(2,:)=allDataTestsOnly(3,:);
-tempTestsOnly(3,:)=allDataTestsOnly(6,:);
-for jj=2:size(tempTestsOnly,1)% IC Full
-    rpc=cat(1,rpc,tempTestsOnly{jj,33});
-    opc=cat(1,opc,tempTestsOnly{jj,34});
+rpc=NaN;opc=NaN; 
+for jj=2:size(allDataTestsOnly,1)% IC Full
+    rpc=cat(1,rpc,allDataTestsOnly{jj,33});
+    opc=cat(1,opc,allDataTestsOnly{jj,34});
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -151,9 +152,9 @@ allDataTestsOnly{jj,28}=opc;
 
 clear rpc opc
 rpc=NaN;opc=NaN;
-for jj=2:size(tempTestsOnly,1) % IC Tone
-    rpc=cat(1,rpc,tempTestsOnly{jj,35});
-    opc=cat(1,opc,tempTestsOnly{jj,36});
+for jj=2:size(allDataTestsOnly,1) % IC Tone
+    rpc=cat(1,rpc,allDataTestsOnly{jj,35});
+    opc=cat(1,opc,allDataTestsOnly{jj,36});
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -182,9 +183,9 @@ xticklabels({'light off', 'light on'});
 
 clear rpc opc
 rpc=NaN;opc=NaN;
-for jj=2:size(tempTestsOnly,1) % IC Choice
-    rpc=cat(1,rpc,tempTestsOnly{jj,37});
-    opc=cat(1,opc,tempTestsOnly{jj,38});
+for jj=2:size(allDataTestsOnly,1) % IC Choice
+    rpc=cat(1,rpc,allDataTestsOnly{jj,37});
+    opc=cat(1,opc,allDataTestsOnly{jj,38});
 end
 subplot(2,3,6)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;

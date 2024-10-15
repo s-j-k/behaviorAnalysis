@@ -707,8 +707,11 @@ end
 
 %% all animal summary analysis
 % group by animal
+%TO DO: for the IC analysis, use a subset of animals... just 174 + 195 ?
+
 clear qqq wwFig rpc opc
 [allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
+
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
 [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
 
