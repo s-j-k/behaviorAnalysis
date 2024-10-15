@@ -707,7 +707,6 @@ end
 
 %% all animal summary analysis
 % group by animal
-%TO DO: for the IC analysis, use a subset of animals... just 174 + 195 ?
 
 clear qqq wwFig rpc opc
 [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
@@ -719,271 +718,17 @@ clear qqq wwFig rpc opc % now group by session, percent correct for Test
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
 byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
 
-%% By session H and FA
-reinfcolor1= [0.2,0.2,0.2];
-reinfcolor2= [0.45,0.45,0.45];
-reinfcolor3= [0.7,0.7,0.7];
-optocolor1=[0/255 89/255 178/255];
-optocolor2=[65/255 161/255 255/255];
-optocolor3=[181/255 216/255 255/255];
-
-ppFig=figure(12);
-clear rhit ohit rfa ofa
-rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    rhittemp=allDataTestsOnly{jj,10}; 
-    rfatemp=allDataTestsOnly{jj,11};
-    ohittemp=allDataTestsOnly{jj,12};
-    ofatemp=allDataTestsOnly{jj,13};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
-    rhit=cat(1,rhit,rhittemp);
-    rfa=cat(1,rfa,rfatemp);
-    ohit=cat(1,ohit,ohittemp);
-    ofa = cat(1,ofa,ofatemp);
-end
-subplot(1,3,1)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
-    rhit(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
-    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
-    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,pHit,ci,stats] = ttest2(rhit,ohit);
-[h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
-ylabel('rate');
-title(['By Animal MGB Full Trial Inactivation']);
-xticklabels({'hit', 'hit','fa','fa'});
-
-clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
-rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    rhittemp=allDataTestsOnly{jj,10}; 
-    rfatemp=allDataTestsOnly{jj,11};
-    ohittemp=allDataTestsOnly{jj,14};
-    ofatemp=allDataTestsOnly{jj,15};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
-    rhit=cat(1,rhit,rhittemp);
-    rfa=cat(1,rfa,rfatemp);
-    ohit=cat(1,ohit,ohittemp);
-    ofa = cat(1,ofa,ofatemp);
-end
-subplot(1,3,2)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
-    rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
-    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
-    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,pHit,ci,stats] = ttest2(rhit,ohit);
-[h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
-ylabel('rate');
-title(['MGB Tone Inactivation']);
-xticklabels({'hit', 'hit','fa','fa'});
-
-clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
-rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    rhittemp=allDataTestsOnly{jj,10}; 
-    rfatemp=allDataTestsOnly{jj,11};
-    ohittemp=allDataTestsOnly{jj,16};
-    ofatemp=allDataTestsOnly{jj,17};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
-    rhit=cat(1,rhit,rhittemp);
-    rfa=cat(1,rfa,rfatemp);
-    ohit=cat(1,ohit,ohittemp);
-    ofa = cat(1,ofa,ofatemp);
-end
-subplot(1,3,3)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
-    rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
-    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
-    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,pHit,ci,stats] = ttest2(rhit,ohit);
-[h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
-ylabel('rate');
-title([' MGB Choice Inactivation']);
-xticklabels({'hit', 'hit','fa','fa'});
-ppFig.Position(3:4)=[725 275];
-saveas(gcf,['By Sess T_MGB_HitFARate_Opto']);
-saveas(gcf,['By Sess T_MGB_HitFARate_Opto.png']);
-
-%% by session, hit and false alarm rate Controls
-
-ppFig=figure(12);
-clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
-rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataCtlOnly,1)
-    rhittemp=allDataCtlOnly{jj,10}; 
-    rfatemp=allDataCtlOnly{jj,11};
-    ohittemp=allDataCtlOnly{jj,12};
-    ofatemp=allDataCtlOnly{jj,13};
-    rhittemp(isnan(ohit))=nan;
-    rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
-    rhit=cat(1,rhit,rhittemp);
-    rfa=cat(1,rfa,rfatemp);
-    ohit=cat(1,ohit,ohittemp);
-    ofa = cat(1,ofa,ofatemp);
-end
-subplot(1,3,1)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
-    rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
-    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
-    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,pHit,ci,stats] = ttest2(rhit,ohit);
-[h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
-ylabel('rate');
-title(['By Animal MGB Full Trial Inactivation']);
-xticklabels({'hit', 'hit','fa','fa'});
-
-clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
-rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataCtlOnly,1)
-    rhittemp=allDataCtlOnly{jj,10}; 
-    rfatemp=allDataCtlOnly{jj,11};
-    ohittemp=allDataCtlOnly{jj,14};
-    ofatemp=allDataCtlOnly{jj,15};
-    rhittemp(isnan(ohit))=nan;
-    rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
-    rhit=cat(1,rhit,rhittemp);
-    rfa=cat(1,rfa,rfatemp);
-    ohit=cat(1,ohit,ohittemp);
-    ofa = cat(1,ofa,ofatemp);
-end
-subplot(1,3,2)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
-    rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
-    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
-    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,pHit,ci,stats] = ttest2(rhit,ohit);
-[h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
-ylabel('rate');
-title(['MGB Tone Inactivation']);
-xticklabels({'hit', 'hit','fa','fa'});
-
-clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
-rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataCtlOnly,1)
-    rhittemp=allDataCtlOnly{jj,10}; 
-    rfatemp=allDataCtlOnly{jj,11};
-    ohittemp=allDataCtlOnly{jj,16};
-    ofatemp=allDataCtlOnly{jj,17};
-    rhittemp(isnan(ohit))=nan;
-    rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
-    rhit=cat(1,rhit,rhittemp);
-    rfa=cat(1,rfa,rfatemp);
-    ohit=cat(1,ohit,ohittemp);
-    ofa = cat(1,ofa,ofatemp);
-end
-subplot(1,3,3)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
-    rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
-    rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
-    ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,pHit,ci,stats] = ttest2(rhit,ohit);
-[h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
-ylabel('rate');
-title([' MGB Choice Inactivation']);
-xticklabels({'hit', 'hit','fa','fa'});
-ppFig.Position(3:4)=[725 275];
-saveas(gcf,['By Sess C_MGB_HitFARate_Opto']);
-saveas(gcf,['By Sess C_MGB_HitFARate_Opto.png']);
-
-%% now per animal statistical analysis as a 2way anova
-% no light vs. light all inactivation condition
-testFullTrial=NaN(18,2); 
-% Full Trial, light OFF column 1, light ON column 2
-testFullTrial(1:2,1)=allDataTestsOnly{2,27}(~isnan(allDataTestsOnly{2,27}));
-testFullTrial(1:2,2)=allDataTestsOnly{2,28}(~isnan(allDataTestsOnly{2,28}));
-testFullTrial(3:4,1)=allDataTestsOnly{3,27}(~isnan(allDataTestsOnly{3,27}));
-testFullTrial(3:4,2)=allDataTestsOnly{3,28}(~isnan(allDataTestsOnly{3,28}));
-fullTrialtemp=allDataTestsOnly{4,27}(~isnan(allDataTestsOnly{4,27}));
-testFullTrial(5:6,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,28}(~isnan(allDataTestsOnly{4,28}));
-testFullTrial(5:6,2)=fullTrialtemp(1:2);
-% tone Trial, light OFF column 1, light ON column 2
-testFullTrial(7:8,1)=allDataTestsOnly{2,29}(~isnan(allDataTestsOnly{2,29}));
-testFullTrial(7:8,2)=allDataTestsOnly{2,30}(~isnan(allDataTestsOnly{2,30}));
-testFullTrial(9:10,1)=allDataTestsOnly{3,29}(~isnan(allDataTestsOnly{3,29}));
-testFullTrial(9:10,2)=allDataTestsOnly{3,30}(~isnan(allDataTestsOnly{3,30}));
-fullTrialtemp=allDataTestsOnly{4,29}(~isnan(allDataTestsOnly{4,29}));
-testFullTrial(11:12,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,30}(~isnan(allDataTestsOnly{4,30}));
-testFullTrial(11:12,2)=fullTrialtemp(1:2);
-% Choice Trial, light OFF column 1, light ON column 2
-fullTrialtemp=allDataTestsOnly{2,31}(~isnan(allDataTestsOnly{2,31}));
-testFullTrial(13:14,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{2,32}(~isnan(allDataTestsOnly{2,32}));
-testFullTrial(13:14,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{3,31}(~isnan(allDataTestsOnly{3,31}));
-testFullTrial(15:16,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{3,32}(~isnan(allDataTestsOnly{3,32}));
-testFullTrial(15:16,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,31}(~isnan(allDataTestsOnly{4,31}));
-testFullTrial(17:18,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,32}(~isnan(allDataTestsOnly{4,32}));
-testFullTrial(17:18,2)=fullTrialtemp(1:2);
-
-[aov,~,stats]=anova2(testFullTrial,6,FactorNames=["Light on vs. Off","Opto Condition"]);
-c1 = multcompare(stats);
-tbl1 = array2table(c1,"VariableNames", ...
-    ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
-c2 = multcompare(stats,"Estimate","row");
-tbl2 = array2table(c2,"VariableNames", ...
-    ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
-figure;
-light = [repmat("On",18,1);repmat("Off",18,1);];
-optoCond = [repmat("Full Trial",6,1);repmat("Tone",6,1);repmat("Choice",6,1)];
-factors = {light, optoCond};
-aov = anova(factors,testFullTrial(:),FactorNames=["Light","optoCond"],...
-    ModelSpecification="interactions");
-boxchart(aov,["Light on vs. Off","Opto Condition"])
+close all
+bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
+%%
+% now do the anova....
+[aovMGB,statsMGB,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly);
+close all
+aovMGB
+aovIC
 
 %% compare differences in percent correct across each light off vs light on condition
-
+% TODO: needs to be an anova!!!
 allDataTestsOnly{1,33}='Difference PC Full Trial';
 allDataTestsOnly{1,34}='Difference PC Tone';
 allDataTestsOnly{1,35}='Difference PC Choice';
@@ -994,7 +739,6 @@ for jj=2:4
     allDataTestsOnly{jj,35}=allDataTestsOnly{jj,32}-allDataTestsOnly{jj,31};
 end
 allDataTestsOnly{4,33}=allDataTestsOnly{4,33}';
-%%
 
 diffFull=NaN; diffTone=NaN; diffChoice=NaN;
 for jj=2:size(allDataTestsOnly,1)
