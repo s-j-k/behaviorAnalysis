@@ -1,4 +1,4 @@
-function [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+function [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 % reinfcolor1= [0.2,0.2,0.2]; %this is to plot each animal as a different
 % color
@@ -9,18 +9,19 @@ function [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly
 % optocolor3=[181/255 216/255 255/255];
 
 rpc=NaN;opc=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    if size(allDataTestsOnly{jj,27},2)>1
-        allDataTestsOnly{jj,27}=allDataTestsOnly{jj,27}';
-        rpc=cat(1,rpc,allDataTestsOnly{jj,27});
+mgbTempTestsOnly(1:4,:)=allDataTestsOnly(1:4,:);
+for jj=2:size(mgbTempTestsOnly,1) % test MGB Full
+    if size(mgbTempTestsOnly{jj,27},2)>1
+        mgbTempTestsOnly{jj,27}=mgbTempTestsOnly{jj,27}';
+        rpc=cat(1,rpc,mgbTempTestsOnly{jj,27});
     else
-        rpc=cat(1,rpc,allDataTestsOnly{jj,27});
+        rpc=cat(1,rpc,mgbTempTestsOnly{jj,27});
     end
-    if size(allDataTestsOnly{jj,28},2)>1
-        allDataTestsOnly{jj,28}=allDataTestsOnly{jj,28}';
-        opc=cat(1,opc,allDataTestsOnly{jj,28});
+    if size(mgbTempTestsOnly{jj,28},2)>1
+        mgbTempTestsOnly{jj,28}=mgbTempTestsOnly{jj,28}';
+        opc=cat(1,opc,mgbTempTestsOnly{jj,28});
     else
-        opc=cat(1,opc,allDataTestsOnly{jj,28});
+        opc=cat(1,opc,mgbTempTestsOnly{jj,28});
     end
 end
 wwFig=figure(12);
@@ -54,9 +55,9 @@ allDataTestsOnly{jj,28}=opc;
 
 clear rpc opc
 rpc=NaN;opc=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    rpc=cat(1,rpc,allDataTestsOnly{jj,29});
-    opc=cat(1,opc,allDataTestsOnly{jj,30});
+for jj=2:size(mgbTempTestsOnly,1)
+    rpc=cat(1,rpc,mgbTempTestsOnly{jj,29});
+    opc=cat(1,opc,mgbTempTestsOnly{jj,30});
 end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -85,9 +86,9 @@ xticklabels({'light off', 'light on'});
 
 clear rpc opc
 rpc=NaN;opc=NaN; 
-for jj=2:4
-    rpc=cat(1,rpc,allDataTestsOnly{jj,31});
-    opc=cat(1,opc,allDataTestsOnly{jj,32});
+for jj=2:size(mgbTempTestsOnly,1)
+    rpc=cat(1,rpc,mgbTempTestsOnly{jj,31});
+    opc=cat(1,opc,mgbTempTestsOnly{jj,32});
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;

@@ -1,4 +1,4 @@
-function [allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+function [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 % reinfcolor1= [0.2,0.2,0.2]; %this is to plot each animal as a different
 % color
@@ -8,9 +8,10 @@ function [allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOn
 % optocolor2=[65/255 161/255 255/255];
 % optocolor3=[181/255 216/255 255/255];
 
-for jj=2:size(allDataTestsOnly,1) % test MGB Full
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,27});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,28});
+mgbTempTestsOnly(1:4,:)=allDataTestsOnly(1:4,:);
+for jj=2:size(mgbTempTestsOnly,1) % test MGB Full
+    rpc(jj-1)=nanmean(mgbTempTestsOnly{jj,27});
+    opc(jj-1)=nanmean(mgbTempTestsOnly{jj,28});
 end
 wwFig=figure(10);
 subplot(2,3,1)
@@ -29,9 +30,9 @@ allDataTestsOnly{jj,27}=rpc;
 allDataTestsOnly{jj,28}=opc;
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % MGB Tone
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,29});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,30});
+for jj=2:size(mgbTempTestsOnly,1) % MGB Tone
+    rpc(jj-1)=nanmean(mgbTempTestsOnly{jj,29});
+    opc(jj-1)=nanmean(mgbTempTestsOnly{jj,30});
 end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -46,9 +47,9 @@ title(['MGB Tone Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % MGB Choice
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,31});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,32});
+for jj=2:size(mgbTempTestsOnly,1) % MGB Choice
+    rpc(jj-1)=nanmean(mgbTempTestsOnly{jj,31});
+    opc(jj-1)=nanmean(mgbTempTestsOnly{jj,32});
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
