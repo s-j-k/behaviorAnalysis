@@ -728,7 +728,7 @@ aovMGB
 aovIC
 
 %% compare differences in percent correct across each light off vs light on condition
-% TODO: needs to be an anova!!!
+% TODO: fix plots, also why is it not significant???
 allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
 allDataTestsOnly{1,40}='MGB Difference PC Tone';
 allDataTestsOnly{1,41}='MGB Difference PC Choice';
@@ -749,9 +749,11 @@ for jj=2:size(mgbTempTestsOnly,1)
     diffTone=cat(1,diffTone,allDataTestsOnly{jj,40});
     diffChoice=cat(1,diffChoice,allDataTestsOnly{jj,41});
 end
-catMGBDiff=[diffFull(~isnan(diffFull)) diffTone(~isnan(diffTone)) diffChoice(~isnan(diffChoice))];
+diffChoiceTrunc=diffChoice(~isnan(diffChoice));
+diffChoiceTrunc=diffChoiceTrunc(1:length(diffFull(~isnan(diffFull))));
+catMGBDiff=[diffFull(~isnan(diffFull)) diffTone(~isnan(diffTone)) diffChoiceTrunc];
 aovdiffMGB=anova1(catMGBDiff)
-subplot(1,2,1)
+subplot(1,2,1); hold on;
 qqq=bar([nanmean(diffFull) nanmean(diffTone) nanmean(diffChoice)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[optocolor;optocolor;optocolor;];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(diffFull,1),1), ...
@@ -767,7 +769,7 @@ xticklabels({'Full Trial','Tone','Choice'});
 xlabel('Condition');
 
 clear jj
-for jj=2:4 %IC
+for jj=2:size(tempTestsOnly,1) %IC
     allDataTestsOnly{jj,42}=tempTestsOnly{jj,33}-tempTestsOnly{jj,34};
     allDataTestsOnly{jj,43}=tempTestsOnly{jj,35}-tempTestsOnly{jj,36};
     allDataTestsOnly{jj,44}=tempTestsOnly{jj,37}-tempTestsOnly{jj,38};
@@ -778,10 +780,14 @@ for jj=2:size(tempTestsOnly,1)
     diffTone=cat(1,diffTone,allDataTestsOnly{jj,43});
     diffChoice=cat(1,diffChoice,allDataTestsOnly{jj,44});
 end
-catICDiff=[diffFull(~isnan(diffFull)) diffTone(~isnan(diffTone)) diffChoice(~isnan(diffChoice))];
-aovdiffMGB=anova1(catICDiff)
+diffChoiceTrunc=diffChoice(~isnan(diffChoice));
+diffChoiceTrunc=diffChoiceTrunc(1:length(diffTone(~isnan(diffTone))));
+diffFullTrunc=diffFull(~isnan(diffFull));
+diffFullTrunc=diffFullTrunc(1:length(diffTone(~isnan(diffTone))));
+catICDiff=[diffFullTrunc diffTone(~isnan(diffTone)) diffChoiceTrunc];
+aovdiffMGB=anova1(catICDiff);
 subplot(1,2,2)
-qqq=bar([nanmean(diffFull) nanmean(diffTone) nanmean(diffChoice)]); hold on;
+qqq=bar([nanmean(diffFullTrunc) nanmean(diffTone) nanmean(diffChoiceTrunc)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[optocolor;optocolor;optocolor;];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(diffFull,1),1), ...
     diffFull,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
