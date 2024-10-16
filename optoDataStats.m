@@ -729,25 +729,29 @@ aovIC
 
 %% compare differences in percent correct across each light off vs light on condition
 % TODO: needs to be an anova!!!
-allDataTestsOnly{1,33}='Difference PC Full Trial';
-allDataTestsOnly{1,34}='Difference PC Tone';
-allDataTestsOnly{1,35}='Difference PC Choice';
-jj=4;
+allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
+allDataTestsOnly{1,40}='MGB Difference PC Tone';
+allDataTestsOnly{1,41}='MGB Difference PC Choice';
+allDataTestsOnly{1,42}='IC Difference PC Full Trial';
+allDataTestsOnly{1,43}='IC Difference PC Tone';
+allDataTestsOnly{1,44}='IC Difference PC Choice';
+
+wwFig=figure(100);
+clear jj
 for jj=2:4
-    allDataTestsOnly{jj,33}=allDataTestsOnly{jj,28}-allDataTestsOnly{jj,27};
-    allDataTestsOnly{jj,34}=allDataTestsOnly{jj,30}-allDataTestsOnly{jj,29};
-    allDataTestsOnly{jj,35}=allDataTestsOnly{jj,32}-allDataTestsOnly{jj,31};
+    allDataTestsOnly{jj,39}=mgbTempTestsOnly{jj,28}-mgbTempTestsOnly{jj,27};
+    allDataTestsOnly{jj,40}=mgbTempTestsOnly{jj,30}-mgbTempTestsOnly{jj,29};
+    allDataTestsOnly{jj,41}=mgbTempTestsOnly{jj,32}-mgbTempTestsOnly{jj,31};
 end
-allDataTestsOnly{4,33}=allDataTestsOnly{4,33}';
+% allDataTestsOnly{4,33}=allDataTestsOnly{4,33}';
 
 diffFull=NaN; diffTone=NaN; diffChoice=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    diffFull=cat(1,diffFull,allDataTestsOnly{jj,33});
-    diffTone=cat(1,diffTone,allDataTestsOnly{jj,34});
-    diffChoice=cat(1,diffChoice,allDataTestsOnly{jj,35});
+for jj=2:size(mgbTempTestsOnly,1)
+    diffFull=cat(1,diffFull,mgbTempTestsOnly{jj,33});
+    diffTone=cat(1,diffTone,mgbTempTestsOnly{jj,34});
+    diffChoice=cat(1,diffChoice,mgbTempTestsOnly{jj,35});
 end
-wwFig=figure(100);
-% subplot(1,3,1)
+subplot(1,2,1)
 qqq=bar([nanmean(diffFull) nanmean(diffTone) nanmean(diffChoice)]); hold on;
 qqq(1).FaceColor='flat'; qqq(1).CData=[optocolor;optocolor;optocolor;];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(diffFull,1),1), ...
@@ -756,20 +760,48 @@ scatter(repmat(qqq(1).XEndPoints(2),size(diffTone,1),1), ...
     diffTone,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 scatter(repmat(qqq(1).XEndPoints(3),size(diffChoice,1),1), ...
     diffChoice,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(diffFull,diffTone);
-sigstar({[1,2]}, p)
-[h,p,ci,stats] = ttest2(diffTone,diffChoice);
-sigstar({[2,3]}, p)
-[h,p,ci,stats] = ttest2(diffFull,diffChoice);
-sigstar({[1,3]}, p)
+% [h,p,ci,stats] = ttest2(diffFull,diffTone); % replace this with the anova
+% sigstar({[1,2]}, p)
 title(['MGB Inactivation']);
 xticklabels({'Full Trial','Tone','Choice'});
 xlabel('Condition');
+
+% IC
+clear jj
+for jj=2:4
+    allDataTestsOnly{jj,39}=tempTestsOnly{jj,28}-tempTestsOnly{jj,27};
+    allDataTestsOnly{jj,40}=tempTestsOnly{jj,30}-tempTestsOnly{jj,29};
+    allDataTestsOnly{jj,41}=tempTestsOnly{jj,32}-tempTestsOnly{jj,31};
+end
+% allDataTestsOnly{4,33}=allDataTestsOnly{4,33}';
+
+diffFull=NaN; diffTone=NaN; diffChoice=NaN;
+for jj=2:size(tempTestsOnly,1)
+    diffFull=cat(1,diffFull,tempTestsOnly{jj,33});
+    diffTone=cat(1,diffTone,tempTestsOnly{jj,34});
+    diffChoice=cat(1,diffChoice,tempTestsOnly{jj,35});
+end
+subplot(1,2,1)
+qqq=bar([nanmean(diffFull) nanmean(diffTone) nanmean(diffChoice)]); hold on;
+qqq(1).FaceColor='flat'; qqq(1).CData=[optocolor;optocolor;optocolor;];hold on;
+scatter(repmat(qqq(1).XEndPoints(1),size(diffFull,1),1), ...
+    diffFull,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(diffTone,1),1), ...
+    diffTone,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(qqq(1).XEndPoints(3),size(diffChoice,1),1), ...
+    diffChoice,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+% [h,p,ci,stats] = ttest2(diffFull,diffTone); % replace this with the anova
+% sigstar({[1,2]}, p)
+title(['IC Inactivation']);
+xticklabels({'Full Trial','Tone','Choice'});
+xlabel('Condition');
+
 wwFig.Position(3:4)=[325 275];
 ylabel('Light on - Light off');
 saveas(gcf,['BySess_Difference_T_MGB_PercentCorrect_Opto']);
 saveas(gcf,['BySess_Difference_T_MGB_PercentCorrect_Opto.png']);
 
+%%
 % by animal
 
 diffFull=NaN; diffTone=NaN; diffChoice=NaN;
@@ -797,7 +829,10 @@ sigstar({[1,3]}, p)
 title(['MGB Inactivation by Animal']);
 xticklabels({'Full Trial','Tone','Choice'});
 xlabel('Condition');
-wwFig.Position(3:4)=[325 275];
+
+
+
+wwFig.Position(3:4)=[625 275];
 ylabel('Light on - Light off');
 saveas(gcf,['ByAn_Difference_T_MGB_PercentCorrect_Opto']);
 saveas(gcf,['ByAn_Difference_T_MGB_PercentCorrect_Opto.png']);
