@@ -41,9 +41,12 @@ function allCohorts = loadAllOptoCohorts(cohortRange)
     cohort1(1,27)={'Rates Variable Placeholder'};
     cohort2(1,27)={'Rates Variable Placeholder'};
     cohort3(:,28)=[];
-    cohort2(1,27)={'Rates Variable'};
+    cohort2(1,:)=[];cohort3(1,:)=[];cohort4(1,:)=[];cohort5(1,:)=[];
     allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5);
-    
+    allCohorts(26:27,:)=[]; 
+    allCohorts(28:31,:)=[]; 
+    allCohorts(30:33,:)=[];
+    allCohorts(36:39,:)=[];
     save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5');
     cd('O:\sjk\Figures\MGB IC Opto')
     clear cohort1 cohort2 cohort3 cohort4 cohort5 optomeanMat
