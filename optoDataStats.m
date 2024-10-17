@@ -90,6 +90,7 @@ allDataTestsOnly{1,35}='RPC IC Tone Trial';
 allDataTestsOnly{1,36}='OPC IC Tone Trial';
 allDataTestsOnly{1,37}='RPC IC Choice Trial';
 allDataTestsOnly{1,38}='OPC IC Choice Trial';
+
 for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj);hold on;
     rhit=allDataTestsOnly{jj,10}; % full trial MGB
@@ -711,20 +712,21 @@ end
 
 clear qqq wwFig rpc opc
 [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
-
+close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
-[tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
-
+[allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
+close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
 byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
-
 close all
+
 bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
+close all
 %%
 % now do the anova....
 [aovMGB,statsMGB,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly);
-close all
+% close all
 aovMGB
 aovIC
 

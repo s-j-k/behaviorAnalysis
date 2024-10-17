@@ -31,7 +31,7 @@ scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('rate');
-title(['By Animal MGB Full Trial Inactivation']);
+title(['By Session MGB Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
@@ -73,8 +73,8 @@ for jj=2:size(mgbTempTestsOnly,1)
     rfatemp=mgbTempTestsOnly{jj,11};
     ohittemp=mgbTempTestsOnly{jj,16};
     ofatemp=mgbTempTestsOnly{jj,17};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
+    rhittemp(isnan(ohittemp))=nan; % isnan should be indexing -temp vars
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -99,15 +99,16 @@ title([' MGB Choice Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 %IC 
-clear rhit ohit rfa ofa
+clear rhit ohit rfa ofa 
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
 for jj=2:size(tempTestsOnly,1)
+    clear rhittemp fatemp ohittemp ofatemp 
     rhittemp=tempTestsOnly{jj,18}; 
     rfatemp=tempTestsOnly{jj,19};
-    ohittemp=tempTestsOnly{jj,20};
+    ohittemp=tempTestsOnly{jj,20}; 
     ofatemp=tempTestsOnly{jj,21};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
+    rhittemp(isnan(ohittemp))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -128,7 +129,7 @@ scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('rate');
-title(['By Animal IC Full Trial Inactivation']);
+title(['By Session IC Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
@@ -138,8 +139,8 @@ for jj=2:size(tempTestsOnly,1)
     rfatemp=tempTestsOnly{jj,19};
     ohittemp=tempTestsOnly{jj,22};
     ofatemp=tempTestsOnly{jj,23};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
+    rhittemp(isnan(ohittemp))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -170,8 +171,8 @@ for jj=2:size(tempTestsOnly,1)
     rfatemp=tempTestsOnly{jj,19};
     ohittemp=tempTestsOnly{jj,24};
     ofatemp=tempTestsOnly{jj,25};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
+    rhittemp(isnan(ohittemp))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);

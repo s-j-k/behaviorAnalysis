@@ -8,7 +8,10 @@ function [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnim
 % optocolor2=[65/255 161/255 255/255];
 % optocolor3=[181/255 216/255 255/255];
 
-mgbTempTestsOnly(1:4,:)=allDataTestsOnly(1:4,:);
+mgbTempTestsOnly(1:4,:)=allDataTestsOnly(1:4,:); 
+% discount sk194, fiber missing from right side
+% for 194-196, the height of the implant over the MGB (which connects to
+% the patch cord) was too short, so the transmittance was poor
 for jj=2:size(mgbTempTestsOnly,1) % test MGB Full
     rpc(jj-1)=nanmean(mgbTempTestsOnly{jj,27});
     opc(jj-1)=nanmean(mgbTempTestsOnly{jj,28});
@@ -68,7 +71,7 @@ clear rpc opc
 % use only sk175 and sk195
 tempTestsOnly(1,:)=allDataTestsOnly(1,:);
 tempTestsOnly(2,:)=allDataTestsOnly(3,:);
-tempTestsOnly(3,:)=allDataTestsOnly(6,:);
+tempTestsOnly(3:5,:)=allDataTestsOnly(5:7,:);
 for jj=2:size(tempTestsOnly,1)
     rpc(jj-1)=nanmean(tempTestsOnly{jj,33});
     opc(jj-1)=nanmean(tempTestsOnly{jj,34});

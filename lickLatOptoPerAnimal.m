@@ -341,8 +341,7 @@ for nbsubj=2:size(allDataTestsOnly,1)
             ICslto_fa(nbsubj,icDays) = slto_fa(nbsubj,icDays);
             ICmlco_fa(nbsubj,icDays) = mlco_fa(nbsubj,icDays);
             ICslco_fa(nbsubj,icDays) = slco_fa(nbsubj,icDays); 
-            
-        case 6
+        case 5 %sk195
             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 1 1 0 0 0 ...
@@ -351,8 +350,109 @@ for nbsubj=2:size(allDataTestsOnly,1)
             icDays=[0 0 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 0 0 ...
                 0 0 0 1 1 0 0 1 1 1 ...
-                1 0 1 1]; 
-            expRange=24:length(mgbDays);  
+                1 0 1 1]; % catch ic, catch ic, catch mgb, lob
+            icDays=logical(icDays);
+            expRange=24:length(mgbDays); 
+            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
+            MGBmr_hit(MGBmr_hit==0)=NaN;
+            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
+            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
+            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
+            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
+            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
+            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
+            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
+            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
+            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
+            
+            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
+            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
+            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
+            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
+            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
+            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
+            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
+            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
+            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
+            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
+            
+            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
+            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
+            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
+            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
+            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
+            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
+            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
+            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
+            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
+            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
+
+            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
+            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
+            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
+            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
+            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
+            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
+            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
+            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
+            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
+            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);  
+            
+            % do the IC
+            ICmr_hit(nbsubj,icDays) = mr_hit(nbsubj,icDays); % reinf hit
+            ICsr_hit(nbsubj,icDays) = sr_hit(nbsubj,icDays); 
+            ICmp_hit(nbsubj,icDays) = mp_hit(nbsubj,icDays);
+            ICsp_hit(nbsubj,icDays) = sp_hit(nbsubj,icDays);
+            ICmo_hit(nbsubj,icDays) = mo_hit(nbsubj,icDays);
+            ICso_hit(nbsubj,icDays) = so_hit(nbsubj,icDays);
+            ICmto_hit(nbsubj,icDays) = mto_hit(nbsubj,icDays);
+            ICsto_hit(nbsubj,icDays) = sto_hit(nbsubj,icDays);
+            ICmco_hit(nbsubj,icDays) = mco_hit(nbsubj,icDays);
+            ICsco_hit(nbsubj,icDays) = sco_hit(nbsubj,icDays);
+            
+            ICmr_fa(nbsubj,icDays) = mr_fa(nbsubj,icDays);
+            ICsr_fa(nbsubj,icDays) = sr_fa(nbsubj,icDays);
+            ICmp_fa(nbsubj,icDays) = mp_fa(nbsubj,icDays);
+            ICsp_fa(nbsubj,icDays) = sp_fa(nbsubj,icDays);
+            ICmo_fa(nbsubj,icDays) = mo_fa(nbsubj,icDays);
+            ICso_fa(nbsubj,icDays) = so_fa(nbsubj,icDays);
+            ICmto_fa(nbsubj,icDays) = mto_fa(nbsubj,icDays);
+            ICsto_fa(nbsubj,icDays) = sto_fa(nbsubj,icDays);
+            ICmco_fa(nbsubj,icDays) = mco_fa(nbsubj,icDays);
+            ICsco_fa(nbsubj,icDays) = sco_fa(nbsubj,icDays);
+            
+            ICmlr_hit(nbsubj,icDays) = mlr_hit(nbsubj,icDays);
+            ICslr_hit(nbsubj,icDays) = slr_hit(nbsubj,icDays);
+            ICmlp_hit(nbsubj,icDays) = mlp_hit(nbsubj,icDays);
+            ICslp_hit(nbsubj,icDays) = slp_hit(nbsubj,icDays);
+            ICmlo_hit(nbsubj,icDays) = mlo_hit(nbsubj,icDays);
+            ICslo_hit(nbsubj,icDays) = slo_hit(nbsubj,icDays);
+            ICmlto_hit(nbsubj,icDays) = mlto_hit(nbsubj,icDays);
+            ICslto_hit(nbsubj,icDays) = slto_hit(nbsubj,icDays);
+            ICmlco_hit(nbsubj,icDays) = mlco_hit(nbsubj,icDays);
+            ICslco_hit(nbsubj,icDays) = slco_hit(nbsubj,icDays);
+
+            ICmlr_fa(nbsubj,icDays) = mlr_fa(nbsubj,icDays);
+            ICslr_fa(nbsubj,icDays) = slr_fa(nbsubj,icDays);
+            ICmlp_fa(nbsubj,icDays) = mlp_fa(nbsubj,icDays);
+            ICslp_fa(nbsubj,icDays) = slp_fa(nbsubj,icDays);
+            ICmlo_fa(nbsubj,icDays) = mlo_fa(nbsubj,icDays);
+            ICslo_fa(nbsubj,icDays) = slo_fa(nbsubj,icDays);
+            ICmlto_fa(nbsubj,icDays) = mlto_fa(nbsubj,icDays);
+            ICslto_fa(nbsubj,icDays) = slto_fa(nbsubj,icDays);
+            ICmlco_fa(nbsubj,icDays) = mlco_fa(nbsubj,icDays);
+            ICslco_fa(nbsubj,icDays) = slco_fa(nbsubj,icDays);
+        case 6 % sk196
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 1 0 0 1 1 ... 
+                1 0]; % missing day 9/24 aka d26
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 0 1 1 0 1 1 0 0 ...
+                0 0];
+            expRange=23:length(mgbDays);  
             icDays=logical(icDays);
             MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
             MGBmr_hit(MGBmr_hit==0)=NaN;

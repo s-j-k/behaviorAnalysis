@@ -1,4 +1,4 @@
-function [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+function [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor)
 
 % reinfcolor1= [0.2,0.2,0.2]; %this is to plot each animal as a different
 % color
@@ -9,7 +9,6 @@ function [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=bySess
 % optocolor3=[181/255 216/255 255/255];
 
 rpc=NaN;opc=NaN;
-mgbTempTestsOnly(1:4,:)=allDataTestsOnly(1:4,:);
 for jj=2:size(mgbTempTestsOnly,1) % test MGB Full
     if size(mgbTempTestsOnly{jj,27},2)>1
         mgbTempTestsOnly{jj,27}=mgbTempTestsOnly{jj,27}';
@@ -115,10 +114,7 @@ title(['MGB Choice Inactivation']);
 xticklabels({'light off', 'light on'});
 
 % now do the IC
-rpc=NaN;opc=NaN; % For IC, use only sk175 and sk195
-tempTestsOnly(1,:)=allDataTestsOnly(1,:);
-tempTestsOnly(2,:)=allDataTestsOnly(3,:);
-tempTestsOnly(3,:)=allDataTestsOnly(6,:);
+rpc=NaN;opc=NaN; 
 for jj=2:size(tempTestsOnly,1)% IC Full
     rpc=cat(1,rpc,tempTestsOnly{jj,33});
     opc=cat(1,opc,tempTestsOnly{jj,34});
