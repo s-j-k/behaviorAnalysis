@@ -112,6 +112,7 @@ for nbsubj=2:size(allDataTestsOnly,1)
             MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
             
             % do the IC
+            ICmr_hit(ICmr_hit==0)=NaN;
             ICsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); ICsr_hit(ICsr_hit==0)=NaN;
             ICmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); ICmp_hit(ICmp_hit==0)=NaN;
             ICsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); ICsp_hit(ICsp_hit==0)=NaN;
@@ -607,38 +608,38 @@ MGBsto_hit(MGBsto_hit==0)=NaN;
 MGBmco_hit(MGBmco_hit==0)=NaN;
 MGBsco_hit(MGBsco_hit==0)=NaN;
 
-MGBmr_fa(MGBmr_fa==0) = NaN;
-MGBsr_fa(MGBsr_fa==0) = NaN;
-MGBmp_fa(MGBmp_fa==0) = NaN;
-MGBsp_fa(MGBsp_fa==0) = NaN;
-MGBmo_fa(MGBmo_fa==0) = NaN;
-MGBso_fa(MGBso_fa==0) = NaN;
-MGBmto_fa(MGBmto_fa==0) = NaN;
-MGBsto_fa(MGBsto_fa==0) = NaN;
-MGBmco_fa(MGBmco_fa==0) = NaN;
-MGBsco_fa(MGBsco_fa==0) = NaN;
+MGBmr_fa(mgbDays) = NaN;
+MGBsr_fa(mgbDays) = NaN;
+MGBmp_fa(nbsubj,mgbDays) = NaN;
+MGBsp_fa(nbsubj,mgbDays) = NaN;
+MGBmo_fa(nbsubj,mgbDays) = NaN;
+MGBso_fa(nbsubj,mgbDays) = NaN;
+MGBmto_fa(nbsubj,mgbDays) = NaN;
+MGBsto_fa(nbsubj,mgbDays) = NaN;
+MGBmco_fa(nbsubj,mgbDays) = NaN;
+MGBsco_fa(nbsubj,mgbDays) = NaN;
 
-MGBmlr_hit(MGBmlr_hit==0) = NaN;
-MGBslr_hit(MGBslr_hit==0) = NaN;
-MGBmlp_hit(MGBmlp_hit==0) = NaN;
-MGBslp_hit(MGBslp_hit==0) = NaN;
-MGBmlo_hit(MGBmlo_hit==0) = NaN;
-MGBslo_hit(MGBslo_hit==0) = NaN;
-MGBmlto_hit(MGBmlto_hit==0) = NaN;
-MGBslto_hit(MGBslto_hit==0) = NaN;
-MGBmlco_hit(MGBmlco_hit==0) = NaN;
-MGBslco_hit(MGBslco_hit==0) = NaN;
+MGBmlr_hit(nbsubj,mgbDays) = NaN;
+MGBslr_hit(nbsubj,mgbDays) = NaN;
+MGBmlp_hit(nbsubj,mgbDays) = NaN;
+MGBslp_hit(nbsubj,mgbDays) = NaN;
+MGBmlo_hit(nbsubj,mgbDays) = NaN;
+MGBslo_hit(nbsubj,mgbDays) = NaN;
+MGBmlto_hit(nbsubj,mgbDays) = NaN;
+MGBslto_hit(nbsubj,mgbDays) = NaN;
+MGBmlco_hit(nbsubj,mgbDays) = NaN;
+MGBslco_hit(nbsubj,mgbDays) = NaN;
 
-MGBmlr_fa(MGBmlr_fa==0) = NaN;
-MGBslr_fa(MGBslr_fa==0) = NaN;
-MGBmlp_fa(MGBmlp_fa==0) = NaN;
-MGBslp_fa(MGBslp_fa==0) = NaN;
-MGBmlo_fa(MGBmlo_fa==0) = NaN;
-MGBslo_fa(MGBslo_fa==0) = NaN;
-MGBmlto_fa(MGBmlto_fa==0) = NaN;
-MGBslto_fa(MGBslto_fa==0) = NaN;
-MGBmlco_fa(MGBmlco_fa==0) = NaN;
-MGBslco_fa(MGBslco_fa==0) = NaN;
+MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
+MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
+MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
+MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
+MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
+MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
+MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
+MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
+MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
+MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays); 
 
 ICmr_hit(ICmr_hit==0)=NaN;
 ICsr_hit(ICsr_hit==0)=NaN;
@@ -896,7 +897,7 @@ end
 close all
 % LICK RATE AND LATENCY, AVERAGED ACROSS ANIMALS
 lickFig=figure(jj+103); 
-for jj=2:size(mgbTempTestsOnly,1)-1
+for jj=2:size(allDataTestsOnly,1)-1
     hitLickRate(jj-1)=nanmean(MGBmr_hit(jj,:));
     ohitLickRate(jj-1)=nanmean(MGBmo_hit(jj,:));
     faLickRate(jj-1)=nanmean(MGBmr_fa(jj,:));
@@ -955,17 +956,16 @@ ylabel('mean lick latency');
 title(['By Animal MGB Choice']);
 xticklabels({'hit', 'hit','fa','fa'});
 
-
-icIdx=[3,5,6,7];
-for jj=1:length(icIdx)
-    hitLickRate(jj)=nanmean(ICmr_hit(icIdx(jj),:));
-    ohitLickRate(jj)=nanmean(ICmo_hit(icIdx(jj),:));
-    faLickRate(jj)=nanmean(ICmr_fa(icIdx(jj),:));
-    ofaLickRate(jj)=nanmean(ICmo_fa(icIdx(jj),:));
-    othitLickRate(jj)=nanmean(ICmto_hit(icIdx(jj),:));
-    otfaLickRate(jj)=nanmean(ICmto_fa(icIdx(jj),:));
-    ochitLickRate(jj)=nanmean(ICmco_hit(icIdx(jj),:));
-    ocfaLickRate(jj)=nanmean(ICmco_fa(icIdx(jj),:));
+for jj=2:size(allDataTestsOnly,1)-1
+    
+    hitLickRate(jj-1)=nanmean(ICmr_hit(jj,:));
+    ohitLickRate(jj-1)=nanmean(ICmo_hit(jj,:));
+    faLickRate(jj-1)=nanmean(ICmr_fa(jj,:));
+    ofaLickRate(jj-1)=nanmean(ICmo_fa(jj,:));
+    othitLickRate(jj-1)=nanmean(ICmto_hit(jj,:));
+    otfaLickRate(jj-1)=nanmean(ICmto_fa(jj,:));
+    ochitLickRate(jj-1)=nanmean(ICmco_hit(jj,:));
+    ocfaLickRate(jj-1)=nanmean(ICmco_fa(jj,:));
 end
 
 subplot(2,3,4); % full trial IC
@@ -1000,7 +1000,7 @@ ylabel('mean lick latency');
 title(['By Animal IC Tone']);
 xticklabels({'hit', 'hit','fa','fa'});
 
-subplot(2,3,6); % choice IC
+subplot(2,3,6); % choice MGB
 lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
 lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(MGBsr_hit(jj,:)) nanmean(MGBsco_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBsco_fa(jj,:))];
@@ -1021,7 +1021,6 @@ saveas(gcf,['ByAnimal_T_MGB_IC_LickLat_Opto']);
 saveas(gcf,['ByAnimal_T_MGB_IC_LickLat_Opto.png']);
 
 % RATE
-% need to edit this part! 10/18/24
 lickFigl=figure(jj+13); 
 subplot(2,3,1); % full trial MGB
 lickbarL=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlo_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlo_fa(jj,:))]); hold on;

@@ -9,8 +9,8 @@ for jj=2:size(mgbTempTestsOnly,1)
     rfatemp=mgbTempTestsOnly{jj,11};
     ohittemp=mgbTempTestsOnly{jj,12};
     ofatemp=mgbTempTestsOnly{jj,13};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
+    rhittemp(isnan(ohittemp))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -41,8 +41,8 @@ for jj=2:size(mgbTempTestsOnly,1)
     rfatemp=mgbTempTestsOnly{jj,11};
     ohittemp=mgbTempTestsOnly{jj,14};
     ofatemp=mgbTempTestsOnly{jj,15};
-    rhittemp(isnan(ohit))=nan;
-    rfatemp(isnan(ofa))=nan;
+    rhittemp(isnan(ohittemp))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -209,9 +209,9 @@ for jj=2:size(allDataCtlOnly,1)
     rfatemp=allDataCtlOnly{jj,11};
     ohittemp=allDataCtlOnly{jj,12};
     ofatemp=allDataCtlOnly{jj,13};
-    rhittemp(isnan(ohit))=nan;
+    rhittemp(isnan(ohittemp))=nan;
     rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -232,7 +232,7 @@ scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('rate');
-title(['By Animal MGB Full Trial Inactivation']);
+title(['By Session MGB Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
@@ -242,9 +242,9 @@ for jj=2:size(allDataCtlOnly,1)
     rfatemp=allDataCtlOnly{jj,11};
     ohittemp=allDataCtlOnly{jj,14};
     ofatemp=allDataCtlOnly{jj,15};
-    rhittemp(isnan(ohit))=nan;
+    rhittemp(isnan(ohittemp))=nan;
     rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -275,9 +275,9 @@ for jj=2:size(allDataCtlOnly,1)
     rfatemp=allDataCtlOnly{jj,11};
     ohittemp=allDataCtlOnly{jj,16};
     ofatemp=allDataCtlOnly{jj,17};
-    rhittemp(isnan(ohit))=nan;
+    rhittemp(isnan(ohittemp))=nan;
     rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -309,9 +309,9 @@ for jj=2:size(allDataCtlOnly,1)
     rfatemp=allDataCtlOnly{jj,19};
     ohittemp=allDataCtlOnly{jj,20};
     ofatemp=allDataCtlOnly{jj,21};
-    rhittemp(isnan(ohit))=nan;
+    rhittemp(isnan(ohittemp))=nan;
     rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -332,7 +332,7 @@ scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('rate');
-title(['By Animal IC Full Trial Inactivation']);
+title(['By Session IC Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
@@ -342,9 +342,9 @@ for jj=2:size(allDataCtlOnly,1)
     rfatemp=allDataCtlOnly{jj,19};
     ohittemp=allDataCtlOnly{jj,22};
     ofatemp=allDataCtlOnly{jj,23};
-    rhittemp(isnan(ohit))=nan;
+    rhittemp(isnan(ohittemp))=nan;
     rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
@@ -375,9 +375,9 @@ for jj=2:size(allDataCtlOnly,1)
     rfatemp=allDataCtlOnly{jj,19};
     ohittemp=allDataCtlOnly{jj,24};
     ofatemp=allDataCtlOnly{jj,25};
-    rhittemp(isnan(ohit))=nan;
+    rhittemp(isnan(ohittemp))=nan;
     rhittemp(rhittemp==0)=nan;
-    rfatemp(isnan(ofa))=nan;
+    rfatemp(isnan(ofatemp))=nan;
     rhit=cat(1,rhit,rhittemp);
     rfa=cat(1,rfa,rfatemp);
     ohit=cat(1,ohit,ohittemp);
