@@ -743,7 +743,7 @@ allDataTestsOnly{1,44}='IC Difference PC Choice';
 % by animal
 diffPcOptoAn(allDataTestsOnly,optocolor);
 
-%% per animal
+%% Differences per animal
  % have not updated this yet with the new matrices
 ff=2:4;
 for ff=2:4
@@ -775,3 +775,10 @@ end
 %% make plot to compare lick latency, for each animal and across animals 
 lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,reinfcolor,optocolor)
 
+%% AC Expert Data
+cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials
+expertACSummaryData=load('O:\sjk\Behavior\AC9010Expert\summary_90optoexpert_day.mat'); 
+expertACSummaryData=expertACSummaryData.summary_data;
+expertACRawData=load('O:\sjk\Behavior\AC9010Expert\summary_90optoexpert_lickraster.mat');
+
+plotACExpertData(expertACSummaryData);
