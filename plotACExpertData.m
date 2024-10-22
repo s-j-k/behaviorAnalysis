@@ -18,11 +18,14 @@ ohitRate=expertACSummaryData{7,3};
 rfaRate=expertACSummaryData{8,2};
 ofaRate=expertACSummaryData{8,3};
 
+% these variables are for all of the data
+% need to separate out just the AC opto days, then average across animal
+% then also average across session
 
 
 subplot(2,2,1)
 ppp=bar([nanmean(rpc) nanmean(opc)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;];
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor;];
 scatter(repmat(ppp(1).XEndPoints(1),size(rpc,2),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(ppp(1).XEndPoints(2),size(opc,2),2), ...
