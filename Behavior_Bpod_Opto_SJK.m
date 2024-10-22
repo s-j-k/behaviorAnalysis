@@ -32,6 +32,13 @@ switch cohort
     subjlist={'sk190','sk191','sk192','sk193','sk194','sk195','sk196','sk197'}; %GTACR
     explist=[2 2 1 1 1 1 1 1];
     
+    case 6
+    pathsave='O:\sjk\Behavior\MGBIC_6\';
+%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
+    subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
+    explist=[1 1 1 1 2 1 1 1];    
+   
+    
     otherwise
         disp('Cohort not found');
       
@@ -623,19 +630,21 @@ for nbsubj = 1:nSubj % through animals
     else
     end
     
-if nbsubj==1
-    optoplot=1;
-elseif nbsubj==2
-    optoplot=1;
-elseif nbsubj==5
-    optoplot=1;
-elseif nbsubj==6
-    optoplot=1; 
-elseif nbsubj==7
-    optoplot=1; 
-else
-    optoplot=0;
-end
+%% TO PLOT OPTO
+% if nbsubj==1
+%     optoplot=1;
+% elseif nbsubj==2
+%     optoplot=1;
+% elseif nbsubj==5
+%     optoplot=1;
+% elseif nbsubj==6
+%     optoplot=1; 
+% elseif nbsubj==7
+%     optoplot=1; 
+% else
+%     optoplot=0;
+% end
+optoplot=0;
 
 % bar graphs for opto
 if optoplot==1 % now make bar graphs, averaged, for all conditions 
@@ -657,7 +666,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 %             mgbDays = [1 1 0 0 1 1 0 1 1 1];mgbDays=logical(mgbDays);
 %             icDays = [0 0 1 1 0 0 1 0 0 0];icDays=logical(icDays);
 %             expRange=1:8; % Cohort 1
-%         elseif nbsubj==5
+%         elseif nbsubj==5 % sk163
 %             mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
 %             icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
 %             expRange=1:8; % Cohort 1
