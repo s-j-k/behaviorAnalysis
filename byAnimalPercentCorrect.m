@@ -9,6 +9,7 @@ function [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnim
 % optocolor3=[181/255 216/255 255/255];
 
 mgbTempTestsOnly(1:4,:)=allDataTestsOnly(1:4,:); 
+mgbTempTestsOnly(5,:)=allDataTestsOnly(8,:);
 % discount sk194, fiber missing from right side
 % for 194-196, the height of the implant over the MGB (which connects to
 % the patch cord) was too short, so the transmittance was poor

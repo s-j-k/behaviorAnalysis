@@ -3,21 +3,18 @@
 cohort=5;
 Behavior_Bpod_Opto_SJK(cohort)
 %% now load the data for each cohort and make one big file called allCohorts
-cohortRange=1:5;
+cohortRange=1:6;
 allCohorts=loadAllOptoCohorts(cohortRange);
 
-condition=[0 0 1 0 1 0 1 0 1 ...
-    0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
-    0 2 0 1 0 1]; % 1 is ctl, 2 is test
-testIdx=find(condition==2);
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 
-% for each animal, record whether it's a test or ctl 
+% for each animal, record whether it's a test or ctl  % 1 is ctl, 2 is test
 condition=[0 0 1 0 1 0 1 0 1 ...
     0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
     0 2 0 1 0 1 0 1 0 1 0 1 0 ... 
-    1 0 1 0 1 0 2 0 2 0 2]; % cohort 5 last row
+    1 0 1 0 1 0 2 0 2 0 2 0 ...
+    2 0 2 0 2 0 2 0 1 0 2 0]; % cohort 5 last row
 
 testIdx=find(condition==2);
 allDataTestsOnly=allCohorts(1,:);

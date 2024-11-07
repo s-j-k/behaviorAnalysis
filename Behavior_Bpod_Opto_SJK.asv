@@ -38,10 +38,7 @@ switch cohort
     subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
     explist=[1 1 1 1 2 1 1 1];    
    
-    case 0
-    pathsave='O:\sjk\Mads\cohort1\';
-    subjlist={'MR001','MR002','MR003'};
-    explist={2 2 2};
+    
     otherwise
         disp('Cohort not found');
       
@@ -128,9 +125,8 @@ for nbsubj = 1:nSubj % through animals
 %     end
 %     subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\'];
 %     subjPath = [path subj '\GNG_MultiProbOpto_SJK\Session Data\'];
+%     subjPath = [path subj '\GNG_MultiProbOptoChoice_SJK\Session Data\'];
     subjPath = [path subj '\GNG_MultiProbOptoChoice_SJK\Session Data\'];
-%     subjPath = [path subj '\LickingGNG\Session Data\'];
-
     files = dir([subjPath '*.mat']); 
     nFiles = length(files);
     if nFiles == 0; end
@@ -259,7 +255,7 @@ for nbsubj = 1:nSubj % through animals
         matrix = [matrix;tempMat];
     end
     conditionNum = 18; % this is 14 when there is only one type of opto condition, but 18 if there are 3 oopto conditions
-    ndays = max(matrix(:,SESS)); % if this line throws an error check the protocol path, lines 120-130-ish
+    ndays = max(matrix(:,SESS));
     rates = nan(ndays,conditionNum);
     
     nctxt = nan(ndays,conditionNum);

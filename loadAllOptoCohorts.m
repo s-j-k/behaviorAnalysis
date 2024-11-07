@@ -22,6 +22,10 @@ function allCohorts = loadAllOptoCohorts(cohortRange)
                 cd('O:\sjk\Behavior\MGBIC_5')
                 load('summaryData.mat');
                 cohort5=optomeanMat;
+        elseif cohortRange(ii)==6
+                cd('O:\sjk\Behavior\MGBIC_6')
+                load('summaryData.mat');
+                cohort6=optomeanMat;
                 
         else disp('Cohort not found')
             
@@ -42,12 +46,13 @@ function allCohorts = loadAllOptoCohorts(cohortRange)
     cohort2(1,27)={'Rates Variable Placeholder'};
     cohort3(:,28)=[];
     cohort2(1,:)=[];cohort3(1,:)=[];cohort4(1,:)=[];cohort5(1,:)=[];
-    allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5);
+    cohort6(1,:)=[];
+    allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5, cohort6);
     allCohorts(26:27,:)=[]; 
     allCohorts(28:31,:)=[]; 
     allCohorts(30:33,:)=[];
     allCohorts(36:39,:)=[];
-    save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5');
+    save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5','cohort6');
     cd('O:\sjk\Figures\MGB IC Opto')
     clear cohort1 cohort2 cohort3 cohort4 cohort5 optomeanMat
 end
