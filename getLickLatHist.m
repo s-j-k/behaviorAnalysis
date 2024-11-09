@@ -1,5 +1,6 @@
 function getLickLatHist(matrix,nbsubj,subjlist,expertdays)
     SESS=1;CTXT=2;OUTCOME=4;LICKL=8;
+    expertHitLicks=[];
     for ll=1:length(expertdays)
         expertHitLicks1=(matrix(matrix(:,SESS)==expertdays(ll) & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL));
         expertHitLicks=[expertHitLicks;expertHitLicks1];
