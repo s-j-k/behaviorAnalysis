@@ -1,4 +1,4 @@
-function Behavior_Bpod_Opto_SJK_Dead(cohort)
+function Behavior_Opto_Dead(cohort)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % 90-10 AC SILENCING
@@ -22,10 +22,6 @@ switch cohort
         disp('Cohort not found');
       
 end
-
-% subjlist = {'SK49','SK50','SK51','SK52','SK53','SK54','SK55','SK56'};
-% explist = [1 1 1 1 1 2 2 2]; % 1 = test, 2 = ctl
-% pathsave='Z:\su\DATA\behaviorData\opto\cohort2\';
 
 expnames = {'TEST', 'CTL'};
 path=pathsave;
@@ -174,8 +170,8 @@ for nbsubj = 1:nSubj % through animals
                     tempMat(j,LICKR) = sum(l > tempMat(j,TONE_T)+0.1 &  l < tempMat(j,TONE_T)+0.1+lickWindow)/lickWindow;
                 end
             end                
-            if tempMat(j,CTXT) == 1 % opto
-                if ~isnan(SessionData.RawEvents.Trial{1,j}.States.DrinkingLightON)
+            if tempMat(j,CTXT) == 1 % opto Fifth Dead
+                if ~isnan(SessionData.RawEvents.Trial{1,j}.States.Drinking)
                     tempMat(j,OUTCOME) = 1; tempMat(j,TONE) = 1;
                 elseif ~isnan(SessionData.RawEvents.Trial{1,j}.States.Miss)
                     tempMat(j,OUTCOME) = 2; tempMat(j,TONE) = 1; 
@@ -208,7 +204,7 @@ for nbsubj = 1:nSubj % through animals
                         tempMat(j,OUTCOME) = 4; tempMat(j,TONE) = 0;
                     end
                 end
-            elseif tempMat(j,CTXT) == 5 % tone
+            elseif tempMat(j,CTXT) == 5 % Opto Second Dead
                 if ~isnan(SessionData.RawEvents.Trial{1,j}.States.OpenValve)
                     tempMat(j,OUTCOME) = 1; tempMat(j,TONE) = 1;
                 elseif ~isnan(SessionData.RawEvents.Trial{1,j}.States.Miss)

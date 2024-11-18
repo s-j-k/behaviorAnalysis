@@ -1,4 +1,4 @@
-function Behavior_Bpod_Opto_SJK(cohort)
+function Behavior_Opto_Dead(cohort)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % 90-10 AC SILENCING
@@ -6,47 +6,22 @@ function Behavior_Bpod_Opto_SJK(cohort)
 %mGB IC opto cohort
 
 switch cohort
-    case 1
-    subjlist={'sk158','sk160','sk161', 'sk162','sk163','sk164'}; %PV Cre
-    explist=[2 2 2 2 1 1]; % 2 is ctl
-    pathsave='O:\sjk\Behavior\optoMGBIC_1\';
-    
-    case 2
-    subjlist={'sk170','sk175'}; %GTACR
-    explist=[2 1];
-    pathsave='O:\sjk\Behavior\OptoMGBIC_2\';
-
-    case 3
-    pathsave='O:\sjk\Behavior\optoMGBIC_3\';
-    subjlist={'sk176','sk177','sk178','sk179'}; %GTACR
-    explist=[1 2 1 2];
-    
-    case 4
-    pathsave='O:\sjk\Behavior\MGBIC_4\';
-    subjlist={'sk182','sk183','sk184','sk185','sk186','sk187','sk188','sk189'}; %GTACR
-    explist=[1 2 1 1 1 1 1 2];
-    
-    case 5
-    pathsave='O:\sjk\Behavior\MGBIC_5\';
+    case 0
+    pathsave='O:\sjk\Behavior\MGBIC_6_sk203\';
 %     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
-    subjlist={'sk190','sk191','sk192','sk193','sk194','sk195','sk196','sk197'}; %GTACR
-    explist=[2 2 1 1 1 1 1 1];
+    subjlist={'sk203'}; %GTACR
+    explist=[1];  
     
-    case 6
-    pathsave='O:\sjk\Behavior\MGBIC_6\';
-%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
-    subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
-    explist=[1 1 1 1 2 1 1 1];    
+%     case 6
+%     pathsave='O:\sjk\Behavior\MGBIC_6\';
+% %     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
+%     subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
+%     explist=[1 1 1 1 2 1 1 1];    
    
-    
     otherwise
         disp('Cohort not found');
       
 end
-
-% subjlist = {'SK49','SK50','SK51','SK52','SK53','SK54','SK55','SK56'};
-% explist = [1 1 1 1 1 2 2 2]; % 1 = test, 2 = ctl
-% pathsave='Z:\su\DATA\behaviorData\opto\cohort2\';
 
 expnames = {'TEST', 'CTL'};
 path=pathsave;
@@ -124,9 +99,10 @@ for nbsubj = 1:nSubj % through animals
 %         subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine\Session Data\'];
 %     end
 %     subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\'];
-%     subjPath = [path subj '\GNG_MultiProbOpto_SJK\Session Data\'];
+    subjPath = [path subj '\GNG_OptoDead3Choice_SJK\Session Data\'];
 %     subjPath = [path subj '\GNG_MultiProbOptoChoice_SJK\Session Data\'];
-    subjPath = [path subj '\GNG_MultiProbOptoChoice_SJK\Session Data\'];
+%     subjPath = [path subj '\LickingGNG\Session Data\'];
+
     files = dir([subjPath '*.mat']); 
     nFiles = length(files);
     if nFiles == 0; end
@@ -194,12 +170,12 @@ for nbsubj = 1:nSubj % through animals
                     tempMat(j,LICKR) = sum(l > tempMat(j,TONE_T)+0.1 &  l < tempMat(j,TONE_T)+0.1+lickWindow)/lickWindow;
                 end
             end                
-            if tempMat(j,CTXT) == 1 % opto
-                if ~isnan(SessionData.RawEvents.Trial{1,j}.States.DrinkingLightON)
+            if tempMat(j,CTXT) == 1 % opto Fifth Dead
+                if ~isnan(SessionData.RawEvents.Trial{1,j}.States.Drinking)
                     tempMat(j,OUTCOME) = 1; tempMat(j,TONE) = 1;
                 elseif ~isnan(SessionData.RawEvents.Trial{1,j}.States.Miss)
                     tempMat(j,OUTCOME) = 2; tempMat(j,TONE) = 1; 
-                elseif ~isnan(SessionData.RawEvents.Trial{1,j}.States.PunishLightON)
+                elseif ~isnan(SessionData.RawEvents.Trial{1,j}.States.Punish)
                     tempMat(j,OUTCOME) = 3; tempMat(j,TONE) = 2; 
                 elseif ~isnan(SessionData.RawEvents.Trial{1,j}.States.CorrectReject) 
                     tempMat(j,OUTCOME) = 4; tempMat(j,TONE) = 2;
@@ -228,7 +204,7 @@ for nbsubj = 1:nSubj % through animals
                         tempMat(j,OUTCOME) = 4; tempMat(j,TONE) = 0;
                     end
                 end
-            elseif tempMat(j,CTXT) == 5 % tone
+            elseif tempMat(j,CTXT) == 5 % Opto Second Dead
                 if ~isnan(SessionData.RawEvents.Trial{1,j}.States.OpenValve)
                     tempMat(j,OUTCOME) = 1; tempMat(j,TONE) = 1;
                 elseif ~isnan(SessionData.RawEvents.Trial{1,j}.States.Miss)
@@ -255,7 +231,7 @@ for nbsubj = 1:nSubj % through animals
         matrix = [matrix;tempMat];
     end
     conditionNum = 18; % this is 14 when there is only one type of opto condition, but 18 if there are 3 oopto conditions
-    ndays = max(matrix(:,SESS));
+    ndays = max(matrix(:,SESS)); % if this line throws an error check the protocol path, lines 120-130-ish
     rates = nan(ndays,conditionNum);
     
     nctxt = nan(ndays,conditionNum);
@@ -633,20 +609,11 @@ for nbsubj = 1:nSubj % through animals
     end
     
 %% TO PLOT OPTO
-if nbsubj==6
+if nbsubj==1
     optoplot=1;
-% elseif nbsubj==2
-%     optoplot=1;
-% elseif nbsubj==5
-%     optoplot=1;
-% elseif nbsubj==6
-%     optoplot=1; 
-% elseif nbsubj==7
-%     optoplot=1; 
 else
     optoplot=0;
 end
-% optoplot=0;
 
 % bar graphs for opto
 if optoplot==1 % now make bar graphs, averaged, for all conditions 
@@ -663,175 +630,15 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 
     eeeFig=figure('Position', [10 10 725 575]);hold on;
 
-%     if contains(path,'1')==1        
-%         if nbsubj ==4 % cohort 1
-%             mgbDays = [1 1 0 0 1 1 0 1 1 1];mgbDays=logical(mgbDays);
-%             icDays = [0 0 1 1 0 0 1 0 0 0];icDays=logical(icDays);
-%             expRange=1:8; % Cohort 1
-%         elseif nbsubj==5 % sk163
-%             mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
-%             icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
-%             expRange=1:8; % Cohort 1
-%         else
-%             mgbDays = [1 1 0 0 1 1 0 0 1 1 1];mgbDays=logical(mgbDays);
-%             icDays = [0 0 1 1 0 0 1 1 0 0 0]; icDays=logical(icDays);
-%             expRange=1:8; % Cohort 1
-%         end
-%     elseif contains(path,'2')==1
-%         if nbsubj==1
-%             expRange=25:32; % cohort 2
-%             mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-%                 1 1 0 0 1 1 0 0 ...
-%                 0 0 0 ];mgbDays=logical(mgbDays);
-%             icDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 1 1 0 0 1 1 ...
-%                 0 0 0];icDays=logical(icDays);
-%         elseif nbsubj==2
-%             expRange=22:32; % cohort 2
-%             mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 0 1 1 0 0 1 1 0 0 ...
-%                 0 0 0];mgbDays=logical(mgbDays);
-%             icDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-%                 1 1 1 0 0 1 1 0 0 1 1 ...
-%                 0 0 0];icDays=logical(icDays);
-%         end
-%     elseif contains(path,'3')==1
-%         if nbsubj==1 %sk176
-%             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 0 0 0 0 0 0 0 ...
-%                 1 0 1 1 0 1 1 0 1 0 0 1];
-%             mgbDays=logical(mgbDays);
-%             icDays=[0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 0 0 0 0 0 0 0 ... 
-%                 0 1 0 0 1 0 0 1 0 1 1 0];
-%             icDays=logical(icDays);
-%             expRange=20:length(mgbDays); % cohort 3 sk177
-%         elseif nbsubj==2 %sk177
-%             mgbDays=[0 0 0 0 0 0 0 0 1 1 0 0 0 1 1 0 0];
-%             mgbDays=logical(mgbDays);
-%             icDays=[0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 1 1];
-%             icDays=logical(icDays);
-%             expRange=8:17; % cohort 3 sk177
-%         elseif nbsubj==3 %sk178
-%             mgbDays= [0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 0 0 0 0 0 0 0];
-%             mgbDays=logical(mgbDays);
-%             icDays=[0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 0 0 0 0 0 0 0];
-%             icDays=logical(icDays);
-%             expRange=15:17;
-%         elseif nbsubj==4 %sk179
-%             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 0 0 1 1 1 0 0 1 0 0];
-%             mgbDays=logical(mgbDays);
-%             icDays = [0 0 0 0 0 0 0 0 0 0 ...
-%                 0 0 0 0 0 0 0 1 1 0 1 1];
-%             icDays=logical(icDays);
-%             expRange=15:22;  % cohort 3 sk179
-%         end
-    if contains(path,'4')==1
-        if nbsubj==2 %sk183
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 1 1 0 0 1 1 0 0];
+    if contains(path,'6')==1
+        if nbsubj==1 %sk203
+            mgbDays=[1 1];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 1 1 0 0 1 1];
+            icDays=[0 0];
             icDays=logical(icDays);
-            expRange=13:length(mgbDays); % cohort 3 sk183
-        elseif nbsubj==5
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 1];
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0];
-            icDays=logical(icDays);
-            expRange=length(mgbDays); % cohort 3 sk186   
-        elseif nbsubj==8
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 1 1 0 0 1 1 1 0];
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 1 1 0 0 0 1];
-            icDays=logical(icDays);
-            expRange=13:length(mgbDays); % cohort 3 sk189        
-        end
-    elseif contains(path,'5')==1
-        if nbsubj==1 %sk190 
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 ...
-                0 0 0 1 1];
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 1 ...
-                1 0 0 0 0]; % as of 10/3, need to update
-            icDays=logical(icDays);
-            expRange=21:length(mgbDays);
-        elseif nbsubj==2 %sk191
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 1 1 1 1 0 0 0 ...
-                0];
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 1 1 0 0 0 0 1 1 0 ...
-                0]; % mgb, ic catch, lob
-            icDays=logical(icDays);
-            expRange=22:length(mgbDays);
-        elseif nbsubj==5 % 194 good
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 1 1 0 0 1 1 0 ...
-                0 1 0 0 0 0 0]; % catch ic, catch ic, catch mgb, lob
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 1 1 0 0 1 1 0 0 1 ...
-                1 0 1 1 0 0 0]; % catch ic, catch ic, catch mgb, lob
-            icDays=logical(icDays);
-            expRange=12:length(mgbDays);
-        elseif nbsubj==6 % 195
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 1 1 0 0 0 ...
-                0 1 0 0]; % until 10/3
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 1 1 0 0 1 1 1 ...
-                1 0 1 1]; % catch ic, catch ic, catch mgb, lob
-            icDays=logical(icDays);
-            expRange=24:length(mgbDays);  
-        elseif nbsubj==7 %sk196 good 
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 1 0 0 1 1 ... 
-                1 0]; % missing day 9/24 aka d26
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ...
-                0 0 1 1 0 1 1 0 0 ...
-                0 0];
-            icDays=logical(icDays);
-            expRange=23:length(mgbDays);        
-        end
-        
-    elseif contains(path,'6')==1
-        if nbsubj==6 %sk203, started on d9
-            mgbDays=[0 0 0 0 0 0 0 0 ...
-                1 1 0 0 0 1 1 0 0];%...
-%                 1 0 0]; % catch MGB, catch IC, LOB
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 ...
-                0 0 0 1 1 0 0 1 1];%...
-%                 0 1 0]; % catch MGB, catch IC, LOB
-            icDays=logical(icDays);
-            expRange=9:length(mgbDays);
+            expRange=1:length(mgbDays);
         else
         end
-        
     end
     
     mgbDays=mgbDays(expRange);
@@ -1053,6 +860,8 @@ end
 
    %% now make plots averaged across test and ctl for MGB
    ctl = find(explist==2);
+   reinfcolor= [0.4,0.4,0.4];
+    optocolor=[102/255 178/255 255/255];
 %    ctl=ctl(2:4);
    test = find(explist==1);
    ggg=figure;

@@ -870,12 +870,12 @@ switch TrialTypes(currentTrial) % Determine trial-specific state matrix fields
         Stimulus = 2; % NoGoTone
         INResponse = 'Punish';
         NOResponse = 'CorrectReject'; 
-    case 5 % Dead Third Opto-GO trial
+    case 5 % Dead Fifth Opto-GO trial
         Stimulus = 1; % GoTone
         INResponse = 'OpenValve';
         NOResponse = 'Miss';
         LightON = 1;
-    case 6 % Dead Third Opto-No-Go trial
+    case 6 % Dead Fifth Opto-No-Go trial
         Stimulus = 2; %NoGoTone
         INResponse = 'Punish';
         NOResponse = 'CorrectReject'; 
