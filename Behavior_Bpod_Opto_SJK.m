@@ -457,7 +457,8 @@ for nbsubj = 1:nSubj % through animals
         
     end
     expertdays=[];
-    getLickLatHist(matrix,nbsubj,subjlist,expertdays)
+    % lick latency histogram at only expert performance
+%     getLickLatHist(matrix,nbsubj,subjlist,expertdays)
     MAT{nbsubj,1} = matrix;
 %     %%
     if plot_indiv_data
@@ -553,7 +554,7 @@ for nbsubj = 1:nSubj % through animals
         if plot_lick_psth
             fig=figure;hold on;
             for d=1:ndays
-                subplot(5,6,d);hold on;
+                subplot(8,8,d);hold on;
                 plot(bins,lickhistr_hit(d,:),'k');
                 plot(bins,lickhistr_fa(d,:),'k:');
                 plot(bins,lickhisto_hit(d,:),'b');
@@ -571,7 +572,7 @@ for nbsubj = 1:nSubj % through animals
 
             fig=figure;hold on;
             for d=1:ndays
-                subplot(5,6,d);hold on;
+                subplot(8,8,d);hold on;
                 plot(bins,lickhistp_hit(d,:),'k');
                 plot(bins,lickhistp_fa(d,:),'k:');
                 PlotHVLines(0,'v','k');
