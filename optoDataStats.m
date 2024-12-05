@@ -14,7 +14,10 @@ condition=[0 0 1 0 1 0 1 0 1 ...
     0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
     0 2 0 1 0 1 0 1 0 1 0 1 0 ... 
     1 0 1 0 1 0 2 0 2 0 2 0 ...
-    2 0 2 0 2 0 2 0 1 0 2 0]; % cohort 5 last row
+    2 0 2 0 2 0 2 0 1 0 2 0 ... %cohort 5
+    2 0 0 0 ... % cohort 6 198, 199
+    0 0 0 0 0 0 ...  % 200, 201, 202 who did not learn
+    2 0 2 0 2 0]; % 203, 204, 205 
 
 testIdx=find(condition==2);
 allDataTestsOnly=allCohorts(1,:);

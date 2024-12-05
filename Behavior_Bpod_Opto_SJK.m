@@ -150,13 +150,13 @@ for nbsubj = 1:nSubj % through animals
         cd(subjPath)
         matfiles2 = dir('*.mat'); %finds all GNG sessions for the selected animal
 
-        %to make sure files with less than 10 trials are not taken into
+        %to make sure files with less than 270 trials are not taken into
         %consideration
         for maf=1:length(matfiles2)
             clear namemat
             namemat=matfiles2(maf).name;
             load(namemat);
-            if SessionData.nTrials<100
+            if SessionData.nTrials<270
                 movefolder= ([subjPath 'bad']);
                 movefile(namemat, movefolder) %moves files to sessionOut folder per animal
             end
@@ -638,16 +638,16 @@ for nbsubj = 1:nSubj % through animals
     end
     
 %% TO PLOT OPTO
-if nbsubj==6
+if nbsubj==1
     optoplot=1;
 % elseif nbsubj==2
 %     optoplot=1;
 % elseif nbsubj==5
 %     optoplot=1;
-% elseif nbsubj==6
-%     optoplot=1; 
-% elseif nbsubj==7
-%     optoplot=1; 
+elseif nbsubj==6
+    optoplot=1; 
+elseif nbsubj==7
+    optoplot=1; 
 else
     optoplot=0;
 end
@@ -824,7 +824,21 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
         end
         
     elseif contains(path,'6')==1
-        if nbsubj==6 %sk203, started on d9
+        if nbsubj==1 % sk198
+            mgbDays=[0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 1 1]; %...
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0]; %...
+            icDays=logical(icDays);
+            expRange=9:length(mgbDays);
+        elseif nbsubj==6 %sk203, started on d9
             mgbDays=[0 0 0 0 0 0 0 0 ...
                 1 1 0 0 0 1 1 0 0];%...
 %                 1 0 0]; % catch MGB, catch IC, LOB
@@ -834,7 +848,25 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 %                 0 1 0]; % catch MGB, catch IC, LOB
             icDays=logical(icDays);
             expRange=9:length(mgbDays);
-        else
+        elseif nbsubj==7 %sk204, started on d26
+            mgbDays=[0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ... %15
+                0 0 0 0 0 0 0 0 0 ...
+                0 0 ... %26
+                0 0 1 1 0 1 0 1 ...
+                0 0 ...  % no opto, then ic tone
+                0]; % catch ic, catch mgb, lob
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 ...
+                0 0 ...
+                1 0 0 0 1 0 1 0 ...
+                0 1 ...
+                0]; % catch ic, catch mgb, lob
+            icDays=logical(icDays);
+            expRange=9:length(mgbDays);
+            
         end
         
     end
