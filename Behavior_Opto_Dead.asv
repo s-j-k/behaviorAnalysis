@@ -612,7 +612,7 @@ for nbsubj = 1:nSubj % through animals
     
 %% TO PLOT OPTO
 if nbsubj==1
-    optoplot=1;
+    optoplot=;
 else
     optoplot=0;
 end
