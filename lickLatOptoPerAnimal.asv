@@ -1665,7 +1665,7 @@ saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto.png']);
 lickFig1=figure(jj+108); 
 
 % latency
-clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate 
+clear hitLickRate
 hitLickRate=NaN;
 for jj=2:size(mgbTempTestsOnly,1)
     hitLickRate=cat(2,hitLickRate,MGBmr_hit(jj,:));
@@ -1680,11 +1680,11 @@ for jj=2:size(mgbTempTestsOnly,1)
     hitLickRateE(jj-1)=cat(2,hitLickRateE,MGBsr_hit(jj,:));
     ohitLickRateE(jj-1)=cat(2,ohitLickRateE,MGBso_hit(jj,:));
     faLickRateE(jj-1)=cat(2,faLickRateE,MGBsr_fa(jj,:));
-    ofaLickRateE(jj-1)=cat(2,ofaLickRateE,MGBso_fa(jj,:));
-    othitLickRateE(jj-1)=cat(2,othitLickRateE,MGBsto_hit(jj,:));
-    otfaLickRateE(jj-1)=cat(2,otfaLickRateE,MGBsto_fa(jj,:));
-    ochitLickRateE(jj-1)=cat(2,ochitLickRateE,MGBsco_hit(jj,:));
-    ocfaLickRateE(jj-1)=cat(2,ocfaLickRateE,MGBsco_fa(jj,:));
+    ofaLickRateE(jj-1)=nanmean(MGBso_fa(jj,:));
+    othitLickRateE(jj-1)=nanmean(MGBsto_hit(jj,:));
+    otfaLickRateE(jj-1)=nanmean(MGBsto_fa(jj,:));
+    ochitLickRateE(jj-1)=nanmean(MGBsco_hit(jj,:));
+    ocfaLickRateE(jj-1)=nanmean(MGBsco_fa(jj,:));
     
 end
 

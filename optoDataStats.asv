@@ -10,11 +10,11 @@ SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4;
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 
 % for each animal, record whether it's a test or ctl  % 1 is ctl, 2 is test
-condition=[0 0 1 0 1 0 1 0 1 ... %158-162
+condition=[0 0 1 0 1 0 1 0 1 ...
     0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
-    0 2 0 1 0 1 0 1 ...% 176 - 179
-    0 1 0 1 0 ... %183 - 186
+    0 2 0 1 0 1 0 1 0 1 0 1 0 ... 
     1 0 1 0 1 0 2 0 2 0 2 0 ...
+    2 0 2 0 2 0 2 0 1 0 2 0 ... %cohort 5
     2 0 0 0 ... % cohort 6 198, 199
     0 0 0 0 0 0 ...  % 200, 201, 202 who did not learn
     2 0 2 0]; % 203, 204, 205 
@@ -78,8 +78,6 @@ end
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
-reinfcolor= [0.4,0.4,0.4];
-optocolor=[102/255 178/255 255/255];
 allDataTestsOnly{1,27}='RPC MGB Full Trial';
 allDataTestsOnly{1,28}='OPC MGB Full Trial';
 allDataTestsOnly{1,29}='RPC MGB Tone Trial';
@@ -394,7 +392,7 @@ for jj=2:size(allDataCtlOnly,1) % control animals
     saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_PercentCorrect_Opto']);
     saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_PercentCorrect_Opto.png']);
 end
-close all
+
 %% make plots to compare hit and fa rate with light on vs light off
 
 for jj=2:size(allDataTestsOnly,1)
@@ -730,7 +728,7 @@ close all
 [aovMGB,statsMGB,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly);
 % close all
 aovMGB
-% aovIC
+aovIC
 
 %% compare differences in percent correct across each light off vs light on condition
 %this is by session
