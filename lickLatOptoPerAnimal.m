@@ -1511,7 +1511,7 @@ xticklabels({'hit', 'hit','fa','fa'});
 lickFig.Position(3:4)=[725 475];
 saveas(gcf,['ByAnimal_T_MGB_IC_LickLat_Opto']);
 saveas(gcf,['ByAnimal_T_MGB_IC_LickLat_Opto.png']);
-
+close all
 % RATE
 % need to edit this part! 10/18/24
 lickFigl=figure(jj+13); 
@@ -1659,14 +1659,19 @@ xticklabels({'hit', 'hit','fa','fa'});
 lickFigl.Position(3:4)=[725 475];
 saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto']);
 saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto.png']);  
-
+close all
 
 % by session
 lickFig1=figure(jj+108); 
 
 % latency
-clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate 
-hitLickRate=NaN;
+clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate ...
+    ochitLickRate ocfaLickRate hitLickRateE ohitLickRateE faLickRateE ...
+    ofaLickRateE othitLickRateE otfaLickRateE ochitLickRateE ocfaLickRateE 
+hitLickRate=NaN; ohitLickRate=NaN; faLickRate=NaN; ofaLickRate=NaN; othitLickRate=NaN;
+otfaLickRate=NaN; ochitLickRate=NaN; ocfaLickRate=NaN; hitLickRateE=NaN; ohitLickRateE=NaN;
+faLickRateE=NaN; ofaLickRateE=NaN; othitLickRateE=NaN; otfaLickRateE=NaN; ochitLickRateE=NaN;
+ocfaLickRateE=NaN; 
 for jj=2:size(mgbTempTestsOnly,1)
     hitLickRate=cat(2,hitLickRate,MGBmr_hit(jj,:));
     ohitLickRate=cat(2,ohitLickRate,MGBmo_hit(jj,:));
@@ -1677,14 +1682,14 @@ for jj=2:size(mgbTempTestsOnly,1)
     ochitLickRate=cat(2,ochitLickRate,MGBmco_hit(jj,:));
     ocfaLickRate=cat(2,ocfaLickRate,MGBmco_fa(jj,:));
     
-    hitLickRateE(jj-1)=cat(2,hitLickRateE,MGBsr_hit(jj,:));
-    ohitLickRateE(jj-1)=cat(2,ohitLickRateE,MGBso_hit(jj,:));
-    faLickRateE(jj-1)=cat(2,faLickRateE,MGBsr_fa(jj,:));
-    ofaLickRateE(jj-1)=cat(2,ofaLickRateE,MGBso_fa(jj,:));
-    othitLickRateE(jj-1)=cat(2,othitLickRateE,MGBsto_hit(jj,:));
-    otfaLickRateE(jj-1)=cat(2,otfaLickRateE,MGBsto_fa(jj,:));
-    ochitLickRateE(jj-1)=cat(2,ochitLickRateE,MGBsco_hit(jj,:));
-    ocfaLickRateE(jj-1)=cat(2,ocfaLickRateE,MGBsco_fa(jj,:));
+    hitLickRateE=cat(2,hitLickRateE,MGBsr_hit(jj,:));
+    ohitLickRateE=cat(2,ohitLickRateE,MGBso_hit(jj,:));
+    faLickRateE=cat(2,faLickRateE,MGBsr_fa(jj,:));
+    ofaLickRateE=cat(2,ofaLickRateE,MGBso_fa(jj,:));
+    othitLickRateE=cat(2,othitLickRateE,MGBsto_hit(jj,:));
+    otfaLickRateE=cat(2,otfaLickRateE,MGBsto_fa(jj,:));
+    ochitLickRateE=cat(2,ochitLickRateE,MGBsco_hit(jj,:));
+    ocfaLickRateE=cat(2,ocfaLickRateE,MGBsco_fa(jj,:));
     
 end
 
@@ -1737,26 +1742,32 @@ title(['By Animal MGB Choice']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 % for rate
-clear hitLickRate
-hitLickRate=NaN;
+clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate ...
+    ochitLickRate ocfaLickRate hitLickRateE ohitLickRateE faLickRateE ...
+    ofaLickRateE othitLickRateE otfaLickRateE ochitLickRateE ocfaLickRateE 
+hitLickRate=NaN; ohitLickRate=NaN; faLickRate=NaN; ofaLickRate=NaN; othitLickRate=NaN;
+otfaLickRate=NaN; ochitLickRate=NaN; ocfaLickRate=NaN; hitLickRateE=NaN; ohitLickRateE=NaN;
+faLickRateE=NaN; ofaLickRateE=NaN; othitLickRateE=NaN; otfaLickRateE=NaN; ochitLickRateE=NaN;
+ocfaLickRateE=NaN;
 for jj=2:size(mgbTempTestsOnly,1)
-    hitLickRate(jj-1)=nanmean(MGBmlr_hit(jj,:));
-    ohitLickRate(jj-1)=nanmean(MGBmlo_hit(jj,:));
-    faLickRate(jj-1)=nanmean(MGBmlr_fa(jj,:));
-    ofaLickRate(jj-1)=nanmean(MGBmlo_fa(jj,:));
-    othitLickRate(jj-1)=nanmean(MGBmlto_hit(jj,:));
-    otfaLickRate(jj-1)=nanmean(MGBmlto_fa(jj,:));
-    ochitLickRate(jj-1)=nanmean(MGBmlco_hit(jj,:));
-    ocfaLickRate(jj-1)=nanmean(MGBmlco_fa(jj,:));
+    hitLickRate=cat(2,hitLickRate,MGBmlr_hit(jj,:));
+    ohitLickRate=cat(2,ohitLickRate,MGBmlo_hit(jj,:));
+    faLickRate=cat(2,faLickRate,MGBmlr_fa(jj,:));
+    ofaLickRate=cat(2,ofaLickRate,MGBmlo_fa(jj,:));
+    othitLickRate=cat(2,othitLickRate,MGBmlto_hit(jj,:));
+    otfaLickRate=cat(2,otfaLickRate,MGBmlto_fa(jj,:));
+    ochitLickRate=cat(2,ochitLickRate,MGBmlco_hit(jj,:));
+    ocfaLickRate=cat(2,ocfaLickRate,MGBmlco_fa(jj,:));
     
-    hitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
-    ohitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
-    faLickRateE(jj-1)=nanmean(MGBslr_fa(jj,:));
-    ofaLickRateE(jj-1)=nanmean(MGBslo_fa(jj,:));
-    othitLickRateE(jj-1)=nanmean(MGBslto_hit(jj,:));
-    otfaLickRateE(jj-1)=nanmean(MGBslto_fa(jj,:));
-    ochitLickRateE(jj-1)=nanmean(MGBslco_hit(jj,:));
-    ocfaLickRateE(jj-1)=nanmean(MGBslco_fa(jj,:));   
+    hitLickRateE=cat(2,hitLickRateE,MGBslr_hit(jj,:));
+    ohitLickRateE=cat(2,ohitLickRateE,MGBslo_hit(jj,:));
+    faLickRateE=cat(2,faLickRateE,MGBslr_fa(jj,:));
+    ofaLickRateE=cat(2,ofaLickRateE,MGBslo_fa(jj,:));
+    othitLickRateE=cat(2,othitLickRateE,MGBslto_hit(jj,:));
+    otfaLickRateE=cat(2,otfaLickRateE,MGBslto_fa(jj,:));
+    ochitLickRateE=cat(2,ochitLickRateE,MGBslco_hit(jj,:));
+    ocfaLickRateE=cat(2,ocfaLickRateE,MGBslco_fa(jj,:));
+end
 
 subplot(2,3,4); % full trial MGB
 lickbarL=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
