@@ -419,7 +419,7 @@ for nbsubj = 1:nSubj % through subjects
 
         end
         getLickLatHist(matrix,deadProtocol,nbproto,subjlist, nbsubj) 
-        MAT{nbproto,nbproto} = matrix;
+        MAT{nbproto,1} = matrix;
 
     %% make plots summarizing performance across training
         filetype='.fig';
@@ -563,27 +563,27 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 
     % here, store the protocols and their corresponding inactivations as
     % separate columns to avoid future confusion
-    optomeanMat{nbsubj+1,1}=subjlist(nbsubj);
-    optomeanMat{nbsubj+1,2}=rates(:,1); %hit
-    optomeanMat{nbsubj+1,3}=rates(:,2); %fa
+    optomeanMat{nbsubj+nbsubj+1,1}=subjlist(nbsubj);
+    optomeanMat{nbsubj+nbsubj+1,2}=rates(:,1); %hit
+    optomeanMat{nbsubj+nbsubj+1,3}=rates(:,2); %fa
     expRange = [1,4]; % columns 17, 18
-    optomeanMat{nbsubj+1,4}=rates(expRange,17); % dead 1 hit
-    optomeanMat{nbsubj+1,5}=rates(expRange,18); % dead 1 fa
+    optomeanMat{nbsubj+nbsubj+1,4}=rates(expRange,17); % dead 1 hit
+    optomeanMat{nbsubj+nbsubj+1,5}=rates(expRange,18); % dead 1 fa
     expRange = [1,5]; % columns 15, 16
-    optomeanMat{nbsubj+1,6}=rates(expRange,15); % dead 2, hit
-    optomeanMat{nbsubj+1,7}=rates(expRange,16); % dead 2, fa
+    optomeanMat{nbsubj+nbsubj+1,6}=rates(expRange,15); % dead 2, hit
+    optomeanMat{nbsubj+nbsubj+1,7}=rates(expRange,16); % dead 2, fa
     expRange = [2,3]; % columns 5, 6
-    optomeanMat{nbsubj+1,8}=rates(expRange,5); % dead 3, hit
-    optomeanMat{nbsubj+1,9}=rates(expRange,6); % dead 3, fa
+    optomeanMat{nbsubj+nbsubj+1,8}=rates(expRange,5); % dead 3, hit
+    optomeanMat{nbsubj+nbsubj+1,9}=rates(expRange,6); % dead 3, fa
     expRange = [2,3]; % columns 15, 16
-    optomeanMat{nbsubj+1,10}=rates(expRange,15); % dead 4, hit
-    optomeanMat{nbsubj+1,11}=rates(expRange,16); % dead 4, fa
+    optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange,15); % dead 4, hit
+    optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange,16); % dead 4, fa
     expRange = [4,5]; % columns 5, 6
-    optomeanMat{nbsubj+1,12}=rates(expRange,5); % dead 5, hit
-    optomeanMat{nbsubj+1,13}=rates(expRange,6); % dead 5, fa
-    optomeanMat{nbsubj+1,13}= [
-    optomeanMat{nbproto+nbproto+1,26}=MAT{nbproto,1};
-    optomeanMat{nbproto+nbproto+1,27}=rates;
+    optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange,5); % dead 5, hit
+    optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange,6); % dead 5, fa
+    optomeanMat{nbsubj+nbsubj+1,13}= [1,4,1,5,2,3,2,3,4,5];
+    optomeanMat{nbsubj+nbsubj+1,14}=MAT;
+    optomeanMat{nbsubj+nbsubj+1,15}=rates;
 else
 end
 

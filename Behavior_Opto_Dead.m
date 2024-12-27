@@ -59,23 +59,17 @@ MAT = cell(nSubj+nProtocol,1);
 %%
 optomeanMat={};ii=2;
 optomeanMat{1,ii}='RHit'; optomeanMat{1,ii+1}='RFA';
-optomeanMat{1,ii+2}='Full Opto Hit'; optomeanMat{1,ii+3}='Full Opto FA';
-optomeanMat{1,ii+4}='Tone Opto Hit'; optomeanMat{1,ii+5}='Tone Opto FA';
-optomeanMat{1,ii+6}='Choice Opto Hit'; optomeanMat{1,ii+7}='Choice Opto FA';
-optomeanMat{1,ii+8}= 'MGB R Hit';optomeanMat{1,ii+9}='MGB R FA';
-optomeanMat{1,ii+10}='MGB Full O Hit'; optomeanMat{1,ii+11}='MGB Full O FA';
-optomeanMat{1,ii+12}='MGB Tone Opto Hit';  optomeanMat{1,ii+13}='MGB Tone Opto FA';
-optomeanMat{1,ii+14}='MGB Choice Opto Hit'; optomeanMat{1,ii+15}='MGB Choice Opto FA';
-optomeanMat{1,ii+16}= 'IC R Hit'; optomeanMat{1,ii+17}='IC R FA';
-optomeanMat{1,ii+18}='IC Full Opto Hit';optomeanMat{1,ii+19}='IC Full Opto FA';
-optomeanMat{1,ii+20}='IC Tone Opto Hit';  optomeanMat{1,ii+21}='IC Tone Opto FA';
-optomeanMat{1,ii+22}='IC Choice Opto Hit'; optomeanMat{1,ii+23}='IC Choice Opto FA';
-optomeanMat{1,ii+24}='Matrix Variable';optomeanMat{1,ii+25}='Rates Variable';
+optomeanMat{1,ii+2}='Dead 1 Hit'; optomeanMat{1,ii+3}='Dead 1 FA';
+optomeanMat{1,ii+4}='Dead 2 Hit'; optomeanMat{1,ii+5}='Dead 2 FA';
+optomeanMat{1,ii+6}='Dead 3 Hit'; optomeanMat{1,ii+7}='Dead 3 FA';
+optomeanMat{1,ii+8}= 'Dead 4 Hit';optomeanMat{1,ii+9}='Dead 4 FA';
+optomeanMat{1,ii+10}='Dead 5 Hit'; optomeanMat{1,ii+11}='Dead 5 FA';
+optomeanMat{1,ii+12}='Condition Order relative to protocol';
+optomeanMat{1,ii+13}='Matrix Variable';optomeanMat{1,ii+14}='Rates Variable';
 
 for nbsubj = 1:nSubj % through subjects
     % Localize data
     subj = subjlist{nbsubj}; 
-  
     if str2double(subj(end-2:end))>100
         subj = lower(subj);
     end  
@@ -97,7 +91,6 @@ for nbsubj = 1:nSubj % through subjects
         files = dir([subjPath '*.mat']); 
         nFiles = length(files);
         if nFiles == 0; end
-
         filenames = cell(nFiles,1); 
         licks = cell(nFiles,1);
         matrix = []; 
@@ -105,14 +98,12 @@ for nbsubj = 1:nSubj % through subjects
         START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
         toremove = 0;
         for i=1:nFiles
-
             if ~exist([subjPath 'bad']) % TRYING TO remove files that are too
     %         small so I don't do it manually...
                 mkdir(subjPath, 'bad') %makes directory to add here files that have less than 10 trials to be excluded from analysis
             end 
             cd(subjPath)
             matfiles2 = dir('*.mat'); %finds all GNG sessions for the selected animal
-
             %to make sure files with less than 10 trials are not taken into
             %consideration
             for maf=1:length(matfiles2)
@@ -126,7 +117,6 @@ for nbsubj = 1:nSubj % through subjects
                 cd(subjPath);
             end
         end
-
         files = dir([subjPath '*.mat']); % do it again to get the new file list
         nFiles = length(files);
         for i=1:nFiles
@@ -137,7 +127,6 @@ for nbsubj = 1:nSubj % through subjects
             if i>1 && strcmp(files(i).date(1:11),files(i-1).date(1:11))  
                 toremove = toremove+1;
             end
-
             numSess = i - toremove;
             tempMat(:,[SESS CTXT]) = [numSess*ones(SessionData.nTrials,1) SessionData.TrialSettings(1).context(1:SessionData.nTrials)]; 
             tempMat(:,START) = SessionData.TrialStartTimestamp;
@@ -160,7 +149,6 @@ for nbsubj = 1:nSubj % through subjects
                         tempMat(j,LICKR) = sum(l > tempMat(j,TONE_T)+0.1 &  l < tempMat(j,TONE_T)+0.1+lickWindow)/lickWindow;
                     end
                 end                
-
                 if tempMat(j,CTXT) == 1 % opto Fifth Dead
                     if ~isnan(SessionData.RawEvents.Trial{1,j}.States.Drinking)
                         tempMat(j,OUTCOME) = 1; tempMat(j,TONE) = 1;
@@ -223,9 +211,6 @@ for nbsubj = 1:nSubj % through subjects
         end
         conditionNum = 18; % this is 14 when there is only one type of opto condition, but 18 if there are 3 oopto conditions
         ndays = max(matrix(:,SESS)); % if this line throws an error check the protocol path, lines 120-130-ish
-%         rates = nan(ndays,conditionNum);
-
-%         nctxt = nan(ndays,conditionNum);
         nbins = 50;
         bins = linspace(-1,4,nbins);    
         lickhistr = nan(ndays,nbins);
@@ -242,7 +227,6 @@ for nbsubj = 1:nSubj % through subjects
         for i=1:ndays
             templicks = licks{i};
             tempMat = matrix(matrix(:,SESS)==i,:);
-
             probeIdx = find(tempMat(:,CTXT)==0); 
             probeIdx1 = zeros(size(tempMat,1),1);
             probeIdx1(probeIdx(1):probeIdx(10)) = 1;
@@ -250,7 +234,6 @@ for nbsubj = 1:nSubj % through subjects
             probeIdx2 = zeros(size(tempMat,1),1);
             probeIdx2(probeIdx(11):probeIdx(end)) = 1;
             probeIdx2 = logical(probeIdx2);
-
             rhit = sum(tempMat(:,OUTCOME)==1 & tempMat(:,CTXT)==2) / sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1); % hit in reinforced light off
             phit = sum(tempMat(:,OUTCOME)==1 & tempMat(:,CTXT)==0) / sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==1); % hit in probe
             ohit = sum(tempMat(:,OUTCOME)==1 & tempMat(:,CTXT)==1) / sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==1); % hit in opto (i.e. reinforced light on)
@@ -270,14 +253,11 @@ for nbsubj = 1:nSubj % through subjects
             pfa2 = [pfa2_1 pfa2_2];
             otfa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==5) / sum(tempMat(:,CTXT)==5 & tempMat(:,TONE)==2); % hit in opto tone (i.e. reinforced light on)
             ocfa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==6) / sum(tempMat(:,CTXT)==6 & tempMat(:,TONE)==2); % hit in opto tone (i.e. reinforced light on)
-
-
             cofffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==3) / sum(tempMat(:,CTXT)==3 & tempMat(:,TONE)==0); % catch light off FA
             conffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==4) / sum(tempMat(:,CTXT)==4 & tempMat(:,TONE)==0); % catch light on FA
             rates(counter,:) = [rhit rfa phit pfa ohit ofa ...
                         rfhit rffa cofffa conffa phit2 pfa2 ...
-                        othit otfa ochit ocfa];
-                    
+                        othit otfa ochit ocfa];   
             nctxt(counter,:) = [sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==2)... % numbers: e.g nb of HIT and nb of Target trials
                 sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==2)...
@@ -287,10 +267,8 @@ for nbsubj = 1:nSubj % through subjects
                 sum(probeIdx2 & tempMat(:,TONE)==2) sum(probeIdx2 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)==5 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==5 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)==6 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==6 & tempMat(:,TONE)==2)];
-
             reinf = tempMat(:,CTXT)==2; opto = tempMat(:,CTXT)==1; probe = tempMat(:,CTXT)==0;
             coff = tempMat(:,CTXT)==3; con = tempMat(:,CTXT)==4; topto = tempMat(:,CTXT)==5; copto = tempMat(:,CTXT)==6;
-
             rt_r = RelativeTimes(templicks,[tempMat(reinf,START)+tempMat(reinf,TONE_T)-1 tempMat(reinf,START)+tempMat(reinf,TONE_T) ...
                 tempMat(reinf,START)+tempMat(reinf,TONE_T)+4],[-1 0 4]);
             rt_o = RelativeTimes(templicks,[tempMat(opto,START)+tempMat(opto,TONE_T)-1 tempMat(opto,START)+tempMat(opto,TONE_T) ...
@@ -312,7 +290,6 @@ for nbsubj = 1:nSubj % through subjects
             rt_o_fa = RelativeTimes(templicks,[tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T)-1 tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T) tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T)+4],[-1 0 4]);
             rt_ot_fa = RelativeTimes(templicks,[tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)-1 tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T) tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)+4],[-1 0 4]);
             rt_oc_fa = RelativeTimes(templicks,[tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)-1 tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T) tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)+4],[-1 0 4]);
-
             lickhistr_hit(i,:) = hist(rt_r_hit,bins)/sum(reinf&hit);
             lickhistr_fa(i,:) = hist(rt_r_fa,bins)/sum(reinf&fa);
             lickhisto_hit(i,:) = hist(rt_o_hit,bins)/sum(opto&hit);
@@ -332,7 +309,6 @@ for nbsubj = 1:nSubj % through subjects
             lickhistcon(i,:) = hist(rt_con,bins)/sum(con);
         counter=counter+1;
         end   
-        % everything here should be by protocol
         lickhistcOFF{nbproto} = lickhistcoff;
         lickhistcON{nbproto} = lickhistcon;
         lickhistrhit{nbproto} = lickhistr_hit;
@@ -345,33 +321,26 @@ for nbsubj = 1:nSubj % through subjects
         lickhistocfa{nbproto} = lickhistoc_fa;
         lickhistphit{nbproto} = lickhistp_hit;
         lickhistpfa{nbproto} = lickhistp_fa;
-
         ratescorr = rates;
         for j=1:size(rates,2)
             ratescorr(ratescorr(:,j)==0,j) = 1./(2*nctxt(ratescorr(:,j)==0,j)); 
             ratescorr(ratescorr(:,j)==1,j) = 1-1./(2*nctxt(ratescorr(:,j)==1,j)); 
         end
-
         subjrates{nbproto} = ratescorr;
         subjnbctxtoutcome{nbproto} = nctxt;
-
         rdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,1)) - norminv(ratescorr(:,2)) )'; % reinforced light off
         pdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,3)) - norminv(ratescorr(:,4)) )'; % probe
         odprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,5)) - norminv(ratescorr(:,6)) )'; % opto (i.e. reinforced light on)
         otdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,15)) - norminv(ratescorr(:,16)) )'; % tone opto (i.e. reinforced light on)
         ocdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,17)) - norminv(ratescorr(:,18)) )'; % choice opto (i.e. reinforced light on)
-
         rfdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,7)) - norminv(ratescorr(:,8)) )'; % all reinforced (light on + off)
-
         rcriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,1)) + norminv(ratescorr(:,2)) )'/2; % reinforced light off
         ocriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,5)) + norminv(ratescorr(:,6)) )'/2; % opto (i.e. reinforced light on)
         pcriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,3)) + norminv(ratescorr(:,4)) )'/2; % probe
         otcriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,15)) + norminv(ratescorr(:,16)) )'/2; % opto (i.e. reinforced light on)
         occriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,17)) + norminv(ratescorr(:,18)) )'/2; % opto (i.e. reinforced light on)
-
         pdprime1(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,11)) - norminv(ratescorr(:,12)) )'; % probe 10 1st trials
         pdprime2(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,13)) - norminv(ratescorr(:,14)) )'; % probe 10 last trials
-
         for i=1:nFiles
             mr_hit(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit latency
             sr_hit(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
@@ -394,7 +363,7 @@ for nbsubj = 1:nSubj % through subjects
             sto_fa(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
             mco_fa(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
             sco_fa(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
-
+            
             mlr_hit(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
             slr_hit(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
             mlp_hit(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
@@ -419,12 +388,11 @@ for nbsubj = 1:nSubj % through subjects
 
         end
         getLickLatHist(matrix,deadProtocol,nbproto,subjlist, nbsubj) 
-        MAT{nbproto,nbproto} = matrix;
+        MAT{nbproto,1} = matrix;
 
     %% make plots summarizing performance across training
         filetype='.fig';
         makesumperfplot=1;
-
         if makesumperfplot==1
             perfFig=figure;
             perfFig.Position(3:4)=[400,700];
@@ -471,9 +439,6 @@ for nbsubj = 1:nSubj % through subjects
 %% TO PLOT OPTO
 optoplot=1;
 % bar graphs for opto
-% rates(i,:) = [rhit rfa phit pfa ohit ofa ...
-%          rfhit rffa cofffa conffa phit2 pfa2 ...
-%          othit otfa ochit ocfa];
 % rates 1 -2 reinforced H and FA
 % rates 3-4 probe
 % rates 5-6 opto full trial, third dead (Dead 2) or fifth dead (dead 3)
@@ -498,7 +463,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); legend('light off','light on');
+    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); legend('light off','light on','Location','best');
     title([subjlist{nbproto} ' (' expnames{explist(nbproto)} ') ' 'Dead Period 1 Opto']);
 
     subplot(plotRow,plotCol,2); % second dead
@@ -512,7 +477,6 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     xticklabels({'hit','fa'}); title('Second Dead Opto');
-%      legend('light off','light on');
 
     subplot(plotRow,plotCol,3); % third dead
     expRange = [2,3];
@@ -525,7 +489,6 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     xticklabels({'hit','fa'}); title('Third Dead Opto');
-%     legend('light off','light on');
 
     subplot(plotRow,plotCol,4); % fourth dead
     expRange = [2,3];
@@ -538,7 +501,6 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fourth Dead Opto']);
-    % legend('light off','light on');
 
     subplot(plotRow,plotCol,5); % fifth dead
     expRange = [4,5];
@@ -551,13 +513,11 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fifth Dead Opto']);
-    % legend('light off','light on');
-    % legend('light off','light on');
 
     if savefig
         cd(pathsave);
-        saveas(eeeFig,[subjlist{nbsubj} 'dead' deadProtocol{nbproto} '-OptoBarScatter-' num2str(nbins) '.' filetype]);
-        saveas(eeeFig,[subjlist{nbsubj} 'dead' deadProtocol{nbproto} '-OptoBarScatter-' num2str(nbins) '.png']);
+        saveas(eeeFig,[subjlist{nbsubj} 'dead-OptoBarScatter-' num2str(nbins) '.' filetype]);
+        saveas(eeeFig,[subjlist{nbsubj} 'dead-OptoBarScatter-' num2str(nbins) '.png']);
         close(eeeFig);
     end
 
@@ -581,14 +541,15 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
     expRange = [4,5]; % columns 5, 6
     optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange,5); % dead 5, hit
     optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange,6); % dead 5, fa
-    optomeanMat{nbsubj+nbsubj+1,13}= [1,4,1,5,2,3,2,3,4,5];
-    optomeanMat{nbsubj+nbsubj+1,14}=MAT{nbproto,1};
-    optomeanMat{nbsubj+nbsubj+1,15}=rates;
+    optomeanMat{nbsubj+nbsubj+1,14}= [1,4,1,5,2,3,2,3,4,5];
+    optomeanMat{nbsubj+nbsubj+1,15}=MAT;
+    optomeanMat{nbsubj+nbsubj+1,16}=rates;
 else
 end
 
-save('summaryData.mat','optomeanMat');
+save('deadSummaryData.mat','optomeanMat');
 disp('saved opto data to mat file.');
+close all
 end
     
 %% single animal, single day bar plot to see hit/m/cr/fa 
