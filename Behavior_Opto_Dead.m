@@ -10,7 +10,8 @@ switch cohort
     explist=[1 1 1];    
 end
 expnames = {'TEST', 'CTL'};
-deadProtocol={'first','second','second','thirdOne','thirdtwo'};
+deadProtocol={'first','second','third'};
+
 nProtocol = length(deadProtocol);
 path=pathsave;
 nSubj = length(subjlist);
@@ -22,39 +23,39 @@ filetype='fig';
 nFiles = 5; % = nb of days of behavior
 
 % Initialization of variables
-rdprime = nan(nSubj,nFiles);
-pdprime = nan(nSubj,nFiles);
-odprime = nan(nSubj,nFiles);
-rfdprime = nan(nSubj,nFiles);
-pdprime1 = nan(nSubj,nFiles);
-pdprime2 = nan(nSubj,nFiles);
-rcriterion = nan(nSubj,nFiles);
-ocriterion = nan(nSubj,nFiles);
-pcriterion = nan(nSubj,nFiles);
-subjrates = cell(nSubj,1); 
-subjnbctxtoutcome = cell(nSubj,1); 
-mr_hit = nan(nSubj,nFiles); sr_hit = nan(nSubj,nFiles); % for lick latency
-mp_hit = nan(nSubj,nFiles); sp_hit = nan(nSubj,nFiles);
-mo_hit = nan(nSubj,nFiles); so_hit = nan(nSubj,nFiles);
-mr_fa = nan(nSubj,nFiles); sr_fa = nan(nSubj,nFiles); % for lick latency
-mp_fa = nan(nSubj,nFiles); sp_fa = nan(nSubj,nFiles);
-mo_fa = nan(nSubj,nFiles); so_fa = nan(nSubj,nFiles);
-mlr_hit = nan(nSubj,nFiles); slr_hit = nan(nSubj,nFiles); % for lick rate
-mlp_hit = nan(nSubj,nFiles); slp_hit = nan(nSubj,nFiles);
-mlo_hit = nan(nSubj,nFiles); slo_hit = nan(nSubj,nFiles);
-mlr_fa = nan(nSubj,nFiles); slr_fa = nan(nSubj,nFiles); % for lick rate
-mlp_fa = nan(nSubj,nFiles); slp_fa = nan(nSubj,nFiles);
-mlo_fa = nan(nSubj,nFiles); slo_fa = nan(nSubj,nFiles);
-lickhistcOFF = cell(nSubj,1); 
-lickhistcON = cell(nSubj,1); 
-lickhistrhit = cell(nSubj,1); 
-lickhistrfa = cell(nSubj,1); 
-lickhistohit = cell(nSubj,1); 
-lickhistofa = cell(nSubj,1); 
-lickhistphit = cell(nSubj,1); 
-lickhistpfa = cell(nSubj,1); 
+rdprime = nan(nSubj+nProtocol+nProtocol,nFiles);
+pdprime = nan(nSubj+nProtocol,nFiles);
+odprime = nan(nSubj+nProtocol,nFiles);
+rfdprime = nan(nSubj+nProtocol,nFiles);
+pdprime1 = nan(nSubj+nProtocol,nFiles);
+pdprime2 = nan(nSubj+nProtocol,nFiles);
+rcriterion = nan(nSubj+nProtocol,nFiles);
+ocriterion = nan(nSubj+nProtocol,nFiles);
+pcriterion = nan(nSubj+nProtocol,nFiles);
+subjrates = cell(nSubj+nProtocol,1); 
+subjnbctxtoutcome = cell(nSubj+nProtocol,1); 
+mr_hit = nan(nSubj+nProtocol,nFiles); sr_hit = nan(nSubj+nProtocol,nFiles); % for lick latency
+mp_hit = nan(nSubj+nProtocol,nFiles); sp_hit = nan(nSubj+nProtocol,nFiles);
+mo_hit = nan(nSubj+nProtocol,nFiles); so_hit = nan(nSubj+nProtocol,nFiles);
+mr_fa = nan(nSubj+nProtocol,nFiles); sr_fa = nan(nSubj+nProtocol,nFiles); % for lick latency
+mp_fa = nan(nSubj+nProtocol,nFiles); sp_fa = nan(nSubj+nProtocol,nFiles);
+mo_fa = nan(nSubj+nProtocol,nFiles); so_fa = nan(nSubj+nProtocol,nFiles);
+mlr_hit = nan(nSubj+nProtocol,nFiles); slr_hit = nan(nSubj+nProtocol,nFiles); % for lick rate
+mlp_hit = nan(nSubj+nProtocol,nFiles); slp_hit = nan(nSubj+nProtocol,nFiles);
+mlo_hit = nan(nSubj+nProtocol,nFiles); slo_hit = nan(nSubj+nProtocol,nFiles);
+mlr_fa = nan(nSubj+nProtocol,nFiles); slr_fa = nan(nSubj+nProtocol,nFiles); % for lick rate
+mlp_fa = nan(nSubj+nProtocol,nFiles); slp_fa = nan(nSubj+nProtocol,nFiles);
+mlo_fa = nan(nSubj+nProtocol,nFiles); slo_fa = nan(nSubj+nProtocol,nFiles);
+lickhistcOFF = cell(nSubj+nProtocol,1); 
+lickhistcON = cell(nSubj+nProtocol,1); 
+lickhistrhit = cell(nSubj+nProtocol,1); 
+lickhistrfa = cell(nSubj+nProtocol,1); 
+lickhistohit = cell(nSubj+nProtocol,1); 
+lickhistofa = cell(nSubj+nProtocol,1); 
+lickhistphit = cell(nSubj+nProtocol,1); 
+lickhistpfa = cell(nSubj+nProtocol,1); 
 lickWindow = 1;
-MAT = cell(nSubj,1);
+MAT = cell(nSubj+nProtocol,1);
 %%
 optomeanMat={};ii=2;
 optomeanMat{1,ii}='RHit'; optomeanMat{1,ii+1}='RFA';
@@ -79,7 +80,9 @@ for nbsubj = 1:nSubj % through subjects
         subj = lower(subj);
     end  
     rates = nan(1,18);
+    nctxt = nan(1,18);
     % go through protocols
+    counter=1;
     for nbproto = 1:nProtocol
         proto=deadProtocol{nbproto};
         switch proto
@@ -87,9 +90,7 @@ for nbsubj = 1:nSubj % through subjects
                 subjPath = [path subj '\GNG_OptoDeadChoice_SJK\Session Data\'];
             case 'second'
                 subjPath = [path subj '\GNG_OptoDead2Choice_SJK\Session Data\'];
-            case 'thirdOne'
-                subjPath = [path subj '\GNG_OptoDead3Choice_SJK\Session Data\'];
-            case 'thirdTwo'
+            case 'third'
                 subjPath = [path subj '\GNG_OptoDead3Choice_SJK\Session Data\'];
         end
 
@@ -131,7 +132,6 @@ for nbsubj = 1:nSubj % through subjects
         for i=1:nFiles
             filenames{i} = [subjPath files(i).name];
             load(filenames{i}); 
-
             tempMat = nan(SessionData.nTrials,9);
             licks{i} = [];
             if i>1 && strcmp(files(i).date(1:11),files(i-1).date(1:11))  
@@ -225,7 +225,7 @@ for nbsubj = 1:nSubj % through subjects
         ndays = max(matrix(:,SESS)); % if this line throws an error check the protocol path, lines 120-130-ish
 %         rates = nan(ndays,conditionNum);
 
-        nctxt = nan(ndays,conditionNum);
+%         nctxt = nan(ndays,conditionNum);
         nbins = 50;
         bins = linspace(-1,4,nbins);    
         lickhistr = nan(ndays,nbins);
@@ -274,12 +274,11 @@ for nbsubj = 1:nSubj % through subjects
 
             cofffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==3) / sum(tempMat(:,CTXT)==3 & tempMat(:,TONE)==0); % catch light off FA
             conffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==4) / sum(tempMat(:,CTXT)==4 & tempMat(:,TONE)==0); % catch light on FA
-            rates(i+nbproto-1,:) = [rhit rfa phit pfa ohit ofa ...
+            rates(counter,:) = [rhit rfa phit pfa ohit ofa ...
                         rfhit rffa cofffa conffa phit2 pfa2 ...
                         othit otfa ochit ocfa];
-
-
-            nctxt(i+nbproto-1,:) = [sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==2)... % numbers: e.g nb of HIT and nb of Target trials
+                    
+            nctxt(counter,:) = [sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==2)... % numbers: e.g nb of HIT and nb of Target trials
                 sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)~=0 & tempMat(:,TONE)==1) sum((tempMat(:,CTXT)==1 | tempMat(:,CTXT)==2) & tempMat(:,TONE)==2)...
@@ -331,21 +330,21 @@ for nbsubj = 1:nSubj % through subjects
             rt_con = RelativeTimes(templicks,[tempMat(con,START)+tempMat(con,TONE_T)-1 tempMat(con,START)+tempMat(con,TONE_T) tempMat(con,START)+tempMat(con,TONE_T)+4],[-1 0 4]);
             lickhistcoff(i,:) = hist(rt_coff,bins)/sum(coff);
             lickhistcon(i,:) = hist(rt_con,bins)/sum(con);
-
+        counter=counter+1;
         end   
-
-        lickhistcOFF{nbsubj} = lickhistcoff;
-        lickhistcON{nbsubj} = lickhistcon;
-        lickhistrhit{nbsubj} = lickhistr_hit;
-        lickhistrfa{nbsubj} = lickhistr_fa;
-        lickhistohit{nbsubj} = lickhisto_hit;
-        lickhistofa{nbsubj} = lickhisto_fa;
-        lickhistothit{nbsubj} = lickhistot_hit;
-        lickhistotfa{nbsubj} = lickhistot_fa;
-        lickhistochit{nbsubj} = lickhistoc_hit;
-        lickhistocfa{nbsubj} = lickhistoc_fa;
-        lickhistphit{nbsubj} = lickhistp_hit;
-        lickhistpfa{nbsubj} = lickhistp_fa;
+        % everything here should be by protocol
+        lickhistcOFF{nbproto} = lickhistcoff;
+        lickhistcON{nbproto} = lickhistcon;
+        lickhistrhit{nbproto} = lickhistr_hit;
+        lickhistrfa{nbproto} = lickhistr_fa;
+        lickhistohit{nbproto} = lickhisto_hit;
+        lickhistofa{nbproto} = lickhisto_fa;
+        lickhistothit{nbproto} = lickhistot_hit;
+        lickhistotfa{nbproto} = lickhistot_fa;
+        lickhistochit{nbproto} = lickhistoc_hit;
+        lickhistocfa{nbproto} = lickhistoc_fa;
+        lickhistphit{nbproto} = lickhistp_hit;
+        lickhistpfa{nbproto} = lickhistp_fa;
 
         ratescorr = rates;
         for j=1:size(rates,2)
@@ -353,74 +352,74 @@ for nbsubj = 1:nSubj % through subjects
             ratescorr(ratescorr(:,j)==1,j) = 1-1./(2*nctxt(ratescorr(:,j)==1,j)); 
         end
 
-        subjrates{nbsubj} = ratescorr;
-        subjnbctxtoutcome{nbsubj} = nctxt;
+        subjrates{nbproto} = ratescorr;
+        subjnbctxtoutcome{nbproto} = nctxt;
 
-        rdprime(nbsubj,1:ndays) = ( norminv(ratescorr(:,1)) - norminv(ratescorr(:,2)) )'; % reinforced light off
-        pdprime(nbsubj,1:ndays) = ( norminv(ratescorr(:,3)) - norminv(ratescorr(:,4)) )'; % probe
-        odprime(nbsubj,1:ndays) = ( norminv(ratescorr(:,5)) - norminv(ratescorr(:,6)) )'; % opto (i.e. reinforced light on)
-        otdprime(nbsubj,1:ndays) = ( norminv(ratescorr(:,15)) - norminv(ratescorr(:,16)) )'; % tone opto (i.e. reinforced light on)
-        ocdprime(nbsubj,1:ndays) = ( norminv(ratescorr(:,17)) - norminv(ratescorr(:,18)) )'; % choice opto (i.e. reinforced light on)
+        rdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,1)) - norminv(ratescorr(:,2)) )'; % reinforced light off
+        pdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,3)) - norminv(ratescorr(:,4)) )'; % probe
+        odprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,5)) - norminv(ratescorr(:,6)) )'; % opto (i.e. reinforced light on)
+        otdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,15)) - norminv(ratescorr(:,16)) )'; % tone opto (i.e. reinforced light on)
+        ocdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,17)) - norminv(ratescorr(:,18)) )'; % choice opto (i.e. reinforced light on)
 
-        rfdprime(nbsubj,1:ndays) = ( norminv(ratescorr(:,7)) - norminv(ratescorr(:,8)) )'; % all reinforced (light on + off)
+        rfdprime(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,7)) - norminv(ratescorr(:,8)) )'; % all reinforced (light on + off)
 
-        rcriterion(nbsubj,1:ndays) = -( norminv(ratescorr(:,1)) + norminv(ratescorr(:,2)) )'/2; % reinforced light off
-        ocriterion(nbsubj,1:ndays) = -( norminv(ratescorr(:,5)) + norminv(ratescorr(:,6)) )'/2; % opto (i.e. reinforced light on)
-        pcriterion(nbsubj,1:ndays) = -( norminv(ratescorr(:,3)) + norminv(ratescorr(:,4)) )'/2; % probe
-        otcriterion(nbsubj,1:ndays) = -( norminv(ratescorr(:,15)) + norminv(ratescorr(:,16)) )'/2; % opto (i.e. reinforced light on)
-        occriterion(nbsubj,1:ndays) = -( norminv(ratescorr(:,17)) + norminv(ratescorr(:,18)) )'/2; % opto (i.e. reinforced light on)
+        rcriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,1)) + norminv(ratescorr(:,2)) )'/2; % reinforced light off
+        ocriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,5)) + norminv(ratescorr(:,6)) )'/2; % opto (i.e. reinforced light on)
+        pcriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,3)) + norminv(ratescorr(:,4)) )'/2; % probe
+        otcriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,15)) + norminv(ratescorr(:,16)) )'/2; % opto (i.e. reinforced light on)
+        occriterion(nbproto,1:size(ratescorr,1)) = -( norminv(ratescorr(:,17)) + norminv(ratescorr(:,18)) )'/2; % opto (i.e. reinforced light on)
 
-        pdprime1(nbsubj,1:ndays) = ( norminv(ratescorr(:,11)) - norminv(ratescorr(:,12)) )'; % probe 10 1st trials
-        pdprime2(nbsubj,1:ndays) = ( norminv(ratescorr(:,13)) - norminv(ratescorr(:,14)) )'; % probe 10 last trials
+        pdprime1(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,11)) - norminv(ratescorr(:,12)) )'; % probe 10 1st trials
+        pdprime2(nbproto,1:size(ratescorr,1)) = ( norminv(ratescorr(:,13)) - norminv(ratescorr(:,14)) )'; % probe 10 last trials
 
         for i=1:nFiles
-            mr_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit latency
-            sr_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
-            mp_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
-            sp_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
-            mo_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
-            so_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
-            mto_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
-            sto_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
-            mco_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
-            sco_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
+            mr_hit(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit latency
+            sr_hit(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
+            mp_hit(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            sp_hit(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            mo_hit(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            so_hit(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            mto_hit(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            sto_hit(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            mco_hit(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
+            sco_hit(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
 
-            mr_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
-            sr_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
-            mp_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
-            sp_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
-            mo_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
-            so_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
-            mto_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
-            sto_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
-            mco_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
-            sco_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
+            mr_fa(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
+            sr_fa(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
+            mp_fa(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            sp_fa(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            mo_fa(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            so_fa(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            mto_fa(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
+            sto_fa(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
+            mco_fa(nbproto,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
+            sco_fa(nbproto,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
 
-            mlr_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-            slr_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-            mlp_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-            slp_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-            mlo_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-            slo_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-            mlto_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-            slto_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-            mlco_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-            slco_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            mlr_hit(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_hit(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_hit(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_hit(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mlo_hit(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            slo_hit(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mlto_hit(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            slto_hit(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            mlco_hit(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            slco_hit(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
 
-            mlr_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-            slr_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-            mlp_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-            slp_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-            mlo_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-            slo_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-            mlto_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-            slto_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-            mlco_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-            slco_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));        
+            mlr_fa(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_fa(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_fa(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_fa(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mlo_fa(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            slo_fa(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mlto_fa(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            slto_fa(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            mlco_fa(nbproto,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            slco_fa(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));        
 
         end
-        getLickLatHist(matrix,nbsubj,subjlist) 
-        MAT{nbsubj,nbproto} = matrix;
+        getLickLatHist(matrix,deadProtocol,nbproto,subjlist, nbsubj) 
+        MAT{nbproto,nbproto} = matrix;
 
     %% make plots summarizing performance across training
         filetype='.fig';
@@ -445,8 +444,8 @@ for nbsubj = 1:nSubj % through subjects
              ylabel('rate');xlabel('days');
 
             subplot(3,1,2);
-            plot(1:days,rdprime(nbsubj,1:days),'LineWidth',2,'color',[0 0 0]); hold on;
-            plot(1:days,pdprime(nbsubj,1:days),'LineWidth',2,'color',[0.7 0.7 0.7]);
+            plot(1:days,rdprime(nbsubj+nbproto-1,1:days),'LineWidth',2,'color',[0 0 0]); hold on;
+            plot(1:days,pdprime(nbsubj+nbproto-1,1:days),'LineWidth',2,'color',[0.7 0.7 0.7]);
             legend('Reinforced','Probe','location','best');ylim([0 5]);
             title('d prime');xlabel('days');
             curtick = get(gca, 'xTick');
@@ -471,166 +470,120 @@ for nbsubj = 1:nSubj % through subjects
     
 %% TO PLOT OPTO
 optoplot=1;
-% now the MAT file has each protocol for each animal...
-
 % bar graphs for opto
-if optoplot==1 % now make bar graphs, averaged, for all conditions 
-    
 % rates(i,:) = [rhit rfa phit pfa ohit ofa ...
 %          rfhit rffa cofffa conffa phit2 pfa2 ...
 %          othit otfa ochit ocfa];
 % rates 1 -2 reinforced H and FA
 % rates 3-4 probe
-% rates 5-6 opto full trial
+% rates 5-6 opto full trial, third dead (Dead 2) or fifth dead (dead 3)
 % rates 7 - 14 stuff we dont need for now (catch light off, catch light on)
-% rates 15 - 16 - tone
-% rates 17 - 18 - choice 
+% rates 15 - 16 - tone, second dead (dead 1) or 4th dead (dead 2)
+% rates 17 - 18 - choice, always dead 1 (dead 1 & 3 protocols)
 
+if optoplot==1 % now make bar graphs, averaged, for all conditions 
     eeeFig=figure('Position', [10 10 725 575]);hold on;
-% now deal with which trial has what protocol
-
+    % now deal with which trial has what protocol
     reinfcolor= [0.4,0.4,0.4];
     optocolor=[102/255 178/255 255/255];
-
-%     % make a grid of two by three, where each row is a targeted area (MGB or
-    % IC) and each column is a type of opto (full trial/tone/choice)
-
-    subplot(3,3,1);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
+    % make a grid of 3 by 2
+    plotCol = 2; plotRow = 3;
+    subplot(plotRow,plotCol,1); % first dead
+    expRange = [1,4];
+    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,17)); ...
+        mean(rates(expRange,2)) nanmean(rates(expRange,18))]); %hit, choice dead 1, choice dead 3
     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     xticklabels({'hit','fa'}); ylabel('Average Action Rate'); legend('light off','light on');
-    title([subjlist{nbsubj} ' (' expnames{explist(nbsubj)} ') ' 'Full Trial Opto']);
+    title([subjlist{nbproto} ' (' expnames{explist(nbproto)} ') ' 'Dead Period 1 Opto']);
 
-    subplot(3,3,2);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,16))]); %hit, full opto hit, fa, opto fa
+    subplot(plotRow,plotCol,2); % second dead
+    expRange = [1,5];
+    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
+        mean(rates(expRange,2)) nanmean(rates(expRange,16))]); % tone for dead 1 and dead 3 (2nd) protocols
     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('Tone Only Opto');
-%     legend('light off','light on');
+    xticklabels({'hit','fa'}); title('Second Dead Opto');
+%      legend('light off','light on');
 
-    subplot(3,3,3);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,17)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,18))]); %hit, full opto hit, fa, opto fa
+    subplot(plotRow,plotCol,3); % third dead
+    expRange = [2,3];
+    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
+        mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('Choice Only Opto');
+    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    xticklabels({'hit','fa'}); title('Third Dead Opto');
 %     legend('light off','light on');
-% 
 
-    subplot(3,3,4);eee=bar([mean(rates(expRange(mgbDays),1)) nanmean(rates(expRange(mgbDays),5)); ...
-        mean(rates(expRange(mgbDays),2)) nanmean(rates(expRange(mgbDays),6))]); %hit, full opto hit, fa, opto fa
+    subplot(plotRow,plotCol,4); % fourth dead
+    expRange = [2,3];
+    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
+        mean(rates(expRange,2)) nanmean(rates(expRange,16))]); %hit, tone (dead period 4, protocol dead 2)
     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(mgbDays),1),1),1),(rates(expRange(mgbDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(mgbDays),1),1),2),(rates(expRange(mgbDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(mgbDays),1),1),1),(rates(expRange(mgbDays),5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(mgbDays),1),1),2),(rates(expRange(mgbDays),6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['MGB Full Opto']);
+    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fourth Dead Opto']);
     % legend('light off','light on');
 
-    subplot(3,3,5);eee=bar([mean(rates(expRange(mgbDays),1)) nanmean(rates(expRange(mgbDays),15)); ...
-        mean(rates(expRange(mgbDays),2)) nanmean(rates(expRange(mgbDays),16))]); %hit, full opto hit, fa, opto fa
+    subplot(plotRow,plotCol,5); % fifth dead
+    expRange = [4,5];
+    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
+        mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(mgbDays),1),1),1),(rates(expRange(mgbDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(mgbDays),1),1),2),(rates(expRange(mgbDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(mgbDays),1),1),1),(rates(expRange(mgbDays),15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(mgbDays),1),1),2),(rates(expRange(mgbDays),16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('MGB Tone Opto');
+    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fifth Dead Opto']);
+    % legend('light off','light on');
     % legend('light off','light on');
 
-    subplot(3,3,6);eee=bar([mean(rates(expRange(mgbDays),1)) nanmean(rates(expRange(mgbDays),17)); ...
-        mean(rates(expRange(mgbDays),2)) nanmean(rates(expRange(mgbDays),18))]); %hit, full opto hit, fa, opto fa 
-     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(mgbDays),1),1),1),(rates(expRange(mgbDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(mgbDays),1),1),2),(rates(expRange(mgbDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(mgbDays),1),1),1),(rates(expRange(mgbDays),17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(mgbDays),1),1),2),(rates(expRange(mgbDays),18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('MGB Choice Opto');
-    % legend('light off','light on');
-
-    subplot(3,3,7);eee=bar([mean(rates(expRange(icDays),1)) nanmean(rates(expRange(icDays),5)); ...
-        mean(rates(expRange(icDays),2)) nanmean(rates(expRange(icDays),6))]); %hit, full opto hit, fa, opto fa
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['IC Full Opto']);
-    % legend('light off','light on');
-
-
-    subplot(3,3,8);eee=bar([mean(rates(expRange(icDays),1)) nanmean(rates(expRange(icDays),15)); ...
-        mean(rates(expRange(icDays),2)) nanmean(rates(expRange(icDays),16))]); %hit, full opto hit, fa, opto fa
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('IC Tone Opto');
-    % legend('light off','light on');
-
-
-    subplot(3,3,9);eee=bar([mean(rates(expRange(icDays),1)) nanmean(rates(expRange(icDays),17)); ...
-        mean(rates(expRange(icDays),2)) nanmean(rates(expRange(icDays),18))]); %hit, full opto hit, fa, opto fa
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('IC Choice Opto');
-    % legend('light off','light on');
-    
     if savefig
         cd(pathsave);
-        saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.' filetype]);
-        saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.png']);
+        saveas(eeeFig,[subjlist{nbsubj} 'dead' deadProtocol{nbproto} '-OptoBarScatter-' num2str(nbins) '.' filetype]);
+        saveas(eeeFig,[subjlist{nbsubj} 'dead' deadProtocol{nbproto} '-OptoBarScatter-' num2str(nbins) '.png']);
         close(eeeFig);
     end
 
+    % here, store the protocols and their corresponding inactivations as
+    % separate columns to avoid future confusion
     optomeanMat{nbsubj+nbsubj+1,1}=subjlist(nbsubj);
-    optomeanMat{nbsubj+nbsubj+1,2}=rates(:,1);
-    optomeanMat{nbsubj+nbsubj+1,3}=rates(:,2); 
-    optomeanMat{nbsubj+nbsubj+1,4}=rates(:,5);
-    optomeanMat{nbsubj+nbsubj+1,5}=rates(:,6);
-    optomeanMat{nbsubj+nbsubj+1,6}=rates(:,15);
-    optomeanMat{nbsubj+nbsubj+1,7}=rates(:,16);
-    optomeanMat{nbsubj+nbsubj+1,8}=rates(:,17);
-    optomeanMat{nbsubj+nbsubj+1,9}=rates(:,18);
-    optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange(mgbDays),1); % MGB Data
-    optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange(mgbDays),2);
-    optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange(mgbDays),5);
-    optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange(mgbDays),6);
-    optomeanMat{nbsubj+nbsubj+1,14}=rates(expRange(mgbDays),15);
-    optomeanMat{nbsubj+nbsubj+1,15}=rates(expRange(mgbDays),16);
-    optomeanMat{nbsubj+nbsubj+1,16}=rates(expRange(mgbDays),17);
-    optomeanMat{nbsubj+nbsubj+1,17}=rates(expRange(mgbDays),18);
-    optomeanMat{nbsubj+nbsubj+1,18}=rates(expRange(icDays),1); % IC Data
-    optomeanMat{nbsubj+nbsubj+1,19}=rates(expRange(icDays),2);
-    optomeanMat{nbsubj+nbsubj+1,20}=rates(expRange(icDays),5);
-    optomeanMat{nbsubj+nbsubj+1,21}=rates(expRange(icDays),6);
-    optomeanMat{nbsubj+nbsubj+1,22}=rates(expRange(icDays),15);
-    optomeanMat{nbsubj+nbsubj+1,23}=rates(expRange(icDays),16);
-    optomeanMat{nbsubj+nbsubj+1,24}=rates(expRange(icDays),17);
-    optomeanMat{nbsubj+nbsubj+1,25}=rates(expRange(icDays),18);
-    optomeanMat{nbsubj+nbsubj+1,26}=MAT{nbsubj,1};
-    optomeanMat{nbsubj+nbsubj+1,27}=rates;
+    optomeanMat{nbsubj+nbsubj+1,2}=rates(:,1); %hit
+    optomeanMat{nbsubj+nbsubj+1,3}=rates(:,2); %fa
+    expRange = [1,4]; % columns 17, 18
+    optomeanMat{nbsubj+nbsubj+1,4}=rates(expRange,17); % dead 1 hit
+    optomeanMat{nbsubj+nbsubj+1,5}=rates(expRange,18); % dead 1 fa
+    expRange = [1,5]; % columns 15, 16
+    optomeanMat{nbsubj+nbsubj+1,6}=rates(expRange,15); % dead 2, hit
+    optomeanMat{nbsubj+nbsubj+1,7}=rates(expRange,16); % dead 2, fa
+    expRange = [2,3]; % columns 5, 6
+    optomeanMat{nbsubj+nbsubj+1,8}=rates(expRange,5); % dead 3, hit
+    optomeanMat{nbsubj+nbsubj+1,9}=rates(expRange,6); % dead 3, fa
+    expRange = [2,3]; % columns 15, 16
+    optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange,15); % dead 4, hit
+    optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange,16); % dead 4, fa
+    expRange = [4,5]; % columns 5, 6
+    optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange,5); % dead 5, hit
+    optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange,6); % dead 5, fa
+    optomeanMat{nbsubj+nbsubj+1,13}= [1,4,1,5,2,3,2,3,4,5];
+    optomeanMat{nbsubj+nbsubj+1,14}=MAT{nbproto,1};
+    optomeanMat{nbsubj+nbsubj+1,15}=rates;
 else
 end
 
