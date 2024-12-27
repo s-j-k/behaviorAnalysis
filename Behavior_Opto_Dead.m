@@ -78,17 +78,18 @@ for nbsubj = 1:nSubj % through subjects
     if str2double(subj(end-2:end))>100
         subj = lower(subj);
     end  
+    rates = nan(1,18);
     % go through protocols
     for nbproto = 1:nProtocol
-        proto=nProto(nbproto);
+        proto=deadProtocol{nbproto};
         switch proto
-            case first
+            case 'first'
                 subjPath = [path subj '\GNG_OptoDeadChoice_SJK\Session Data\'];
-            case second
+            case 'second'
                 subjPath = [path subj '\GNG_OptoDead2Choice_SJK\Session Data\'];
-            case thirdOne
+            case 'thirdOne'
                 subjPath = [path subj '\GNG_OptoDead3Choice_SJK\Session Data\'];
-            case thirdTwo
+            case 'thirdTwo'
                 subjPath = [path subj '\GNG_OptoDead3Choice_SJK\Session Data\'];
         end
 
@@ -222,7 +223,7 @@ for nbsubj = 1:nSubj % through subjects
         end
         conditionNum = 18; % this is 14 when there is only one type of opto condition, but 18 if there are 3 oopto conditions
         ndays = max(matrix(:,SESS)); % if this line throws an error check the protocol path, lines 120-130-ish
-        rates = nan(ndays,conditionNum);
+%         rates = nan(ndays,conditionNum);
 
         nctxt = nan(ndays,conditionNum);
         nbins = 50;
@@ -273,12 +274,12 @@ for nbsubj = 1:nSubj % through subjects
 
             cofffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==3) / sum(tempMat(:,CTXT)==3 & tempMat(:,TONE)==0); % catch light off FA
             conffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==4) / sum(tempMat(:,CTXT)==4 & tempMat(:,TONE)==0); % catch light on FA
-            rates(i,:) = [rhit rfa phit pfa ohit ofa ...
+            rates(i+nbproto-1,:) = [rhit rfa phit pfa ohit ofa ...
                         rfhit rffa cofffa conffa phit2 pfa2 ...
                         othit otfa ochit ocfa];
 
 
-            nctxt(i,:) = [sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==2)... % numbers: e.g nb of HIT and nb of Target trials
+            nctxt(i+nbproto-1,:) = [sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==2)... % numbers: e.g nb of HIT and nb of Target trials
                 sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)~=0 & tempMat(:,TONE)==1) sum((tempMat(:,CTXT)==1 | tempMat(:,CTXT)==2) & tempMat(:,TONE)==2)...
@@ -418,102 +419,8 @@ for nbsubj = 1:nSubj % through subjects
             slco_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));        
 
         end
-        expertdays=[];
-        getLickLatHist(matrix,nbsubj,subjlist,expertdays)
-        MAT{nbsubj,1} = matrix;
-    %     %%
-        if plot_indiv_data
-    %         % Plot subj data: H and FA rates, dprimes, lick latency, lick rate
-    %         fig = figure(nbsubj); hold on;    
-    % 
-    %        % rates
-    %        % rhit rfa phit pfa ohit ofa rfhit rffa cofffa conffa phit2 pfa2];
-    % 
-    %         subplot(2,2,1); hold on; % H and FA rates
-    %         plot(1:ndays,rates(:,1),'-o','LineWidth',2,'color',[0.5843 0.8157 0.9882]);
-    %         plot(1:ndays,rates(:,2),'-o','LineWidth',2,'color',([0.9 0.6 0.6]));
-    %         nprob=5; % number of probe days before it reaches the peak
-    %         phitp=rates(:,3);
-    % %         phitp=phitp(1:nprob);
-    %         pfap=rates(:,4);
-    %         pfap=pfap(1:nprob);
-    %         plot(1:nprob,phitp,'-o','LineWidth',2,'color',[0.8 0.8 0.8]);
-    %         plot(1:nprob,pfap,'-o','LineWidth',2,'color',[0.8 0.8 0.8]);
-    % 
-    %         plot(1:ndays,rates(:,5),'b-o','LineWidth',2);
-    %         plot(1:ndays,rates(:,6),'r-o','LineWidth',2);
-    %         plot(1:ndays,rates(:,15),'b-x','LineWidth',2); % tone
-    %         plot(1:ndays,rates(:,16),'r-x','LineWidth',2); % tone
-    %         plot(1:ndays,rates(:,17),'b-^','LineWidth',2); % choice
-    %         plot(1:ndays,rates(:,18),'r-^','LineWidth',2); % choice
-    %         title([subjlist{nbsubj} ' (' expnames{explist(nbsubj)} ') - H and FA rates']);
-    %         ylim([0 1]);xlim([1 ndays]);
-    %         ylabel('Proportion');xlabel('Days');
-    %         
-    %         legend('reinf hit','reinf fa',...
-    %             'probe hit','probe fa','full opto hit','full opto fa',...
-    %             'tone opto hit','tone opto fa','choice opto hit','choice opto fa');
-    % 
-    %         subplot(2,2,2); hold on; % d primes
-    %         plot(1:ndays,rdprime(nbsubj,1:ndays),'-o','LineWidth',2,'color',[0.5843 0.8157 0.9882]);
-    %         plot(1:4,pdprime(nbsubj,1:4),'-o','LineWidth',2,'color',[0.8 0.8 0.8]);
-    %         plot(1:ndays,odprime(nbsubj,1:ndays),'b-o','LineWidth',2);  
-    %         plot(1:ndays,otdprime(nbsubj,1:ndays),'b-x','LineWidth',2);
-    %         plot(1:ndays,ocdprime(nbsubj,1:ndays),'b-^','LineWidth',2);
-    %         ylabel("d'");xlabel('Days');
-    %         ylim([-1 5]);xlim([1 ndays]);
-    %         PlotHVLines(0,'h','k'); legend('reinforced','probe','opto','tone opto','choice opto');
-    %     
-    %         subplot(2,4,5); hold on; % lick latency
-    %         shadedErrorBar(1:ndays,mr_hit(nbsubj,1:ndays),sr_hit(nbsubj,1:ndays),{'-o','LineWidth',2,'color','k'},0.5);
-    % %         shadedErrorBar(1:ndays,mp_hit(nbsubj,1:ndays),sp_hit(nbsubj,1:ndays),{'-o','LineWidth',2,'color',[0.8 0.8 0.8]},0.5);
-    %         shadedErrorBar(1:ndays,mo_hit(nbsubj,1:ndays),so_hit(nbsubj,1:ndays),{'-o','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mto_hit(nbsubj,1:ndays),sto_hit(nbsubj,1:ndays),{'-x','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mco_hit(nbsubj,1:ndays),sco_hit(nbsubj,1:ndays),{'-^','LineWidth',2,'color','b'},0.5);
-    %         
-    %         ylabel('HIT Lick latency (1st lick) (s)');legend('','reinforced','','full opto','','tone opto','','choice opto');
-    %         xlabel('Days');
-    %         
-    %         subplot(2,4,6); hold on; % lick latency
-    %         shadedErrorBar(1:ndays,mr_fa(nbsubj,1:ndays),sr_fa(nbsubj,1:ndays),{'-o','LineWidth',2,'color','k'},0.5);
-    % %         shadedErrorBar(1:ndays,mp_fa(nbsubj,1:ndays),sp_fa(nbsubj,1:ndays),{'-o','LineWidth',2,'color',[0.8 0.8 0.8]},0.5);
-    %         shadedErrorBar(1:ndays,mo_fa(nbsubj,1:ndays),so_fa(nbsubj,1:ndays),{'-o','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mto_fa(nbsubj,1:ndays),sto_fa(nbsubj,1:ndays),{'-x','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mco_fa(nbsubj,1:ndays),sco_fa(nbsubj,1:ndays),{'-^','LineWidth',2,'color','b'},0.5);
-    %         
-    %         ylabel('FA Lick latency (1st lick) (s)');legend('','reinforced','','full opto','','tone opto','','choice opto');
-    %         xlabel('Days');
-    %         
-    %         subplot(2,4,7); hold on; % lick rate FA
-    % %         shadedErrorBar(1:8,mlr_hit(nbsubj,1:8),slr_hit(nbsubj,1:8),{'-o','LineWidth',2,'color','k'},0.5);
-    %         shadedErrorBar(1:ndays,mlp_hit(nbsubj,1:ndays),slp_hit(nbsubj,1:ndays),{'-o','LineWidth',2,'color',[0.8 0.8 0.8]},0.5);
-    %         shadedErrorBar(1:ndays,mlo_hit(nbsubj,1:ndays),slo_hit(nbsubj,1:ndays),{'-o','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mlto_hit(nbsubj,1:ndays),slto_hit(nbsubj,1:ndays),{'-x','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mlco_hit(nbsubj,1:ndays),slco_hit(nbsubj,1:ndays),{'-^','LineWidth',2,'color','b'},0.5);
-    %         
-    %         ylabel('HIT Lick rate (Hz)');legend('','reinforced','','full opto','','tone opto','','choice opto');
-    %         xlabel('Days');
-    %         
-    %         subplot(2,4,8); hold on; % lick rate FA
-    % %         shadedErrorBar(1:8,mlr_fa(nbsubj,1:8),slr_fa(nbsubj,1:8),{'-o','LineWidth',2,'color','k'},0.5);
-    %         shadedErrorBar(1:ndays,mlp_fa(nbsubj,1:ndays),slp_fa(nbsubj,1:ndays),{'-o','LineWidth',2,'color',[0.8 0.8 0.8]},0.5);
-    %         shadedErrorBar(1:ndays,mlo_fa(nbsubj,1:ndays),slo_fa(nbsubj,1:ndays),{'-o','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mlto_fa(nbsubj,1:ndays),slto_fa(nbsubj,1:ndays),{'-x','LineWidth',2,'color','b'},0.5);
-    %         shadedErrorBar(1:ndays,mlco_fa(nbsubj,1:ndays),slco_fa(nbsubj,1:ndays),{'-^','LineWidth',2,'color','b'},0.5);
-    % 
-    %         ylabel('FA Lick rate (Hz)');legend('','reinforced','','full opto','','tone opto','','choice opto');
-    %         xlabel('Days'); 
-    %         
-
-    %         
-    %         if savefig
-    %             cd(pathsave);
-    %             saveas(fig,[subjlist{nbsubj} '-ActionAndPerformance.' filetype]);
-    %             close(fig);
-    %         end
-    %         
-        end  
-    %     
+        getLickLatHist(matrix,nbsubj,subjlist) 
+        MAT{nbsubj,nbproto} = matrix;
 
     %% make plots summarizing performance across training
         filetype='.fig';
@@ -564,6 +471,7 @@ for nbsubj = 1:nSubj % through subjects
     
 %% TO PLOT OPTO
 optoplot=1;
+% now the MAT file has each protocol for each animal...
 
 % bar graphs for opto
 if optoplot==1 % now make bar graphs, averaged, for all conditions 
@@ -579,20 +487,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 % rates 17 - 18 - choice 
 
     eeeFig=figure('Position', [10 10 725 575]);hold on;
-
-    if contains(path,'6')==1
-        if nbsubj==1 %sk203
-            mgbDays=[1 1];
-            mgbDays=logical(mgbDays);
-            icDays=[0 0];
-            icDays=logical(icDays);
-            expRange=1:length(mgbDays);
-        else
-        end
-    end
-    
-    mgbDays=mgbDays(expRange);
-    icDays=icDays(expRange);
+% now deal with which trial has what protocol
 
     reinfcolor= [0.4,0.4,0.4];
     optocolor=[102/255 178/255 255/255];
