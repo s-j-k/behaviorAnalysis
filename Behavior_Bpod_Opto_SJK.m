@@ -1,9 +1,6 @@
 function Behavior_Bpod_Opto_SJK(cohort)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-% 90-10 AC SILENCING
-
-%mGB IC opto cohort
+%MGB IC opto cohort
 
 switch cohort
     case 1
@@ -38,10 +35,6 @@ switch cohort
     subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
     explist=[1 1 1 1 2 1 1 1];    
    
-    case 0
-    pathsave='O:\sjk\Mads\cohort1\';
-    subjlist={'MR001','MR002','MR003'};
-    explist={2 2 2};
     otherwise
         disp('Cohort not found');
       
@@ -830,7 +823,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
                 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 1 1 ...
-                0 1 0 1 0 0 0 0 0 ...
+                0 1 0 1 0 0 0 ...
                 0 0 0]; %... % catch mgb, catch ic, lob
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 0 0 ...
@@ -838,7 +831,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
                 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 ...
-                1 0 1 0 0 1 0 0 1 ...
+                1 0 1 0 1 0 1 ...
                 0 0 0]; %...
             icDays=logical(icDays);
             expRange=38:length(mgbDays);
