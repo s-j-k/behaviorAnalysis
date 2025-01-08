@@ -1,4 +1,4 @@
-function [tempTestsOnly,allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor)
+function [allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor)
 
 for jj=2:size(allDataTestsOnly,1) % test Dead 1
     rpc(jj-1)=nanmean(allDataTestsOnly{jj,19});
@@ -21,9 +21,9 @@ allDataTestsOnly{jj,29}=rpc;
 allDataTestsOnly{jj,30}=opc;
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % MGB Tone
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,29});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,30});
+for jj=2:size(allDataTestsOnly,1) % MGB Dead 2
+    rpc(jj-1)=nanmean(allDataTestsOnly{jj,21});
+    opc(jj-1)=nanmean(allDataTestsOnly{jj,22});
 end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -34,13 +34,15 @@ scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
-title(['MGB Tone Inactivation']);
+title(['MGB Dead 2 Inactivation']);
 xticklabels({'light off', 'light on'});
+allDataTestsOnly{jj,31}=rpc;
+allDataTestsOnly{jj,32}=opc;
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % MGB Choice
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,31});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,32});
+for jj=2:size(allDataTestsOnly,1) % MGB Dead 3
+    rpc(jj-1)=nanmean(allDataTestsOnly{jj,23});
+    opc(jj-1)=nanmean(allDataTestsOnly{jj,24});
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -51,18 +53,15 @@ scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
-title(['MGB Choice Inactivation']);
+title(['MGB Dead 3 Inactivation']);
 xticklabels({'light off', 'light on'});
+allDataTestsOnly{jj,33}=rpc;
+allDataTestsOnly{jj,34}=opc;
 
 clear rpc opc
-% for jj=2:size(allDataTestsOnly,1) % test IC Full
-% use only sk175 and sk195
-tempTestsOnly(1,:)=allDataTestsOnly(1,:);
-tempTestsOnly(2,:)=allDataTestsOnly(3,:);
-tempTestsOnly(3:5,:)=allDataTestsOnly(5:7,:);
-for jj=2:size(tempTestsOnly,1)
-    rpc(jj-1)=nanmean(tempTestsOnly{jj,33});
-    opc(jj-1)=nanmean(tempTestsOnly{jj,34});
+for jj=2:size(allDataTestsOnly,1) % MGB Dead 4
+    rpc(jj-1)=nanmean(allDataTestsOnly{jj,25});
+    opc(jj-1)=nanmean(allDataTestsOnly{jj,26});
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -74,15 +73,15 @@ scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 ylabel('percent correct');
-title(['IC Full Trial Inactivation']);
+title(['MGB Dead 4 Inactivation']);
 xticklabels({'light off', 'light on'});
-allDataTestsOnly{jj,27}=rpc;
-allDataTestsOnly{jj,28}=opc;
+allDataTestsOnly{jj,35}=rpc;
+allDataTestsOnly{jj,36}=opc;
 
 clear rpc opc 
-for jj=2:size(tempTestsOnly,1) % IC Tone
-    rpc(jj-1)=nanmean(tempTestsOnly{jj,35});
-    opc(jj-1)=nanmean(tempTestsOnly{jj,36});
+for jj=2:size(allDataTestsOnly,1) % MGB Dead 5
+    rpc(jj-1)=nanmean(allDataTestsOnly{jj,27});
+    opc(jj-1)=nanmean(allDataTestsOnly{jj,28});
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -93,141 +92,12 @@ scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
-title(['IC Tone Inactivation']);
+title(['MGB Dead 5Inactivation']);
 xticklabels({'light off', 'light on'});
-
-clear rpc opc 
-for jj=2:size(tempTestsOnly,1) % IC Choice
-    rpc(jj-1)=nanmean(tempTestsOnly{jj,37});
-    opc(jj-1)=nanmean(tempTestsOnly{jj,38});
-end
-subplot(2,3,6)
-qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
-title(['IC Choice Inactivation']);
-xticklabels({'light off', 'light on'});
+allDataTestsOnly{jj,37}=rpc;
+allDataTestsOnly{jj,38}=opc;
 
 wwFig.Position(3:4)=[725 475];
-saveas(gcf,['ByAnimal_T_MGB_IC_PercentCorrect_Opto']);
-saveas(gcf,['ByAnimal_T_MGB_IC_PercentCorrect_Opto.png']);
-
-
-clear rpc opc % Controls
-for jj=2:size(allDataCtlOnly,1)
-    rpc(jj-1)=nanmean(allDataCtlOnly{jj,27});
-    opc(jj-1)=nanmean(allDataCtlOnly{jj,28});
-end
-wwFig=figure(11);
-subplot(2,3,1)
-qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
-ylabel('percent correct');
-title(['MGB Full Trial Inactivation']);
-xticklabels({'light off', 'light on'});
-allDataCtlOnly{jj,27}=rpc;
-allDataCtlOnly{jj,28}=opc;
-
-clear rpc opc
-for jj=2:size(allDataCtlOnly,1)
-    rpc(jj-1)=nanmean(allDataCtlOnly{jj,29});
-    opc(jj-1)=nanmean(allDataCtlOnly{jj,30});
-end
-subplot(2,3,2)
-qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
-title(['MGB Tone Inactivation']);
-xticklabels({'light off', 'light on'});
-
-clear rpc opc
-for jj=2:size(allDataCtlOnly,1) % MGB Choice 
-    rpc(jj-1)=nanmean(allDataCtlOnly{jj,31});
-    opc(jj-1)=nanmean(allDataCtlOnly{jj,32});
-end
-subplot(2,3,3)
-qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
-title(['MGB Choice Inactivation']);
-xticklabels({'light off', 'light on'});
-
-clear rpc opc % IC Full Trial
-for jj=2:size(allDataCtlOnly,1)
-    rpc(jj-1)=nanmean(allDataCtlOnly{jj,33});
-    opc(jj-1)=nanmean(allDataCtlOnly{jj,34});
-end
-subplot(2,3,4)
-qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
-ylabel('percent correct');
-title(['IC Full Trial Inactivation']);
-xticklabels({'light off', 'light on'});
-allDataCtlOnly{jj,27}=rpc;
-allDataCtlOnly{jj,28}=opc;
-
-clear rpc opc % IC Tone
-for jj=2:size(allDataCtlOnly,1)
-    rpc(jj-1)=nanmean(allDataCtlOnly{jj,35});
-    opc(jj-1)=nanmean(allDataCtlOnly{jj,36});
-end
-subplot(2,3,5)
-qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
-title(['IC Tone Inactivation']);
-xticklabels({'light off', 'light on'});
-
-clear rpc opc % IC Choice
-for jj=2:size(allDataCtlOnly,1)
-    rpc(jj-1)=nanmean(allDataCtlOnly{jj,37});
-    opc(jj-1)=nanmean(allDataCtlOnly{jj,38});
-end
-subplot(2,3,6)
-qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
-title(['IC Choice Inactivation']);
-xticklabels({'light off', 'light on'});
-
-wwFig.Position(3:4)=[725 475];
-saveas(gcf,['ByAnimal_C_MGB_IC_PercentCorrect_Opto']);
-saveas(gcf,['ByAnimal_C_MGB_IC_PercentCorrect_Opto.png']);
+saveas(gcf,['ByAnimal_T_MGB_Dead_PercentCorrect_Opto']);
+saveas(gcf,['ByAnimal_T_MGB_Dead_PercentCorrect_Opto.png']);
 end

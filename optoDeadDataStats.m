@@ -322,11 +322,21 @@ allDataTestsOnly{1,35}='Dead 4 RPC by Animal';
 allDataTestsOnly{1,36}='Dead 4 OPC by Animal';
 allDataTestsOnly{1,37}='Dead 5 RPC by Animal';
 allDataTestsOnly{1,38}='Dead 5 OPC by Animal';
+allDataTestsOnly{1,39}='Dead 1 RPC by Sess';
+allDataTestsOnly{1,40}='Dead 1 OPC by Sess';
+allDataTestsOnly{1,41}='Dead 2 RPC by Sess';
+allDataTestsOnly{1,42}='Dead 2 OPC by Sess';
+allDataTestsOnly{1,43}='Dead 3 RPC by Sess';
+allDataTestsOnly{1,44}='Dead 3 OPC by Sess';
+allDataTestsOnly{1,45}='Dead 4 RPC by Sess';
+allDataTestsOnly{1,46}='Dead 4 OPC by Sess';
+allDataTestsOnly{1,47}='Dead 5 RPC by Sess';
+allDataTestsOnly{1,48}='Dead 5 OPC by Sess';
 clear qqq wwFig rpc opc
-[tempTestsOnly,allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
+[allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
-[allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
+[allDataTestsOnly]=bySessPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
