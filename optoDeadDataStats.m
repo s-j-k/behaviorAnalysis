@@ -312,9 +312,18 @@ end
 
 %% all animal summary analysis
 % group by animal
-
+allDataTestsOnly{1,29}='Dead 1 RPC by Animal';
+allDataTestsOnly{1,30}='Dead 1 OPC by Animal';
+allDataTestsOnly{1,31}='Dead 2 RPC by Animal';
+allDataTestsOnly{1,32}='Dead 2 OPC by Animal';
+allDataTestsOnly{1,33}='Dead 3 RPC by Animal';
+allDataTestsOnly{1,34}='Dead 3 OPC by Animal';
+allDataTestsOnly{1,35}='Dead 4 RPC by Animal';
+allDataTestsOnly{1,36}='Dead 4 OPC by Animal';
+allDataTestsOnly{1,37}='Dead 5 RPC by Animal';
+allDataTestsOnly{1,38}='Dead 5 OPC by Animal';
 clear qqq wwFig rpc opc
-[tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
+[tempTestsOnly,allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
 [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
