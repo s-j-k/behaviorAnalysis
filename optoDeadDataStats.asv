@@ -1,94 +1,69 @@
 %% dead period behavior stats 
 %first preprocess the data for a given cohort
-cohort=5;
+cohort=6;
 Behavior_Opto_Dead(cohort)
 %% now load the data for each cohort and make one big file called allCohorts
-
+cd('O:\sjk\Behavior\MGBIC_6')
 load('deadSummaryData.mat')
+% cohortRange=1:6;
+% allCohorts=loadAllOptoCohorts(cohortRange);
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
-
 % for each animal, record whether it's a test or ctl  % 1 is ctl, 2 is test
 condition=[0 2 2 2]; % 198, 203, 204
 testIdx=find(condition==2);
-allDataTestsOnly=allCohorts(testIdx,:);
-
-
-%% plot catch trials
-% inherited from celine code... 
-% coded as conffa (catch light on false alarm)
-% within the rates variable, conffa is the 10th column
-% catch trials happen across the last 3 days (1st MGB, then IC, then LOB)
-reinfcolor= [0.4,0.4,0.4];
-optocolor=[102/255 178/255 255/255];
-animalIdx=[3,5,9];
-for ww=1:length(animalIdx)
-    rates=optomeanMat{animalIdx(ww),27}; % which animal are we plotting
-    uu=2;yyyFig=figure('Position', [100 100 800 200]);
-    subplot(1,3,1);hold on;
-    end1=size(rates,1);
-    yyy=bar([rates(end1-uu,1) rates(end1-uu,5); ...
-        rates(end1-uu,2) rates(end1-uu,6); 0 rates(end1-uu,10)]);
-    % rates(i,:) = [rhit rfa phit pfa ohit ofa ...
-    %             rfhit rffa cofffa conffa phit2 pfa2 ...
-    %             othit otfa ochit ocfa];
-    yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-    yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-    yyy(2).CData=[optocolor;optocolor;optocolor];box on; 
-    xticklabels({'hit','','fa','','catch fa'}); legend('light off','light on');
-    title([string(optomeanMat{animalIdx(ww),1}) 'MGB Catch']);
-    
-    uu=1;subplot(1,3,2);
-    end1=size(rates,1);
-    yyy=bar([rates(end1-uu,1) rates(end1-uu,5); ...
-        rates(end1-uu,2) rates(end1-uu,6); 0 rates(end1-uu,10)]);
-    yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-    yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-    yyy(2).CData=[optocolor;optocolor;optocolor];
-    xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
-    title('IC Catch');
-        
-    subplot(1,3,3);
-    end1=size(rates,1);
-    yyy=bar([rates(end1,1) rates(end1,5); ...
-        rates(end1,2) rates(end1,6); 0 rates(end1,10)]);
-    yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-    yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-    yyy(2).CData=[optocolor;optocolor;optocolor];
-    xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
-    title('LOB Catch');       
-    animalName=optomeanMat{animalIdx(ww),1};
-        saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.fig']);
-        saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.png']);
-        close(yyyFig);
-
-end
+allDataTestsOnly=optomeanMat;
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
 reinfcolor= [0.4,0.4,0.4];
 optocolor=[102/255 178/255 255/255];
-allDataTestsOnly{1,27}='RPC MGB Full Trial';
-allDataTestsOnly{1,28}='OPC MGB Full Trial';
-allDataTestsOnly{1,29}='RPC MGB Tone Trial';
-allDataTestsOnly{1,30}='OPC MGB Tone Trial';
-allDataTestsOnly{1,31}='RPC MGB Choice Trial';
-allDataTestsOnly{1,32}='OPC MGB Choice Trial';
-allDataTestsOnly{1,33}='RPC IC Full Trial';
-allDataTestsOnly{1,34}='OPC IC Full Trial';
-allDataTestsOnly{1,35}='RPC IC Tone Trial';
-allDataTestsOnly{1,36}='OPC IC Tone Trial';
-allDataTestsOnly{1,37}='RPC IC Choice Trial';
-allDataTestsOnly{1,38}='OPC IC Choice Trial';
+allDataTestsOnly{1,17}='RHit by Condition';
+allDataTestsOnly{1,18}='RFA by Condition';
+allDataTestsOnly{1,19}='RPC MGB Dead 1';
+allDataTestsOnly{1,20}='OPC MGB Dead 1';
+allDataTestsOnly{1,21}='RPC MGB Dead 2';
+allDataTestsOnly{1,22}='OPC MGB Dead 2';
+allDataTestsOnly{1,23}='RPC MGB Dead 3';
+allDataTestsOnly{1,24}='OPC MGB Dead 3';
+allDataTestsOnly{1,25}='RPC MGB Dead 4';
+allDataTestsOnly{1,26}='OPC MGB Dead 4';
+allDataTestsOnly{1,27}='RPC MGB Dead 5';
+allDataTestsOnly{1,28}='OPC MGB Dead 5';
+% organize the reinforced hit sessions by the dead periods (dead 1 through
+% dead 5 is each row)
+for jj = 2:size(allDataTestsOnly,1)
+    allDataTestsOnly{jj,17}(1,1)=allDataTestsOnly{jj,2}(1,1);
+    allDataTestsOnly{jj,17}(1,2)=allDataTestsOnly{jj,2}(4,1);
+    allDataTestsOnly{jj,17}(2,1)=allDataTestsOnly{jj,2}(1,1);
+    allDataTestsOnly{jj,17}(2,2)=allDataTestsOnly{jj,2}(5,1);
+    allDataTestsOnly{jj,17}(3,1)=allDataTestsOnly{jj,2}(2,1);
+    allDataTestsOnly{jj,17}(3,2)=allDataTestsOnly{jj,2}(3,1);
+    allDataTestsOnly{jj,17}(4,1)=allDataTestsOnly{jj,2}(2,1);
+    allDataTestsOnly{jj,17}(4,2)=allDataTestsOnly{jj,2}(3,1);
+    allDataTestsOnly{jj,17}(5,1)=allDataTestsOnly{jj,2}(4,1);
+    allDataTestsOnly{jj,17}(5,2)=allDataTestsOnly{jj,2}(5,1);
+    
+    allDataTestsOnly{jj,18}(1,1)=allDataTestsOnly{jj,3}(1,1);
+    allDataTestsOnly{jj,18}(1,2)=allDataTestsOnly{jj,3}(4,1);
+    allDataTestsOnly{jj,18}(2,1)=allDataTestsOnly{jj,3}(1,1);
+    allDataTestsOnly{jj,18}(2,2)=allDataTestsOnly{jj,3}(5,1);
+    allDataTestsOnly{jj,18}(3,1)=allDataTestsOnly{jj,3}(2,1);
+    allDataTestsOnly{jj,18}(3,2)=allDataTestsOnly{jj,3}(3,1);
+    allDataTestsOnly{jj,18}(4,1)=allDataTestsOnly{jj,3}(2,1);
+    allDataTestsOnly{jj,18}(4,2)=allDataTestsOnly{jj,3}(3,1);
+    allDataTestsOnly{jj,18}(5,1)=allDataTestsOnly{jj,3}(4,1);
+    allDataTestsOnly{jj,18}(5,2)=allDataTestsOnly{jj,3}(5,1);
+end
+
+%%
 
 for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj);hold on;
-    rhit=allDataTestsOnly{jj,10}; % full trial MGB
-    rfa=allDataTestsOnly{jj,11};
-    ohit = allDataTestsOnly{jj,12};
-    ofa = allDataTestsOnly{jj,13};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
+    rhit=allDataTestsOnly{jj,17}(1,:); % Dead 1
+    rfa=allDataTestsOnly{jj,18}(1,:);
+    ohit = allDataTestsOnly{jj,4};
+    ofa = allDataTestsOnly{jj,5};
     rpc = (rhit+(1-rfa))/2*100; 
     opc = (ohit+(1-ofa))/2*100; 
     
@@ -102,15 +77,15 @@ for jj=2:size(allDataTestsOnly,1)
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     ylabel('percent correct');
-    title([allDataTestsOnly{jj,1} ' MGB Full Trial Inactivation']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 1 Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataTestsOnly{jj,27}=rpc;
-    allDataTestsOnly{jj,28}=opc;
+    allDataTestsOnly{jj,19}=rpc;
+    allDataTestsOnly{jj,20}=opc;
 
-    rhit=allDataTestsOnly{jj,10}; % tone MGB
-    rfa=allDataTestsOnly{jj,11};
-    ohit = allDataTestsOnly{jj,14};
-    ofa = allDataTestsOnly{jj,15};
+    rhit=allDataTestsOnly{jj,17}(2,:); % Dead 2
+    rfa=allDataTestsOnly{jj,18}(2,:);
+    ohit = allDataTestsOnly{jj,6};
+    ofa = allDataTestsOnly{jj,7};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -124,15 +99,15 @@ for jj=2:size(allDataTestsOnly,1)
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
-    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 2 Inactivation']);
     xticklabels({'light off', 'light on'});
     allDataTestsOnly{jj,29}=rpc;
     allDataTestsOnly{jj,30}=opc;
 
-    rhit=allDataTestsOnly{jj,10}; % choice MGB
-    rfa=allDataTestsOnly{jj,11};
-    ohit = allDataTestsOnly{jj,16};
-    ofa = allDataTestsOnly{jj,17};
+    rhit=allDataTestsOnly{jj,17}(3,:); % Dead 3
+    rfa=allDataTestsOnly{jj,18}(3,:);
+    ohit = allDataTestsOnly{jj,8};
+    ofa = allDataTestsOnly{jj,9};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -149,14 +124,13 @@ for jj=2:size(allDataTestsOnly,1)
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
-    title([allDataTestsOnly{jj,1} ' MGB Choice Inactivation']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 3 Inactivation']);
     xticklabels({'light off', 'light on'});
 
-    % now do the same for the IC
-    rhit=allDataTestsOnly{jj,18}; % full trial IC
-    rfa=allDataTestsOnly{jj,19};
-    ohit = allDataTestsOnly{jj,20};
-    ofa = allDataTestsOnly{jj,21};
+    rhit=allDataTestsOnly{jj,17}(4,:); % Dead 4
+    rfa=allDataTestsOnly{jj,18}(4,:);
+    ohit = allDataTestsOnly{jj,10};
+    ofa = allDataTestsOnly{jj,11};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -172,15 +146,15 @@ for jj=2:size(allDataTestsOnly,1)
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     ylabel('percent correct');
-    title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 4 Inactivation']);
     xticklabels({'light off', 'light on'});
     allDataTestsOnly{jj,33}=rpc;
     allDataTestsOnly{jj,34}=opc;
 
-    rhit=allDataTestsOnly{jj,18}; % tone IC
-    rfa=allDataTestsOnly{jj,19};
-    ohit = allDataTestsOnly{jj,22};
-    ofa = allDataTestsOnly{jj,23};
+    rhit=allDataTestsOnly{jj,17}(5,:); % Dead 5
+    rfa=allDataTestsOnly{jj,18}(5,:);
+    ohit = allDataTestsOnly{jj,12};
+    ofa = allDataTestsOnly{jj,13};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -194,33 +168,10 @@ for jj=2:size(allDataTestsOnly,1)
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
-    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 5 Inactivation']);
     xticklabels({'light off', 'light on'});
     allDataTestsOnly{jj,35}=rpc;
-    allDataTestsOnly{jj,36}=opc;
-
-    rhit=allDataTestsOnly{jj,18}; % choice IC
-    rfa=allDataTestsOnly{jj,19};
-    ohit = allDataTestsOnly{jj,24};
-    ofa = allDataTestsOnly{jj,25};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
-    rpc = (rhit+(1-rfa))/2*100; 
-    opc = (ohit+(1-ofa))/2*100; 
-    allDataTestsOnly{jj,37}=rpc;
-    allDataTestsOnly{jj,38}=opc;
-    
-    subplot(2,3,6)
-    eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
-    eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
-        rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
-        opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(rpc,opc);
-    sigstar({[1,2]}, p)
-    title([allDataTestsOnly{jj,1} ' IC Choice Inactivation']);
-    xticklabels({'light off', 'light on'});    
+    allDataTestsOnly{jj,36}=opc; 
     
     
     eeFig.Position(3:4)=[725 475];
