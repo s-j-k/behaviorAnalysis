@@ -33,9 +33,20 @@ allDataTestsOnly{jj,40}=opc;
 
 clear rpc opc
 rpc=NaN;opc=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    rpc=cat(1,rpc,allDataTestsOnly{jj,21}); % need to fix dimensions here.. 
-    opc=cat(1,opc,allDataTestsOnly{jj,22});
+
+for jj=2:size(allDataTestsOnly,1) % Dead 2
+    if size(allDataTestsOnly{jj,21},2)>1
+        allDataTestsOnly{jj,21}=allDataTestsOnly{jj,21}';
+        rpc=cat(1,rpc,allDataTestsOnly{jj,21});
+    else
+        rpc=cat(1,rpc,allDataTestsOnly{jj,21});
+    end
+    if size(allDataTestsOnly{jj,22},2)>1
+        allDataTestsOnly{jj,22}=allDataTestsOnly{jj,22}';
+        opc=cat(1,opc,allDataTestsOnly{jj,22});
+    else
+        opc=cat(1,opc,allDataTestsOnly{jj,22});
+    end
 end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -51,9 +62,19 @@ xticklabels({'light off', 'light on'});
 
 clear rpc opc
 rpc=NaN;opc=NaN; 
-for jj=2:size(allDataTestsOnly,1)
-    rpc=cat(1,rpc,allDataTestsOnly{jj,23});
-    opc=cat(1,opc,allDataTestsOnly{jj,24});
+for jj=2:size(allDataTestsOnly,1) % Dead 3
+    if size(allDataTestsOnly{jj,23},2)>1
+        allDataTestsOnly{jj,23}=allDataTestsOnly{jj,23}';
+        rpc=cat(1,rpc,allDataTestsOnly{jj,23});
+    else
+        rpc=cat(1,rpc,allDataTestsOnly{jj,23});
+    end
+    if size(allDataTestsOnly{jj,24},2)>1
+        allDataTestsOnly{jj,24}=allDataTestsOnly{jj,24}';
+        opc=cat(1,opc,allDataTestsOnly{jj,24});
+    else
+        opc=cat(1,opc,allDataTestsOnly{jj,24});
+    end
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -68,9 +89,19 @@ title(['MGB Dead 3 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 rpc=NaN;opc=NaN; 
-for jj=2:size(allDataTestsOnly,1)
-    rpc=cat(1,rpc,allDataTestsOnly{jj,25});
-    opc=cat(1,opc,allDataTestsOnly{jj,26});
+for jj=2:size(allDataTestsOnly,1) % Dead 4
+    if size(allDataTestsOnly{jj,25},2)>1
+        allDataTestsOnly{jj,25}=allDataTestsOnly{jj,25}';
+        rpc=cat(1,rpc,allDataTestsOnly{jj,25});
+    else
+        rpc=cat(1,rpc,allDataTestsOnly{jj,25});
+    end
+    if size(allDataTestsOnly{jj,26},2)>1
+        allDataTestsOnly{jj,26}=allDataTestsOnly{jj,26}';
+        opc=cat(1,opc,allDataTestsOnly{jj,26});
+    else
+        opc=cat(1,opc,allDataTestsOnly{jj,26});
+    end
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -89,9 +120,19 @@ allDataTestsOnly{jj,28}=opc;
 
 clear rpc opc
 rpc=NaN;opc=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    rpc=cat(1,rpc,allDataTestsOnly{jj,27});
-    opc=cat(1,opc,allDataTestsOnly{jj,28});
+for jj=2:size(allDataTestsOnly,1) % Dead 5
+    if size(allDataTestsOnly{jj,27},2)>1
+        allDataTestsOnly{jj,27}=allDataTestsOnly{jj,27}';
+        rpc=cat(1,rpc,allDataTestsOnly{jj,27});
+    else
+        rpc=cat(1,rpc,allDataTestsOnly{jj,27});
+    end
+    if size(allDataTestsOnly{jj,28},2)>1
+        allDataTestsOnly{jj,28}=allDataTestsOnly{jj,28}';
+        opc=cat(1,opc,allDataTestsOnly{jj,28});
+    else
+        opc=cat(1,opc,allDataTestsOnly{jj,28});
+    end
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
