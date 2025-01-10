@@ -346,11 +346,9 @@ close all
 bySessHFADead(allDataTestsOnly,reinfcolor,optocolor);
 close all
 %%
-% now do the anova....
-[aovMGB,statsMGB,aovIC,statsIC]=anova2OptoPerAnimalDead(allDataTestsOnly);
-% close all
+% now do the anova
+[aovMGB,statsMGB]=anova2OptoPerAnimalDead(allDataTestsOnly);
 aovMGB
-% aovIC
 
 %% compare differences in percent correct across each light off vs light on condition
 %this is by session

@@ -3,74 +3,28 @@ function [aovMGB,statsMGB,aovIC,statsIC]=anova2OptoPerAnimalDead(allDataTestsOnl
 % now per animal statistical analysis as a 2way anova
 % no light vs. light all inactivation condition
 % MGB
-testFullTrial=NaN(18,2); 
-% Dead 1 light OFF column 1, light ON column 2
-testFullTrial(1:2,1)=allDataTestsOnly{2,27}(~isnan(allDataTestsOnly{2,27}));
-testFullTrial(1:2,2)=allDataTestsOnly{2,28}(~isnan(allDataTestsOnly{2,28}));
-testFullTrial(3:4,1)=allDataTestsOnly{3,27}(~isnan(allDataTestsOnly{3,27}));
-testFullTrial(3:4,2)=allDataTestsOnly{3,28}(~isnan(allDataTestsOnly{3,28}));
-fullTrialtemp=allDataTestsOnly{4,27}(~isnan(allDataTestsOnly{4,27}));
-testFullTrial(5:6,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,28}(~isnan(allDataTestsOnly{4,28}));
-testFullTrial(5:6,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{5,27}(~isnan(allDataTestsOnly{5,27}));
-testFullTrial(7:8,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{5,28}(~isnan(allDataTestsOnly{5,28}));
-testFullTrial(7:8,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{6,27}(~isnan(allDataTestsOnly{6,27}));
-testFullTrial(9:10,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{6,28}(~isnan(allDataTestsOnly{6,28}));
-testFullTrial(9:10,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{7,27}(~isnan(allDataTestsOnly{7,27}));
-testFullTrial(11:12,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{7,28}(~isnan(allDataTestsOnly{7,28}));
-testFullTrial(11:12,2)=fullTrialtemp(1:2);
-% tone Trial, light OFF column 1, light ON column 2
-testFullTrial(13:14,1)=allDataTestsOnly{2,29}(~isnan(allDataTestsOnly{2,29}));
-testFullTrial(13:14,2)=allDataTestsOnly{2,30}(~isnan(allDataTestsOnly{2,30}));
-testFullTrial(15:16,1)=allDataTestsOnly{3,29}(~isnan(allDataTestsOnly{3,29}));
-testFullTrial(15:16,2)=allDataTestsOnly{3,30}(~isnan(allDataTestsOnly{3,30}));
-fullTrialtemp=allDataTestsOnly{4,29}(~isnan(allDataTestsOnly{4,29}));
-testFullTrial(17:18,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,30}(~isnan(allDataTestsOnly{4,30}));
-testFullTrial(17:18,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{5,29}(~isnan(allDataTestsOnly{5,29}));
-testFullTrial(19:20,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{5,30}(~isnan(allDataTestsOnly{5,30}));
-testFullTrial(19:20,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{6,29}(~isnan(allDataTestsOnly{6,29}));
-testFullTrial(21:22,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{6,30}(~isnan(allDataTestsOnly{6,30}));
-testFullTrial(21:22,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{7,29}(~isnan(allDataTestsOnly{7,29}));
-testFullTrial(23:24,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{7,30}(~isnan(allDataTestsOnly{7,30}));
-testFullTrial(23:24,2)=fullTrialtemp(1:2);
-% Choice Trial, light OFF column 1, light ON column 2
-fullTrialtemp=allDataTestsOnly{2,31}(~isnan(allDataTestsOnly{2,31}));
-testFullTrial(25:26,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{2,32}(~isnan(allDataTestsOnly{2,32}));
-testFullTrial(25:26,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{3,31}(~isnan(allDataTestsOnly{3,31}));
-testFullTrial(27:28,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{3,32}(~isnan(allDataTestsOnly{3,32}));
-testFullTrial(27:28,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,31}(~isnan(allDataTestsOnly{4,31}));
-testFullTrial(29:30,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{4,32}(~isnan(allDataTestsOnly{4,32}));
-testFullTrial(29:30,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{5,31}(~isnan(allDataTestsOnly{5,31}));
-testFullTrial(31:32,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{5,32}(~isnan(allDataTestsOnly{5,32}));
-testFullTrial(31:32,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{6,31}(~isnan(allDataTestsOnly{6,31}));
-testFullTrial(33:34,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{6,32}(~isnan(allDataTestsOnly{6,32}));
-testFullTrial(33:34,2)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{7,31}(~isnan(allDataTestsOnly{7,31}));
-testFullTrial(35:36,1)=fullTrialtemp(1:2);
-fullTrialtemp=allDataTestsOnly{7,32}(~isnan(allDataTestsOnly{7,32}));
-testFullTrial(35:36,2)=fullTrialtemp(1:2);
+testFullTrial=NaN(20,2); 
+% Dead 1
+testFullTrial(1:2,1)=allDataTestsOnly{2,19};
+testFullTrial(1:2,2)=allDataTestsOnly{2,20};
+testFullTrial(3:4,1)=allDataTestsOnly{3,19};
+testFullTrial(3:4,2)=allDataTestsOnly{3,20};
+testFullTrial(5:6,1)=allDataTestsOnly{4,19};
+testFullTrial(5:6,2)=allDataTestsOnly{4,20}; 
+% Dead 2
+testFullTrial(7:8,1)=allDataTestsOnly{2,21};
+testFullTrial(7:8,2)=allDataTestsOnly{2,22};
+testFullTrial(9:10,1)=allDataTestsOnly{3,21};
+testFullTrial(3:4,2)=allDataTestsOnly{3,22};
+testFullTrial(5:6,1)=allDataTestsOnly{4,21};
+testFullTrial(5:6,2)=allDataTestsOnly{4,22}; 
+% Dead 3
+testFullTrial(1:2,1)=allDataTestsOnly{2,21};
+testFullTrial(1:2,2)=allDataTestsOnly{2,22};
+testFullTrial(3:4,1)=allDataTestsOnly{3,21};
+testFullTrial(3:4,2)=allDataTestsOnly{3,22};
+testFullTrial(5:6,1)=allDataTestsOnly{4,21};
+testFullTrial(5:6,2)=allDataTestsOnly{4,22}; 
 [aovMGB,~,statsMGB]=anova2(testFullTrial,12); % For the MGB 
 c1 = multcompare(statsMGB);
 tbl1 = array2table(c1,"VariableNames", ...
