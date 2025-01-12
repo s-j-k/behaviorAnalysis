@@ -115,8 +115,6 @@ sigstar({[1,2]}, p)
 ylabel('percent correct');
 title(['MGB Dead 4 Inactivation']);
 xticklabels({'light off', 'light on'});
-allDataTestsOnly{jj,27}=rpc;
-allDataTestsOnly{jj,28}=opc;
 
 clear rpc opc
 rpc=NaN;opc=NaN;

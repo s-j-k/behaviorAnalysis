@@ -258,6 +258,8 @@ for nbsubj = 1:nSubj % through subjects
             rates(counter,:) = [rhit rfa phit pfa ohit ofa ...
                         rfhit rffa cofffa conffa phit2 pfa2 ...
                         othit otfa ochit ocfa];   
+                    
+            
             nctxt(counter,:) = [sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==2)... % numbers: e.g nb of HIT and nb of Target trials
                 sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==2)...
                 sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==2)...
@@ -771,87 +773,6 @@ for i=1:nSubj
         groups = [groups;ones(nFiles-1,1);2*ones(nFiles-1,1)];
     end
 end
-% anovabar(data,groups);hold on;
-% [~,p] = ttest(data(groups==1),data(groups==2));
-% title(['Ttest paired, p=' num2str(p)]);
-% plot([1 2],[data(groups==1) data(groups==2)], 'b.-');
-% ylim([0 1]);
-% subplot(2,8,16);hold on;
-% data = [];groups = [];
-% for i=1:nSubj
-%     if ismember(i,test)
-%         data = [data;subjrates{i}(end,9);subjrates{i}(end,10)];
-%         groups = [groups;ones(1,1);2*ones(1,1)];
-%     end
-% end
-% anovabar(data,groups);hold on;
-% [~,p] = ttest(data(groups==1),data(groups==2));
-% title(['Ttest paired, p=' num2str(p)]);
-% plot(groups, data, 'b.-');
-% ylim([0 1]);
-% 
-% if savefig
-%     cd(pathsave);
-%     saveas(fig,['CatchTrials-' cond '.pdf']);
-%     close(fig);
-% end
-% 
-% %% Plot Lick histograms during catch trials
-% % explist = [2 1 2 2 1 1 2 1 2 1 1 2]; % 1 = test, 2 = ctl
-% % cond = 'all';
-% % explist = [2 1 2 2 1 1 2 1 0 1 0 2]; % only no learner removed
-% % cond = 'nonlearnerremoved';
-% % explist = [2 1 2 2 1 0 2 1 0 1 0 0]; % all bad removed
-% % cond = 'badremoved';
-% % cd060 (test): good then bad
-% % cd065 (test): no learning at all
-% % cd063 (ctl): no learning, only one day with perf>1
-% % cd066 (ctl): good then bad
-% ctl = find(explist==2);
-% test = find(explist==1);
-% savefig = false;
-% 
-% fig=figure; % lick hist (relative: start - stim end - dead - resp wind end)
-% c = 1; t = 7;
-% x = linspace(-1,4,nbins);
-% smoothfactor = 6;
-% ylimm = [0 3];
-% for i=1:nSubj    
-%     if ismember(i,ctl)
-%         subplot(2,6,c);hold on;
-%         plot(x,Smooth(sum(lickhistcOFF{i}),smoothfactor),'k-');
-%         plot(x,Smooth(sum(lickhistcON{i}),smoothfactor),'b-');
-%         c=c+1;
-%         ylim(ylimm);
-%         PlotIntervals([0 0.1]);
-%         title(subjlist{i});
-%         subplot(2,6,6);hold on;
-%         plot(x,Smooth(sum(lickhistcOFF{i}),smoothfactor),'k-');
-%         plot(x,Smooth(sum(lickhistcON{i}),smoothfactor),'b-');
-%         ylim(ylimm);
-%         PlotIntervals([0 0.1]);
-%     elseif ismember(i,test)
-%         subplot(2,6,t);hold on;
-%         plot(x,Smooth(sum(lickhistcOFF{i}),smoothfactor),'k-');
-%         plot(x,Smooth(sum(lickhistcON{i}),smoothfactor),'b-');
-%         t=t+1;
-%         ylim(ylimm);
-%         PlotIntervals([0 0.1]);
-%         title(subjlist{i});
-%         subplot(2,6,12);hold on;
-%         plot(x,Smooth(sum(lickhistcOFF{i}),smoothfactor),'k-');
-%         plot(x,Smooth(sum(lickhistcON{i}),smoothfactor),'b-');
-%         ylim(ylimm);
-%         PlotIntervals([0 0.1]);
-%     end
-% end
-% 
-% if savefig
-%     cd(pathsave);
-%     saveas(fig,['Average-lickPSTH-CatchTrials-' cond '.pdf']);
-%     close(fig);
-% end
-% 
 
 %% Plot difference performance light-off light-on
 

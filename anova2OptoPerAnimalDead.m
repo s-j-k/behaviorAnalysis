@@ -1,4 +1,4 @@
-function [aovMGB,statsMGB,aovIC,statsIC]=anova2OptoPerAnimalDead(allDataTestsOnly)
+function [aovMGB,statsMGB]=anova2OptoPerAnimalDead(allDataTestsOnly)
 
 % now per animal statistical analysis as a 2way anova
 % no light vs. light all inactivation condition
