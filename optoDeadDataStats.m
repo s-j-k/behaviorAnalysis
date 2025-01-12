@@ -365,11 +365,8 @@ aovMGB
 allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
 allDataTestsOnly{1,40}='MGB Difference PC Tone';
 allDataTestsOnly{1,41}='MGB Difference PC Choice';
-allDataTestsOnly{1,42}='IC Difference PC Full Trial';
-allDataTestsOnly{1,43}='IC Difference PC Tone';
-allDataTestsOnly{1,44}='IC Difference PC Choice';
 % by session
-[allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly]=diffPcOptoSess(allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly,optocolor);
+[allDataTestsOnly]=diffPcOptoSessDead(allDataTestsOnly,optocolor);
 % by animal
 diffPcOptoAn(allDataTestsOnly,optocolor);
 
