@@ -1,4 +1,4 @@
-function lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,reinfcolor,optocolor)
+function lickLatOptoPerAnimalDead(allDataTestsOnly,reinfcolor,optocolor)
 
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
@@ -1706,7 +1706,7 @@ end
 [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick latency');
-title(['By Sess MGB Full Trial']);
+title(['By Animal MGB Full Trial']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 subplot(2,3,2) % tone MGB
@@ -1722,7 +1722,7 @@ end
 [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick latency');
-title(['By Sess MGB Tone']);
+title(['By Animal MGB Tone']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 subplot(2,3,3); % choice MGB
@@ -1738,7 +1738,7 @@ end
 [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick latency');
-title(['By Sess MGB Choice']);
+title(['By Animal MGB Choice']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 % for rate
@@ -1782,7 +1782,7 @@ end
 [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick rate');
-title(['By Sess MGB Full Trial']);
+title(['By Animal MGB Full Trial']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 subplot(2,3,5) % tone MGB
@@ -1798,7 +1798,7 @@ end
 [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick rate');
-title(['By Sess MGB Tone']);
+title(['By Animal MGB Tone']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 subplot(2,3,6); % choice MGB
@@ -1814,8 +1814,9 @@ end
 [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick rate');
-title(['By Sess MGB Choice']);
+title(['By Animal MGB Choice']);
 xticklabels({'hit', 'hit','fa','fa'});
+
 
 saveas(gcf,['BySess_T_MGB_LickRateLat_Opto']);
 saveas(gcf,['BySess_T_MGB_LickRateLat_Opto.png']);  

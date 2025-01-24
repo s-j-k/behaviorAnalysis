@@ -418,7 +418,7 @@ for jj=2:size(allDataTestsOnly,1)
     scatter(repmat(eee(1).XEndPoints(4),size(ofa,1),2), ...
         ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     line([1 2],[rhit rfa], 'LineWidth', 1.5, 'Color', reinfcolor);
-    line([3 4],[ohit ofa],'LineWidth', 1.5, 'Color', optocolor);
+    line([3 4],[ohit ofa]);
     [h,pHit,ci,stats] = ttest2(rhit,ohit);
     [h,pFA,ci,stats] = ttest2(rfa,ofa);
     sigstar({[1,3],[2,4]}, [pHit pFA])

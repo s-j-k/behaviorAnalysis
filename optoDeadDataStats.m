@@ -362,13 +362,15 @@ aovMGB
 
 %% compare differences in percent correct across each light off vs light on condition
 %this is by session
-allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
-allDataTestsOnly{1,40}='MGB Difference PC Tone';
-allDataTestsOnly{1,41}='MGB Difference PC Choice';
+allDataTestsOnly{1,49}='MGB Difference Dead 1';
+allDataTestsOnly{1,50}='MGB Difference Dead 2';
+allDataTestsOnly{1,51}='MGB Difference Dead 3';
+allDataTestsOnly{1,52}='MGB Difference Dead 4';
+allDataTestsOnly{1,53}='MGB Difference Dead 5';
 % by session
 [allDataTestsOnly]=diffPcOptoSessDead(allDataTestsOnly,optocolor);
 % by animal
-diffPcOptoAn(allDataTestsOnly,optocolor);
+diffPcOptoAnDead(allDataTestsOnly,optocolor);
 
 %% Differences per animal
  % have not updated this yet with the new matrices
@@ -400,7 +402,7 @@ for ff=2:4
 end
 
 %% make plot to compare lick latency, for each animal and across animals 
-lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,reinfcolor,optocolor)
+lickLatOptoPerAnimalDead(allDataTestsOnly,reinfcolor,optocolor)
 
 %% AC Expert Data
 cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials

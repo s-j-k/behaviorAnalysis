@@ -34,7 +34,10 @@ switch cohort
 %     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
     subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
     explist=[1 1 1 1 2 1 1 1];    
-   
+   case 7
+    pathsave='O:\sjk\Behavior\IC_cohort_1\';
+    subjlist={'sk218','sk219','sk220'}; %GTACR
+    explist=[1 1 1];    
     otherwise
         disp('Cohort not found');
       
@@ -631,20 +634,16 @@ for nbsubj = 1:nSubj % through animals
     end
     
 %% TO PLOT OPTO
-if nbsubj==1
-    optoplot=1;
-% elseif nbsubj==2
+% if nbsubj==1
 %     optoplot=1;
-% elseif nbsubj==5
-%     optoplot=1;
-elseif nbsubj==6
-    optoplot=1; 
-elseif nbsubj==7
-    optoplot=1; 
-else
-    optoplot=0;
-end
-% optoplot=0;
+% elseif nbsubj==6
+%     optoplot=1; 
+% elseif nbsubj==7
+%     optoplot=1; 
+% else
+%     optoplot=0;
+% end
+optoplot=1;
 
 % bar graphs for opto
 if optoplot==1 % now make bar graphs, averaged, for all conditions 
@@ -863,7 +862,33 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
                 0 0 1 0]; % catch ic, catch mgb, ic tone, lob
             icDays=logical(icDays);
             expRange=27:length(mgbDays);
-            
+        end
+    elseif contains(path,'IC_cohort_1')==1
+        if nbsubj==1 % sk198
+            mgbDays=[0 0 0 0 0 0 ...
+                0 0 0];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 ...
+                1 1 1];
+            icDays=logical(icDays);
+            expRange=7:length(mgbDays);
+        elseif nbsubj==2 %sk203, started on d9
+            mgbDays=[0 0 0 0 0 ...
+                0 0 0];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 ...
+                1 1 1];
+            icDays=logical(icDays);
+            expRange=6:length(mgbDays);
+        elseif nbsubj==3 %sk204, started on d26
+            mgbDays=[0 0 0 0 0 0 ...
+                0 0 0];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 ...
+                1 1 1];
+            icDays=logical(icDays);
+            expRange=7:length(mgbDays);
+    
         end
         
     end

@@ -1,6 +1,6 @@
 function [allDataTestsOnly]=bySessPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor)
 
-rpc=NaN;opc=NaN;
+rpc=NaN;opc=NaN;counter=2;
 for jj=2:size(allDataTestsOnly,1) % Dead 1
     if size(allDataTestsOnly{jj,19},2)>1
         allDataTestsOnly{jj,19}=allDataTestsOnly{jj,19}';
@@ -14,6 +14,9 @@ for jj=2:size(allDataTestsOnly,1) % Dead 1
     else
         opc=cat(1,opc,allDataTestsOnly{jj,20});
     end
+    allDataTestsOnly{jj,39}=rpc(counter:counter+1);
+    allDataTestsOnly{jj,40}=opc(counter:counter+1);
+    counter=counter+2;
 end
 wwFig=figure(12);
 subplot(2,3,1)
@@ -28,12 +31,9 @@ sigstar({[1,2]}, p)
 ylabel('percent correct');
 title(['MGB Dead 1 Inactivation']);
 xticklabels({'light off', 'light on'});
-allDataTestsOnly{jj,39}=rpc;
-allDataTestsOnly{jj,40}=opc;
 
 clear rpc opc
-rpc=NaN;opc=NaN;
-
+rpc=NaN;opc=NaN;counter=2;
 for jj=2:size(allDataTestsOnly,1) % Dead 2
     if size(allDataTestsOnly{jj,21},2)>1
         allDataTestsOnly{jj,21}=allDataTestsOnly{jj,21}';
@@ -47,6 +47,9 @@ for jj=2:size(allDataTestsOnly,1) % Dead 2
     else
         opc=cat(1,opc,allDataTestsOnly{jj,22});
     end
+    allDataTestsOnly{jj,41}=rpc(counter:counter+1);
+    allDataTestsOnly{jj,42}=opc(counter:counter+1);
+    counter=counter+2;
 end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -61,7 +64,7 @@ title(['MGB Dead 2 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc
-rpc=NaN;opc=NaN; 
+rpc=NaN;opc=NaN; counter=2;
 for jj=2:size(allDataTestsOnly,1) % Dead 3
     if size(allDataTestsOnly{jj,23},2)>1
         allDataTestsOnly{jj,23}=allDataTestsOnly{jj,23}';
@@ -75,6 +78,9 @@ for jj=2:size(allDataTestsOnly,1) % Dead 3
     else
         opc=cat(1,opc,allDataTestsOnly{jj,24});
     end
+    allDataTestsOnly{jj,43}=rpc(counter:counter+1);
+    allDataTestsOnly{jj,44}=opc(counter:counter+1);
+    counter=counter+2;
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -88,7 +94,7 @@ sigstar({[1,2]}, p)
 title(['MGB Dead 3 Inactivation']);
 xticklabels({'light off', 'light on'});
 
-rpc=NaN;opc=NaN; 
+rpc=NaN;opc=NaN; counter=2;
 for jj=2:size(allDataTestsOnly,1) % Dead 4
     if size(allDataTestsOnly{jj,25},2)>1
         allDataTestsOnly{jj,25}=allDataTestsOnly{jj,25}';
@@ -102,6 +108,9 @@ for jj=2:size(allDataTestsOnly,1) % Dead 4
     else
         opc=cat(1,opc,allDataTestsOnly{jj,26});
     end
+    allDataTestsOnly{jj,45}=rpc(counter:counter+1);
+    allDataTestsOnly{jj,46}=opc(counter:counter+1);
+    counter=counter+2;
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -117,7 +126,7 @@ title(['MGB Dead 4 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc
-rpc=NaN;opc=NaN;
+rpc=NaN;opc=NaN;counter=2;
 for jj=2:size(allDataTestsOnly,1) % Dead 5
     if size(allDataTestsOnly{jj,27},2)>1
         allDataTestsOnly{jj,27}=allDataTestsOnly{jj,27}';
@@ -131,6 +140,9 @@ for jj=2:size(allDataTestsOnly,1) % Dead 5
     else
         opc=cat(1,opc,allDataTestsOnly{jj,28});
     end
+    allDataTestsOnly{jj,47}=rpc(counter:counter+1);
+    allDataTestsOnly{jj,48}=opc(counter:counter+1);
+    counter=counter+2;
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
