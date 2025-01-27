@@ -9,6 +9,7 @@ function [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly
 % optocolor3=[181/255 216/255 255/255];
 
 rpc=NaN;opc=NaN;
+
 for jj=2:size(mgbTempTestsOnly,1) % test MGB Full
     if size(mgbTempTestsOnly{jj,27},2)>1
         mgbTempTestsOnly{jj,27}=mgbTempTestsOnly{jj,27}';

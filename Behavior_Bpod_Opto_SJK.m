@@ -346,15 +346,32 @@ for nbsubj = 1:nSubj % through animals
         rt_o_fa = RelativeTimes(templicks,[tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T)-1 tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T) tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T)+4],[-1 0 4]);
         rt_ot_fa = RelativeTimes(templicks,[tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)-1 tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T) tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)+4],[-1 0 4]);
         rt_oc_fa = RelativeTimes(templicks,[tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)-1 tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T) tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)+4],[-1 0 4]);
-
+        
+        rt_o_miss = RelativeTimes(templicks,[tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T)-1 tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T) tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T)+5],[-1 0 5]);
+        rt_ot_miss = RelativeTimes(templicks,[tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T)-1 tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T) tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T)+5],[-1 0 5]);
+        rt_oc_miss = RelativeTimes(templicks,[tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T)-1 tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T) tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T)+5],[-1 0 5]);
+        rt_o_cr = RelativeTimes(templicks,[tempMat(opto&~fa,START)+tempMat(opto&~fa,TONE_T)-1 tempMat(opto&~fa,START)+tempMat(opto&~fa,TONE_T) tempMat(opto&~fa,START)+tempMat(opto&~fa,TONE_T)+5],[-1 0 5]);
+        rt_ot_cr = RelativeTimes(templicks,[tempMat(topto&~fa,START)+tempMat(topto&~fa,TONE_T)-1 tempMat(topto&~fa,START)+tempMat(topto&~fa,TONE_T) tempMat(topto&~fa,START)+tempMat(topto&~fa,TONE_T)+5],[-1 0 5]);
+        rt_oc_cr = RelativeTimes(templicks,[tempMat(copto&~fa,START)+tempMat(copto&~fa,TONE_T)-1 tempMat(copto&~fa,START)+tempMat(copto&~fa,TONE_T) tempMat(copto&~fa,START)+tempMat(copto&~fa,TONE_T)+5],[-1 0 5]);
+        
         lickhistr_hit(i,:) = hist(rt_r_hit,bins)/sum(reinf&hit);
         lickhistr_fa(i,:) = hist(rt_r_fa,bins)/sum(reinf&fa);
         lickhisto_hit(i,:) = hist(rt_o_hit,bins)/sum(opto&hit);
         lickhisto_fa(i,:) = hist(rt_o_fa,bins)/sum(opto&fa);
+        
+        lickhisto_miss(i,:) = hist(rt_o_miss,bins)/sum(opto&~hit);
+        lickhisto_cr(i,:) = hist(rt_o_cr,bins)/sum(opto&~fa);
+        
         lickhistot_hit(i,:) = hist(rt_ot_hit,bins)/sum(topto&hit);
-        lickhistot_fa(i,:) = hist(rt_ot_fa,bins)/sum(topto&fa);        
-        lickhistoc_hit(i,:) = hist(rt_oc_hit,bins)/sum(copto&hit);
+        lickhistot_fa(i,:) = hist(rt_ot_fa,bins)/sum(topto&fa); 
+        lickhistot_miss(i,:) = hist(rt_ot_miss,bins)/sum(topto&~hit);
+        lickhistot_cr(i,:) = hist(rt_oc_cr,bins)/sum(topto&~fa);
+        
+        lickhistoc_hit(i,:) = hist(rt_oc_miss,bins)/sum(copto&hit);
         lickhistoc_fa(i,:) = hist(rt_oc_fa,bins)/sum(copto&fa);
+        lickhistoc_miss(i,:) = hist(rt_oc_miss,bins)/sum(copto&~hit);
+        lickhistoc_cr(i,:) = hist(rt_oc_cr,bins)/sum(copto&~fa);        
+        
         rt_p_hit = RelativeTimes(templicks,[tempMat(probe&hit,START)+tempMat(probe&hit,TONE_T)-1 tempMat(probe&hit,START)+tempMat(probe&hit,TONE_T) tempMat(probe&hit,START)+tempMat(probe&hit,TONE_T)+4],[-1 0 4]);
         rt_p_fa = RelativeTimes(templicks,[tempMat(probe&fa,START)+tempMat(probe&fa,TONE_T)-1 tempMat(probe&fa,START)+tempMat(probe&fa,TONE_T) tempMat(probe&fa,START)+tempMat(probe&fa,TONE_T)+4],[-1 0 4]);
         lickhistp_hit(i,:) = hist(rt_p_hit,bins)/sum(probe&fa);
@@ -379,6 +396,13 @@ for nbsubj = 1:nSubj % through animals
     lickhistocfa{nbsubj} = lickhistoc_fa;
     lickhistphit{nbsubj} = lickhistp_hit;
     lickhistpfa{nbsubj} = lickhistp_fa;
+    
+    lickhistomiss{nbsubj} = lickhisto_miss;
+    lickhistocr{nbsubj} = lickhisto_cr;
+    lickhistotmiss{nbsubj} = lickhistot_miss;
+    lickhistotcr{nbsubj} = lickhistot_cr;
+    lickhistochit{nbsubj} = lickhistoc_miss;
+    lickhistoccr{nbsubj} = lickhistoc_cr;
     
     ratescorr = rates;
     for j=1:size(rates,2)
@@ -454,7 +478,7 @@ for nbsubj = 1:nSubj % through animals
     end
     expertdays=[];
     % lick latency histogram at only expert performance
-%     getLickLatHist(matrix,nbsubj,subjlist,expertdays)
+    getLickLatHist(matrix,nbsubj,subjlist,expertdays)
     MAT{nbsubj,1} = matrix;
 %     %%
     if plot_indiv_data
@@ -546,7 +570,7 @@ for nbsubj = 1:nSubj % through animals
 %             saveas(fig,[subjlist{nbsubj} '-ActionAndPerformance.' filetype]);
 %             close(fig);
 %         end
-%         
+        
         if plot_lick_psth
             fig=figure;hold on;
             for d=1:ndays
@@ -844,7 +868,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 %                 0 1 0]; % catch MGB, catch IC, LOB
             icDays=logical(icDays);
             expRange=9:length(mgbDays);
-        elseif nbsubj==7 %sk204, started on d26
+        elseif nbsubj==7 %sk204, started on d29
             mgbDays=[0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 ... %15
                 0 0 0 0 0 0 0 0 0 ...

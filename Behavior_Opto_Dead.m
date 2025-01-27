@@ -389,7 +389,7 @@ for nbsubj = 1:nSubj % through subjects
             slco_fa(nbproto,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));        
 
         end
-        getLickLatHist(matrix,deadProtocol,nbproto,subjlist, nbsubj) 
+        getLickLatHistDead(matrix,deadProtocol,nbproto,subjlist, nbsubj) 
         MAT{nbproto,1} = matrix;
 
     %% make plots summarizing performance across training

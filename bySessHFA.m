@@ -17,19 +17,21 @@ for jj=2:size(mgbTempTestsOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,1)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['By Session MGB Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -49,19 +51,21 @@ for jj=2:size(mgbTempTestsOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,2)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['MGB Tone Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -81,19 +85,21 @@ for jj=2:size(mgbTempTestsOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,3)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title([' MGB Choice Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -115,19 +121,21 @@ for jj=2:size(tempTestsOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,4)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['By Session IC Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -147,19 +155,21 @@ for jj=2:size(tempTestsOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,5)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['IC Tone Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -179,19 +189,21 @@ for jj=2:size(tempTestsOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,6)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title([' IC Choice Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -218,19 +230,21 @@ for jj=2:size(allDataCtlOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,1)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['By Session MGB Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -251,19 +265,21 @@ for jj=2:size(allDataCtlOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,2)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['MGB Tone Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -284,19 +300,21 @@ for jj=2:size(allDataCtlOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,3)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title([' MGB Choice Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -318,19 +336,21 @@ for jj=2:size(allDataCtlOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,4)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['By Session IC Full Trial Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -351,19 +371,21 @@ for jj=2:size(allDataCtlOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,5)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
 title(['IC Tone Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
@@ -384,21 +406,23 @@ for jj=2:size(allDataCtlOnly,1)
     ofa = cat(1,ofa,ofatemp);
 end
 subplot(2,3,6)
-ppp=bar([nanmean(rhit) nanmean(ohit) nanmean(rfa) nanmean(ofa)]); hold on;
-ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-scatter(repmat(ppp(1).XEndPoints(1),size(rhit,1),1), ...
+ppp=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
+ppp(1).FaceColor='flat'; ppp(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+scatter(repmat(ppp(1).XEndPoints(1),size(rhit,2),1), ...
     rhit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(2),size(ohit,1),2), ...
-    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-scatter(repmat(ppp(1).XEndPoints(3),size(rfa,1),1), ...
+scatter(repmat(ppp(1).XEndPoints(2),size(rfa,2),2), ...
     rfa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ppp(1).XEndPoints(4),size(ofa,1),2), ...
+scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
+    ohit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),2), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([1 2],[rhit rfa], 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([3 4],[ohit ofa],'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
-sigstar({[1,2],[3,4]}, [pHit pFA])
+sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('rate');
-title([' MGB Choice Inactivation']);
+title([' IC Choice Inactivation']);
 xticklabels({'hit', 'hit','fa','fa'});
 
 ppFig.Position(3:4)=[725 475];
