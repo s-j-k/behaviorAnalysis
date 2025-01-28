@@ -1,4 +1,4 @@
-function lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+function lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,reinfcolor,optocolor)
 
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
@@ -1597,7 +1597,7 @@ end
 
 subplot(2,3,1); % full trial MGB
 lickbarL=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
-lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(ohitLickRateE) nanmean(faLickRateE) nanmean(ofaLickRateE)];
 for kk=1:numel(lickbarL)
     xtips=lickbarL(kk).XEndPoints;
@@ -1606,11 +1606,11 @@ for kk=1:numel(lickbarL)
 end
     scatter(repmat(lickbarL(1).XEndPoints(1),size(hitLickRate,1),1), ...
         hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarL(1).XEndPoints(2),size(faLickRate,1),1), ...
+    scatter(repmat(lickbar(1).XEndPoints(2),size(faLickRate,1),1), ...
         faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarL(1).XEndPoints(3),size(ohitLickRate,1),1), ...
+    scatter(repmat(lickbar(1).XEndPoints(3),size(ohitLickRate,1),1), ...
         ohitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarL(1).XEndPoints(4),size(ofaLickRate,1),1), ...
+    scatter(repmat(lickbar(1).XEndPoints(4),size(ofaLickRate,1),1), ...
         ofaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
         hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
@@ -1629,7 +1629,7 @@ xticklabels({'hit', 'fa','hit','fa'});
 
 subplot(2,3,2) % tone MGB
 lickbarT=bar([nanmean(hitLickRate) nanmean(othitLickRate) nanmean(faLickRate) nanmean(otfaLickRate)]); hold on;
-lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
 for kk=1:numel(lickbarT)
     xtips=lickbarT(kk).XEndPoints;
@@ -1661,14 +1661,13 @@ xticklabels({'hit', 'fa','hit','fa'});
 
 subplot(2,3,3); % choice MGB
 lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
-lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
 for kk=1:numel(lickbarC)
     xtips=lickbarC(kk).XEndPoints;
     ytips=lickbarC(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-end
-scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
+endscatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
         hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(lickbarC(1).XEndPoints(2),size(faLickRate,1),1), ...
         faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -1768,887 +1767,164 @@ saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto']);
 saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto.png']);  
 close all
 
-%% by session
-% lickFig1=figure(jj+108); 
-% 
-% % latency
-% clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate ...
-%     ochitLickRate ocfaLickRate hitLickRateE ohitLickRateE faLickRateE ...
-%     ofaLickRateE othitLickRateE otfaLickRateE ochitLickRateE ocfaLickRateE 
-% hitLickRate=NaN; ohitLickRate=NaN; faLickRate=NaN; ofaLickRate=NaN; othitLickRate=NaN;
-% otfaLickRate=NaN; ochitLickRate=NaN; ocfaLickRate=NaN; hitLickRateE=NaN; ohitLickRateE=NaN;
-% faLickRateE=NaN; ofaLickRateE=NaN; othitLickRateE=NaN; otfaLickRateE=NaN; ochitLickRateE=NaN;
-% ocfaLickRateE=NaN; 
-% for jj=2:size(mgbTempTestsOnly,1)
-%     hitLickRate=cat(2,hitLickRate,MGBmr_hit(jj,:));
-%     ohitLickRate=cat(2,ohitLickRate,MGBmo_hit(jj,:));
-%     faLickRate=cat(2,faLickRate,MGBmr_fa(jj,:));
-%     ofaLickRate=cat(2,ofaLickRate,MGBmo_fa(jj,:));
-%     othitLickRate=cat(2,othitLickRate,MGBmto_hit(jj,:));
-%     otfaLickRate=cat(2,otfaLickRate,MGBmto_fa(jj,:));
-%     ochitLickRate=cat(2,ochitLickRate,MGBmco_hit(jj,:));
-%     ocfaLickRate=cat(2,ocfaLickRate,MGBmco_fa(jj,:));
-%     
-%     hitLickRateE=cat(2,hitLickRateE,MGBsr_hit(jj,:));
-%     ohitLickRateE=cat(2,ohitLickRateE,MGBso_hit(jj,:));
-%     faLickRateE=cat(2,faLickRateE,MGBsr_fa(jj,:));
-%     ofaLickRateE=cat(2,ofaLickRateE,MGBso_fa(jj,:));
-%     othitLickRateE=cat(2,othitLickRateE,MGBsto_hit(jj,:));
-%     otfaLickRateE=cat(2,otfaLickRateE,MGBsto_fa(jj,:));
-%     ochitLickRateE=cat(2,ochitLickRateE,MGBsco_hit(jj,:));
-%     ocfaLickRateE=cat(2,ocfaLickRateE,MGBsco_fa(jj,:));
-%     
-% end
-% 
-% subplot(2,3,1); % full trial MGB
-% lickbar=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
-% error=[nanmean(hitLickRateE) nanmean(ohitLickRateE) nanmean(faLickRateE) nanmean(ofaLickRateE)];
-% lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-% for kk=1:numel(lickbar)
-%     xtips=lickbar(kk).XEndPoints;
-%     ytips=lickbar(kk).YEndPoints;
-%     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-% end
-% [h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
-% [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
-% sigstar({[1,2],[3,4]}, [pHit pFA])
-% ylabel('mean lick latency');
-% title(['By Sess MGB Full Trial']);
-% xticklabels({'hit', 'hit','fa','fa'});
-% 
-% subplot(2,3,2) % tone MGB
-% lickbarT=bar([nanmean(hitLickRate) nanmean(othitLickRate) nanmean(faLickRate) nanmean(otfaLickRate)]); hold on;
-% error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
-% lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-% for kk=1:numel(lickbarT)
-%     xtips=lickbarT(kk).XEndPoints;
-%     ytips=lickbarT(kk).YEndPoints;
-%     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-% end
-% [h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
-% [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
-% sigstar({[1,2],[3,4]}, [pHit pFA])
-% ylabel('mean lick latency');
-% title(['By Sess MGB Tone']);
-% xticklabels({'hit', 'hit','fa','fa'});
-% 
-% subplot(2,3,3); % choice MGB
-% lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
-% lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-% error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
-% for kk=1:numel(lickbarC)
-%     xtips=lickbarC(kk).XEndPoints;
-%     ytips=lickbarC(kk).YEndPoints;
-%     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-% end
-% [h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
-% [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
-% sigstar({[1,2],[3,4]}, [pHit pFA])
-% ylabel('mean lick latency');
-% title(['By Sess MGB Choice']);
-% xticklabels({'hit', 'hit','fa','fa'});
-% 
-% % for rate
-% clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate ...
-%     ochitLickRate ocfaLickRate hitLickRateE ohitLickRateE faLickRateE ...
-%     ofaLickRateE othitLickRateE otfaLickRateE ochitLickRateE ocfaLickRateE 
-% hitLickRate=NaN; ohitLickRate=NaN; faLickRate=NaN; ofaLickRate=NaN; othitLickRate=NaN;
-% otfaLickRate=NaN; ochitLickRate=NaN; ocfaLickRate=NaN; hitLickRateE=NaN; ohitLickRateE=NaN;
-% faLickRateE=NaN; ofaLickRateE=NaN; othitLickRateE=NaN; otfaLickRateE=NaN; ochitLickRateE=NaN;
-% ocfaLickRateE=NaN;
-% for jj=2:size(mgbTempTestsOnly,1)
-%     hitLickRate=cat(2,hitLickRate,MGBmlr_hit(jj,:));
-%     ohitLickRate=cat(2,ohitLickRate,MGBmlo_hit(jj,:));
-%     faLickRate=cat(2,faLickRate,MGBmlr_fa(jj,:));
-%     ofaLickRate=cat(2,ofaLickRate,MGBmlo_fa(jj,:));
-%     othitLickRate=cat(2,othitLickRate,MGBmlto_hit(jj,:));
-%     otfaLickRate=cat(2,otfaLickRate,MGBmlto_fa(jj,:));
-%     ochitLickRate=cat(2,ochitLickRate,MGBmlco_hit(jj,:));
-%     ocfaLickRate=cat(2,ocfaLickRate,MGBmlco_fa(jj,:));
-%     
-%     hitLickRateE=cat(2,hitLickRateE,MGBslr_hit(jj,:));
-%     ohitLickRateE=cat(2,ohitLickRateE,MGBslo_hit(jj,:));
-%     faLickRateE=cat(2,faLickRateE,MGBslr_fa(jj,:));
-%     ofaLickRateE=cat(2,ofaLickRateE,MGBslo_fa(jj,:));
-%     othitLickRateE=cat(2,othitLickRateE,MGBslto_hit(jj,:));
-%     otfaLickRateE=cat(2,otfaLickRateE,MGBslto_fa(jj,:));
-%     ochitLickRateE=cat(2,ochitLickRateE,MGBslco_hit(jj,:));
-%     ocfaLickRateE=cat(2,ocfaLickRateE,MGBslco_fa(jj,:));
-% end
-% 
-% subplot(2,3,4); % full trial MGB
-% lickbarL=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
-% lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-% error=[nanmean(hitLickRateE) nanmean(ohitLickRateE) nanmean(faLickRateE) nanmean(ofaLickRateE)];
-% for kk=1:numel(lickbarL)
-%     xtips=lickbarL(kk).XEndPoints;
-%     ytips=lickbarL(kk).YEndPoints;
-%     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-% end
-% [h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
-% [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
-% sigstar({[1,2],[3,4]}, [pHit pFA])
-% ylabel('mean lick rate');
-% title(['By Sess MGB Full Trial']);
-% xticklabels({'hit', 'hit','fa','fa'});
-% 
-% subplot(2,3,5) % tone MGB
-% lickbarT=bar([nanmean(hitLickRate) nanmean(othitLickRate) nanmean(faLickRate) nanmean(otfaLickRate)]); hold on;
-% lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-% error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
-% for kk=1:numel(lickbarT)
-%     xtips=lickbarT(kk).XEndPoints;
-%     ytips=lickbarT(kk).YEndPoints;
-%     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-% end
-% [h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
-% [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
-% sigstar({[1,2],[3,4]}, [pHit pFA])
-% ylabel('mean lick rate');
-% title(['By Sess MGB Tone']);
-% xticklabels({'hit', 'hit','fa','fa'});
-% 
-% subplot(2,3,6); % choice MGB
-% lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
-% lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-% error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
-% for kk=1:numel(lickbarC)
-%     xtips=lickbarC(kk).XEndPoints;
-%     ytips=lickbarC(kk).YEndPoints;
-%     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-% end
-% [h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
-% [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
-% sigstar({[1,2],[3,4]}, [pHit pFA])
-% ylabel('mean lick rate');
-% title(['By Sess MGB Choice']);
-% xticklabels({'hit', 'hit','fa','fa'});
-% 
-% saveas(gcf,['BySess_T_MGB_LickRateLat_Opto']);
-% saveas(gcf,['BySess_T_MGB_LickRateLat_Opto.png']);  
+% by session
+lickFig1=figure(jj+108); 
 
-%% control animals
-
-% tests for MGB for each animal
-nbsubj=2;
-for nbsubj=2:size(allDataCtlOnly,1)
-    matrix=allDataCtlOnly{nbsubj,26};
-    for i=1:max(matrix(:,SESS))
-        mr_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit
-        sr_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
-        mp_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
-        sp_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
-        mo_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
-        so_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
-        mto_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
-        sto_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
-        mco_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
-        sco_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
-        
-        mr_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
-        sr_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
-        mp_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
-        sp_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
-        mo_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
-        so_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
-        mto_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
-        sto_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
-        mco_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
-        sco_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
-        
-        mlr_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        slr_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        mlp_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        slp_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        mlo_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        slo_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        mlto_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        slto_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        mlco_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-        slco_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-                        
-        mlr_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        slr_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        mlp_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        slp_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        mlo_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        slo_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        mlto_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        slto_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        mlco_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-        slco_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));        
-        
-    end
-    switch nbsubj
-        case 2 % sk177
-            mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
-            icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
-            expRange=1:8; 
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-            
-        case 3 %sk175
-            expRange=25:32; 
-            mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                1 1 0 0 1 1 0 0 ...
-                0 0 0 ];mgbDays=logical(mgbDays);
-            icDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                0 0 1 1 0 0 1 1 ...
-                0 0 0];icDays=logical(icDays); 
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            MGBmr_hit(MGBmr_hit==0)=NaN;
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-            
-        case 4 % sk176
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 ...
-                1 0 1 1 0 1 1 0 1 0 0 1];
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 ... 
-                0 1 0 0 1 0 0 1 0 1 1 0];
-            icDays=logical(icDays);
-            expRange=20:length(mgbDays); 
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            MGBmr_hit(MGBmr_hit==0)=NaN;
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-            
-    case 5 % sk198
-            mgbDays=[0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 1 1 ...
-                0 1 0 1 0]; %...
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                1 0 1 0 0]; %...
-            icDays=logical(icDays);
-            expRange=38:length(mgbDays);    
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-            
-    case 6 % sk203
-            mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
-            icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
-            expRange=1:8; 
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-            
-    case 7 % sk204
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... %15
-                0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 ...
-                0 0 0]; % catch ic, catch mgb, lob
-            mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                1 0 0 0 1 0 1 0 0 1 0]; % catch ic, catch mgb, lob
-            icDays=logical(icDays);
-            expRange=27:length(mgbDays);
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-            
-    end
-end
-
-MGBmr_hit(MGBmr_hit==0)=NaN;
-MGBsr_hit(MGBsr_hit==0)=NaN;
-MGBmp_hit(MGBmp_hit==0)=NaN;
-MGBsp_hit(MGBsp_hit==0)=NaN;
-MGBmo_hit(MGBmo_hit==0)=NaN;
-MGBso_hit(MGBso_hit==0)=NaN;
-MGBmto_hit(MGBmto_hit==0)=NaN;
-MGBsto_hit(MGBsto_hit==0)=NaN;
-MGBmco_hit(MGBmco_hit==0)=NaN;
-MGBsco_hit(MGBsco_hit==0)=NaN;
-
-MGBmr_fa(MGBmr_fa==0) = NaN;
-MGBsr_fa(MGBsr_fa==0) = NaN;
-MGBmp_fa(MGBmp_fa==0) = NaN;
-MGBsp_fa(MGBsp_fa==0) = NaN;
-MGBmo_fa(MGBmo_fa==0) = NaN;
-MGBso_fa(MGBso_fa==0) = NaN;
-MGBmto_fa(MGBmto_fa==0) = NaN;
-MGBsto_fa(MGBsto_fa==0) = NaN;
-MGBmco_fa(MGBmco_fa==0) = NaN;
-MGBsco_fa(MGBsco_fa==0) = NaN;
-
-MGBmlr_hit(MGBmlr_hit==0) = NaN;
-MGBslr_hit(MGBslr_hit==0) = NaN;
-MGBmlp_hit(MGBmlp_hit==0) = NaN;
-MGBslp_hit(MGBslp_hit==0) = NaN;
-MGBmlo_hit(MGBmlo_hit==0) = NaN;
-MGBslo_hit(MGBslo_hit==0) = NaN;
-MGBmlto_hit(MGBmlto_hit==0) = NaN;
-MGBslto_hit(MGBslto_hit==0) = NaN;
-MGBmlco_hit(MGBmlco_hit==0) = NaN;
-MGBslco_hit(MGBslco_hit==0) = NaN;
-
-MGBmlr_fa(MGBmlr_fa==0) = NaN;
-MGBslr_fa(MGBslr_fa==0) = NaN;
-MGBmlp_fa(MGBmlp_fa==0) = NaN;
-MGBslp_fa(MGBslp_fa==0) = NaN;
-MGBmlo_fa(MGBmlo_fa==0) = NaN;
-MGBslo_fa(MGBslo_fa==0) = NaN;
-MGBmlto_fa(MGBmlto_fa==0) = NaN;
-MGBslto_fa(MGBslto_fa==0) = NaN;
-MGBmlco_fa(MGBmlco_fa==0) = NaN;
-MGBslco_fa(MGBslco_fa==0) = NaN;
-
-
-close all
-% LICK LATENCY, AVERAGED ACROSS ANIMALS
-% change these variable names, theyre swapped
-lickFig=figure(jj+103); 
-xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
-xoVector = xVector+2;
+% latency
+clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate ...
+    ochitLickRate ocfaLickRate hitLickRateE ohitLickRateE faLickRateE ...
+    ofaLickRateE othitLickRateE otfaLickRateE ochitLickRateE ocfaLickRateE 
+hitLickRate=NaN; ohitLickRate=NaN; faLickRate=NaN; ofaLickRate=NaN; othitLickRate=NaN;
+otfaLickRate=NaN; ochitLickRate=NaN; ocfaLickRate=NaN; hitLickRateE=NaN; ohitLickRateE=NaN;
+faLickRateE=NaN; ofaLickRateE=NaN; othitLickRateE=NaN; otfaLickRateE=NaN; ochitLickRateE=NaN;
+ocfaLickRateE=NaN; 
 for jj=2:size(mgbTempTestsOnly,1)
-    hitLickRate(jj-1)=nanmean(MGBmr_hit(jj,:));
-    ohitLickRate(jj-1)=nanmean(MGBmo_hit(jj,:));
-    faLickRate(jj-1)=nanmean(MGBmr_fa(jj,:));
-    ofaLickRate(jj-1)=nanmean(MGBmo_fa(jj,:));
-    othitLickRate(jj-1)=nanmean(MGBmto_hit(jj,:));
-    otfaLickRate(jj-1)=nanmean(MGBmto_fa(jj,:));
-    ochitLickRate(jj-1)=nanmean(MGBmco_hit(jj,:));
-    ocfaLickRate(jj-1)=nanmean(MGBmco_fa(jj,:));
+    hitLickRate=cat(2,hitLickRate,MGBmr_hit(jj,:));
+    ohitLickRate=cat(2,ohitLickRate,MGBmo_hit(jj,:));
+    faLickRate=cat(2,faLickRate,MGBmr_fa(jj,:));
+    ofaLickRate=cat(2,ofaLickRate,MGBmo_fa(jj,:));
+    othitLickRate=cat(2,othitLickRate,MGBmto_hit(jj,:));
+    otfaLickRate=cat(2,otfaLickRate,MGBmto_fa(jj,:));
+    ochitLickRate=cat(2,ochitLickRate,MGBmco_hit(jj,:));
+    ocfaLickRate=cat(2,ocfaLickRate,MGBmco_fa(jj,:));
     
-    hitLickRateE(jj-1)=nanmean(MGBsr_hit(jj,:));
-    ohitLickRateE(jj-1)=nanmean(MGBso_hit(jj,:));
-    faLickRateE(jj-1)=nanmean(MGBsr_fa(jj,:));
-    ofaLickRateE(jj-1)=nanmean(MGBso_fa(jj,:));
-    othitLickRateE(jj-1)=nanmean(MGBsto_hit(jj,:));
-    otfaLickRateE(jj-1)=nanmean(MGBsto_fa(jj,:));
-    ochitLickRateE(jj-1)=nanmean(MGBsco_hit(jj,:));
-    ocfaLickRateE(jj-1)=nanmean(MGBsco_fa(jj,:));
+    hitLickRateE=cat(2,hitLickRateE,MGBsr_hit(jj,:));
+    ohitLickRateE=cat(2,ohitLickRateE,MGBso_hit(jj,:));
+    faLickRateE=cat(2,faLickRateE,MGBsr_fa(jj,:));
+    ofaLickRateE=cat(2,ofaLickRateE,MGBso_fa(jj,:));
+    othitLickRateE=cat(2,othitLickRateE,MGBsto_hit(jj,:));
+    otfaLickRateE=cat(2,otfaLickRateE,MGBsto_fa(jj,:));
+    ochitLickRateE=cat(2,ochitLickRateE,MGBsco_hit(jj,:));
+    ocfaLickRateE=cat(2,ocfaLickRateE,MGBsco_fa(jj,:));
     
 end
 
 subplot(2,3,1); % full trial MGB
-lickbar=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ohitLickRate) nanmean(ofaLickRate)]); hold on;
-error=[nanmean(hitLickRateE) nanmean(faLickRateE) nanmean(ohitLickRateE) nanmean(ofaLickRateE)];
-lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbar=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
+error=[nanmean(hitLickRateE) nanmean(ohitLickRateE) nanmean(faLickRateE) nanmean(ofaLickRateE)];
+lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 for kk=1:numel(lickbar)
     xtips=lickbar(kk).XEndPoints;
     ytips=lickbar(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
 end
-    scatter(repmat(lickbar(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbar(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbar(1).XEndPoints(3),size(ohitLickRate,1),1), ...
-        ohitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbar(1).XEndPoints(4),size(ofaLickRate,1),1), ...
-        ofaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[ohitLickRate(1) ofaLickRate(1) ohitLickRate(2) ofaLickRate(1)...
-        ohitLickRate(3) ofaLickRate(3) ohitLickRate(4) ofaLickRate(4)...
-        ohitLickRate(5) ofaLickRate(5) ohitLickRate(6) ofaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
+sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick latency');
-title(['By Animal MGB Full Trial']);
-xticklabels({'hit', 'fa','hit','fa'});
+title(['By Sess MGB Full Trial']);
+xticklabels({'hit', 'hit','fa','fa'});
 
 subplot(2,3,2) % tone MGB
-lickbarT=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(othitLickRate) nanmean(otfaLickRate)]); hold on;
-error=[nanmean(hitLickRateE) nanmean(faLickRateE) nanmean(othitLickRateE) nanmean(otfaLickRateE)];
-lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarT=bar([nanmean(hitLickRate) nanmean(othitLickRate) nanmean(faLickRate) nanmean(otfaLickRate)]); hold on;
+error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
+lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 for kk=1:numel(lickbarT)
     xtips=lickbarT(kk).XEndPoints;
     ytips=lickbarT(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
 end
-scatter(repmat(lickbarT(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarT(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarT(1).XEndPoints(3),size(othitLickRate,1),1), ...
-        othitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarT(1).XEndPoints(4),size(otfaLickRate,1),1), ...
-        otfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[othitLickRate(1) otfaLickRate(1) othitLickRate(2) otfaLickRate(1)...
-        othitLickRate(3) otfaLickRate(3) othitLickRate(4) otfaLickRate(4)...
-        othitLickRate(5) otfaLickRate(5) othitLickRate(6) otfaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
+sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick latency');
-title(['By Animal MGB Tone']);
-xticklabels({'hit', 'fa','hit','fa'});
+title(['By Sess MGB Tone']);
+xticklabels({'hit', 'hit','fa','fa'});
 
 subplot(2,3,3); % choice MGB
-lickbarC=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ochitLickRate) nanmean(ocfaLickRate)]); hold on;
-lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
+lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
 for kk=1:numel(lickbarC)
     xtips=lickbarC(kk).XEndPoints;
     ytips=lickbarC(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
 end
-scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarC(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarC(1).XEndPoints(3),size(ochitLickRate,1),1), ...
-        ochitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarC(1).XEndPoints(4),size(ocfaLickRate,1),1), ...
-        ocfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[ochitLickRate(1) ocfaLickRate(1) ochitLickRate(2) ocfaLickRate(1)...
-        ochitLickRate(3) ocfaLickRate(3) ochitLickRate(4) ocfaLickRate(4)...
-        ochitLickRate(5) ocfaLickRate(5) ochitLickRate(6) ocfaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
+sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick latency');
-title(['By Animal MGB Choice']);
-xticklabels({'hit', 'fa','hit','fa'});
+title(['By Sess MGB Choice']);
+xticklabels({'hit', 'hit','fa','fa'});
 
-lickFig.Position(3:4)=[725 475];
-saveas(gcf,['ByAnimal_C_MGB_LickLat_Opto']);
-saveas(gcf,['ByAnimal_C_MGB_LickLat_Opto.png']);
-close all
-
-
-% control animals, RATE
-lickFigl=figure(jj+13); 
+% for rate
+clear hitLickRate ohitLickRate faLickRate ofaLickRate othitLickRate otfaLickRate ...
+    ochitLickRate ocfaLickRate hitLickRateE ohitLickRateE faLickRateE ...
+    ofaLickRateE othitLickRateE otfaLickRateE ochitLickRateE ocfaLickRateE 
+hitLickRate=NaN; ohitLickRate=NaN; faLickRate=NaN; ofaLickRate=NaN; othitLickRate=NaN;
+otfaLickRate=NaN; ochitLickRate=NaN; ocfaLickRate=NaN; hitLickRateE=NaN; ohitLickRateE=NaN;
+faLickRateE=NaN; ofaLickRateE=NaN; othitLickRateE=NaN; otfaLickRateE=NaN; ochitLickRateE=NaN;
+ocfaLickRateE=NaN;
 for jj=2:size(mgbTempTestsOnly,1)
-    hitLickRate(jj-1)=nanmean(MGBmlr_hit(jj,:));
-    ohitLickRate(jj-1)=nanmean(MGBmlo_hit(jj,:));
-    faLickRate(jj-1)=nanmean(MGBmlr_fa(jj,:));
-    ofaLickRate(jj-1)=nanmean(MGBmlo_fa(jj,:));
-    othitLickRate(jj-1)=nanmean(MGBmlto_hit(jj,:));
-    otfaLickRate(jj-1)=nanmean(MGBmlto_fa(jj,:));
-    ochitLickRate(jj-1)=nanmean(MGBmlco_hit(jj,:));
-    ocfaLickRate(jj-1)=nanmean(MGBmlco_fa(jj,:));
+    hitLickRate=cat(2,hitLickRate,MGBmlr_hit(jj,:));
+    ohitLickRate=cat(2,ohitLickRate,MGBmlo_hit(jj,:));
+    faLickRate=cat(2,faLickRate,MGBmlr_fa(jj,:));
+    ofaLickRate=cat(2,ofaLickRate,MGBmlo_fa(jj,:));
+    othitLickRate=cat(2,othitLickRate,MGBmlto_hit(jj,:));
+    otfaLickRate=cat(2,otfaLickRate,MGBmlto_fa(jj,:));
+    ochitLickRate=cat(2,ochitLickRate,MGBmlco_hit(jj,:));
+    ocfaLickRate=cat(2,ocfaLickRate,MGBmlco_fa(jj,:));
     
-    hitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
-    ohitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
-    faLickRateE(jj-1)=nanmean(MGBslr_fa(jj,:));
-    ofaLickRateE(jj-1)=nanmean(MGBslo_fa(jj,:));
-    othitLickRateE(jj-1)=nanmean(MGBslto_hit(jj,:));
-    otfaLickRateE(jj-1)=nanmean(MGBslto_fa(jj,:));
-    ochitLickRateE(jj-1)=nanmean(MGBslco_hit(jj,:));
-    ocfaLickRateE(jj-1)=nanmean(MGBslco_fa(jj,:));    
-    
+    hitLickRateE=cat(2,hitLickRateE,MGBslr_hit(jj,:));
+    ohitLickRateE=cat(2,ohitLickRateE,MGBslo_hit(jj,:));
+    faLickRateE=cat(2,faLickRateE,MGBslr_fa(jj,:));
+    ofaLickRateE=cat(2,ofaLickRateE,MGBslo_fa(jj,:));
+    othitLickRateE=cat(2,othitLickRateE,MGBslto_hit(jj,:));
+    otfaLickRateE=cat(2,otfaLickRateE,MGBslto_fa(jj,:));
+    ochitLickRateE=cat(2,ochitLickRateE,MGBslco_hit(jj,:));
+    ocfaLickRateE=cat(2,ocfaLickRateE,MGBslco_fa(jj,:));
 end
 
-subplot(2,3,1); % full trial MGB
+subplot(2,3,4); % full trial MGB
 lickbarL=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
-lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(ohitLickRateE) nanmean(faLickRateE) nanmean(ofaLickRateE)];
 for kk=1:numel(lickbarL)
     xtips=lickbarL(kk).XEndPoints;
     ytips=lickbarL(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
 end
-    scatter(repmat(lickbarL(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarL(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarL(1).XEndPoints(3),size(ohitLickRate,1),1), ...
-        ohitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarL(1).XEndPoints(4),size(ofaLickRate,1),1), ...
-        ofaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[ohitLickRate(1) ofaLickRate(1) ohitLickRate(2) ofaLickRate(1)...
-        ohitLickRate(3) ofaLickRate(3) ohitLickRate(4) ofaLickRate(4)...
-        ohitLickRate(5) ofaLickRate(5) ohitLickRate(6) ofaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
+sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick rate');
-title(['By Animal MGB Full Trial']);
-xticklabels({'hit', 'fa','hit','fa'});
+title(['By Sess MGB Full Trial']);
+xticklabels({'hit', 'hit','fa','fa'});
 
-subplot(2,3,2) % tone MGB
+subplot(2,3,5) % tone MGB
 lickbarT=bar([nanmean(hitLickRate) nanmean(othitLickRate) nanmean(faLickRate) nanmean(otfaLickRate)]); hold on;
-lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
 for kk=1:numel(lickbarT)
     xtips=lickbarT(kk).XEndPoints;
     ytips=lickbarT(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
 end
-scatter(repmat(lickbarT(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarT(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarT(1).XEndPoints(3),size(othitLickRate,1),1), ...
-        othitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarT(1).XEndPoints(4),size(otfaLickRate,1),1), ...
-        otfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[othitLickRate(1) otfaLickRate(1) othitLickRate(2) otfaLickRate(1)...
-        othitLickRate(3) otfaLickRate(3) othitLickRate(4) otfaLickRate(4)...
-        othitLickRate(5) otfaLickRate(5) othitLickRate(6) otfaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
+sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick rate');
-title(['By Animal MGB Tone']);
-xticklabels({'hit', 'fa','hit','fa'});
+title(['By Sess MGB Tone']);
+xticklabels({'hit', 'hit','fa','fa'});
 
-subplot(2,3,3); % choice MGB
+subplot(2,3,6); % choice MGB
 lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
-lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
 for kk=1:numel(lickbarC)
     xtips=lickbarC(kk).XEndPoints;
     ytips=lickbarC(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
 end
-scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarC(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarC(1).XEndPoints(3),size(ochitLickRate,1),1), ...
-        ochitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarC(1).XEndPoints(4),size(ocfaLickRate,1),1), ...
-        ocfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[ochitLickRate(1) ocfaLickRate(1) ochitLickRate(2) ocfaLickRate(1)...
-        ochitLickRate(3) ocfaLickRate(3) ochitLickRate(4) ocfaLickRate(4)...
-        ochitLickRate(5) ocfaLickRate(5) ochitLickRate(6) ocfaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
+sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick rate');
-title(['By Animal MGB Choice']);
-xticklabels({'hit', 'fa','hit','fa'});
+title(['By Sess MGB Choice']);
+xticklabels({'hit', 'hit','fa','fa'});
 
-lickFigl.Position(3:4)=[725 475];
-saveas(gcf,['ByAnimal_C_MGB_LickRate_Opto']);
-saveas(gcf,['ByAnimal_C_MGB_LickRate_Opto.png']);  
-close all
+saveas(gcf,['BySess_T_MGB_LickRateLat_Opto']);
+saveas(gcf,['BySess_T_MGB_LickRateLat_Opto.png']);  
+
+
 end

@@ -742,14 +742,14 @@ clear qqq wwFig rpc opc
 [tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
-[allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
+% [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
 byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
 close all
 
-bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
+% bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
 close all
 %%
 % now do the anova....
@@ -802,7 +802,7 @@ for ff=2:4
 end
 
 %% make plot to compare lick latency, for each animal and across animals 
-lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,reinfcolor,optocolor)
+lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 %% AC Expert Data
 cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials

@@ -38,9 +38,15 @@ switch cohort
     pathsave='O:\sjk\Behavior\IC_cohort_1\';
     subjlist={'sk218','sk219','sk220'}; %GTACR
     explist=[1 1 1];    
+
+    case 8
+    pathsave='O:\sjk\Behavior\IC_cohort_2\';
+%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
+    subjlist={'sk223','sk224','sk225','sk226'}; %GTACR
+    explist=[1 1 1 1]; 
+    
     otherwise
-        disp('Cohort not found');
-      
+        disp('Cohort not found');    
 end
 
 % subjlist = {'SK49','SK50','SK51','SK52','SK53','SK54','SK55','SK56'};
@@ -347,6 +353,8 @@ for nbsubj = 1:nSubj % through animals
         rt_ot_fa = RelativeTimes(templicks,[tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)-1 tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T) tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)+4],[-1 0 4]);
         rt_oc_fa = RelativeTimes(templicks,[tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)-1 tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T) tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)+4],[-1 0 4]);
         
+        rt_r_miss = RelativeTimes(templicks,[tempMat(reinf&~hit,START)+tempMat(reinf&~hit,TONE_T)-1 tempMat(reinf&~hit,START)+tempMat(reinf&~hit,TONE_T) tempMat(reinf&~hit,START)+tempMat(reinf&~hit,TONE_T)+5],[-1 0 5]);
+        rt_r_cr = RelativeTimes(templicks,[tempMat(reinf&~fa,START)+tempMat(reinf&~fa,TONE_T)-1 tempMat(reinf&~fa,START)+tempMat(reinf&~fa,TONE_T) tempMat(reinf&~fa,START)+tempMat(reinf&~fa,TONE_T)+5],[-1 0 5]);
         rt_o_miss = RelativeTimes(templicks,[tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T)-1 tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T) tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T)+5],[-1 0 5]);
         rt_ot_miss = RelativeTimes(templicks,[tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T)-1 tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T) tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T)+5],[-1 0 5]);
         rt_oc_miss = RelativeTimes(templicks,[tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T)-1 tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T) tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T)+5],[-1 0 5]);
@@ -356,9 +364,11 @@ for nbsubj = 1:nSubj % through animals
         
         lickhistr_hit(i,:) = hist(rt_r_hit,bins)/sum(reinf&hit);
         lickhistr_fa(i,:) = hist(rt_r_fa,bins)/sum(reinf&fa);
+        lickhistr_miss(i,:) = hist(rt_r_miss,bins)/sum(reinf&~hit);
+        lickhistr_cr(i,:) = hist(rt_r_cr,bins)/sum(reinf&~fa);
+        
         lickhisto_hit(i,:) = hist(rt_o_hit,bins)/sum(opto&hit);
         lickhisto_fa(i,:) = hist(rt_o_fa,bins)/sum(opto&fa);
-        
         lickhisto_miss(i,:) = hist(rt_o_miss,bins)/sum(opto&~hit);
         lickhisto_cr(i,:) = hist(rt_o_cr,bins)/sum(opto&~fa);
         
@@ -367,7 +377,7 @@ for nbsubj = 1:nSubj % through animals
         lickhistot_miss(i,:) = hist(rt_ot_miss,bins)/sum(topto&~hit);
         lickhistot_cr(i,:) = hist(rt_oc_cr,bins)/sum(topto&~fa);
         
-        lickhistoc_hit(i,:) = hist(rt_oc_miss,bins)/sum(copto&hit);
+        lickhistoc_hit(i,:) = hist(rt_oc_hit,bins)/sum(copto&hit);
         lickhistoc_fa(i,:) = hist(rt_oc_fa,bins)/sum(copto&fa);
         lickhistoc_miss(i,:) = hist(rt_oc_miss,bins)/sum(copto&~hit);
         lickhistoc_cr(i,:) = hist(rt_oc_cr,bins)/sum(copto&~fa);        
@@ -397,6 +407,8 @@ for nbsubj = 1:nSubj % through animals
     lickhistphit{nbsubj} = lickhistp_hit;
     lickhistpfa{nbsubj} = lickhistp_fa;
     
+    lickhistrmiss{nbsubj} = lickhistr_miss;
+    lickhistrcr{nbsubj} = lickhistr_cr;
     lickhistomiss{nbsubj} = lickhisto_miss;
     lickhistocr{nbsubj} = lickhisto_cr;
     lickhistotmiss{nbsubj} = lickhistot_miss;
@@ -579,8 +591,8 @@ for nbsubj = 1:nSubj % through animals
                 plot(bins,lickhistr_fa(d,:),'k:');
                 plot(bins,lickhisto_hit(d,:),'b');
                 plot(bins,lickhisto_fa(d,:),'b:');
-                PlotHVLines(0,'v','k');
-                title([subjlist{nbsubj} ', Day ' num2str(d)]);
+%                 PlotHVLines(0,'v','k');
+%                 title([subjlist{nbsubj} ', Day ' num2str(d)]);
                 xlabel('Time from tone onset (s)');
             end
 
@@ -885,31 +897,35 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
                 0 1 ...
                 0 0 1 0]; % catch ic, catch mgb, ic tone, lob
             icDays=logical(icDays);
-            expRange=27:length(mgbDays);
+            expRange=27:length(mgbDays); 
+        else
+            mgbDays = [0 0 0 0 0];mgbDays=logical(mgbDays);
+            icDays = [0 0 0 0 0]; icDays=logical(icDays);
+            expRange=1:5; % Cohort 1
         end
     elseif contains(path,'IC_cohort_1')==1
         if nbsubj==1 % sk198
             mgbDays=[0 0 0 0 0 0 ...
-                0 0 0];
+                0 0 0 0 0 0 0 0 0 0 0];
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 ...
-                1 1 1];
+                1 1 1 1 1 1 1 1 1 1 1];
             icDays=logical(icDays);
             expRange=7:length(mgbDays);
         elseif nbsubj==2 %sk203, started on d9
             mgbDays=[0 0 0 0 0 ...
-                0 0 0];
+                0 0 0 0 0 0 0 0 0 0 0];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 ...
-                1 1 1];
+            icDays=[0 0 0 0 0 0 ...
+                1 1 1 1 1 1 1 1 1 1 1];
             icDays=logical(icDays);
             expRange=6:length(mgbDays);
         elseif nbsubj==3 %sk204, started on d26
             mgbDays=[0 0 0 0 0 0 ...
-                0 0 0];
+                0 0 0 0 0 0 0 0 0 0 0];
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 ...
-                1 1 1];
+                1 1 1 1 1 1 1 1 1 1 1];
             icDays=logical(icDays);
             expRange=7:length(mgbDays);
     
