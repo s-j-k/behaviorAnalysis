@@ -6,14 +6,14 @@ Behavior_Opto_Dead(cohort)
 cd('O:\sjk\Behavior\MGBIC_6')
 load('deadSummaryData.mat')
 % fix the data for 204
-optomeanMat{7,4}(2,1) = optomeanMat{7,16}(5,17);
-optomeanMat{7,5}(2,1) = optomeanMat{7,16}(5,18);
-optomeanMat{7,6}(2,1) = optomeanMat{7,16}(4,15);
-optomeanMat{7,7}(2,1) = optomeanMat{7,16}(4,16);
-optomeanMat(2,:)=[];
-optomeanMat(3,:)=[];
-optomeanMat(4,:)=[];
-save('deadSummaryData.mat','optomeanMat')
+% optomeanMat{7,4}(2,1) = optomeanMat{7,16}(5,17);
+% optomeanMat{7,5}(2,1) = optomeanMat{7,16}(5,18);
+% optomeanMat{7,6}(2,1) = optomeanMat{7,16}(4,15);
+% optomeanMat{7,7}(2,1) = optomeanMat{7,16}(4,16);
+% optomeanMat(2,:)=[];
+% optomeanMat(3,:)=[];
+% optomeanMat(4,:)=[];
+% save('deadSummaryData.mat','optomeanMat')
 %%
 % cohortRange=1:6;
 % allCohorts=loadAllOptoCohorts(cohortRange);

@@ -631,11 +631,10 @@ subplot(1,3,1);
 plot(dp_r,'-o','Color',reinfcolor); hold on;
 plot(dp_oFull,'-o','Color',optocolor);
 title('Full');
-legend('light off','','','','','','light on','Location','best');
-ylim([-1 4]);
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
+for jj=2:size(mgbTempTestsOnly,1)
 for jj=2:size(mgbTempTestsOnly,1)
     if length(mgbTempTestsOnly{jj,10})>4
         rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
@@ -647,15 +646,15 @@ for jj=2:size(mgbTempTestsOnly,1)
     else
         rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % full MGB
     end
-    if length(mgbTempTestsOnly{jj,14})>4
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}(1:4);
+    if length(mgbTempTestsOnly{jj,12})>4
+        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,12}(1:4);
     else
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}; % full MGB
+        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,12}; % full MGB
     end
-    if length(mgbTempTestsOnly{jj,15})>4
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15}(1:4);
+    if length(mgbTempTestsOnly{jj,13})>4
+        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,13}(1:4);
     else
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15}; % full MGB
+        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,13}; % full MGB
     end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
@@ -691,71 +690,30 @@ for qq = 1:size(ofatemp,2)
     end
 end
 [dp_r,c_r]=dprime_simple(rhittemp2,rfatemp2);
-[dp_otFull,c_oFull]=dprime_simple(ohittemp2, ofatemp2);
+[dp_oFull,c_oFull]=dprime_simple(ohittemp2, ofatemp2);
 subplot(1,3,2); plot(dp_r,'-o','Color',reinfcolor); hold on;plot(dp_otFull,'-o','Color',optocolor);
-title('Stimulus');ylim([-1 4]);
+title('Stimulus');
+legend('light off','light on','Location','best');
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
 for jj=2:size(mgbTempTestsOnly,1)
-for jj=2:size(mgbTempTestsOnly,1)
-    if length(mgbTempTestsOnly{jj,10})>4
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
-    else
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % choice MGB
-    end
-    if length(mgbTempTestsOnly{jj,11})>4
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
-    else
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % choice MGB
-    end
-    if length(mgbTempTestsOnly{jj,16})>4
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}(1:4);
-    else
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}; 
-    end
-    if length(mgbTempTestsOnly{jj,17})>4
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}(1:4);
-    else
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}; 
-    end
+    rhittemp=mgbTempTestsOnly{jj,10}; % choice MGB
+    rfatemp=mgbTempTestsOnly{jj,11};
+    ohittemp = mgbTempTestsOnly{jj,16};
+    ofatemp = mgbTempTestsOnly{jj,17};
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
-    rhit(jj-1)=nanmean(rhittemp(:,jj-1));
-    rfa(jj-1)=nanmean(rfatemp(:,jj-1));
-    ohit(jj-1)=nanmean(ohittemp(:,jj-1));
-    ofa(jj-1) = nanmean(ofatemp(:,jj-1));
+    rhit(jj-1)=nanmean(rhittemp);
+    rfa(jj-1)=nanmean(rfatemp);
+    ohit(jj-1)=nanmean(ohittemp);
+    ofa(jj-1) = nanmean(ofatemp);
 end
-rhittemp(rhittemp==1)=1-1./(2*140);
-rfatemp(rfatemp==1)=1-1./(2*140);
-ohittemp(ohittemp==1)=1-1./(2*140);
-ofatemp(ofatemp==1)=1-1./(2*140);
-for qq = 1:size(ohittemp,2)
-    if sum(~isnan(ohittemp(:,qq)))>2
-        tempVal=ohittemp(~isnan(ohittemp(:,qq)),qq);
-        ohittemp2(:,qq) = tempVal(1:2);
-        tempVal = rhittemp(~isnan(ohittemp(:,qq)),qq);
-        rhittemp2(:,qq)=tempVal(1:2);
-    else
-        ohittemp2(:,qq) = ohittemp(~isnan(ohittemp(:,qq)),qq);
-        rhittemp2(:,qq)=rhittemp(~isnan(ohittemp(:,qq)),qq);
-    end
-end
-for qq = 1:size(ofatemp,2)
-    if sum(~isnan(ofatemp(:,qq)))>2
-        tempVal=ofatemp(~isnan(ofatemp(:,qq)),qq);
-        ofatemp2(:,qq) = tempVal(1:2);
-        tempVal = rhittemp(~isnan(rfatemp(:,qq)),qq);
-        rfatemp2(:,qq)=tempVal(1:2);
-    else
-        ofatemp2(:,qq) = ofatemp(~isnan(ofatemp(:,qq)),qq);
-        rfatemp2(:,qq)=rfatemp(~isnan(ofatemp(:,qq)),qq);
-    end
-end
-[dp_r,c_r]=dprime_simple(rhittemp2,rfatemp2);
-[dp_ocFull,c_oFull]=dprime_simple(ohittemp2, ofatemp2);
+[dp_r,c_r]=dprime_simple(rhit,rfa);
+[dp_ocFull,c_ocFull]=dprime_simple(ohit, ofa);
 subplot(1,3,3); plot(dp_r,'-o','Color',reinfcolor);hold on; plot(dp_ocFull,'-o','Color',optocolor);
-title('Choice');ylim([-1 4]);
+title('Choice');
+ylim([-0.5 3.5]);
 dprimeFig.Position(3:4)=[725 200];
 saveas(gcf,['By Animal_T_MGB_dp_Opto']);
 saveas(gcf,['By Animal_T_MGB_dp_Opto.png']);

@@ -55,9 +55,19 @@ for nbsubj=2:size(allDataTestsOnly,1)
     end
     switch nbsubj
         case 2 % sk163
-            mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
-            icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
-            expRange=1:8; 
+%correct for sk163             mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
+%correct for sk163             icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
+%correct for sk163             expRange=1:8; 
+            icDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 1 1 0 0 1 1 1 ...
+                1 0 1 1]; 
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 1 1 0 0 0 ...
+                0 1 0 0]; % until 10/3
+            mgbDays=logical(mgbDays);icDays=logical(icDays);
+            expRange=24:length(icDays); 
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
             MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
             MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
@@ -1157,219 +1167,252 @@ ICslco_fa(ICslco_fa==0) = NaN;
 
 % % plots by session
 jj=2;     
-% for jj=2:size(allDataTestsOnly,1)
-%     lickFig=figure(jj+103); 
-%     subplot(2,3,1); hold on; %MGB FUll
-%     lickbar=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmo_hit(jj,:)) nanmean(MGBmo_fa(jj,:))]); hold on;
-%     error=[nanmean(MGBsr_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBso_hit(jj,:)) nanmean(MGBso_fa(jj,:))];
-%     lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;reinfcolor;optocolor];
-%     for kk=1:numel(lickbar)
-%         xtips=lickbar(kk).XEndPoints;
-%         ytips=lickbar(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     scatter(repmat(lickbar(1).XEndPoints(1),size(MGBmr_hit,1),1), ...
-%         MGBmr_hit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%     scatter(repmat(lickbar(1).XEndPoints(2),size(MGBmr_fa,1),1), ...
-%         MGBmr_fa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%     scatter(repmat(lickbar(1).XEndPoints(3),size(MGBmo_hit,1),1), ...
-%         MGBmo_hit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%     scatter(repmat(lickbar(1).XEndPoints(4),size(MGBmo_fa,1),1), ...
-%         MGBmo_fa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%     [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmo_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmo_fa(jj,:));
-%     sigstar({[1,3],[2,4]}, [pHit pFA])
-%     ylabel('mean lick latency');
-%     title([allDataTestsOnly{jj,1} ' MGB Full Trial Inactivation']);
-%     xticklabels({'hit', 'fa','hit','fa'});
-% 
-%     subplot(2,3,2) % tone MGB
-%     lickbarT=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmto_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmto_fa(jj,:))]); hold on;
-%     error=[nanmean(MGBsr_hit(jj,:)) mean(MGBsto_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBsto_fa(jj,:))];
-%     lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     for kk=1:numel(lickbarT)
-%         xtips=lickbarT(kk).XEndPoints;
-%         ytips=lickbarT(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmto_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmto_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick latency');
-%     title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,3); % choice MGB
-%     lickbarC=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmco_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmco_fa(jj,:))]); hold on;
-%     lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     error=[nanmean(MGBsr_hit(jj,:)) nanmean(MGBsco_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBsco_fa(jj,:))];
-%     for kk=1:numel(lickbarC)
-%         xtips=lickbarC(kk).XEndPoints;
-%         ytips=lickbarC(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmco_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmco_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick latency');
-%     title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-% 
-%     subplot(2,3,4); hold on; %IC Full
-%     lickbar=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmo_hit(jj,:)) nanmean(ICmr_fa(jj,:)) nanmean(ICmo_fa(jj,:))]); hold on;
-%     error=[nanmean(ICsr_hit(jj,:)) nanmean(ICso_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICso_fa(jj,:))];
-%     lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     for kk=1:numel(lickbar)
-%         xtips=lickbar(kk).XEndPoints;
-%         ytips=lickbar(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmo_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmo_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick latency');
-%     title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,5) % tone IC
-%     lickbarT=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmto_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(ICmto_fa(jj,:))]); hold on;
-%     error=[nanmean(ICsr_hit(jj,:)) mean(ICsto_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICsto_fa(jj,:))];
-%     lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     for kk=1:numel(lickbarT)
-%         xtips=lickbarT(kk).XEndPoints;
-%         ytips=lickbarT(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmto_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmto_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick latency');
-%     title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,6); % choice IC
-%     lickbarC=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmco_hit(jj,:)) nanmean(ICmr_fa(jj,:)) nanmean(ICmco_fa(jj,:))]); hold on;
-%     lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     error=[nanmean(ICsr_hit(jj,:)) nanmean(ICsco_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICsco_fa(jj,:))];
-%     for kk=1:numel(lickbarC)
-%         xtips=lickbarC(kk).XEndPoints;
-%         ytips=lickbarC(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmco_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmco_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick latency');
-%     title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     lickFig.Position(3:4)=[725 475];
-%     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickLat_Opto']);
-%     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickLat_Opto.png']);
-% 
-%     % RATE
-%     lickFigl=figure(jj+13); subplot(2,3,1); % full trial MGB
-%     lickbarL=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlo_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlo_fa(jj,:))]); hold on;
-%     lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslo_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslo_fa(jj,:))];
-%     for kk=1:numel(lickbarL)
-%         xtips=lickbarL(kk).XEndPoints;
-%         ytips=lickbarL(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlo_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlo_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick rate');
-%     title([allDataTestsOnly{jj,1} ' MGB Full Trial Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,2) % tone MGB
-%     lickbarT=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlto_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlto_fa(jj,:))]); hold on;
-%     lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslto_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslto_fa(jj,:))];
-%     for kk=1:numel(lickbarT)
-%         xtips=lickbarT(kk).XEndPoints;
-%         ytips=lickbarT(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlto_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlto_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick rate');
-%     title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,3); % choice MGB
-%     lickbarC=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlco_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlco_fa(jj,:))]); hold on;
-%     lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslco_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslco_fa(jj,:))];
-%     for kk=1:numel(lickbarC)
-%         xtips=lickbarC(kk).XEndPoints;
-%         ytips=lickbarC(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlco_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlco_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick rate');
-%     title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,4); % full trial IC
-%     lickbar=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlo_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlo_fa(jj,:))]); hold on;
-%     error=[nanmean(ICslr_hit(jj,:)) nanmean(ICslo_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslo_fa(jj,:))];
-%     lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     for kk=1:numel(lickbar)
-%         xtips=lickbar(kk).XEndPoints;
-%         ytips=lickbar(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-% 
-%     [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlo_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlo_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick rate');
-%     title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,5) % tone IC
-%     lickbarT=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlto_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlto_fa(jj,:))]); hold on;
-%     error=[nanmean(ICslr_hit(jj,:)) mean(ICslto_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslto_fa(jj,:))];
-%     lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     for kk=1:numel(lickbarT)
-%         xtips=lickbarT(kk).XEndPoints;
-%         ytips=lickbarT(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlto_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlto_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick rate');
-%     title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-% 
-%     subplot(2,3,6); % choice IC
-%     lickbarC=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlco_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlco_fa(jj,:))]); hold on;
-%     lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-%     error=[nanmean(ICslr_hit(jj,:)) nanmean(ICslco_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslco_fa(jj,:))];
-%     for kk=1:numel(lickbarC)
-%         xtips=lickbarC(kk).XEndPoints;
-%         ytips=lickbarC(kk).YEndPoints;
-%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-%     end
-%     [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlco_hit(jj,:));
-%     [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlco_fa(jj,:));
-%     sigstar({[1,2],[3,4]}, [pHit pFA])
-%     ylabel('mean lick rate');
-%     title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
-%     xticklabels({'hit', 'hit','fa','fa'});
-%     
-%     lickFig.Position(3:4)=[725 475];
-%     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickRate_Opto']);
-%     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickRate_Opto.png']);  
-% end
+for jj=2:size(allDataTestsOnly,1)
+    lickFig=figure(jj+103); 
+    subplot(2,3,1); hold on; %MGB FUll
+    lickbar=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmo_hit(jj,:)) nanmean(MGBmo_fa(jj,:))]); hold on;
+    error=[nanmean(MGBsr_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBso_hit(jj,:)) nanmean(MGBso_fa(jj,:))];
+    lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    for kk=1:numel(lickbar)
+        xtips=lickbar(kk).XEndPoints;
+        ytips=lickbar(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    scatter(repmat(lickbar(1).XEndPoints(1),size(MGBmr_hit,1),1), ...
+        MGBmr_hit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbar(1).XEndPoints(2),size(MGBmr_fa,1),1), ...
+        MGBmr_fa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbar(1).XEndPoints(3),size(MGBmo_hit,1),1), ...
+        MGBmo_hit,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbar(1).XEndPoints(4),size(MGBmo_fa,1),1), ...
+        MGBmo_fa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmo_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmo_fa(jj,:));
+    sigstar({[1,3],[2,4]}, [pHit pFA])
+    ylabel('mean lick latency');
+    title([allDataTestsOnly{jj,1} ' MGB Full Trial Inactivation']);
+    xticklabels({'hit', 'fa','hit','fa'});
+
+    subplot(2,3,2) % tone MGB
+    lickbarT=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmto_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmto_fa(jj,:))]); hold on;
+    error=[nanmean(MGBsr_hit(jj,:)) mean(MGBsto_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBsto_fa(jj,:))];
+    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    for kk=1:numel(lickbarT)
+        xtips=lickbarT(kk).XEndPoints;
+        ytips=lickbarT(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmto_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmto_fa(jj,:));
+    sigstar({[1,2],[3,4]}, [pHit pFA])
+    ylabel('mean lick latency');
+    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,3); % choice MGB
+    lickbarC=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmco_hit(jj,:)) nanmean(MGBmco_fa(jj,:))]); hold on;
+    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    error=[nanmean(MGBsr_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBsco_hit(jj,:)) nanmean(MGBsco_fa(jj,:))];
+    for kk=1:numel(lickbarC)
+        xtips=lickbarC(kk).XEndPoints;
+        ytips=lickbarC(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    scatter(repmat(lickbarC(1).XEndPoints(1),size(MGBmr_hit(jj,:),1),1), ...
+        MGBmr_hit(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarT(1).XEndPoints(2),size(MGBmr_fa(jj,:),1),1), ...
+        MGBmr_fa(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarT(1).XEndPoints(3),size(MGBmco_hit(jj,:),1),1), ...
+        MGBmco_hit(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbarT(1).XEndPoints(4),size(MGBmco_fa(jj,:),1),1), ...
+        MGBmco_fa(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [MGBmr_hit(1) MGBmr_fa(1) MGBmr_hit(2) MGBmr_fa(2)...
+        MGBmr_hit(3) MGBmr_fa(3) MGBmr_hit(4) MGBmr_fa(4) ...
+        MGBmr_hit(5) MGBmr_fa(5) MGBmr_hit(6) MGBmr_fa(6)];
+    oLickRate=[MGBmco_hit(1) otfaLickRate(1) MGBmco_hit(2) otfaLickRate(1)...
+        MGBmco_hit(3) otfaLickRate(3) MGBmco_hit(4) otfaLickRate(4)...
+        MGBmco_hit(5) otfaLickRate(5) MGBmco_hit(6) otfaLickRate(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+    [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmco_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmco_fa(jj,:));
+    sigstar({[1,3],[2,4]}, [pHit pFA])
+    ylabel('mean lick latency');
+    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+
+    subplot(2,3,4); hold on; %IC Full
+    lickbar=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmr_fa(jj,:)) nanmean(ICmo_hit(jj,:)) nanmean(ICmo_fa(jj,:))]); hold on;
+    error=[nanmean(ICsr_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICso_hit(jj,:)) nanmean(ICso_fa(jj,:))];
+    lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    for kk=1:numel(lickbar)
+        xtips=lickbar(kk).XEndPoints;
+        ytips=lickbar(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmo_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmo_fa(jj,:));
+    sigstar({[1,3],[2,4]}, [pHit pFA])
+    ylabel('mean lick latency');
+    title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,5) % tone IC
+    lickbarT=bar([nanmean(ICmr_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(ICmto_hit(jj,:)) nanmean(ICmto_fa(jj,:))]); hold on;
+    error=[nanmean(ICsr_hit(jj,:)) nanmean(ICsr_fa(jj,:)) mean(ICsto_hit(jj,:)) nanmean(ICsto_fa(jj,:))];
+    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    for kk=1:numel(lickbarT)
+        xtips=lickbarT(kk).XEndPoints;
+        ytips=lickbarT(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmto_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmto_fa(jj,:));
+    sigstar({[1,3],[2,4]}, [pHit pFA])
+    ylabel('mean lick latency');
+    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,6); % choice IC
+    lickbarC=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmr_fa(jj,:)) nanmean(ICmco_hit(jj,:)) nanmean(ICmco_fa(jj,:))]); hold on;
+    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    error=[nanmean(ICsr_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICsco_hit(jj,:)) nanmean(ICsco_fa(jj,:))];
+    for kk=1:numel(lickbarC)
+        xtips=lickbarC(kk).XEndPoints;
+        ytips=lickbarC(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmco_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmco_fa(jj,:));
+    sigstar({[1,3],[2,4]}, [pHit pFA])
+    ylabel('mean lick latency');
+    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    lickFig.Position(3:4)=[725 475];
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickLat_Opto']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickLat_Opto.png']);
+
+    % RATE
+    lickFigl=figure(jj+13); 
+    subplot(2,3,1); % full trial MGB
+    lickbarL=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlo_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlo_fa(jj,:))]); hold on;
+    lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslo_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslo_fa(jj,:))];
+    for kk=1:numel(lickbarL)
+        xtips=lickbarL(kk).XEndPoints;
+        ytips=lickbarL(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlo_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlo_fa(jj,:));
+    sigstar({[1,2],[3,4]}, [pHit pFA])
+    ylabel('mean lick rate');
+    title([allDataTestsOnly{jj,1} ' MGB Full Trial Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,2) % tone MGB
+    lickbarT=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlto_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlto_fa(jj,:))]); hold on;
+    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslto_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslto_fa(jj,:))];
+    for kk=1:numel(lickbarT)
+        xtips=lickbarT(kk).XEndPoints;
+        ytips=lickbarT(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlto_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlto_fa(jj,:));
+    sigstar({[1,2],[3,4]}, [pHit pFA])
+    ylabel('mean lick rate');
+    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,3); % choice MGB
+    lickbarC=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlco_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlco_fa(jj,:))]); hold on;
+    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslco_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslco_fa(jj,:))];
+    for kk=1:numel(lickbarC)
+        xtips=lickbarC(kk).XEndPoints;
+        ytips=lickbarC(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlco_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlco_fa(jj,:));
+    sigstar({[1,2],[3,4]}, [pHit pFA])
+    ylabel('mean lick rate');
+    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,4); % full trial IC
+    lickbar=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlo_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlo_fa(jj,:))]); hold on;
+    error=[nanmean(ICslr_hit(jj,:)) nanmean(ICslo_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslo_fa(jj,:))];
+    lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    for kk=1:numel(lickbar)
+        xtips=lickbar(kk).XEndPoints;
+        ytips=lickbar(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+
+    [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlo_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlo_fa(jj,:));
+    sigstar({[1,2],[3,4]}, [pHit pFA])
+    ylabel('mean lick rate');
+    title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,5) % tone IC
+    lickbarT=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlto_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlto_fa(jj,:))]); hold on;
+    error=[nanmean(ICslr_hit(jj,:)) mean(ICslto_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslto_fa(jj,:))];
+    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    for kk=1:numel(lickbarT)
+        xtips=lickbarT(kk).XEndPoints;
+        ytips=lickbarT(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlto_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlto_fa(jj,:));
+    sigstar({[1,2],[3,4]}, [pHit pFA])
+    ylabel('mean lick rate');
+    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+
+    subplot(2,3,6); % choice IC
+    lickbarC=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlco_hit(jj,:)) nanmean(ICmlco_fa(jj,:))]); hold on;
+    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+    error=[nanmean(ICslr_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslco_hit(jj,:)) nanmean(ICslco_fa(jj,:))];
+    for kk=1:numel(lickbarC)
+        xtips=lickbarC(kk).XEndPoints;
+        ytips=lickbarC(kk).YEndPoints;
+        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+    end
+    scatter(repmat(lickbar(1).XEndPoints(1),size(ICmlr_hit(jj,:),1),1), ...
+        ICmlr_hit(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbar(1).XEndPoints(2),size(ICslr_fa(jj,:),1),1), ...
+        ICslr_fa(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbar(1).XEndPoints(3),size(ICslco_hit(jj,:),1),1), ...
+        ICslco_hit(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbar(1).XEndPoints(4),size(ICslco_fa(jj,:),1),1), ...
+        ICslco_fa(jj,:),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+    oLickRate=[ohitLickRate(1) ofaLickRate(1) ohitLickRate(2) ofaLickRate(1)...
+        ohitLickRate(3) ofaLickRate(3) ohitLickRate(4) ofaLickRate(4)...
+        ohitLickRate(5) ofaLickRate(5) ohitLickRate(6) ICslco_hit(jj,:)(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+    [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlco_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlco_fa(jj,:));
+    sigstar({[1,2],[3,4]}, [pHit pFA])
+    ylabel('mean lick rate');
+    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
+    xticklabels({'hit', 'hit','fa','fa'});
+    
+    lickFig.Position(3:4)=[725 475];
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickRate_Opto']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickRate_Opto.png']);  
+end
 
 %%
 close all
@@ -1426,6 +1469,7 @@ end
     line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
+ylim([0 2.5]);
 sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('mean lick latency');
 title(['By Animal MGB Full Trial']);
@@ -1458,6 +1502,7 @@ scatter(repmat(lickbarT(1).XEndPoints(1),size(hitLickRate,1),1), ...
     line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
+ylim([0 2.5]);
 sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('mean lick latency');
 title(['By Animal MGB Tone']);
@@ -1490,6 +1535,7 @@ scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
     line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
+ylim([0 2.5]);
 sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('mean lick latency');
 title(['By Animal MGB Choice']);
@@ -1568,7 +1614,7 @@ xticklabels({'hit', 'hit','fa','fa'});
 
 lickFig.Position(3:4)=[725 475];
 saveas(gcf,['ByAnimal_T_MGB_IC_LickLat_Opto']);
-saveas(gcf,['ByAnimal_T_MGB_IC_LickLat_Opto.png']);
+saveas(gcf,['ByAnimal_T_MGB_IC_LickLat_Opto.pdf']);
 close all
 
 
@@ -1596,7 +1642,7 @@ for jj=2:size(mgbTempTestsOnly,1)
 end
 
 subplot(2,3,1); % full trial MGB
-lickbarL=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
+lickbarL=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ohitLickRate) nanmean(ofaLickRate)]); hold on;
 lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(ohitLickRateE) nanmean(faLickRateE) nanmean(ofaLickRateE)];
 for kk=1:numel(lickbarL)
@@ -1622,13 +1668,14 @@ end
     line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
+ylim([0 8]);
 sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('mean lick rate');
 title(['By Animal MGB Full Trial']);
 xticklabels({'hit', 'fa','hit','fa'});
 
 subplot(2,3,2) % tone MGB
-lickbarT=bar([nanmean(hitLickRate) nanmean(othitLickRate) nanmean(faLickRate) nanmean(otfaLickRate)]); hold on;
+lickbarT=bar([nanmean(hitLickRate)  nanmean(faLickRate) nanmean(othitLickRate) nanmean(otfaLickRate)]); hold on;
 lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
 for kk=1:numel(lickbarT)
@@ -1654,13 +1701,14 @@ scatter(repmat(lickbarT(1).XEndPoints(1),size(hitLickRate,1),1), ...
     line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
+ylim([0 8]);
 sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('mean lick rate');
 title(['By Animal MGB Tone']);
 xticklabels({'hit', 'fa','hit','fa'});
 
 subplot(2,3,3); % choice MGB
-lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
+lickbarC=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ochitLickRate) nanmean(ocfaLickRate)]); hold on;
 lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
 error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
 for kk=1:numel(lickbarC)
@@ -1686,6 +1734,7 @@ scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
     line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
+ylim([0 8]);
 sigstar({[1,3],[2,4]}, [pHit pFA])
 ylabel('mean lick rate');
 title(['By Animal MGB Choice']);
@@ -1765,7 +1814,7 @@ xticklabels({'hit', 'hit','fa','fa'});
 
 lickFigl.Position(3:4)=[725 475];
 saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto']);
-saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto.png']);  
+saveas(gcf,['ByAnimal_T_MGB_IC_LickRate_Opto.pdf']);  
 close all
 
 %% by session
@@ -1928,8 +1977,12 @@ close all
 % saveas(gcf,['BySess_T_MGB_LickRateLat_Opto.png']);  
 
 %% control animals
+clearvars -except allDataCtlOnly reinfcolor optocolor
 
-% tests for MGB for each animal
+SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
+START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
+
+% ctl for MGB for each animal
 nbsubj=2;
 for nbsubj=2:size(allDataCtlOnly,1)
     matrix=allDataCtlOnly{nbsubj,26};
@@ -1981,9 +2034,8 @@ for nbsubj=2:size(allDataCtlOnly,1)
     end
     switch nbsubj
         case 2 % sk177
-            mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
-            icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
-            expRange=1:8; 
+            mgbDays=[0 0 0 0 0 0 0 0 1 1 0 0 0 1 1 0 0];
+            mgbDays=logical(mgbDays);
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
             MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
             MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
@@ -2037,78 +2089,10 @@ for nbsubj=2:size(allDataCtlOnly,1)
             MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
             MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
             
-        case 3 %sk175
-            expRange=25:32; 
-            mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                1 1 0 0 1 1 0 0 ...
-                0 0 0 ];mgbDays=logical(mgbDays);
-            icDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                0 0 1 1 0 0 1 1 ...
-                0 0 0];icDays=logical(icDays); 
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            MGBmr_hit(MGBmr_hit==0)=NaN;
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-            
-        case 4 % sk176
+        case 3 %sk179
             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 ...
-                1 0 1 1 0 1 1 0 1 0 0 1];
+                0 0 0 0 1 1 1 0 0 1 0 0];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 ... 
-                0 1 0 0 1 0 0 1 0 1 1 0];
-            icDays=logical(icDays);
-            expRange=20:length(mgbDays); 
             MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
             MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
@@ -2163,22 +2147,68 @@ for nbsubj=2:size(allDataCtlOnly,1)
             MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
             MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
             
-    case 5 % sk198
-            mgbDays=[0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 1 1 ...
-                0 1 0 1 0]; %...
+        case 4 % sk183
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 1 1 0 0 1 1 0 0];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                1 0 1 0 0]; %...
-            icDays=logical(icDays);
-            expRange=38:length(mgbDays);    
+            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
+            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
+            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
+            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
+            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
+            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
+            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
+            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
+            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
+            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
+            MGBmr_hit(MGBmr_hit==0)=NaN;
+            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
+            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
+            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
+            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
+            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
+            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
+            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
+            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
+            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
+            
+            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
+            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
+            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
+            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
+            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
+            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
+            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
+            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
+            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
+            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
+            
+            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
+            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
+            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
+            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
+            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
+            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
+            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
+            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
+            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
+            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
+
+            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
+            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
+            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
+            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
+            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
+            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
+            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
+            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
+            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
+            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
+            
+    case 5 % sk189
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 1 1 0 0 1 1 1 0];
+            mgbDays=logical(mgbDays);  
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
             MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
             MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
@@ -2232,10 +2262,12 @@ for nbsubj=2:size(allDataCtlOnly,1)
             MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
             MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
             
-    case 6 % sk203
-            mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
-            icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
-            expRange=1:8; 
+    case 6 % sk290
+             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 ...
+                0 0 0 1 1];
+            mgbDays=logical(mgbDays);
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
             MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
             MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
@@ -2289,15 +2321,12 @@ for nbsubj=2:size(allDataCtlOnly,1)
             MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
             MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
             
-    case 7 % sk204
-            mgbDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... %15
-                0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 ...
-                0 0 0]; % catch ic, catch mgb, lob
+    case 7 % sk191
+            mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 1 1 1 1 0 0 0 ...
+                0];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                1 0 0 0 1 0 1 0 0 1 0]; % catch ic, catch mgb, lob
-            icDays=logical(icDays);
-            expRange=27:length(mgbDays);
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
             MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
             MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
@@ -2398,6 +2427,269 @@ MGBslto_fa(MGBslto_fa==0) = NaN;
 MGBmlco_fa(MGBmlco_fa==0) = NaN;
 MGBslco_fa(MGBslco_fa==0) = NaN;
 
+
+close all
+% LICK LATENCY, AVERAGED ACROSS ANIMALS
+% change these variable names, theyre swapped
+jj=2;
+lickFig=figure(jj+103); 
+xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
+xoVector = xVector+2;
+for jj=2:size(allDataCtlOnly,1)
+    hitLickRate(jj-1)=nanmean(MGBmr_hit(jj,:));
+    ohitLickRate(jj-1)=nanmean(MGBmo_hit(jj,:));
+    faLickRate(jj-1)=nanmean(MGBmr_fa(jj,:));
+    ofaLickRate(jj-1)=nanmean(MGBmo_fa(jj,:));
+    othitLickRate(jj-1)=nanmean(MGBmto_hit(jj,:));
+    otfaLickRate(jj-1)=nanmean(MGBmto_fa(jj,:));
+    ochitLickRate(jj-1)=nanmean(MGBmco_hit(jj,:));
+    ocfaLickRate(jj-1)=nanmean(MGBmco_fa(jj,:));
+    
+    hitLickRateE(jj-1)=nanmean(MGBsr_hit(jj,:));
+    ohitLickRateE(jj-1)=nanmean(MGBso_hit(jj,:));
+    faLickRateE(jj-1)=nanmean(MGBsr_fa(jj,:));
+    ofaLickRateE(jj-1)=nanmean(MGBso_fa(jj,:));
+    othitLickRateE(jj-1)=nanmean(MGBsto_hit(jj,:));
+    otfaLickRateE(jj-1)=nanmean(MGBsto_fa(jj,:));
+    ochitLickRateE(jj-1)=nanmean(MGBsco_hit(jj,:));
+    ocfaLickRateE(jj-1)=nanmean(MGBsco_fa(jj,:));
+    
+end
+
+subplot(2,3,1); % full trial MGB
+lickbar=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ohitLickRate) nanmean(ofaLickRate)]); hold on;
+error=[nanmean(hitLickRateE) nanmean(faLickRateE) nanmean(ohitLickRateE) nanmean(ofaLickRateE)];
+lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+for kk=1:numel(lickbar)
+    xtips=lickbar(kk).XEndPoints;
+    ytips=lickbar(kk).YEndPoints;
+    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+end
+    scatter(repmat(lickbar(1).XEndPoints(1),size(hitLickRate,1),1), ...
+        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbar(1).XEndPoints(2),size(faLickRate,1),1), ...
+        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbar(1).XEndPoints(3),size(ohitLickRate,1),1), ...
+        ohitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbar(1).XEndPoints(4),size(ofaLickRate,1),1), ...
+        ofaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+    oLickRate=[ohitLickRate(1) ofaLickRate(1) ohitLickRate(2) ofaLickRate(1)...
+        ohitLickRate(3) ofaLickRate(3) ohitLickRate(4) ofaLickRate(4)...
+        ohitLickRate(5) ofaLickRate(5) ohitLickRate(6) ofaLickRate(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
+[h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
+ylim([0 2.5]);
+sigstar({[1,3],[2,4]}, [pHit pFA])
+ylabel('mean lick latency');
+title(['By Animal MGB Full Trial']);
+xticklabels({'hit', 'fa','hit','fa'});
+
+subplot(2,3,2) % tone MGB
+lickbarT=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(othitLickRate) nanmean(otfaLickRate)]); hold on;
+error=[nanmean(hitLickRateE) nanmean(faLickRateE) nanmean(othitLickRateE) nanmean(otfaLickRateE)];
+lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+for kk=1:numel(lickbarT)
+    xtips=lickbarT(kk).XEndPoints;
+    ytips=lickbarT(kk).YEndPoints;
+    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+end
+scatter(repmat(lickbarT(1).XEndPoints(1),size(hitLickRate,1),1), ...
+        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarT(1).XEndPoints(2),size(faLickRate,1),1), ...
+        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarT(1).XEndPoints(3),size(othitLickRate,1),1), ...
+        othitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbarT(1).XEndPoints(4),size(otfaLickRate,1),1), ...
+        otfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+    oLickRate=[othitLickRate(1) otfaLickRate(1) othitLickRate(2) otfaLickRate(1)...
+        othitLickRate(3) otfaLickRate(3) othitLickRate(4) otfaLickRate(4)...
+        othitLickRate(5) otfaLickRate(5) othitLickRate(6) otfaLickRate(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
+[h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
+ylim([0 2.5]);
+sigstar({[1,3],[2,4]}, [pHit pFA])
+ylabel('mean lick latency');
+title(['By Animal MGB Tone']);
+xticklabels({'hit', 'fa','hit','fa'});
+
+subplot(2,3,3); % choice MGB
+lickbarC=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ochitLickRate) nanmean(ocfaLickRate)]); hold on;
+lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+error=[nanmean(hitLickRateE)  nanmean(faLickRateE) nanmean(ochitLickRateE) nanmean(ocfaLickRateE)];
+for kk=1:numel(lickbarC)
+    xtips=lickbarC(kk).XEndPoints;
+    ytips=lickbarC(kk).YEndPoints;
+    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+end
+scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
+        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarC(1).XEndPoints(2),size(faLickRate,1),1), ...
+        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarC(1).XEndPoints(3),size(ochitLickRate,1),1), ...
+        ochitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbarC(1).XEndPoints(4),size(ocfaLickRate,1),1), ...
+        ocfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+    oLickRate=[ochitLickRate(1) ocfaLickRate(1) ochitLickRate(2) ocfaLickRate(1)...
+        ochitLickRate(3) ocfaLickRate(3) ochitLickRate(4) ocfaLickRate(4)...
+        ochitLickRate(5) ocfaLickRate(5) ochitLickRate(6) ocfaLickRate(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
+[h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
+ylim([0 2.5]);
+sigstar({[1,3],[2,4]}, [pHit pFA])
+ylabel('mean lick latency');
+title(['By Animal MGB Choice']);
+xticklabels({'hit', 'fa','hit','fa'});
+
+lickFig.Position(3:4)=[725 475];
+saveas(gcf,['ByAnimal_C_MGB_LickLat_Opto']);
+saveas(gcf,['ByAnimal_C_MGB_LickLat_Opto.pdf']);
+close all
+
+
+% control animals, RATE
+lickFigl=figure(jj+13); 
+for jj=2:size(allDataCtlOnly,1)
+    hitLickRate(jj-1)=nanmean(MGBmlr_hit(jj,:));
+    ohitLickRate(jj-1)=nanmean(MGBmlo_hit(jj,:));
+    faLickRate(jj-1)=nanmean(MGBmlr_fa(jj,:));
+    ofaLickRate(jj-1)=nanmean(MGBmlo_fa(jj,:));
+    othitLickRate(jj-1)=nanmean(MGBmlto_hit(jj,:));
+    otfaLickRate(jj-1)=nanmean(MGBmlto_fa(jj,:));
+    ochitLickRate(jj-1)=nanmean(MGBmlco_hit(jj,:));
+    ocfaLickRate(jj-1)=nanmean(MGBmlco_fa(jj,:));
+    
+    hitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
+    ohitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
+    faLickRateE(jj-1)=nanmean(MGBslr_fa(jj,:));
+    ofaLickRateE(jj-1)=nanmean(MGBslo_fa(jj,:));
+    othitLickRateE(jj-1)=nanmean(MGBslto_hit(jj,:));
+    otfaLickRateE(jj-1)=nanmean(MGBslto_fa(jj,:));
+    ochitLickRateE(jj-1)=nanmean(MGBslco_hit(jj,:));
+    ocfaLickRateE(jj-1)=nanmean(MGBslco_fa(jj,:));    
+    
+end
+
+subplot(2,3,1); % full trial MGB
+lickbarL=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ohitLickRate) nanmean(ofaLickRate)]); hold on;
+lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+error=[nanmean(hitLickRateE) nanmean(faLickRateE) nanmean(ohitLickRateE) nanmean(ofaLickRateE)];
+for kk=1:numel(lickbarL)
+    xtips=lickbarL(kk).XEndPoints;
+    ytips=lickbarL(kk).YEndPoints;
+    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+end
+    scatter(repmat(lickbarL(1).XEndPoints(1),size(hitLickRate,1),1), ...
+        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarL(1).XEndPoints(2),size(faLickRate,1),1), ...
+        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarL(1).XEndPoints(3),size(ohitLickRate,1),1), ...
+        ohitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbarL(1).XEndPoints(4),size(ofaLickRate,1),1), ...
+        ofaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+    oLickRate=[ohitLickRate(1) ofaLickRate(1) ohitLickRate(2) ofaLickRate(1)...
+        ohitLickRate(3) ofaLickRate(3) ohitLickRate(4) ofaLickRate(4)...
+        ohitLickRate(5) ofaLickRate(5) ohitLickRate(6) ofaLickRate(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
+[h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
+ylim([0 8]);
+sigstar({[1,3],[2,4]}, [pHit pFA])
+ylabel('mean lick rate');
+title(['By Animal MGB Full Trial']);
+xticklabels({'hit', 'fa','hit','fa'});
+
+subplot(2,3,2) % tone MGB
+lickbarT=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(othitLickRate) nanmean(otfaLickRate)]); hold on;
+lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
+for kk=1:numel(lickbarT)
+    xtips=lickbarT(kk).XEndPoints;
+    ytips=lickbarT(kk).YEndPoints;
+    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+end
+scatter(repmat(lickbarT(1).XEndPoints(1),size(hitLickRate,1),1), ...
+        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarT(1).XEndPoints(2),size(faLickRate,1),1), ...
+        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarT(1).XEndPoints(3),size(othitLickRate,1),1), ...
+        othitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbarT(1).XEndPoints(4),size(otfaLickRate,1),1), ...
+        otfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+    oLickRate=[othitLickRate(1) otfaLickRate(1) othitLickRate(2) otfaLickRate(1)...
+        othitLickRate(3) otfaLickRate(3) othitLickRate(4) otfaLickRate(4)...
+        othitLickRate(5) otfaLickRate(5) othitLickRate(6) otfaLickRate(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
+[h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
+ylim([0 8]);
+sigstar({[1,3],[2,4]}, [pHit pFA])
+ylabel('mean lick rate');
+title(['By Animal MGB Tone']);
+xticklabels({'hit', 'fa','hit','fa'});
+
+subplot(2,3,3); % choice MGB
+lickbarC=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ochitLickRate) nanmean(ocfaLickRate)]); hold on;
+lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
+for kk=1:numel(lickbarC)
+    xtips=lickbarC(kk).XEndPoints;
+    ytips=lickbarC(kk).YEndPoints;
+    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+end
+scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
+        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarC(1).XEndPoints(2),size(faLickRate,1),1), ...
+        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+    scatter(repmat(lickbarC(1).XEndPoints(3),size(ochitLickRate,1),1), ...
+        ochitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    scatter(repmat(lickbarC(1).XEndPoints(4),size(ocfaLickRate,1),1), ...
+        ocfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+    oLickRate=[ochitLickRate(1) ocfaLickRate(1) ochitLickRate(2) ocfaLickRate(1)...
+        ochitLickRate(3) ocfaLickRate(3) ochitLickRate(4) ocfaLickRate(4)...
+        ochitLickRate(5) ocfaLickRate(5) ochitLickRate(6) ocfaLickRate(6)];
+    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
+[h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
+ylim([0 8]);
+sigstar({[1,3],[2,4]}, [pHit pFA])
+ylabel('mean lick rate');
+title(['By Animal MGB Choice']);
+xticklabels({'hit', 'fa','hit','fa'});
+
+lickFigl.Position(3:4)=[725 475];
+saveas(gcf,['ByAnimal_C_MGB_LickRate_Opto']);
+saveas(gcf,['ByAnimal_C_MGB_LickRate_Opto.pdf']);  
+close all
+
+%% lick latency by percent correct
+% have not started this yet 2/27/2025
 
 close all
 % LICK LATENCY, AVERAGED ACROSS ANIMALS
@@ -2523,132 +2815,9 @@ title(['By Animal MGB Choice']);
 xticklabels({'hit', 'fa','hit','fa'});
 
 lickFig.Position(3:4)=[725 475];
-saveas(gcf,['ByAnimal_C_MGB_LickLat_Opto']);
-saveas(gcf,['ByAnimal_C_MGB_LickLat_Opto.png']);
+saveas(gcf,['ByAnimal_T_MGB_LickLatPC_Opto']);
+saveas(gcf,['ByAnimal_T_MGB_LickLatPC_Opto.png']);
 close all
 
 
-% control animals, RATE
-lickFigl=figure(jj+13); 
-for jj=2:size(mgbTempTestsOnly,1)
-    hitLickRate(jj-1)=nanmean(MGBmlr_hit(jj,:));
-    ohitLickRate(jj-1)=nanmean(MGBmlo_hit(jj,:));
-    faLickRate(jj-1)=nanmean(MGBmlr_fa(jj,:));
-    ofaLickRate(jj-1)=nanmean(MGBmlo_fa(jj,:));
-    othitLickRate(jj-1)=nanmean(MGBmlto_hit(jj,:));
-    otfaLickRate(jj-1)=nanmean(MGBmlto_fa(jj,:));
-    ochitLickRate(jj-1)=nanmean(MGBmlco_hit(jj,:));
-    ocfaLickRate(jj-1)=nanmean(MGBmlco_fa(jj,:));
-    
-    hitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
-    ohitLickRateE(jj-1)=nanmean(MGBslo_hit(jj,:));
-    faLickRateE(jj-1)=nanmean(MGBslr_fa(jj,:));
-    ofaLickRateE(jj-1)=nanmean(MGBslo_fa(jj,:));
-    othitLickRateE(jj-1)=nanmean(MGBslto_hit(jj,:));
-    otfaLickRateE(jj-1)=nanmean(MGBslto_fa(jj,:));
-    ochitLickRateE(jj-1)=nanmean(MGBslco_hit(jj,:));
-    ocfaLickRateE(jj-1)=nanmean(MGBslco_fa(jj,:));    
-    
-end
-
-subplot(2,3,1); % full trial MGB
-lickbarL=bar([nanmean(hitLickRate) nanmean(ohitLickRate) nanmean(faLickRate) nanmean(ofaLickRate)]); hold on;
-lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
-error=[nanmean(hitLickRateE) nanmean(ohitLickRateE) nanmean(faLickRateE) nanmean(ofaLickRateE)];
-for kk=1:numel(lickbarL)
-    xtips=lickbarL(kk).XEndPoints;
-    ytips=lickbarL(kk).YEndPoints;
-    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-end
-    scatter(repmat(lickbarL(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarL(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarL(1).XEndPoints(3),size(ohitLickRate,1),1), ...
-        ohitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarL(1).XEndPoints(4),size(ofaLickRate,1),1), ...
-        ofaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[ohitLickRate(1) ofaLickRate(1) ohitLickRate(2) ofaLickRate(1)...
-        ohitLickRate(3) ofaLickRate(3) ohitLickRate(4) ofaLickRate(4)...
-        ohitLickRate(5) ofaLickRate(5) ohitLickRate(6) ofaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
-[h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
-[h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
-ylabel('mean lick rate');
-title(['By Animal MGB Full Trial']);
-xticklabels({'hit', 'fa','hit','fa'});
-
-subplot(2,3,2) % tone MGB
-lickbarT=bar([nanmean(hitLickRate) nanmean(othitLickRate) nanmean(faLickRate) nanmean(otfaLickRate)]); hold on;
-lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
-error=[nanmean(hitLickRateE) nanmean(othitLickRateE) nanmean(faLickRateE) nanmean(otfaLickRateE)];
-for kk=1:numel(lickbarT)
-    xtips=lickbarT(kk).XEndPoints;
-    ytips=lickbarT(kk).YEndPoints;
-    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-end
-scatter(repmat(lickbarT(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarT(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarT(1).XEndPoints(3),size(othitLickRate,1),1), ...
-        othitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarT(1).XEndPoints(4),size(otfaLickRate,1),1), ...
-        otfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[othitLickRate(1) otfaLickRate(1) othitLickRate(2) otfaLickRate(1)...
-        othitLickRate(3) otfaLickRate(3) othitLickRate(4) otfaLickRate(4)...
-        othitLickRate(5) otfaLickRate(5) othitLickRate(6) otfaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
-[h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
-[h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
-ylabel('mean lick rate');
-title(['By Animal MGB Tone']);
-xticklabels({'hit', 'fa','hit','fa'});
-
-subplot(2,3,3); % choice MGB
-lickbarC=bar([nanmean(hitLickRate) nanmean(ochitLickRate) nanmean(faLickRate) nanmean(ocfaLickRate)]); hold on;
-lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
-error=[nanmean(hitLickRateE) nanmean(ochitLickRateE) nanmean(faLickRateE) nanmean(ocfaLickRateE)];
-for kk=1:numel(lickbarC)
-    xtips=lickbarC(kk).XEndPoints;
-    ytips=lickbarC(kk).YEndPoints;
-    errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-end
-scatter(repmat(lickbarC(1).XEndPoints(1),size(hitLickRate,1),1), ...
-        hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarC(1).XEndPoints(2),size(faLickRate,1),1), ...
-        faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(lickbarC(1).XEndPoints(3),size(ochitLickRate,1),1), ...
-        ochitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(lickbarC(1).XEndPoints(4),size(ocfaLickRate,1),1), ...
-        ocfaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
-        hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
-        hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
-    oLickRate=[ochitLickRate(1) ocfaLickRate(1) ochitLickRate(2) ocfaLickRate(1)...
-        ochitLickRate(3) ocfaLickRate(3) ochitLickRate(4) ocfaLickRate(4)...
-        ochitLickRate(5) ocfaLickRate(5) ochitLickRate(6) ocfaLickRate(6)];
-    line(xVector,lickRate, 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line(xoVector,oLickRate,'LineWidth', 0.5, 'Color', [0 0 0]);
-[h,pHit,ci,stats] = ttest2(hitLickRate,ochitLickRate);
-[h,pFA,ci,stats] = ttest2(faLickRate,ocfaLickRate);
-sigstar({[1,3],[2,4]}, [pHit pFA])
-ylabel('mean lick rate');
-title(['By Animal MGB Choice']);
-xticklabels({'hit', 'fa','hit','fa'});
-
-lickFigl.Position(3:4)=[725 475];
-saveas(gcf,['ByAnimal_C_MGB_LickRate_Opto']);
-saveas(gcf,['ByAnimal_C_MGB_LickRate_Opto.png']);  
-close all
 end

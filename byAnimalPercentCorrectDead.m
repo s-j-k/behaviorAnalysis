@@ -1,5 +1,6 @@
 function [allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor)
 
+xVector = [1 2 1 2 1 2];
 for jj=2:size(allDataTestsOnly,1) % test Dead 1
     rpc(jj-1)=nanmean(allDataTestsOnly{jj,19});
     opc(jj-1)=nanmean(allDataTestsOnly{jj,20});
@@ -9,11 +10,13 @@ end
 wwFig=figure(10);
 subplot(2,3,1)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 ylabel('percent correct');
@@ -29,11 +32,13 @@ for jj=2:size(allDataTestsOnly,1) % MGB Dead 2
 end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 title(['MGB Dead 2 Inactivation']);
@@ -48,11 +53,13 @@ for jj=2:size(allDataTestsOnly,1) % MGB Dead 3
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 title(['MGB Dead 3 Inactivation']);
@@ -67,11 +74,13 @@ for jj=2:size(allDataTestsOnly,1) % MGB Dead 4
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 ylabel('percent correct');
@@ -87,14 +96,16 @@ for jj=2:size(allDataTestsOnly,1) % MGB Dead 5
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
-title(['MGB Dead 5Inactivation']);
+title(['MGB Dead 5 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 wwFig.Position(3:4)=[725 475];
