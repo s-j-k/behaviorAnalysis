@@ -109,7 +109,7 @@ H.mainLine=plot(x,y,lineProps{:});
 % de-saturated solid colour for the patch surface .
 
 col=get(H.mainLine,'color');
-col=cell2mat(col);
+% col=cell2mat(col);
 edgeColor=col+(1-col)*0.55;
 patchSaturation=0.15; %How de-saturated or transparent to make patch
 if transparent
