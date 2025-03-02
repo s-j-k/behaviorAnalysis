@@ -12,9 +12,9 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 condition=[0 0 1 0 1 0 1 0 1 ... %158-162
     0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
     0 2 0 1 0 1 0 1 ...% 176 - 179
-    0 1 0 1 0 ... %183 - 186
-    1 0 1 0 1 0 1 0 ...
-    2 0 2 0 2 0 2]; % cohort 6, 198, 203, 204 
+    0 1 0 1 ... %183 - 186
+    0 1 0 1 0 1 ...
+    0 2 0 2 0 2 0 2]; % cohort 6, 198, 203, 204 
 %     0 0 0 0 0 0 ...  % 200, 201, 202 who did not learn
 % condition=[0 0 0 0 0 0 0 0 0 0 0 0 2]; % cohort 6, 198, 203, 204 
 
@@ -25,7 +25,7 @@ ctlIdx=[21,25,27,31,33,35]; % not all controls are good
 allDataCtlOnly=allCohorts(1,:);
 allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
 icDataTestsOnly=allCohorts(1,:);
-icDataTestsOnly(2,:)=allCohorts(39,:);
+icDataTestsOnly(2,:)=allCohorts(37,:);
 allDataTestsOnly{1,27}='RPC MGB Full Trial';
 allDataTestsOnly{1,28}='OPC MGB Full Trial';
 allDataTestsOnly{1,29}='RPC MGB Tone Trial';
@@ -823,7 +823,7 @@ clear qqq wwFig rpc opc % now group by session, percent correct for Test
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
-byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,reinfcolor,optocolor);
+byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor);
 close all
 
 % bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);

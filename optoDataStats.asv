@@ -12,9 +12,9 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 condition=[0 0 1 0 1 0 1 0 1 ... %158-162
     0 2 0 1 0 1 0 2 ... % 164 is a test btu coding as a CTL since little effect/high baseline FA rate
     0 2 0 1 0 1 0 1 ...% 176 - 179
-    0 1 0 1 0 ... %183 - 186
-    1 0 1 0 1 0 1 0 ...
-    2 0 2 0 2 0 2]; % cohort 6, 198, 203, 204 
+    0 1 0 1 ... %183 - 186
+    0 1 0 1 0 1 ...
+    0 2 0 2 0 2 0 2]; % cohort 6, 198, 203, 204 
 %     0 0 0 0 0 0 ...  % 200, 201, 202 who did not learn
 % condition=[0 0 0 0 0 0 0 0 0 0 0 0 2]; % cohort 6, 198, 203, 204 
 
@@ -518,7 +518,7 @@ for jj=2:size(allDataTestsOnly,1)
     saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_HitFARate_Opto.png']);
     
     
-    figure(8);
+    figure(jj+8);
     rhit=allDataTestsOnly{jj,10}; % full trial MGB
     rfa=allDataTestsOnly{jj,11};
     ohit = allDataTestsOnly{jj,12};
@@ -527,7 +527,7 @@ for jj=2:size(allDataTestsOnly,1)
     rfa(isnan(ofa))=nan;
     [rdp,c]=dprime_simple(rhit,rfa);
     [odp,c]=dprime_simple(ohit,ofa);
-    subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); plot(odp,'-o','Color',optocolor);
+    subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
     title('Full');
     rhit=allDataTestsOnly{jj,10}; % tone MGB
     rfa=allDataTestsOnly{jj,11};
@@ -537,7 +537,7 @@ for jj=2:size(allDataTestsOnly,1)
     rfa(isnan(ofa))=nan;
     [rdp,c]=dprime_simple(rhit,rfa);
     [odp,c]=dprime_simple(ohit,ofa);
-    subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); plot(odp,'-o','Color',optocolor);
+    subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
     title('Stimulus');
     rhit=allDataTestsOnly{jj,10}; % choice MGB
     rfa=allDataTestsOnly{jj,11};
@@ -547,12 +547,12 @@ for jj=2:size(allDataTestsOnly,1)
     rfa(isnan(ofa))=nan;
     [rdp,c]=dprime_simple(rhit,rfa);
     [odp,c]=dprime_simple(ohit,ofa);
-    subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); plot(odp,'-o','Color',optocolor);
+    subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
     title('Choice');
     
     eeFig.Position(3:4)=[725 475];
-    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_HitFARate_Opto']);
-    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_HitFARate_Opto.png']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_dprime_Opto']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_dprime_Opto.png']);
 end
 
 for jj=2:size(icDataTestsOnly,1)
@@ -816,14 +816,14 @@ close all
 % group by animal
 
 clear qqq wwFig rpc opc
-[tempTestsOnly,mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor);
+[mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
 % [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
-byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
+byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,reinfcolor,optocolor);
 close all
 
 % bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
