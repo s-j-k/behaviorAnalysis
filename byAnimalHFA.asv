@@ -1,4 +1,4 @@
-function byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,reinfcolor,optocolor)
+function byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor)
 
 ppFig=figure(15);
 
@@ -1361,26 +1361,26 @@ clear dprimeFig
 dprimeFig=figure(22);xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
 hold on;
 clear rhittemp rfatemp rfatemp2 rhittemp2
-for jj=2:size(icData,1)
-    if length(allDataCtlOnly{jj,10})>4
-        rhittemp(:,jj-1)=allDataCtlOnly{jj,10}(1:4);
+for jj=2:size(icDataTestsOnly,1)
+    if length(icDataTestsOnly{jj,18})>4
+        rhittemp(:,jj-1)=icDataTestsOnly{jj,18}(1:4);
     else
-        rhittemp(:,jj-1)=allDataCtlOnly{jj,10}; % full MGB
+        rhittemp(:,jj-1)=icDataTestsOnly{jj,18}; % full IC
     end
-    if length(allDataCtlOnly{jj,11})>4
-        rfatemp(:,jj-1)=allDataCtlOnly{jj,11}(1:4);
+    if length(icDataTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=icDataTestsOnly{jj,19}(1:4);
     else 
-        rfatemp(:,jj-1)=allDataCtlOnly{jj,11}; % full MGB
+        rfatemp(:,jj-1)=icDataTestsOnly{jj,19};
     end
-    if length(allDataCtlOnly{jj,12})>4
-        ohittemp(:,jj-1)=allDataCtlOnly{jj,12}(1:4);
+    if length(icDataTestsOnly{jj,12})>4
+        ohittemp(:,jj-1)=icDataTestsOnly{jj,20}(1:4);
     else
-        ohittemp(:,jj-1)=allDataCtlOnly{jj,12}; % full MGB
+        ohittemp(:,jj-1)=icDataTestsOnly{jj,20}; 
     end
-    if length(allDataCtlOnly{jj,13})>4
-        ofatemp(:,jj-1)=allDataCtlOnly{jj,13}(1:4);
+    if length(icDataTestsOnly{jj,13})>4
+        ofatemp(:,jj-1)=icDataTestsOnly{jj,21}(1:4);
     else
-        ofatemp(:,jj-1)=allDataCtlOnly{jj,13}; % full MGB
+        ofatemp(:,jj-1)=icDataTestsOnly{jj,21}; 
     end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
@@ -1452,26 +1452,26 @@ xticklabels({'','light off','light on'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataCtlOnly,1)
-    if length(allDataCtlOnly{jj,10})>4
-        rhittemp(:,jj-1)=allDataCtlOnly{jj,10}(1:4);
+for jj=2:size(icDataTestsOnly,1)
+    if length(icDataTestsOnly{jj,10})>4
+        rhittemp(:,jj-1)=icDataTestsOnly{jj,10}(1:4);
     else
-        rhittemp(:,jj-1)=allDataCtlOnly{jj,10}; % full MGB
+        rhittemp(:,jj-1)=icDataTestsOnly{jj,10}; % full MGB
     end
-    if length(allDataCtlOnly{jj,11})>4
-        rfatemp(:,jj-1)=allDataCtlOnly{jj,11}(1:4);
+    if length(icDataTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=icDataTestsOnly{jj,11}(1:4);
     else
-        rfatemp(:,jj-1)=allDataCtlOnly{jj,11}; % full MGB
+        rfatemp(:,jj-1)=icDataTestsOnly{jj,11}; % full MGB
     end
-    if length(allDataCtlOnly{jj,14})>4
-        ohittemp(:,jj-1)=allDataCtlOnly{jj,14}(1:4);
+    if length(icDataTestsOnly{jj,14})>4
+        ohittemp(:,jj-1)=icDataTestsOnly{jj,14}(1:4);
     else
-        ohittemp(:,jj-1)=allDataCtlOnly{jj,14}; % full MGB
+        ohittemp(:,jj-1)=icDataTestsOnly{jj,14}; % full MGB
     end
-    if length(allDataCtlOnly{jj,15})>4
-        ofatemp(:,jj-1)=allDataCtlOnly{jj,15}(1:4);
+    if length(icDataTestsOnly{jj,15})>4
+        ofatemp(:,jj-1)=icDataTestsOnly{jj,15}(1:4);
     else
-        ofatemp(:,jj-1)=allDataCtlOnly{jj,15}; % full MGB
+        ofatemp(:,jj-1)=icDataTestsOnly{jj,15}; % full MGB
     end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
@@ -1539,26 +1539,26 @@ line([xVector],dprimeVals, 'LineWidth', 0.5, 'Color', [0 0 0]);
 title('Stimulus');ylim([-1 6]);
 xticklabels({'','light off','light on'});
 
-for jj=2:size(allDataCtlOnly,1)
-    if length(allDataCtlOnly{jj,10})>4
-        rhittemp(:,jj-1)=allDataCtlOnly{jj,10}(1:4);
+for jj=2:size(icDataTestsOnly,1)
+    if length(icDataTestsOnly{jj,10})>4
+        rhittemp(:,jj-1)=icDataTestsOnly{jj,10}(1:4);
     else
-        rhittemp(:,jj-1)=allDataCtlOnly{jj,10}; % choice MGB
+        rhittemp(:,jj-1)=icDataTestsOnly{jj,10}; % choice MGB
     end
-    if length(allDataCtlOnly{jj,11})>4
-        rfatemp(:,jj-1)=allDataCtlOnly{jj,11}(1:4);
+    if length(icDataTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=icDataTestsOnly{jj,11}(1:4);
     else
-        rfatemp(:,jj-1)=allDataCtlOnly{jj,11}; % choice MGB
+        rfatemp(:,jj-1)=icDataTestsOnly{jj,11}; % choice MGB
     end
-    if length(allDataCtlOnly{jj,16})>4
-        ohittemp(:,jj-1)=allDataCtlOnly{jj,16}(1:4);
+    if length(icDataTestsOnly{jj,16})>4
+        ohittemp(:,jj-1)=icDataTestsOnly{jj,16}(1:4);
     else
-        ohittemp(:,jj-1)=allDataCtlOnly{jj,16}; 
+        ohittemp(:,jj-1)=icDataTestsOnly{jj,16}; 
     end
-    if length(allDataCtlOnly{jj,17})>4
-        ofatemp(:,jj-1)=allDataCtlOnly{jj,17}(1:4);
+    if length(icDataTestsOnly{jj,17})>4
+        ofatemp(:,jj-1)=icDataTestsOnly{jj,17}(1:4);
     else
-        ofatemp(:,jj-1)=allDataCtlOnly{jj,17}; 
+        ofatemp(:,jj-1)=icDataTestsOnly{jj,17}; 
     end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
