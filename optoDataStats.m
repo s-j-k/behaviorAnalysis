@@ -14,7 +14,7 @@ condition=[0 0 1 0 1 0 1 0 1 ... %158-162
     0 2 0 1 0 1 0 1 ...% 176 - 179
     0 1 0 1 ... %183 - 186
     0 1 0 1 0 1 ...
-    0 2 0 2 0 2 0 2]; % cohort 6, 198, 203, 204 
+    0 1 0 2 0 2 0 2]; % cohort 6, 198, 203, 204 
 %     0 0 0 0 0 0 ...  % 200, 201, 202 who did not learn
 % condition=[0 0 0 0 0 0 0 0 0 0 0 0 2]; % cohort 6, 198, 203, 204 
 
@@ -38,7 +38,18 @@ allDataTestsOnly{1,35}='RPC IC Tone Trial';
 allDataTestsOnly{1,36}='OPC IC Tone Trial';
 allDataTestsOnly{1,37}='RPC IC Choice Trial';
 allDataTestsOnly{1,38}='OPC IC Choice Trial';
-
+allDataTestsOnly{1,39}='stats MGB Full, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,40}='stats MGB tone, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,41}='stats MGB choice, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,42}='stats IC full, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,43}='stats IC tone, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,44}='stats IC choice, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,45}='stats MGB Full dprime, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,46}='stats MGB tone dprime, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,47}='stats MGB choice dprime, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,48}='stats IC Full dprime, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,49}='stats IC Tone dprime, p hit vs opto hit and fa vs opto fa';
+allDataTestsOnly{1,50}='stats IC choice dprime, p hit vs opto hit and fa vs opto fa';
 
 icDataTestsOnly{1,27}='RPC MGB Full Trial';
 icDataTestsOnly{1,28}='OPC MGB Full Trial';
@@ -109,8 +120,8 @@ icDataTestsOnly{1,38}='OPC IC Choice Trial';
 reinfcolor= [0.4,0.4,0.4];
 optocolor=[102/255 178/255 255/255];
 
-
-xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
+close all
+xVector = [1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2];
 for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj);hold on;
     rhit=allDataTestsOnly{jj,10}; % full trial MGB
@@ -203,13 +214,19 @@ for jj=2:size(icDataTestsOnly,1)
     subplot(2,3,4)
     eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
     percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
-    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6)];
+    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6) rpc(7) opc(7) ...
+    rpc(8) opc(8)];
     eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
     scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
         rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    xVector=xVector(~isnan(percentCorrect));
+    percentCorrect=percentCorrect(~isnan(percentCorrect));
+    line([1 2],percentCorrect(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     ylabel('percent correct');
@@ -235,7 +252,12 @@ for jj=2:size(icDataTestsOnly,1)
         rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    xVector=xVector(~isnan(percentCorrect));
+    percentCorrect=percentCorrect(~isnan(percentCorrect));
+    line([1 2],percentCorrect(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     title([icDataTestsOnly{jj,1} ' IC Tone Inactivation']);
@@ -263,7 +285,12 @@ for jj=2:size(icDataTestsOnly,1)
         rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
+    xVector=xVector(~isnan(percentCorrect));
+    percentCorrect=percentCorrect(~isnan(percentCorrect));
+    line([1 2],percentCorrect(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    line([1 2],percentCorrect(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     title([icDataTestsOnly{jj,1} ' IC Choice Inactivation']);
@@ -288,6 +315,7 @@ allDataCtlOnly{1,35}='RPC IC Tone Trial';
 allDataCtlOnly{1,36}='OPC IC Tone Trial';
 allDataCtlOnly{1,37}='RPC IC Choice Trial';
 allDataCtlOnly{1,38}='OPC IC Choice Trial';
+
 for jj=2:size(allDataCtlOnly,1) % control animals
     eeFig=figure(jj+10);hold on;
     rhit=allDataCtlOnly{jj,10}; % full trial MGB
@@ -431,7 +459,7 @@ for jj=2:size(allDataCtlOnly,1) % control animals
 end
 close all
 %% make plots to compare hit and fa rate with light on vs light off
-
+close all
 for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj+3);hold on;
     rhit=allDataTestsOnly{jj,10}; % full trial MGB
@@ -814,7 +842,7 @@ end
 close all
 %% all animal summary analysis
 % group by animal
-
+close all
 clear qqq wwFig rpc opc
 [mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor);
 close all
@@ -823,11 +851,18 @@ clear qqq wwFig rpc opc % now group by session, percent correct for Test
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
-byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor);
-close all
+mgbTempTestsOnly{1,39} = 'dprime MGB T Full, light on and light off';
+mgbTempTestsOnly{1,40} = 'dprime MGB T Tone, light on and light off';
+mgbTempTestsOnly{1,41} = 'dprime MGB T Choice, light on and light off';
+allDataCtlOnly{1,39} = 'dprime MGB C Full, light on and light off';
+allDataCtlOnly{1,40} = 'dprime MGB C Tone, light on and light off';
+allDataCtlOnly{1,41} = 'dprime MGB C Choice, light on and light off';
 
-% bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
 close all
+[mgbTempTestsOnly,allDataCtlOnly,allDataTestsOnly]=byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor);
+close all
+% bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
+% close all
 %%
 % now do the anova....
 [aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly);
@@ -838,16 +873,17 @@ aovMGBbyAn
 
 %% compare differences in percent correct across each light off vs light on condition
 %this is by session
-allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
-allDataTestsOnly{1,40}='MGB Difference PC Tone';
-allDataTestsOnly{1,41}='MGB Difference PC Choice';
-allDataTestsOnly{1,42}='IC Difference PC Full Trial';
-allDataTestsOnly{1,43}='IC Difference PC Tone';
-allDataTestsOnly{1,44}='IC Difference PC Choice';
-% by session
-[allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly]=diffPcOptoSess(allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly,optocolor);
-% by animal
-diffPcOptoAn(allDataTestsOnly,optocolor);
+% none of these analyses are significant 2025/01
+% allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
+% allDataTestsOnly{1,40}='MGB Difference PC Tone';
+% allDataTestsOnly{1,41}='MGB Difference PC Choice';
+% allDataTestsOnly{1,42}='IC Difference PC Full Trial';
+% allDataTestsOnly{1,43}='IC Difference PC Tone';
+% allDataTestsOnly{1,44}='IC Difference PC Choice';
+% % by session
+% [allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly]=diffPcOptoSess(allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly,optocolor);
+% % by animal
+% diffPcOptoAn(allDataTestsOnly,optocolor);
 
 %% Differences per animal
  % have not updated this yet with the new matrices
@@ -879,7 +915,21 @@ for ff=2:4
 end
 
 %% make plot to compare lick latency, for each animal and across animals 
-lickLatOptoPerAnimal(mgbTempTestsOnly,tempTestsOnly,allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+mgbTempTestsOnly{1,42} = 'lick latency MGB T Full, hitLickRate; ohitLickRate; faLickRate; ofaLickRate';
+mgbTempTestsOnly{1,43} = 'lick latency MGB T Tone, light on and light off';
+mgbTempTestsOnly{1,44} = 'lick latency MGB T Choice, light on and light off';
+mgbTempTestsOnly{1,45} = 'lick rate MGB T Full, light on and light off';
+mgbTempTestsOnly{1,46} = 'lick rate MGB T Tone, light on and light off';
+mgbTempTestsOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
+
+allDataCtlOnly{1,42} = 'lick latency MGB C Full, hitLickRate; ohitLickRate; faLickRate; ofaLickRate';
+allDataCtlOnly{1,43} = 'lick latency MGB C Tone, light on and light off';
+allDataCtlOnly{1,44} = 'lick latency MGB C Choice, light on and light off';
+allDataCtlOnly{1,45} = 'lick rate MGB T Full, light on and light off';
+allDataCtlOnly{1,46} = 'lick rate MGB T Tone, light on and light off';
+allDataCtlOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
+
+lickLatOptoPerAnimal(mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 %% AC Expert Data
 cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials

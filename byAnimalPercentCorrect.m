@@ -8,8 +8,9 @@ function [mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorre
 % optocolor2=[65/255 161/255 255/255];
 % optocolor3=[181/255 216/255 255/255];
 
-mgbTempTestsOnly=allDataTestsOnly(1:4,:);
-mgbTempTestsOnly(5:7,:)=allDataTestsOnly(6:8,:);
+% mgbTempTestsOnly=allDataTestsOnly(1:4,:);
+% mgbTempTestsOnly(5:7,:)=allDataTestsOnly(6:8,:);
+mgbTempTestsOnly=allDataTestsOnly;
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
 % discount sk194, fiber missing from right side
 % for 194-196, the height of the implant over the MGB (which connects to

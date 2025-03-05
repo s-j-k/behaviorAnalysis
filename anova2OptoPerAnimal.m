@@ -1,7 +1,5 @@
 function [aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly)
 
-% function [aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly)
-
 % per session 2way anova
 % no light vs. light all inactivation condition
 % MGB by session (two sessions per condition, per animal
@@ -189,3 +187,22 @@ tbl2An = array2table(c2An,"VariableNames", ...
 % c2IC = multcompare(statsIC,"Estimate","row");
 % tbl2 = array2table(c2IC,"VariableNames", ...
 %     ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
+
+%% d' stats
+testFullTrial=NaN(18,2); 
+testFullTrial(1:6,1:2)=mgbTempTestsOnly{2,39}';
+testFullTrial(7:12,1:2)=mgbTempTestsOnly{2,40}';
+testFullTrial(13:18,1:2)=mgbTempTestsOnly{2,41}';
+[aovMGBbyAnDprime,~,statsMGBbyAnDprime]=anova2(testFullTrial,6);
+c1An = multcompare(statsMGBbyAnDprime);
+tbl1An = array2table(c1An,"VariableNames", ...
+    ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
+c2An = multcompare(statsMGBbyAnDprime,"Estimate","row");
+tbl2An = array2table(c2An,"VariableNames", ...
+    ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
+mean(mgbTempTestsOnly{2,40}(1,:));
+std(mgbTempTestsOnly{2,40}(1,:));
+mean(mgbTempTestsOnly{2,40}(2,:));
+std(mgbTempTestsOnly{2,40}(2,:));
+
+end
