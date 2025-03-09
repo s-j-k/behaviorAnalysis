@@ -215,13 +215,14 @@ hold on;
 clear rhittemp rfatemp rfatemp2 rhittemp2
 for jj=2:size(allDataTestsOnly,1)
     rhittemp(:,jj-1)=allDataTestsOnly{jj,17}(1,:);
-    rfatemp(:,jj-1)=allDataTestsOnly{jj,18}(1,:);
-    ohittemp(:,jj-1)=allDataTestsOnly{jj,4};
-    ofatemp(:,jj-1)=allDataTestsOnly{jj,5};
+    rfatemp=allDataTestsOnly{jj,18}(1,:);
+    ohittemp=allDataTestsOnly{jj,4};
+    ofatemp=allDataTestsOnly{jj,5};
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
     rhit(jj-1)=nanmean(rhittemp(:,jj-1));
     rfa(jj-1)=nanmean(rfatemp(:,jj-1));
+    if ohittemp(:,jj-1)
     ohit(jj-1)=nanmean(ohittemp(:,jj-1));
     ofa(jj-1) = nanmean(ofatemp(:,jj-1));
 end
@@ -233,140 +234,79 @@ rhittemp(rhittemp==0)=1./(2*140);
 rfatemp(rfatemp==0)=1./(2*140);
 ohittemp(ohittemp==0)=1./(2*140);
 ofatemp(ofatemp==0)=1./(2*140);
-[dp_r,c_r]=dprime_simple(rhittemp,rfatemp);
-[dp_opto,c_opto]=dprime_simple(ohittemp, ofatemp);
-subplot(2, 3, 1); 
+for qq = 1:size(ohittemp,2)
+    if sum(~isnan(ohittemp(:,qq)))>2
+        tempVal=ohittemp(~isnan(ohittemp(:,qq)),qq);
+        ohittemp2(:,qq) = tempVal(1:2);
+        tempVal = rhittemp(~isnan(ohittemp(:,qq)),qq);
+        rhittemp2(:,qq)=tempVal(1:2);
+    else
+        ohittemp2(:,qq) = ohittemp(~isnan(ohittemp(:,qq)),qq);
+        rhittemp2(:,qq)=rhittemp(~isnan(ohittemp(:,qq)),qq);
+    end
+end
+for qq = 1:size(ofatemp,2)
+    if sum(~isnan(ofatemp(:,qq)))>2
+        tempVal=ofatemp(~isnan(ofatemp(:,qq)),qq);
+        ofatemp2(:,qq) = tempVal(1:2);
+        tempVal = rfatemp(~isnan(rfatemp(:,qq)),qq);
+        rfatemp2(:,qq)=tempVal(1:2);
+    else
+        ofatemp2(:,qq) = ofatemp(~isnan(ofatemp(:,qq)),qq);
+        rfatemp2(:,qq)=rfatemp(~isnan(ofatemp(:,qq)),qq);
+    end
+end
+[dp_r,c_r]=dprime_simple(rhittemp2,rfatemp2);
+[dp_opto,c_opto]=dprime_simple(ohittemp2, ofatemp2);
+subplot(1,3,1); 
 dp_re=nansem(dp_r');
 dp_rm=nanmean(dp_r');
 hold on;
 odp_re=nansem(dp_opto');
 odp_rm=nanmean(dp_opto');
-dp_opto_An=nanmean(dp_opto);
+dp_opto_An=mean(dp_opto);
 dp_r_An=mean(dp_r);
 ddd=bar([nanmean(dp_rm) nanmean(odp_rm)]); hold on;
 ddd(1).FaceColor='flat';ddd(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(ddd(1).XEndPoints(1),size(mean(dp_r),2),1), ...
     mean(dp_r),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ddd(1).XEndPoints(2),size(nanmean(dp_opto),2),1), ...
-    nanmean(dp_opto),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(nanmean(dp_r),nanmean(dp_opto));
+scatter(repmat(ddd(1).XEndPoints(2),size(mean(dp_oFull),2),1), ...
+    mean(dp_oFull),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+[h,p,ci,stats] = ttest2(mean(dp_r),mean(dp_opto));
 sigstar({[1,2]}, p)
 dprimeVals = [dp_r_An(1) dp_opto_An(1) dp_r_An(2) dp_opto_An(2) dp_r_An(3) dp_opto_An(3)];
 dprimeVals=dprimeVals(~isnan(dprimeVals));
 line([1 2],dprimeVals(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
-box off
 allDataTestsOnly{2,45}=p;
-allDataTestsOnly{2,39} = [dp_r_An; dp_opto_An];
-title('Delay 1');ylabel('d prime');ylim([-1 4]);
+mgbTempTestsOnly{2,39} = [dp_r_An; dp_opto_An];
+title('Full');ylabel('d prime');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(allDataTestsOnly,1)
-    rhittemp(:,jj-1)=allDataTestsOnly{jj,17}(2,:);
-    rfatemp(:,jj-1)=allDataTestsOnly{jj,18}(2,:);
-    ohittemp(:,jj-1)=allDataTestsOnly{jj,6};
-    ofatemp(:,jj-1)=allDataTestsOnly{jj,7};
-    rhittemp(isnan(ohittemp))=nan;
-    rfatemp(isnan(ofatemp))=nan;
-    rhit(jj-1)=nanmean(rhittemp(:,jj-1));
-    rfa(jj-1)=nanmean(rfatemp(:,jj-1));
-    ohit(jj-1)=nanmean(ohittemp(:,jj-1));
-    ofa(jj-1) = nanmean(ofatemp(:,jj-1));
-end
-rhittemp(rhittemp==1)=1-1./(2*140);
-rfatemp(rfatemp==1)=1-1./(2*140);
-ohittemp(ohittemp==1)=1-1./(2*140);
-ofatemp(ofatemp==1)=1-1./(2*140);
-rhittemp(rhittemp==0)=1./(2*140);
-rfatemp(rfatemp==0)=1./(2*140);
-ohittemp(ohittemp==0)=1./(2*140);
-ofatemp(ofatemp==0)=1./(2*140);
-[dp_r,c_r]=dprime_simple(rhittemp,rfatemp);
-[dp_opto,c_opto]=dprime_simple(ohittemp, ofatemp);
-subplot(2, 3, 2); 
-dp_re=nansem(dp_r');
-dp_rm=nanmean(dp_r');
-hold on;
-odp_re=nansem(dp_opto');
-odp_rm=nanmean(dp_opto');
-dp_opto_An=nanmean(dp_opto);
-dp_r_An=mean(dp_r);
-ddd=bar([nanmean(dp_rm) nanmean(odp_rm)]); hold on;
-ddd(1).FaceColor='flat';ddd(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(ddd(1).XEndPoints(1),size(mean(dp_r),2),1), ...
-    mean(dp_r),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ddd(1).XEndPoints(2),size(nanmean(dp_opto),2),1), ...
-    nanmean(dp_opto),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(nanmean(dp_r),nanmean(dp_opto));
-sigstar({[1,2]}, p)
-dprimeVals = [dp_r_An(1) dp_opto_An(1) dp_r_An(2) dp_opto_An(2) dp_r_An(3) dp_opto_An(3)];
-dprimeVals=dprimeVals(~isnan(dprimeVals));
-line([1 2],dprimeVals(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
-allDataTestsOnly{2,45}=p;
-allDataTestsOnly{2,39} = [dp_r_An; dp_opto_An];
-box off
-title('Delay 2');ylim([-1 4]);
-xticklabels({'','','light off','','light on'});
-
-for jj=2:size(allDataTestsOnly,1)
-    rhittemp(:,jj-1)=allDataTestsOnly{jj,17}(3,:);
-    rfatemp(:,jj-1)=allDataTestsOnly{jj,18}(3,:);
-    ohittemp(:,jj-1)=allDataTestsOnly{jj,8};
-    ofatemp(:,jj-1)=allDataTestsOnly{jj,9};
-    rhittemp(isnan(ohittemp))=nan;
-    rfatemp(isnan(ofatemp))=nan;
-    rhit(jj-1)=nanmean(rhittemp(:,jj-1));
-    rfa(jj-1)=nanmean(rfatemp(:,jj-1));
-    ohit(jj-1)=nanmean(ohittemp(:,jj-1));
-    ofa(jj-1) = nanmean(ofatemp(:,jj-1));
-end
-rhittemp(rhittemp==1)=1-1./(2*140);
-rfatemp(rfatemp==1)=1-1./(2*140);
-ohittemp(ohittemp==1)=1-1./(2*140);
-ofatemp(ofatemp==1)=1-1./(2*140);
-rhittemp(rhittemp==0)=1./(2*140);
-rfatemp(rfatemp==0)=1./(2*140);
-ohittemp(ohittemp==0)=1./(2*140);
-ofatemp(ofatemp==0)=1./(2*140);
-[dp_r,c_r]=dprime_simple(rhittemp,rfatemp);
-[dp_opto,c_opto]=dprime_simple(ohittemp, ofatemp);
-subplot(2, 3, 3); 
-dp_re=nansem(dp_r');
-dp_rm=nanmean(dp_r');
-hold on;
-odp_re=nansem(dp_opto');
-odp_rm=nanmean(dp_opto');
-dp_opto_An=nanmean(dp_opto);
-dp_r_An=mean(dp_r);
-ddd=bar([nanmean(dp_rm) nanmean(odp_rm)]); hold on;
-ddd(1).FaceColor='flat';ddd(1).CData=[reinfcolor;optocolor];hold on;
-scatter(repmat(ddd(1).XEndPoints(1),size(mean(dp_r),2),1), ...
-    mean(dp_r),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ddd(1).XEndPoints(2),size(nanmean(dp_opto),2),1), ...
-    nanmean(dp_opto),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(nanmean(dp_r),nanmean(dp_opto));
-sigstar({[1,2]}, p)
-dprimeVals = [dp_r_An(1) dp_opto_An(1) dp_r_An(2) dp_opto_An(2) dp_r_An(3) dp_opto_An(3)];
-dprimeVals=dprimeVals(~isnan(dprimeVals));
-line([1 2],dprimeVals(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
-allDataTestsOnly{2,45}=p;
-allDataTestsOnly{2,39} = [dp_r_An; dp_opto_An];
-box off
-title('Delay 3');ylim([-1 4]);
-xticklabels({'','light off','light on'});
-
-for jj=2:size(allDataTestsOnly,1)
-    rhittemp(:,jj-1)=allDataTestsOnly{jj,17}(4,:);
-    rfatemp(:,jj-1)=allDataTestsOnly{jj,18}(4,:);
-    ohittemp(:,jj-1)=allDataTestsOnly{jj,10};
-    ofatemp(:,jj-1)=allDataTestsOnly{jj,11};
+for jj=2:size(mgbTempTestsOnly,1)
+    if length(mgbTempTestsOnly{jj,10})>4
+        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+    else
+        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % tone MGB
+    end
+    if length(mgbTempTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+    else
+        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; 
+    end
+    if length(mgbTempTestsOnly{jj,14})>4
+        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}(1:4);
+    else
+        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}; 
+    end
+    if length(mgbTempTestsOnly{jj,15})>4
+        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15}(1:4);
+    else
+        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15};
+    end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
     rhit(jj-1)=nanmean(rhittemp(:,jj-1));
@@ -382,40 +322,85 @@ rhittemp(rhittemp==0)=1./(2*140);
 rfatemp(rfatemp==0)=1./(2*140);
 ohittemp(ohittemp==0)=1./(2*140);
 ofatemp(ofatemp==0)=1./(2*140);
-[dp_r,c_r]=dprime_simple(rhittemp,rfatemp);
-[dp_opto,c_opto]=dprime_simple(ohittemp, ofatemp);
-subplot(2, 3, 4); 
+for qq = 1:size(ohittemp,2)
+    if sum(~isnan(ohittemp(:,qq)))>2
+        tempVal=ohittemp(~isnan(ohittemp(:,qq)),qq);
+        ohittemp2(:,qq) = tempVal(1:2);
+        tempVal = rhittemp(~isnan(ohittemp(:,qq)),qq);
+        rhittemp2(:,qq)=tempVal(1:2);
+    else
+        ohittemp2(:,qq) = ohittemp(~isnan(ohittemp(:,qq)),qq);
+        rhittemp2(:,qq)=rhittemp(~isnan(ohittemp(:,qq)),qq);
+    end
+end
+for qq = 1:size(ofatemp,2)
+    if sum(~isnan(ofatemp(:,qq)))>2
+        tempVal=ofatemp(~isnan(ofatemp(:,qq)),qq);
+        ofatemp2(:,qq) = tempVal(1:2);
+        tempVal = rhittemp(~isnan(rfatemp(:,qq)),qq);
+        rfatemp2(:,qq)=tempVal(1:2);
+    else
+        ofatemp2(:,qq) = ofatemp(~isnan(ofatemp(:,qq)),qq);
+        rfatemp2(:,qq)=rfatemp(~isnan(ofatemp(:,qq)),qq);
+    end
+end
+[dp_r,c_r]=dprime_simple(rhittemp2,rfatemp2);
+[dp_otFull,c_oFull]=dprime_simple(ohittemp2, ofatemp2);
+subplot(1,3,2); 
+% plot(dp_r,'-o','Color',reinfcolor); hold on;plot(dp_otFull,'-o','Color',optocolor);
+% title('Stimulus');ylim([-1 4]);
 dp_re=nansem(dp_r');
 dp_rm=nanmean(dp_r');
+% shadedErrorBar(1:2,dp_rm,dp_re,{'LineStyle','-','LineWidth',2,'color',reinfcolor,'markerfacecolor',reinfcolor},0.5);
 hold on;
-odp_re=nansem(dp_opto');
-odp_rm=nanmean(dp_opto');
-dp_opto_An=nanmean(dp_opto);
+odp_re=nansem(dp_otFull');
+odp_rm=nanmean(dp_otFull');
+% shadedErrorBar(1:2,dp_rm,dp_re,{'LineStyle','-','LineWidth',2,'color',optocolor,'markerfacecolor',optocolor},0.5);
+dp_opto_An=mean(dp_otFull);
 dp_r_An=mean(dp_r);
 ddd=bar([nanmean(dp_rm) nanmean(odp_rm)]); hold on;
 ddd(1).FaceColor='flat';ddd(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(ddd(1).XEndPoints(1),size(mean(dp_r),2),1), ...
     mean(dp_r),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ddd(1).XEndPoints(2),size(nanmean(dp_opto),2),1), ...
-    nanmean(dp_opto),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(nanmean(dp_r),nanmean(dp_opto));
+scatter(repmat(ddd(1).XEndPoints(2),size(mean(dp_otFull),2),1), ...
+    mean(dp_otFull),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+% shadedErrorBar(1:2,dp_rm,dp_re,{'LineStyle','-','LineWidth',2,'color',optocolor,'markerfacecolor',optocolor},0.5);
+[h,p,ci,stats] = ttest2(mean(dp_r),mean(dp_otFull));
 sigstar({[1,2]}, p)
-dprimeVals = [dp_r_An(1) dp_opto_An(1) dp_r_An(2) dp_opto_An(2) dp_r_An(3) dp_opto_An(3)];
-dprimeVals=dprimeVals(~isnan(dprimeVals));
+dprimeVals = [dp_r_An(1) dp_opto_An(1) dp_r_An(2) dp_opto_An(2) dp_r_An(3) dp_opto_An(3) ...
+    dp_r_An(4) dp_opto_An(4) dp_r_An(5) dp_opto_An(5) dp_r_An(6) dp_opto_An(6)];
 line([1 2],dprimeVals(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
-allDataTestsOnly{2,45}=p;
-allDataTestsOnly{2,39} = [dp_r_An; dp_opto_An];
-box off
-title('Delay 4');ylim([-1 4]);
+line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
+allDataTestsOnly{2,46}=p;
+mgbTempTestsOnly{2,40} = [dp_r_An; dp_opto_An];
+title('Stimulus');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
-for jj=2:size(allDataTestsOnly,1)
-    rhittemp(:,jj-1)=allDataTestsOnly{jj,17}(5,:);
-    rfatemp(:,jj-1)=allDataTestsOnly{jj,18}(5,:);
-    ohittemp(:,jj-1)=allDataTestsOnly{jj,12};
-    ofatemp(:,jj-1)=allDataTestsOnly{jj,13};
+for jj=2:size(mgbTempTestsOnly,1)
+    if length(mgbTempTestsOnly{jj,10})>4
+        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+    else
+        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % choice MGB
+    end
+    if length(mgbTempTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+    else
+        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % choice MGB
+    end
+    if length(mgbTempTestsOnly{jj,16})>4
+        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}(1:4);
+    else
+        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}; 
+    end
+    if length(mgbTempTestsOnly{jj,17})>4
+        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}(1:4);
+    else
+        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}; 
+    end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
     rhit(jj-1)=nanmean(rhittemp(:,jj-1));
@@ -431,39 +416,70 @@ rhittemp(rhittemp==0)=1./(2*140);
 rfatemp(rfatemp==0)=1./(2*140);
 ohittemp(ohittemp==0)=1./(2*140);
 ofatemp(ofatemp==0)=1./(2*140);
-[dp_r,c_r]=dprime_simple(rhittemp,rfatemp);
-[dp_opto,c_opto]=dprime_simple(ohittemp, ofatemp);
-subplot(2,3,5); 
+clear tempVal 
+for qq = 1:size(ohittemp,2)
+    if sum(~isnan(ohittemp(:,qq)))>2
+        tempVal=ohittemp(~isnan(ohittemp(:,qq)),qq);
+        ohittemp2(:,qq) = tempVal(1:2);
+        tempVal = rhittemp(~isnan(ohittemp(:,qq)),qq);
+        rhittemp2(:,qq)=tempVal(1:2);
+    else
+        ohittemp2(:,qq) = ohittemp(~isnan(ohittemp(:,qq)),qq);
+        rhittemp2(:,qq)=rhittemp(~isnan(ohittemp(:,qq)),qq);
+    end
+end
+for qq = 1:size(ofatemp,2)
+    if sum(~isnan(ofatemp(:,qq)))>2
+        tempVal=ofatemp(~isnan(ofatemp(:,qq)),qq);
+        ofatemp2(:,qq) = tempVal(1:2);
+        tempVal = rfatemp(~isnan(ofatemp(:,qq)),qq);
+        rfatemp2(:,qq)=tempVal(1:2);
+    else
+        ofatemp2(:,qq) = ofatemp(~isnan(ofatemp(:,qq)),qq);
+        rfatemp2(:,qq)=rfatemp(~isnan(ofatemp(:,qq)),qq);
+    end
+end
+[dp_r,c_r]=dprime_simple(rhittemp2,rfatemp2);
+[dp_ocFull,c_oFull]=dprime_simple(ohittemp2, ofatemp2);
+subplot(1,3,3); 
+% plot(dp_r,'-o','Color',reinfcolor);hold on; plot(dp_ocFull,'-o','Color',optocolor);
+% title('Choice');ylim([-1 4]);
 dp_re=nansem(dp_r');
 dp_rm=nanmean(dp_r');
+% shadedErrorBar(1:2,dp_rm,dp_re,{'LineStyle','-','LineWidth',2,'color',reinfcolor,'markerfacecolor',reinfcolor},0.5);
 hold on;
-odp_re=nansem(dp_opto');
-odp_rm=nanmean(dp_opto');
-dp_opto_An=nanmean(dp_opto);
+odp_re=nansem(dp_ocFull');
+odp_rm=nanmean(dp_ocFull');
+% shadedErrorBar(1:2,dp_rm,dp_re,{'LineStyle','-','LineWidth',2,'color',optocolor,'markerfacecolor',optocolor},0.5);
+% [h,p,ci,stats] = ttest2(dp_ocFull',dp_r');
+% title('Choice');legend('','light off','','light on','Location','best');
+dp_opto_An=mean(dp_ocFull);
 dp_r_An=mean(dp_r);
 ddd=bar([nanmean(dp_rm) nanmean(odp_rm)]); hold on;
 ddd(1).FaceColor='flat';ddd(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(ddd(1).XEndPoints(1),size(mean(dp_r),2),1), ...
     mean(dp_r),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-scatter(repmat(ddd(1).XEndPoints(2),size(nanmean(dp_opto),2),1), ...
-    nanmean(dp_opto),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-[h,p,ci,stats] = ttest2(nanmean(dp_r),nanmean(dp_opto));
+scatter(repmat(ddd(1).XEndPoints(2),size(mean(dp_ocFull),2),1), ...
+    mean(dp_ocFull),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+% shadedErrorBar(1:2,dp_rm,dp_re,{'LineStyle','-','LineWidth',2,'color',optocolor,'markerfacecolor',optocolor},0.5);
+[h,p,ci,stats] = ttest2(mean(dp_r),mean(dp_ocFull));
 sigstar({[1,2]}, p)
-dprimeVals = [dp_r_An(1) dp_opto_An(1) dp_r_An(2) dp_opto_An(2) dp_r_An(3) dp_opto_An(3)];
-dprimeVals=dprimeVals(~isnan(dprimeVals));
+dprimeVals = [dp_r_An(1) dp_opto_An(1) dp_r_An(2) dp_opto_An(2) dp_r_An(3) dp_opto_An(3) ...
+    dp_r_An(4) dp_opto_An(4) dp_r_An(5) dp_opto_An(5) dp_r_An(6) dp_opto_An(6)];
 line([1 2],dprimeVals(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
-allDataTestsOnly{2,45}=p;
-allDataTestsOnly{2,39} = [dp_r_An; dp_opto_An];
-box off
-title('Delay 5');ylim([-1 4]);
+line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
+line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
+allDataTestsOnly{2,47}=p;
+mgbTempTestsOnly{2,41} = [dp_r_An; dp_opto_An];
+title('Choice');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
-
-dprimeFig.Position(3:4)=[725 525];
-saveas(gcf,['By Animal_T_MGB_dp_bar_Delay_Opto']);
-saveas(gcf,['By Animal_T_MGB_dp_bar_Delay_Opto.png']);
-saveas(gcf,['By Animal_T_MGB_dp_bar_Delay_Opto.pdf']);
+dprimeFig.Position(3:4)=[725 225];
+saveas(gcf,['By Animal_T_MGB_dp_bar_Opto']);
+saveas(gcf,['By Animal_T_MGB_dp_bar_Opto.png']);
+saveas(gcf,['By Animal_T_MGB_dp_bar_Opto.pdf']);
 
 end

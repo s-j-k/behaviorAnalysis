@@ -54,7 +54,7 @@ for nbsubj=2:size(allDataTestsOnly,1)
         
     end
     switch nbsubj
-        case 2 % sk163
+        case 2 % sk198
             mgbDays=[1 1 1 1 1];mgbDays=logical(mgbDays);
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
             MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
@@ -109,7 +109,7 @@ for nbsubj=2:size(allDataTestsOnly,1)
             MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
             MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
             
-        case 3 %sk175
+        case 3 %sk203
             mgbDays=[1 1 1 1 1];mgbDays=logical(mgbDays); 
             MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
             MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 

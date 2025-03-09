@@ -346,15 +346,15 @@ clear qqq wwFig rpc opc
 [allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
-[allDataTestsOnly]=bySessPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
+% [allDataTestsOnly]=bySessPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
 byAnimalHFADead(allDataTestsOnly,reinfcolor,optocolor);
 close all
 
-bySessHFADead(allDataTestsOnly,reinfcolor,optocolor);
-close all
+% bySessHFADead(allDataTestsOnly,reinfcolor,optocolor);
+% close all
 %%
 % now do the anova
 [aovMGB,statsMGB]=anova2OptoPerAnimalDead(allDataTestsOnly);
