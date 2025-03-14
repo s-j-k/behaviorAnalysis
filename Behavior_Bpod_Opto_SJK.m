@@ -44,7 +44,13 @@ switch cohort
     pathsave='O:\sjk\Behavior\IC_cohort_2\';
 %     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
     subjlist={'sk223','sk224','sk225','sk226'}; %GTACR
-    explist=[1 1 1 1]
+    explist=[1 1 1 1];
+   
+    case 9
+    pathsave='O:\sjk\Behavior\cohort_7\';
+%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
+    subjlist={'sk230','sk231'}; %GTACR
+    explist=[1 1];
     
     otherwise
         disp('Cohort not found');    
@@ -680,7 +686,7 @@ for nbsubj = 1:nSubj % through animals
 % else
 %     optoplot=0;
 % end
-optoplot=1;
+optoplot=0;
 
 % bar graphs for opto
 if optoplot==1 % now make bar graphs, averaged, for all conditions 

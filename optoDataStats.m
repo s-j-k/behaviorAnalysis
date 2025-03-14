@@ -64,56 +64,6 @@ icDataTestsOnly{1,36}='OPC IC Tone Trial';
 icDataTestsOnly{1,37}='RPC IC Choice Trial';
 icDataTestsOnly{1,38}='OPC IC Choice Trial';
 
-%% plot catch trials
-% inherited from celine code... 
-% coded as conffa (catch light on false alarm)
-% within the rates variable, conffa is the 10th column
-% catch trials happen across the last 3 days (1st MGB, then IC, then LOB)
-
-% reinfcolor= [0.4,0.4,0.4];
-% optocolor=[102/255 178/255 255/255];
-% animalIdx=[3,5,9];
-% for ww=1:length(animalIdx)
-%     rates=optomeanMat{animalIdx(ww),27}; % which animal are we plotting
-%     uu=2;yyyFig=figure('Position', [100 100 800 200]);
-%     subplot(1,3,1);hold on;
-%     end1=size(rates,1);
-%     yyy=bar([rates(end1-uu,1) rates(end1-uu,5); ...
-%         rates(end1-uu,2) rates(end1-uu,6); 0 rates(end1-uu,10)]);
-%     % rates(i,:) = [rhit rfa phit pfa ohit ofa ...
-%     %             rfhit rffa cofffa conffa phit2 pfa2 ...
-%     %             othit otfa ochit ocfa];
-%     yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-%     yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-%     yyy(2).CData=[optocolor;optocolor;optocolor];box on; 
-%     xticklabels({'hit','','fa','','catch fa'}); legend('light off','light on');
-%     title([string(optomeanMat{animalIdx(ww),1}) 'MGB Catch']);
-%     
-%     uu=1;subplot(1,3,2);
-%     end1=size(rates,1);
-%     yyy=bar([rates(end1-uu,1) rates(end1-uu,5); ...
-%         rates(end1-uu,2) rates(end1-uu,6); 0 rates(end1-uu,10)]);
-%     yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-%     yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-%     yyy(2).CData=[optocolor;optocolor;optocolor];
-%     xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
-%     title('IC Catch');
-%         
-%     subplot(1,3,3);
-%     end1=size(rates,1);
-%     yyy=bar([rates(end1,1) rates(end1,5); ...
-%         rates(end1,2) rates(end1,6); 0 rates(end1,10)]);
-%     yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-%     yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-%     yyy(2).CData=[optocolor;optocolor;optocolor];
-%     xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
-%     title('LOB Catch');       
-%     animalName=optomeanMat{animalIdx(ww),1};
-%         saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.fig']);
-%         saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.png']);
-%         close(yyyFig);
-% 
-% end
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
@@ -221,7 +171,6 @@ for jj=2:size(icDataTestsOnly,1)
         rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xVector=xVector(~isnan(percentCorrect));
     percentCorrect=percentCorrect(~isnan(percentCorrect));
     line([1 2],percentCorrect(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
     line([1 2],percentCorrect(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
@@ -252,12 +201,11 @@ for jj=2:size(icDataTestsOnly,1)
         rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xVector=xVector(~isnan(percentCorrect));
     percentCorrect=percentCorrect(~isnan(percentCorrect));
     line([1 2],percentCorrect(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
     line([1 2],percentCorrect(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
     line([1 2],percentCorrect(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
-    line([1 2],percentCorrect(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([1 2],percentCorrect(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     title([icDataTestsOnly{jj,1} ' IC Tone Inactivation']);
@@ -285,7 +233,6 @@ for jj=2:size(icDataTestsOnly,1)
         rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
     scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xVector=xVector(~isnan(percentCorrect));
     percentCorrect=percentCorrect(~isnan(percentCorrect));
     line([1 2],percentCorrect(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
     line([1 2],percentCorrect(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
@@ -863,57 +810,110 @@ close all
 close all
 % bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
 % close all
-%%
-% now do the anova....
-[aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly);
-% close all
-aovMGBbySess
-aovMGBbyAn
-% aovIC
 
-%% compare differences in percent correct across each light off vs light on condition
-%this is by session
-% none of these analyses are significant 2025/01
-% allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
-% allDataTestsOnly{1,40}='MGB Difference PC Tone';
-% allDataTestsOnly{1,41}='MGB Difference PC Choice';
-% allDataTestsOnly{1,42}='IC Difference PC Full Trial';
-% allDataTestsOnly{1,43}='IC Difference PC Tone';
-% allDataTestsOnly{1,44}='IC Difference PC Choice';
-% % by session
-% [allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly]=diffPcOptoSess(allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly,optocolor);
-% % by animal
-% diffPcOptoAn(allDataTestsOnly,optocolor);
+skip=1;
+if skip==0
+    %%
+    % now do the anova....
+    [aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly);
+    % close all
+%     aovMGBbySess
+%     aovMGBbyAn
+    % aovIC
+    %% plot catch trials
+    % inherited from celine code... 
+    % coded as conffa (catch light on false alarm)
+    % within the rates variable, conffa is the 10th column
+    % catch trials happen across the last 3 days (1st MGB, then IC, then LOB)
 
-%% Differences per animal
- % have not updated this yet with the new matrices
-ff=2:4;
-for ff=2:4
-    wwFig=figure(101+ff);
-    % subplot(1,3,1)
-    qqq=bar([nanmean(allDataTestsOnly{ff,33}) nanmean(allDataTestsOnly{ff,34}) nanmean(allDataTestsOnly{ff,35})]); hold on;
-    qqq(1).FaceColor='flat'; qqq(1).CData=[optocolor;optocolor;optocolor;];hold on;
-    scatter(repmat(qqq(1).XEndPoints(1),size(allDataTestsOnly{ff,33},1),1), ...
-        allDataTestsOnly{ff,33},'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(qqq(1).XEndPoints(2),size(allDataTestsOnly{ff,34},1),1), ...
-        allDataTestsOnly{ff,34},'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(qqq(1).XEndPoints(3),size(allDataTestsOnly{ff,35},1),1), ...
-        allDataTestsOnly{ff,35},'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(allDataTestsOnly{ff,33},allDataTestsOnly{ff,34});
-    sigstar({[1,2]}, p)
-    [h,p,ci,stats] = ttest2(allDataTestsOnly{ff,34},allDataTestsOnly{ff,35});
-    sigstar({[2,3]}, p)
-    [h,p,ci,stats] = ttest2(allDataTestsOnly{ff,33},allDataTestsOnly{ff,35});
-    sigstar({[1,3]}, p)
-    title([ char(allDataTestsOnly{ff,1}) 'MGB Inactivation']);
-    xticklabels({'Full Trial','Tone','Choice'});
-    xlabel('Condition');
-    wwFig.Position(3:4)=[325 275];
-    ylabel('Light on - Light off');
-    saveas(gcf,[ char(allDataTestsOnly{ff,1}) '_Difference_T_MGB_PercentCorrect_Opto']);
-    saveas(gcf,[ char(allDataTestsOnly{ff,1}) '_Difference_T_MGB_PercentCorrect_Opto.png']);
+    reinfcolor= [0.4,0.4,0.4];
+    optocolor=[102/255 178/255 255/255];
+    animalIdx=[3,5,9];
+    for ww=1:length(animalIdx)
+        rates=optomeanMat{animalIdx(ww),27}; % which animal are we plotting
+        uu=2;yyyFig=figure('Position', [100 100 800 200]);
+        subplot(1,3,1);hold on;
+        end1=size(rates,1);
+        yyy=bar([rates(end1-uu,1) rates(end1-uu,5); ...
+            rates(end1-uu,2) rates(end1-uu,6); 0 rates(end1-uu,10)]);
+        % rates(i,:) = [rhit rfa phit pfa ohit ofa ...
+        %             rfhit rffa cofffa conffa phit2 pfa2 ...
+        %             othit otfa ochit ocfa];
+        yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
+        yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
+        yyy(2).CData=[optocolor;optocolor;optocolor];box on; 
+        xticklabels({'hit','','fa','','catch fa'}); legend('light off','light on');
+        title([string(optomeanMat{animalIdx(ww),1}) 'MGB Catch']);
+
+        uu=1;subplot(1,3,2);
+        end1=size(rates,1);
+        yyy=bar([rates(end1-uu,1) rates(end1-uu,5); ...
+            rates(end1-uu,2) rates(end1-uu,6); 0 rates(end1-uu,10)]);
+        yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
+        yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
+        yyy(2).CData=[optocolor;optocolor;optocolor];
+        xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
+        title('IC Catch');
+
+        subplot(1,3,3);
+        end1=size(rates,1);
+        yyy=bar([rates(end1,1) rates(end1,5); ...
+            rates(end1,2) rates(end1,6); 0 rates(end1,10)]);
+        yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
+        yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
+        yyy(2).CData=[optocolor;optocolor;optocolor];
+        xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
+        title('LOB Catch');       
+        animalName=optomeanMat{animalIdx(ww),1};
+            saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.fig']);
+            saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.png']);
+            close(yyyFig);
+
+    end
+    %% compare differences in percent correct across each light off vs light on condition
+    %this is by session
+    % none of these analyses are significant 2025/01
+    allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
+    allDataTestsOnly{1,40}='MGB Difference PC Tone';
+    allDataTestsOnly{1,41}='MGB Difference PC Choice';
+    allDataTestsOnly{1,42}='IC Difference PC Full Trial';
+    allDataTestsOnly{1,43}='IC Difference PC Tone';
+    allDataTestsOnly{1,44}='IC Difference PC Choice';
+    % by session
+    [allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly]=diffPcOptoSess(allDataTestsOnly,mgbTempTestsOnly,tempTestsOnly,optocolor);
+    % by animal
+    diffPcOptoAn(allDataTestsOnly,optocolor);
+
+    %% Differences per animal
+     % have not updated this yet with the new matrices
+    ff=2:4;
+    for ff=2:4
+        wwFig=figure(101+ff);
+        % subplot(1,3,1)
+        qqq=bar([nanmean(allDataTestsOnly{ff,33}) nanmean(allDataTestsOnly{ff,34}) nanmean(allDataTestsOnly{ff,35})]); hold on;
+        qqq(1).FaceColor='flat'; qqq(1).CData=[optocolor;optocolor;optocolor;];hold on;
+        scatter(repmat(qqq(1).XEndPoints(1),size(allDataTestsOnly{ff,33},1),1), ...
+            allDataTestsOnly{ff,33},'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        scatter(repmat(qqq(1).XEndPoints(2),size(allDataTestsOnly{ff,34},1),1), ...
+            allDataTestsOnly{ff,34},'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        scatter(repmat(qqq(1).XEndPoints(3),size(allDataTestsOnly{ff,35},1),1), ...
+            allDataTestsOnly{ff,35},'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        [h,p,ci,stats] = ttest2(allDataTestsOnly{ff,33},allDataTestsOnly{ff,34});
+        sigstar({[1,2]}, p)
+        [h,p,ci,stats] = ttest2(allDataTestsOnly{ff,34},allDataTestsOnly{ff,35});
+        sigstar({[2,3]}, p)
+        [h,p,ci,stats] = ttest2(allDataTestsOnly{ff,33},allDataTestsOnly{ff,35});
+        sigstar({[1,3]}, p)
+        title([ char(allDataTestsOnly{ff,1}) 'MGB Inactivation']);
+        xticklabels({'Full Trial','Tone','Choice'});
+        xlabel('Condition');
+        wwFig.Position(3:4)=[325 275];
+        ylabel('Light on - Light off');
+        saveas(gcf,[ char(allDataTestsOnly{ff,1}) '_Difference_T_MGB_PercentCorrect_Opto']);
+        saveas(gcf,[ char(allDataTestsOnly{ff,1}) '_Difference_T_MGB_PercentCorrect_Opto.png']);
+    end
+else    
 end
-
 %% make plot to compare lick latency, for each animal and across animals 
 mgbTempTestsOnly{1,42} = 'lick latency MGB T Full, hitLickRate; ohitLickRate; faLickRate; ofaLickRate';
 mgbTempTestsOnly{1,43} = 'lick latency MGB T Tone, light on and light off';

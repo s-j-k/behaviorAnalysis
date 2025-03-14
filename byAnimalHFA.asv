@@ -991,7 +991,7 @@ line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,45}=p;
 mgbTempTestsOnly{2,39} = [dp_r_An; dp_oFull_An];
-title('Full');ylabel('d prime');ylim([-1 6]);
+title('Full');ylabel('d prime');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
@@ -1087,7 +1087,7 @@ line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,46}=p;
 mgbTempTestsOnly{2,40} = [dp_r_An; dp_oFull_An];
-title('Stimulus');ylim([-1 6]);
+title('Stimulus');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
 for jj=2:size(mgbTempTestsOnly,1)
@@ -1184,13 +1184,13 @@ line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,47}=p;
 mgbTempTestsOnly{2,41} = [dp_r_An; dp_oFull_An];
-title('Choice');ylim([-1 6]);
+title('Choice');ylim([-1 ]);
 xticklabels({'','light off','light on'});
 
 dprimeFig.Position(3:4)=[725 225];
 saveas(gcf,['By Animal_T_MGB_dp_bar_Opto']);
 saveas(gcf,['By Animal_T_MGB_dp_bar_Opto.png']);
-saveas(gcf,['By Animal_T_MGB_dp_bar_Opto.pdf']);
+% saveas(gcf,['By Animal_T_MGB_dp_bar_Opto.pdf']);
 
 %% ctl animals, plot d' with the bar plot, per animal 
 clear dprimeFig

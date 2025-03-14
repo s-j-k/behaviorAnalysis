@@ -6,519 +6,527 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 % tests for MGB for each animal
 nbsubj=2;
 for nbsubj=2:size(allDataTestsOnly,1)
-    matrix=allDataTestsOnly{nbsubj,15};
+    matrix=allDataTestsOnly{nbsubj,49};
     for i=1:max(matrix(:,SESS))
-        mr_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit
-        sr_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
-        mp_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
-        sp_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
-        mo_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
-        so_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
-        mto_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
-        sto_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
-        mco_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
-        sco_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
-        
-        mr_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
-        sr_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
-        mp_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
-        sp_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
-        mo_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
-        so_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
-        mto_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
-        sto_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
-        mco_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
-        sco_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
-        
-        mlr_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        slr_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        mlp_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        slp_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        mlo_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        slo_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        mlto_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        slto_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        mlco_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-        slco_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-                        
-        mlr_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        slr_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
-        mlp_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        slp_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
-        mlo_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        slo_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
-        mlto_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        slto_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
-        mlco_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
-        slco_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));        
-        
-    end
-    switch nbsubj
-        case 2 % sk198
-            mgbDays=[1 1 1 1 1];mgbDays=logical(mgbDays);
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
+        if i==1 % protocol 1, delay 1 = ctx 6; delay 2 = ctx 5; ctx 2 reinf; ctx 0 probe
+            mr_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit
+            sr_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
+            mp_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            sp_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            md2o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            sd2o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            md1o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
+            sd1o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
+            mr_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
+            sr_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
+            mp_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            sp_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            md2o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
+            sd2o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
+            md1o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
+            sd1o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
 
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
+            mlr_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mld2o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            sld2o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            mld1o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            sld1o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            mlr_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
             
-        case 3 %sk203
-            mgbDays=[1 1 1 1 1];mgbDays=logical(mgbDays); 
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            MGBmr_hit(MGBmr_hit==0)=NaN;
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
+            mld2o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            sld2o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            mld1o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            sld1o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+                   
+        elseif i==2 || i==3
+            mr_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit
+            sr_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
+            mp_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            sp_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            md3o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            sd3o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            md4o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            sd4o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            mr_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
+            sr_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));      
+            mp_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            sp_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            md3o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            sd3o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            md4o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
+            sd4o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
             
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
+            mlr_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mld3o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            sld3o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mld4o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            sld4o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            mlr_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mld3o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            sld3o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mld4o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            sld4o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+        elseif i==4
+            mr_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit
+            sr_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
+            mp_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            sp_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            md5o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            sd5o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            md1o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
+            sd1o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==1,LICKL));
+            mr_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
+            sr_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));      
+            mp_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            sp_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            md5o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            sd5o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            md1o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
+            sd1o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==6 & matrix(:,OUTCOME)==3,LICKL));
             
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
+            mlr_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mld5o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            sld5o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mld1o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            sld1o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            mlr_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mld5o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            sld5o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mld1o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+            sld1o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==6 & matrix(:,SESS)==i,LICKR));
+        elseif i==5
+            mr_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); % reinf hit
+            sr_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==1,LICKL)); 
+            mp_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            sp_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==1,LICKL));
+            md5o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            sd5o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==1,LICKL));
+            md2o_hit(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            sd2o_hit(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==1,LICKL));
+            mr_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));
+            sr_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==2 & matrix(:,OUTCOME)==3,LICKL));      
+            mp_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            sp_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==0 & matrix(:,OUTCOME)==3,LICKL));
+            md5o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            sd5o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==1 & matrix(:,OUTCOME)==3,LICKL));
+            md2o_fa(nbsubj,i) = nanmean(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
+            sd2o_fa(nbsubj,i) = nansem(matrix(matrix(:,SESS)==i & matrix(:,CTXT)==5 & matrix(:,OUTCOME)==3,LICKL));
             
-        case 4 % sk204
-            mgbDays=[1 1 1 1 1];mgbDays=logical(mgbDays);
-            MGBmr_hit(nbsubj,mgbDays) = mr_hit(nbsubj,mgbDays); % reinf hit
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); 
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays);
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays);
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays);
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays);
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays);
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays);
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays);
-            MGBmr_hit(MGBmr_hit==0)=NaN;
-            MGBsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); MGBsr_hit(MGBsr_hit==0)=NaN;
-            MGBmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); MGBmp_hit(MGBmp_hit==0)=NaN;
-            MGBsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); MGBsp_hit(MGBsp_hit==0)=NaN;
-            MGBmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); MGBmo_hit(MGBmo_hit==0)=NaN;
-            MGBso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); MGBso_hit(MGBso_hit==0)=NaN;
-            MGBmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);MGBmto_hit(MGBmto_hit==0)=NaN;
-            MGBsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); MGBsto_hit(MGBsto_hit==0)=NaN;
-            MGBmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); MGBmco_hit(MGBmco_hit==0)=NaN;
-            MGBsco_hit(nbsubj,mgbDays) = sco_hit(nbsubj,mgbDays); MGBsco_hit(MGBsco_hit==0)=NaN;
-            
-            MGBmr_fa(nbsubj,mgbDays) = mr_fa(nbsubj,mgbDays);
-            MGBsr_fa(nbsubj,mgbDays) = sr_fa(nbsubj,mgbDays);
-            MGBmp_fa(nbsubj,mgbDays) = mp_fa(nbsubj,mgbDays);
-            MGBsp_fa(nbsubj,mgbDays) = sp_fa(nbsubj,mgbDays);
-            MGBmo_fa(nbsubj,mgbDays) = mo_fa(nbsubj,mgbDays);
-            MGBso_fa(nbsubj,mgbDays) = so_fa(nbsubj,mgbDays);
-            MGBmto_fa(nbsubj,mgbDays) = mto_fa(nbsubj,mgbDays);
-            MGBsto_fa(nbsubj,mgbDays) = sto_fa(nbsubj,mgbDays);
-            MGBmco_fa(nbsubj,mgbDays) = mco_fa(nbsubj,mgbDays);
-            MGBsco_fa(nbsubj,mgbDays) = sco_fa(nbsubj,mgbDays);
-            
-            MGBmlr_hit(nbsubj,mgbDays) = mlr_hit(nbsubj,mgbDays);
-            MGBslr_hit(nbsubj,mgbDays) = slr_hit(nbsubj,mgbDays);
-            MGBmlp_hit(nbsubj,mgbDays) = mlp_hit(nbsubj,mgbDays);
-            MGBslp_hit(nbsubj,mgbDays) = slp_hit(nbsubj,mgbDays);
-            MGBmlo_hit(nbsubj,mgbDays) = mlo_hit(nbsubj,mgbDays);
-            MGBslo_hit(nbsubj,mgbDays) = slo_hit(nbsubj,mgbDays);
-            MGBmlto_hit(nbsubj,mgbDays) = mlto_hit(nbsubj,mgbDays);
-            MGBslto_hit(nbsubj,mgbDays) = slto_hit(nbsubj,mgbDays);
-            MGBmlco_hit(nbsubj,mgbDays) = mlco_hit(nbsubj,mgbDays);
-            MGBslco_hit(nbsubj,mgbDays) = slco_hit(nbsubj,mgbDays);
-
-            MGBmlr_fa(nbsubj,mgbDays) = mlr_fa(nbsubj,mgbDays);
-            MGBslr_fa(nbsubj,mgbDays) = slr_fa(nbsubj,mgbDays);
-            MGBmlp_fa(nbsubj,mgbDays) = mlp_fa(nbsubj,mgbDays);
-            MGBslp_fa(nbsubj,mgbDays) = slp_fa(nbsubj,mgbDays);
-            MGBmlo_fa(nbsubj,mgbDays) = mlo_fa(nbsubj,mgbDays);
-            MGBslo_fa(nbsubj,mgbDays) = slo_fa(nbsubj,mgbDays);
-            MGBmlto_fa(nbsubj,mgbDays) = mlto_fa(nbsubj,mgbDays);
-            MGBslto_fa(nbsubj,mgbDays) = slto_fa(nbsubj,mgbDays);
-            MGBmlco_fa(nbsubj,mgbDays) = mlco_fa(nbsubj,mgbDays);
-            MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
-                        
-    end
+            mlr_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mld5o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            sld5o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mld2o_hit(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            sld2o_hit(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==1 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            mlr_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            slr_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==2 & matrix(:,SESS)==i,LICKR));
+            mlp_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            slp_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==0 & matrix(:,SESS)==i,LICKR));
+            mld5o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            sld5o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==1 & matrix(:,SESS)==i,LICKR));
+            mld2o_fa(nbsubj,i) = nanmean(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+            sld2o_fa(nbsubj,i) = nansem(matrix(matrix(:,OUTCOME)==3 & matrix(:,CTXT)==5 & matrix(:,SESS)==i,LICKR));
+        end
+%             
+%         MGBsr_hit(nbsubj,i) = sr_hit(nbsubj,i); MGBsr_hit(MGBsr_hit==0)=NaN;
+%         MGBmp_hit(nbsubj,i) = mp_hit(nbsubj,i); MGBmp_hit(MGBmp_hit==0)=NaN;
+%         MGBsp_hit(nbsubj,i) = sp_hit(nbsubj,i); MGBsp_hit(MGBsp_hit==0)=NaN;
+%         MGBmo_hit(nbsubj,i) = mo_hit(nbsubj,i); MGBmo_hit(MGBmo_hit==0)=NaN;
+%         MGBso_hit(nbsubj,i) = so_hit(nbsubj,i); MGBso_hit(MGBso_hit==0)=NaN;
+%         MGBmto_hit(nbsubj,i) = mto_hit(nbsubj,i);MGBmto_hit(MGBmto_hit==0)=NaN;
+%         MGBsto_hit(nbsubj,i) = sto_hit(nbsubj,i); MGBsto_hit(MGBsto_hit==0)=NaN;
+%         MGBmco_hit(nbsubj,i) = mco_hit(nbsubj,i); MGBmco_hit(MGBmco_hit==0)=NaN;
+%         MGBsco_hit(nbsubj,i) = sco_hit(nbsubj,i); MGBsco_hit(MGBsco_hit==0)=NaN;
+%         MGBmr_hit(nbsubj,i) = mr_hit(nbsubj,i); % reinf hit
+%         MGBsr_hit(nbsubj,i) = sr_hit(nbsubj,i); 
+%         MGBmp_hit(nbsubj,i) = mp_hit(nbsubj,i);
+%         MGBsp_hit(nbsubj,i) = sp_hit(nbsubj,i);
+%         MGBmo_hit(nbsubj,i) = mo_hit(nbsubj,i);
+%         MGBso_hit(nbsubj,i) = so_hit(nbsubj,i);
+%         MGBmto_hit(nbsubj,i) = mto_hit(nbsubj,i);
+%         MGBsto_hit(nbsubj,i) = sto_hit(nbsubj,i);
+%         MGBmco_hit(nbsubj,i) = mco_hit(nbsubj,i);
+%         MGBsco_hit(nbsubj,i) = sco_hit(nbsubj,i);
+% 
+%         MGBmr_fa(nbsubj,i) = mr_fa(nbsubj,i);
+%         MGBsr_fa(nbsubj,i) = sr_fa(nbsubj,i);
+%         MGBmp_fa(nbsubj,i) = mp_fa(nbsubj,i);
+%         MGBsp_fa(nbsubj,i) = sp_fa(nbsubj,i);
+%         MGBmo_fa(nbsubj,i) = mo_fa(nbsubj,i);
+%         MGBso_fa(nbsubj,i) = so_fa(nbsubj,i);
+%         MGBmto_fa(nbsubj,i) = mto_fa(nbsubj,i);
+%         MGBsto_fa(nbsubj,i) = sto_fa(nbsubj,i);
+%         MGBmco_fa(nbsubj,i) = mco_fa(nbsubj,i);
+%         MGBsco_fa(nbsubj,i) = sco_fa(nbsubj,i);
+% 
+%         MGBmlr_hit(nbsubj,i) = mlr_hit(nbsubj,i);
+%         MGBslr_hit(nbsubj,i) = slr_hit(nbsubj,i);
+%         MGBmlp_hit(nbsubj,i) = mlp_hit(nbsubj,i);
+%         MGBslp_hit(nbsubj,i) = slp_hit(nbsubj,i);
+%         MGBmlo_hit(nbsubj,i) = mlo_hit(nbsubj,i);
+%         MGBslo_hit(nbsubj,i) = slo_hit(nbsubj,i);
+%         MGBmlto_hit(nbsubj,i) = mlto_hit(nbsubj,i);
+%         MGBslto_hit(nbsubj,i) = slto_hit(nbsubj,i);
+%         MGBmlco_hit(nbsubj,i) = mlco_hit(nbsubj,i);
+%         MGBslco_hit(nbsubj,i) = slco_hit(nbsubj,i);
+% 
+%         MGBmlr_fa(nbsubj,i) = mlr_fa(nbsubj,i);
+%         MGBslr_fa(nbsubj,i) = slr_fa(nbsubj,i);
+%         MGBmlp_fa(nbsubj,i) = mlp_fa(nbsubj,i);
+%         MGBslp_fa(nbsubj,i) = slp_fa(nbsubj,i);
+%         MGBmlo_fa(nbsubj,i) = mlo_fa(nbsubj,i);
+%         MGBslo_fa(nbsubj,i) = slo_fa(nbsubj,i);
+%         MGBmlto_fa(nbsubj,i) = mlto_fa(nbsubj,i);
+%         MGBslto_fa(nbsubj,i) = slto_fa(nbsubj,i);
+%         MGBmlco_fa(nbsubj,i) = mlco_fa(nbsubj,i);
+%         MGBslco_fa(nbsubj,i) = slco_fa(nbsubj,i);
+    end      
 end
 
-MGBmr_hit(MGBmr_hit==0)=NaN;
-MGBsr_hit(MGBsr_hit==0)=NaN;
-MGBmp_hit(MGBmp_hit==0)=NaN;
-MGBsp_hit(MGBsp_hit==0)=NaN;
-MGBmo_hit(MGBmo_hit==0)=NaN;
-MGBso_hit(MGBso_hit==0)=NaN;
-MGBmto_hit(MGBmto_hit==0)=NaN;
-MGBsto_hit(MGBsto_hit==0)=NaN;
-MGBmco_hit(MGBmco_hit==0)=NaN;
-MGBsco_hit(MGBsco_hit==0)=NaN;
+mr_hit(mr_hit==0) = NaN;
+sr_hit(sr_hit==0) = NaN;
+mp_hit(mp_hit==0) = NaN;
+sp_hit(sp_hit==0) =NaN;
+md5o_hit(md5o_hit==0) = NaN;
+sd5o_hit(sd5o_hit==0) =NaN;
+md2o_hit(md2o_hit==0) = NaN;
+sd2o_hit(sd2o_hit==0) =NaN;
+md3o_hit(md3o_hit==0) = NaN;
+sd3o_hit(sd3o_hit==0) =NaN;
+md4o_hit(md4o_hit==0) = NaN;
+sd4o_hit(sd4o_hit==0) =NaN;
+md1o_hit(md1o_hit==0) = NaN;
+sd1o_hit(sd1o_hit==0) =NaN;
+mr_fa(mr_fa==0) =NaN;
+sr_fa(sr_fa==0) = NaN;
+mp_fa(mp_fa==0) = NaN;
+sp_fa(sp_fa==0) = NaN;
+md5o_fa(md5o_fa==0) = NaN;
+sd5o_fa(sd5o_fa==0) = NaN;
+md2o_fa(md2o_fa==0) = NaN;
+sd2o_fa(sd2o_fa==0) = NaN;
+md3o_fa(md3o_fa==0) = NaN;
+sd3o_fa(sd3o_fa==0) = NaN;
+md4o_fa(md4o_fa==0) = NaN;
+sd4o_fa(sd4o_fa==0) = NaN;
+md1o_fa(md1o_fa==0) = NaN;
+sd1o_fa(sd1o_fa==0) = NaN;
 
-MGBmr_fa(MGBmr_fa==0) = NaN;
-MGBsr_fa(MGBsr_fa==0) = NaN;
-MGBmp_fa(MGBmp_fa==0) = NaN;
-MGBsp_fa(MGBsp_fa==0) = NaN;
-MGBmo_fa(MGBmo_fa==0) = NaN;
-MGBso_fa(MGBso_fa==0) = NaN;
-MGBmto_fa(MGBmto_fa==0) = NaN;
-MGBsto_fa(MGBsto_fa==0) = NaN;
-MGBmco_fa(MGBmco_fa==0) = NaN;
-MGBsco_fa(MGBsco_fa==0) = NaN;
+mlr_hit(mlr_hit==0) = NaN;
+slr_hit(slr_hit==0) = NaN;
+mlp_hit(mlp_hit==0) = NaN;
+slp_hit(slp_hit==0) =NaN;
+mld5o_hit(mld5o_hit==0) = NaN;
+sld5o_hit(sld5o_hit==0) =NaN;
+mld2o_hit(mld2o_hit==0) = NaN;
+sld2o_hit(sld2o_hit==0) =NaN;
+mld3o_hit(mld3o_hit==0) = NaN;
+sld3o_hit(sld3o_hit==0) =NaN;
+mld4o_hit(mld4o_hit==0) = NaN;
+sld4o_hit(sld4o_hit==0) =NaN;
+mld1o_hit(mld4o_hit==0) = NaN;
+sld1o_hit(sld4o_hit==0) =NaN;
+mlr_fa(mlr_fa==0) =NaN;
+slr_fa(slr_fa==0) = NaN;
+mlp_fa(mlp_fa==0) = NaN;
+slp_fa(slp_fa==0) = NaN;
+mld5o_fa(mld5o_fa==0) = NaN;
+sld5o_fa(sld5o_fa==0) = NaN;
+mld2o_fa(mld2o_fa==0) = NaN;
+sld2o_fa(sld2o_fa==0) = NaN;
+mld3o_fa(mld3o_fa==0) = NaN;
+sld3o_fa(sld3o_fa==0) = NaN;
+mld4o_fa(mld4o_fa==0) = NaN;
+sld4o_fa(sld4o_fa==0) = NaN;
+mld1o_fa(mld1o_fa==0) = NaN;
+sld1o_fa(sld1o_fa==0) = NaN;
+% 
+% ICmr_hit(ICmr_hit==0)=NaN;
+% ICsr_hit(ICsr_hit==0)=NaN;
+% ICmp_hit(ICmp_hit==0)=NaN;
+% ICsp_hit(ICsp_hit==0)=NaN;
+% ICmo_hit(ICmo_hit==0)=NaN; 
+% ICso_hit(ICso_hit==0)=NaN; 
+% ICmto_hit(ICmto_hit==0)=NaN;
+% ICsto_hit(ICsto_hit==0)=NaN; 
+% ICmco_hit(ICmco_hit==0)=NaN; 
+% ICsco_hit(ICsco_hit==0)=NaN;
+% 
+% ICmr_fa(ICmr_fa==0) = NaN;
+% ICsr_fa(ICsr_fa==0) = NaN;
+% ICmp_fa(ICmp_fa==0) = NaN;
+% ICsp_fa(ICsp_fa==0) = NaN;
+% ICmo_fa(ICmo_fa==0) = NaN;
+% ICso_fa(ICso_fa==0) = NaN;
+% ICmto_fa(ICmto_fa==0) = NaN;
+% ICsto_fa(ICsto_fa==0) = NaN;
+% ICmco_fa(ICmco_fa==0) = NaN;
+% ICsco_fa(ICsco_fa==0) = NaN;
+% 
+% ICmlr_hit(ICmlr_hit==0) = NaN;
+% ICslr_hit(ICslr_hit==0) = NaN;
+% ICmlp_hit(ICmlp_hit==0) = NaN;
+% ICslp_hit(ICslp_hit==0) = NaN;
+% ICmlo_hit(ICmlo_hit==0) = NaN;
+% ICslo_hit(ICslo_hit==0) = NaN;
+% ICmlto_hit(ICmlto_hit==0) = NaN;
+% ICslto_hit(ICslto_hit==0) = NaN;
+% ICmlco_hit(ICmlco_hit==0) = NaN;
+% ICslco_hit(ICslco_hit==0) = NaN;
+% 
+% ICmlr_fa(ICmlr_fa==0) = NaN;
+% ICslr_fa(ICslr_fa==0) = NaN;
+% ICmlp_fa(ICmlp_fa==0) = NaN;
+% ICslp_fa(ICslp_fa==0) = NaN;
+% ICmlo_fa(ICmlo_fa==0) = NaN;
+% ICslo_fa(ICslo_fa==0) = NaN;
+% ICmlto_fa(ICmlto_fa==0) = NaN;
+% ICslto_fa(ICslto_fa==0) = NaN;
+% ICmlco_fa(ICmlco_fa==0) = NaN;
+% ICslco_fa(ICslco_fa==0) = NaN; 
 
-MGBmlr_hit(MGBmlr_hit==0) = NaN;
-MGBslr_hit(MGBslr_hit==0) = NaN;
-MGBmlp_hit(MGBmlp_hit==0) = NaN;
-MGBslp_hit(MGBslp_hit==0) = NaN;
-MGBmlo_hit(MGBmlo_hit==0) = NaN;
-MGBslo_hit(MGBslo_hit==0) = NaN;
-MGBmlto_hit(MGBmlto_hit==0) = NaN;
-MGBslto_hit(MGBslto_hit==0) = NaN;
-MGBmlco_hit(MGBmlco_hit==0) = NaN;
-MGBslco_hit(MGBslco_hit==0) = NaN;
-
-MGBmlr_fa(MGBmlr_fa==0) = NaN;
-MGBslr_fa(MGBslr_fa==0) = NaN;
-MGBmlp_fa(MGBmlp_fa==0) = NaN;
-MGBslp_fa(MGBslp_fa==0) = NaN;
-MGBmlo_fa(MGBmlo_fa==0) = NaN;
-MGBslo_fa(MGBslo_fa==0) = NaN;
-MGBmlto_fa(MGBmlto_fa==0) = NaN;
-MGBslto_fa(MGBslto_fa==0) = NaN;
-MGBmlco_fa(MGBmlco_fa==0) = NaN;
-MGBslco_fa(MGBslco_fa==0) = NaN;
-
-ICmr_hit(ICmr_hit==0)=NaN;
-ICsr_hit(ICsr_hit==0)=NaN;
-ICmp_hit(ICmp_hit==0)=NaN;
-ICsp_hit(ICsp_hit==0)=NaN;
-ICmo_hit(ICmo_hit==0)=NaN; 
-ICso_hit(ICso_hit==0)=NaN; 
-ICmto_hit(ICmto_hit==0)=NaN;
-ICsto_hit(ICsto_hit==0)=NaN; 
-ICmco_hit(ICmco_hit==0)=NaN; 
-ICsco_hit(ICsco_hit==0)=NaN;
-
-ICmr_fa(ICmr_fa==0) = NaN;
-ICsr_fa(ICsr_fa==0) = NaN;
-ICmp_fa(ICmp_fa==0) = NaN;
-ICsp_fa(ICsp_fa==0) = NaN;
-ICmo_fa(ICmo_fa==0) = NaN;
-ICso_fa(ICso_fa==0) = NaN;
-ICmto_fa(ICmto_fa==0) = NaN;
-ICsto_fa(ICsto_fa==0) = NaN;
-ICmco_fa(ICmco_fa==0) = NaN;
-ICsco_fa(ICsco_fa==0) = NaN;
-
-ICmlr_hit(ICmlr_hit==0) = NaN;
-ICslr_hit(ICslr_hit==0) = NaN;
-ICmlp_hit(ICmlp_hit==0) = NaN;
-ICslp_hit(ICslp_hit==0) = NaN;
-ICmlo_hit(ICmlo_hit==0) = NaN;
-ICslo_hit(ICslo_hit==0) = NaN;
-ICmlto_hit(ICmlto_hit==0) = NaN;
-ICslto_hit(ICslto_hit==0) = NaN;
-ICmlco_hit(ICmlco_hit==0) = NaN;
-ICslco_hit(ICslco_hit==0) = NaN;
-
-ICmlr_fa(ICmlr_fa==0) = NaN;
-ICslr_fa(ICslr_fa==0) = NaN;
-ICmlp_fa(ICmlp_fa==0) = NaN;
-ICslp_fa(ICslp_fa==0) = NaN;
-ICmlo_fa(ICmlo_fa==0) = NaN;
-ICslo_fa(ICslo_fa==0) = NaN;
-ICmlto_fa(ICmlto_fa==0) = NaN;
-ICslto_fa(ICslto_fa==0) = NaN;
-ICmlco_fa(ICmlco_fa==0) = NaN;
-ICslco_fa(ICslco_fa==0) = NaN; 
-
-
-% plots 
+%% plots for individual animals
 jj=2;     
 for jj=2:size(allDataTestsOnly,1)
     lickFig=figure(jj+103); 
-    subplot(2,3,1); hold on; %MGB FUll
-    lickbar=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmo_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmo_fa(jj,:))]); hold on;
-    error=[nanmean(MGBsr_hit(jj,:)) nanmean(MGBso_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBso_fa(jj,:))];
+    subplot(2,3,1); hold on; %MGB delay 1
+    mr_hit_temp = mr_hit(~isnan(md1o_hit));
+    mr_fa_temp = mr_fa(~isnan(md1o_fa));
+    sr_hit_temp = sr_hit(~isnan(sd1o_hit));
+    sr_fa_temp = sr_fa(~isnan(sd1o_fa));
+    lickbar=bar([nanmean(mr_hit_temp(jj,:)) nanmean(md1o_hit(jj,:)) nanmean(mr_fa_temp(jj,:)) nanmean(md1o_fa(jj,:))]); hold on;
+    error=[nanmean(sr_hit_temp(jj,:)) nanmean(sd1o_hit(jj,:)) nanmean(sr_fa_temp(jj,:)) nanmean(sd1o_fa(jj,:))];
     lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    for kk=1:numel(lickbar)
-        xtips=lickbar(kk).XEndPoints;
-        ytips=lickbar(kk).YEndPoints;
-        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-    end
-    [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmo_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmo_fa(jj,:));
+%     for kk=1:numel(lickbar)
+%         xtips=lickbar(kk).XEndPoints;
+%         ytips=lickbar(kk).YEndPoints;
+%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+%     end
+    [h,pHit,ci,stats] = ttest2(mr_hit_temp(jj,:),md1o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mr_fa_temp(jj,:),md1o_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
-    ylabel('mean lick latency');
-    title([allDataTestsOnly{jj,1} ' MGB Dead 1 Inactivation']);
-    xticklabels({'hit', 'fa','hit','fa'});
+    ylabel('mean lick latency');ylim([0 2]);
+    box off;
+    title([allDataTestsOnly{jj,1} ' MGB Delay 1 Inactivation']);
+    xticklabels({'','hit', 'fa','hit','fa'});
 
-    subplot(2,3,2) % tone MGB
-    lickbarT=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmto_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmto_fa(jj,:))]); hold on;
-    error=[nanmean(MGBsr_hit(jj,:)) mean(MGBsto_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBsto_fa(jj,:))];
-    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    for kk=1:numel(lickbarT)
-        xtips=lickbarT(kk).XEndPoints;
-        ytips=lickbarT(kk).YEndPoints;
-        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-    end
-    [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmto_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmto_fa(jj,:));
+    subplot(2,3,2) % delay 2 MGB
+    mr_hit_temp = mr_hit(~isnan(md2o_hit));
+    mr_fa_temp = mr_fa(~isnan(md2o_fa));
+    sr_hit_temp = sr_hit(~isnan(sd2o_hit));
+    sr_fa_temp = sr_fa(~isnan(sd2o_fa));
+    lickbar2=bar([nanmean(mr_hit_temp(jj,:)) nanmean(md2o_hit(jj,:)) nanmean(mr_fa_temp(jj,:)) nanmean(md2o_fa(jj,:))]); hold on;
+    error=[nanmean(sr_hit_temp(jj,:)) nanmean(sd2o_hit(jj,:)) nanmean(sr_fa_temp(jj,:)) nanmean(sd2o_fa(jj,:))];
+    lickbar2(1).FaceColor='flat'; lickbar2(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+%     for kk=1:numel(lickbar2)
+%         xtips=lickbar2(kk).XEndPoints;
+%         ytips=lickbar2(kk).YEndPoints;
+%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+%     end
+    [h,pHit,ci,stats] = ttest2(mr_hit_temp(jj,:),md2o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mr_fa_temp(jj,:),md2o_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
-    ylabel('mean lick latency');
-    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    ylabel('mean lick latency');ylim([0 2]);box off;
+    title([allDataTestsOnly{jj,1} ' Delay 2']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,3); % choice MGB
-    lickbarC=bar([nanmean(MGBmr_hit(jj,:)) nanmean(MGBmco_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(MGBmco_fa(jj,:))]); hold on;
-    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    error=[nanmean(MGBsr_hit(jj,:)) nanmean(MGBsco_hit(jj,:)) nanmean(MGBsr_fa(jj,:)) nanmean(MGBsco_fa(jj,:))];
-    for kk=1:numel(lickbarC)
-        xtips=lickbarC(kk).XEndPoints;
-        ytips=lickbarC(kk).YEndPoints;
-        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-    end
-    [h,pHit,ci,stats] = ttest2(MGBmr_hit(jj,:),MGBmco_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(MGBmr_fa(jj,:),MGBmco_fa(jj,:));
+    subplot(2,3,3); % delay 3
+    mr_hit_temp = mr_hit(~isnan(md3o_hit));
+    mr_fa_temp = mr_fa(~isnan(md3o_fa));
+    sr_hit_temp = sr_hit(~isnan(sd3o_hit));
+    sr_fa_temp = sr_fa(~isnan(sd3o_fa));
+    lickbar3=bar([nanmean(mr_hit_temp(jj,:)) nanmean(md3o_hit(jj,:)) nanmean(mr_fa_temp(jj,:)) nanmean(md3o_fa(jj,:))]); hold on;
+    error=[nanmean(sr_hit_temp(jj,:)) nanmean(sd3o_hit(jj,:)) nanmean(sr_fa_temp(jj,:)) nanmean(sd3o_fa(jj,:))];
+    lickbar3(1).FaceColor='flat'; lickbar3(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+%     for kk=1:numel(lickbar3)
+%         xtips=lickbar3(kk).XEndPoints;
+%         ytips=lickbar3(kk).YEndPoints;
+%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+%     end
+    [h,pHit,ci,stats] = ttest2(mr_hit_temp(jj,:),md3o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mr_fa_temp(jj,:),md3o_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
-    ylabel('mean lick latency');
-    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    ylabel('mean lick latency');ylim([0 2]);box off;
+    title([allDataTestsOnly{jj,1} ' Delay 3']);
     xticklabels({'hit', 'hit','fa','fa'});
 
 
-    subplot(2,3,4); hold on; %IC Full
-    lickbar=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmo_hit(jj,:)) nanmean(ICmr_fa(jj,:)) nanmean(ICmo_fa(jj,:))]); hold on;
-    error=[nanmean(ICsr_hit(jj,:)) nanmean(ICso_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICso_fa(jj,:))];
-    lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    for kk=1:numel(lickbar)
-        xtips=lickbar(kk).XEndPoints;
-        ytips=lickbar(kk).YEndPoints;
-        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-    end
-    [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmo_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmo_fa(jj,:));
+    subplot(2,3,4); hold on; %delay 4
+    mr_hit_temp = mr_hit(~isnan(md4o_hit));
+    mr_fa_temp = mr_fa(~isnan(md4o_fa));
+    sr_hit_temp = sr_hit(~isnan(sd4o_hit));
+    sr_fa_temp = sr_fa(~isnan(sd4o_fa));
+    lickbar4=bar([nanmean(mr_hit_temp(jj,:)) nanmean(md4o_hit(jj,:)) nanmean(mr_fa_temp(jj,:)) nanmean(md4o_fa(jj,:))]); hold on;
+    error=[nanmean(sr_hit_temp(jj,:)) nanmean(sd4o_hit(jj,:)) nanmean(sr_fa_temp(jj,:)) nanmean(sd4o_fa(jj,:))];
+    lickbar4(1).FaceColor='flat'; lickbar4(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+%     for kk=1:numel(lickbar4)
+%         xtips=lickbar4(kk).XEndPoints;
+%         ytips=lickbar4(kk).YEndPoints;
+%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+%     end
+    [h,pHit,ci,stats] = ttest2(mr_hit_temp(jj,:),md4o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mr_fa_temp(jj,:),md4o_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
-    ylabel('mean lick latency');
-    title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
+    ylim([0 2]);
+    ylabel('mean lick latency');box off;
+    title([allDataTestsOnly{jj,1} ' Delay 4']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,5) % tone IC
-    lickbarT=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmto_hit(jj,:)) nanmean(MGBmr_fa(jj,:)) nanmean(ICmto_fa(jj,:))]); hold on;
-    error=[nanmean(ICsr_hit(jj,:)) mean(ICsto_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICsto_fa(jj,:))];
-    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    for kk=1:numel(lickbarT)
-        xtips=lickbarT(kk).XEndPoints;
-        ytips=lickbarT(kk).YEndPoints;
-        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-    end
-    [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmto_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmto_fa(jj,:));
+    subplot(2,3,5) % delay 5
+    mr_hit_temp = mr_hit(~isnan(md5o_hit));
+    mr_fa_temp = mr_fa(~isnan(md5o_fa));
+    sr_hit_temp = sr_hit(~isnan(sd5o_hit));
+    sr_fa_temp = sr_fa(~isnan(sd5o_fa));
+    lickbar5=bar([nanmean(mr_hit_temp(jj,:)) nanmean(md5o_hit(jj,:)) nanmean(mr_fa_temp(jj,:)) nanmean(md5o_fa(jj,:))]); hold on;
+    error=[nanmean(sr_hit_temp(jj,:)) nanmean(sd5o_hit(jj,:)) nanmean(sr_fa_temp(jj,:)) nanmean(sd5o_fa(jj,:))];
+    lickbar5(1).FaceColor='flat'; lickbar5(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+%     for kk=1:numel(lickbar5)
+%         xtips=lickbar5(kk).XEndPoints;
+%         ytips=lickbar5(kk).YEndPoints;
+%         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
+%     end
+    [h,pHit,ci,stats] = ttest2(mr_hit_temp(jj,:),md5o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mr_fa_temp(jj,:),md5o_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
-    ylabel('mean lick latency');
-    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
+    ylabel('mean lick latency');ylim([0 2]);
+    box off;
+    title([allDataTestsOnly{jj,1} ' Delay 5']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,6); % choice IC
-    lickbarC=bar([nanmean(ICmr_hit(jj,:)) nanmean(ICmco_hit(jj,:)) nanmean(ICmr_fa(jj,:)) nanmean(ICmco_fa(jj,:))]); hold on;
-    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    error=[nanmean(ICsr_hit(jj,:)) nanmean(ICsco_hit(jj,:)) nanmean(ICsr_fa(jj,:)) nanmean(ICsco_fa(jj,:))];
-    for kk=1:numel(lickbarC)
-        xtips=lickbarC(kk).XEndPoints;
-        ytips=lickbarC(kk).YEndPoints;
-        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-    end
-    [h,pHit,ci,stats] = ttest2(ICmr_hit(jj,:),ICmco_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(ICmr_fa(jj,:),ICmco_fa(jj,:));
-    sigstar({[1,2],[3,4]}, [pHit pFA])
-    ylabel('mean lick latency');
-    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
-    xticklabels({'hit', 'hit','fa','fa'});
 
     lickFig.Position(3:4)=[725 475];
-    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickLat_Opto']);
-    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickLat_Opto.png']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_Delay_LickLat_Opto']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_Delay_LickLat_Opto.png']);
 
     % RATE
     lickFigl=figure(jj+13); subplot(2,3,1); % full trial MGB
-    lickbarL=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlo_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlo_fa(jj,:))]); hold on;
+    mlr_hit_temp = mlr_hit(~isnan(mld1o_hit));
+    mlr_fa_temp = mlr_fa(~isnan(mld1o_fa));
+    slr_hit_temp = slr_hit(~isnan(sld1o_hit));
+    slr_fa_temp = slr_fa(~isnan(sld1o_fa));
+    lickbarL=bar([nanmean(mlr_hit_temp(jj,:)) nanmean(mld1o_hit(jj,:)) nanmean(mlr_fa_temp(jj,:)) nanmean(mld1o_fa(jj,:))]); hold on;
     lickbarL(1).FaceColor='flat'; lickbarL(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslo_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslo_fa(jj,:))];
+    error=[nanmean(slr_hit_temp(jj,:)) nanmean(sld1o_hit(jj,:)) nanmean(slr_fa_temp(jj,:)) nanmean(sld1o_fa(jj,:))];
     for kk=1:numel(lickbarL)
         xtips=lickbarL(kk).XEndPoints;
         ytips=lickbarL(kk).YEndPoints;
         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
     end
-    [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlo_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlo_fa(jj,:));
+    [h,pHit,ci,stats] = ttest2(mlr_hit_temp(jj,:),mld1o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mlr_fa_temp(jj,:),mld1o_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('mean lick rate');
-    title([allDataTestsOnly{jj,1} ' MGB Full Trial Inactivation']);
+    box off;ylim([0 10]);
+    title([allDataTestsOnly{jj,1} ' Delay 1 Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,2) % tone MGB
-    lickbarT=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlto_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlto_fa(jj,:))]); hold on;
-    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslto_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslto_fa(jj,:))];
-    for kk=1:numel(lickbarT)
-        xtips=lickbarT(kk).XEndPoints;
-        ytips=lickbarT(kk).YEndPoints;
+    subplot(2,3,2) % delay 2
+    mlr_hit_temp = mlr_hit(~isnan(mld2o_hit));
+    mlr_fa_temp = mlr_fa(~isnan(mld2o_fa));
+    slr_hit_temp = slr_hit(~isnan(sld2o_hit));
+    slr_fa_temp = slr_fa(~isnan(sld2o_fa));
+    lickbar2L=bar([nanmean(mlr_hit_temp(jj,:)) nanmean(mld2o_hit(jj,:)) nanmean(mlr_fa_temp(jj,:)) nanmean(mld2o_fa(jj,:))]); hold on;
+    lickbar2L(1).FaceColor='flat'; lickbar2L(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    error=[nanmean(slr_hit_temp(jj,:)) nanmean(sld2o_hit(jj,:)) nanmean(slr_fa_temp(jj,:)) nanmean(sld2o_fa(jj,:))];
+    for kk=1:numel(lickbar2L)
+        xtips=lickbar2L(kk).XEndPoints;
+        ytips=lickbar2L(kk).YEndPoints;
         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
     end
-    [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlto_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlto_fa(jj,:));
+    [h,pHit,ci,stats] = ttest2(mlr_hit_temp(jj,:),mld2o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mlr_fa_temp(jj,:),mld2o_fa(jj,:));
+    box off;ylim([0 10]);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('mean lick rate');
-    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    title([allDataTestsOnly{jj,1} ' Delay 2']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,3); % choice MGB
-    lickbarC=bar([nanmean(MGBmlr_hit(jj,:)) nanmean(MGBmlco_hit(jj,:)) nanmean(MGBmlr_fa(jj,:)) nanmean(MGBmlco_fa(jj,:))]); hold on;
-    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    error=[nanmean(MGBslr_hit(jj,:)) nanmean(MGBslco_hit(jj,:)) nanmean(MGBslr_fa(jj,:)) nanmean(MGBslco_fa(jj,:))];
-    for kk=1:numel(lickbarC)
-        xtips=lickbarC(kk).XEndPoints;
-        ytips=lickbarC(kk).YEndPoints;
+    subplot(2,3,3); % delay 3
+    mlr_hit_temp = mlr_hit(~isnan(mld3o_hit));
+    mlr_fa_temp = mlr_fa(~isnan(mld3o_fa));
+    slr_hit_temp = slr_hit(~isnan(sld3o_hit));
+    slr_fa_temp = slr_fa(~isnan(sld3o_fa));
+    lickbar3L=bar([nanmean(mlr_hit_temp(jj,:)) nanmean(mld3o_hit(jj,:)) nanmean(mlr_fa_temp(jj,:)) nanmean(mld3o_fa(jj,:))]); hold on;
+    lickbar3L(1).FaceColor='flat'; lickbar3L(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    error=[nanmean(slr_hit_temp(jj,:)) nanmean(sld3o_hit(jj,:)) nanmean(slr_fa_temp(jj,:)) nanmean(sld3o_fa(jj,:))];
+    for kk=1:numel(lickbar3L)
+        xtips=lickbar3L(kk).XEndPoints;
+        ytips=lickbar3L(kk).YEndPoints;
         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
     end
-    [h,pHit,ci,stats] = ttest2(MGBmlr_hit(jj,:),MGBmlco_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(MGBmlr_fa(jj,:),MGBmlco_fa(jj,:));
+    [h,pHit,ci,stats] = ttest2(mlr_hit_temp(jj,:),mld2o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mlr_fa_temp(jj,:),mld2o_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
+    box off;ylim([0 10]);
     ylabel('mean lick rate');
-    title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
+    title([allDataTestsOnly{jj,1} ' Delay 3']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,4); % full trial IC
-    lickbar=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlo_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlo_fa(jj,:))]); hold on;
-    error=[nanmean(ICslr_hit(jj,:)) nanmean(ICslo_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslo_fa(jj,:))];
-    lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    for kk=1:numel(lickbar)
-        xtips=lickbar(kk).XEndPoints;
-        ytips=lickbar(kk).YEndPoints;
+    subplot(2,3,4); % Delay 4
+    mlr_hit_temp = mlr_hit(~isnan(mld4o_hit));
+    mlr_fa_temp = mlr_fa(~isnan(mld4o_fa));
+    slr_hit_temp = slr_hit(~isnan(sld4o_hit));
+    slr_fa_temp = slr_fa(~isnan(sld4o_fa));
+    lickbar4L=bar([nanmean(mlr_hit_temp(jj,:)) nanmean(mld4o_hit(jj,:)) nanmean(mlr_fa_temp(jj,:)) nanmean(mld4o_fa(jj,:))]); hold on;
+    lickbar4L(1).FaceColor='flat'; lickbar4L(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    error=[nanmean(slr_hit_temp(jj,:)) nanmean(sld4o_hit(jj,:)) nanmean(slr_fa_temp(jj,:)) nanmean(sld4o_fa(jj,:))];
+    for kk=1:numel(lickbar4L)
+        xtips=lickbar4L(kk).XEndPoints;
+        ytips=lickbar4L(kk).YEndPoints;
         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
     end
-
-    [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlo_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlo_fa(jj,:));
+    [h,pHit,ci,stats] = ttest2(mlr_hit_temp(jj,:),mld4o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mlr_fa_temp(jj,:),mld4o_fa(jj,:));
+    box off;ylim([0 10]);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('mean lick rate');
-    title([allDataTestsOnly{jj,1} ' IC Full Trial Inactivation']);
+    title([allDataTestsOnly{jj,1} ' Delay 4']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,5) % tone IC
-    lickbarT=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlto_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlto_fa(jj,:))]); hold on;
-    error=[nanmean(ICslr_hit(jj,:)) mean(ICslto_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslto_fa(jj,:))];
-    lickbarT(1).FaceColor='flat'; lickbarT(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    for kk=1:numel(lickbarT)
-        xtips=lickbarT(kk).XEndPoints;
-        ytips=lickbarT(kk).YEndPoints;
+    subplot(2,3,5) % Delay 5
+    mlr_hit_temp = mlr_hit(~isnan(mld5o_hit));
+    mlr_fa_temp = mlr_fa(~isnan(mld5o_fa));
+    slr_hit_temp = slr_hit(~isnan(sld5o_hit));
+    slr_fa_temp = slr_fa(~isnan(sld5o_fa));
+    lickbar5L=bar([nanmean(mlr_hit_temp(jj,:)) nanmean(mld5o_hit(jj,:)) nanmean(mlr_fa_temp(jj,:)) nanmean(mld5o_fa(jj,:))]); hold on;
+    lickbar5L(1).FaceColor='flat'; lickbar5L(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
+    error=[nanmean(slr_hit_temp(jj,:)) nanmean(sld5o_hit(jj,:)) nanmean(slr_fa_temp(jj,:)) nanmean(sld5o_fa(jj,:))];
+    for kk=1:numel(lickbar5L)
+        xtips=lickbar5L(kk).XEndPoints;
+        ytips=lickbar5L(kk).YEndPoints;
         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
     end
-    [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlto_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlto_fa(jj,:));
+    [h,pHit,ci,stats] = ttest2(mlr_hit_temp(jj,:),mld5o_hit(jj,:));
+    [h,pFA,ci,stats] = ttest2(mlr_fa_temp(jj,:),mld5o_fa(jj,:));
+    box off;ylim([0 10]);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('mean lick rate');
-    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
+    title([allDataTestsOnly{jj,1} ' Delay 5']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    subplot(2,3,6); % choice IC
-    lickbarC=bar([nanmean(ICmlr_hit(jj,:)) nanmean(ICmlco_hit(jj,:)) nanmean(ICmlr_fa(jj,:)) nanmean(ICmlco_fa(jj,:))]); hold on;
-    lickbarC(1).FaceColor='flat'; lickbarC(1).CData=[reinfcolor;optocolor;reinfcolor;optocolor];
-    error=[nanmean(ICslr_hit(jj,:)) nanmean(ICslco_hit(jj,:)) nanmean(ICslr_fa(jj,:)) nanmean(ICslco_fa(jj,:))];
-    for kk=1:numel(lickbarC)
-        xtips=lickbarC(kk).XEndPoints;
-        ytips=lickbarC(kk).YEndPoints;
-        errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
-    end
-    [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlco_hit(jj,:));
-    [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlco_fa(jj,:));
-    sigstar({[1,2],[3,4]}, [pHit pFA])
-    ylabel('mean lick rate');
-    title([allDataTestsOnly{jj,1} ' IC Tone Inactivation']);
-    xticklabels({'hit', 'hit','fa','fa'});
-    
     lickFig.Position(3:4)=[725 475];
-    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickRate_Opto']);
-    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_IC_LickRate_Opto.png']);  
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_Delay_LickRate_Opto']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_Delay_LickRate_Opto.png']);  
 end
 
 
@@ -572,7 +580,7 @@ for kk=1:numel(lickbarT)
     ytips=lickbarT(kk).YEndPoints;
     errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
 end
-[h,pHit,ci,stats] = ttest2(hitLickRate,othitLickRate);
+[h,pHit,~,stats] = ttest2(hitLickRate,othitLickRate);
 [h,pFA,ci,stats] = ttest2(faLickRate,otfaLickRate);
 sigstar({[1,2],[3,4]}, [pHit pFA])
 ylabel('mean lick latency');

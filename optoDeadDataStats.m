@@ -1,7 +1,7 @@
 %% dead period behavior stats 
 %first preprocess the data for a given cohort
-cohort=6;
-Behavior_Opto_Dead(cohort)
+% cohort=6;
+% Behavior_Opto_Dead(cohort)
 %% now load the data for each cohort and make one big file called allCohorts
 cd('O:\sjk\Behavior\MGBIC_6')
 load('deadSummaryData.mat')
@@ -10,10 +10,28 @@ load('deadSummaryData.mat')
 % optomeanMat{7,5}(2,1) = optomeanMat{7,16}(5,18);
 % optomeanMat{7,6}(2,1) = optomeanMat{7,16}(4,15);
 % optomeanMat{7,7}(2,1) = optomeanMat{7,16}(4,16);
-% optomeanMat(2,:)=[];
-% optomeanMat(3,:)=[];
-% optomeanMat(4,:)=[];
+optomeanMat(2,:)=[];
+optomeanMat(3,:)=[];
+optomeanMat(4,:)=[];
+%%
 % save('deadSummaryData.mat','optomeanMat')
+% fix the matrix variable
+allDataTestsOnly(1,49)={'Matrix as a double'};
+for qq=2:size(allDataTestsOnly,1)
+    clear newMat
+    for rr=1:size(allDataTestsOnly{2,15},1)-4
+        if rr==1
+            newMat2=allDataTestsOnly{qq,15}{rr+1,1};
+            newMat2(:,1)= newMat2(:,1)+rr;
+            newMat=vertcat(allDataTestsOnly{qq,15}{rr,1},newMat2);
+        else
+            newMat2=allDataTestsOnly{qq,15}{rr+1,1};
+            newMat2(:,1)= newMat2(:,1)+rr+1;
+            newMat=vertcat(newMat,newMat2);
+        end
+    end
+    allDataTestsOnly(qq,49)={newMat};
+end
 %%
 % cohortRange=1:6;
 % allCohorts=loadAllOptoCohorts(cohortRange);
@@ -357,8 +375,8 @@ close all
 % close all
 %%
 % now do the anova
-[aovMGB,statsMGB]=anova2OptoPerAnimalDead(allDataTestsOnly);
-aovMGB
+% [aovMGB,statsMGB]=anova2OptoPerAnimalDead(allDataTestsOnly);
+% aovMGB
 
 %% compare differences in percent correct across each light off vs light on condition
 %this is by session

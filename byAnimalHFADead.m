@@ -293,7 +293,7 @@ hold on;
 odp_re=nansem(dp_opto');
 odp_rm=nanmean(dp_opto');
 dp_opto_An=nanmean(dp_opto);
-dp_r_An=mean(dp_r);
+dp_r_An=nanmean(dp_r);
 ddd=bar([nanmean(dp_rm) nanmean(odp_rm)]); hold on;
 ddd(1).FaceColor='flat';ddd(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(ddd(1).XEndPoints(1),size(mean(dp_r),2),1), ...
