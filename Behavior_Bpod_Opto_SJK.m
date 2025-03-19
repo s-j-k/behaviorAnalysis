@@ -25,16 +25,15 @@ switch cohort
     
     case 5
     pathsave='O:\sjk\Behavior\MGBIC_5\';
-%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
     subjlist={'sk190','sk191','sk192','sk193','sk194','sk195','sk196','sk197'}; %GTACR
 %     explist=[2 2 1 1 1 1 1 1];
     explist=[1 1 1 1 1 2 1 1];
     
     case 6
     pathsave='O:\sjk\Behavior\MGBIC_6\';
-%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
     subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
     explist=[1 1 1 1 2 1 1 1];    
+    
    case 7
     pathsave='O:\sjk\Behavior\IC_cohort_1\';
     subjlist={'sk218','sk219','sk220'}; %GTACR
@@ -42,15 +41,13 @@ switch cohort
 
     case 8
     pathsave='O:\sjk\Behavior\IC_cohort_2\';
-%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
     subjlist={'sk223','sk224','sk225','sk226'}; %GTACR
     explist=[1 1 1 1];
    
     case 9
     pathsave='O:\sjk\Behavior\cohort_7\';
-%     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
-    subjlist={'sk230','sk231'}; %GTACR
-    explist=[1 1];
+    subjlist={'sk230','sk231','sk232','sk233','sk234','sk235','sk236','sk237'}; %GTACR
+    explist=[1 1 1 1 1 1 1 1];
     
     otherwise
         disp('Cohort not found');    

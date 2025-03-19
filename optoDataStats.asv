@@ -934,7 +934,7 @@ lickLatOptoPerAnimal(mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly,reinfcolor
 
 %% lick latency histograms for each opto condition--is there a difference for each inactivation condition?
 lickMat={};
-optoflag=1;subjlist=NaN;
+optoflag=1;
 days={};
 days{1,1}='Animal';days{1,2}='ExpDays';days{1,3}='ExpRange';
 days{2,1}='sk163';mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];
@@ -949,35 +949,12 @@ days{5,2}=mgbDays; days{5,3}=expRange;
 days{6,1}='sk203';mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
 expRange=1:8; days{6,2}=mgbDays; days{6,3}=expRange;
 days{7,1}='sk204'; mgbDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 0 0 0];mgbDays=logical(mgbDays);
-expRange=27:length(mgbDays);days{7,2}=mgbDays; days{7,3}=expRange;
+expRange=27:length(mgbDays);days{6,2}=mgbDays; days{6,3}=expRange;
 for nbsubj=2:size(allDataTestsOnly,1)
-    lickDays=days{nbsubj,2};
     matrix=allDataTestsOnly{nbsubj,26};
-    lickMatOut=getLickLatHist(matrix,nbsubj,subjlist,lickDays,optoflag);
+    lickMatOut=getLickLatHist(matrix,nbsubj,subjlist,days,optoflag);
     lickMat{nbsubj}=lickMatOut;
 end
-%%
-% for each column in the LickMat, it's each animal
-% within there, it's each condition by trial type
-% hitR, probeHit, Full Opto Hit, Tone Opto Hit, Choice Opto Hit
-% then the FAs, with 10 columns
-% within each of those is a session for that trial type--eg
-% LickMat{1,2}{1,1} is sk163, hitLick Reinf,all sessions
-figure;
-
-for tt=2:nbsubj
-    lickTemp=lickMat{1,tt}{1,1};
-    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
-    for pp=1:length(lickTemp)
-        lickRTemp(:,pp) = lickTemp{1,pp};
-    end
-    lickReinfHit=nanmean(lickRTemp,2);
-end
-
-subplot(1,3,1);
-histogram(lickReinfHit,100,'Normalization','cdf');
-
-
 
 %% AC Expert Data
 cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials
