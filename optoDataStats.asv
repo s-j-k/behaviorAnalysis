@@ -810,17 +810,17 @@ close all
 close all
 % bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,tempTestsOnly,reinfcolor,optocolor);
 % close all
-
+%%
 skip=1;
 if skip==0
-    %%
     % now do the anova....
     [aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly,tempTestsOnly);
     % close all
 %     aovMGBbySess
 %     aovMGBbyAn
     % aovIC
-    %% plot catch trials
+    
+    % plot catch trials
     % inherited from celine code... 
     % coded as conffa (catch light on false alarm)
     % within the rates variable, conffa is the 10th column
@@ -932,30 +932,215 @@ allDataCtlOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
 lickLatOptoPerAnimal(mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 
-%% lick latency histograms for each opto condition--is there a difference for each inactivation condition?
+%% organize lick data...
 lickMat={};
-optoflag=1;
+optoflag=1;subjlist=NaN;
 days={};
 days{1,1}='Animal';days{1,2}='ExpDays';days{1,3}='ExpRange';
 days{2,1}='sk163';mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];
 mgbDays=logical(mgbDays);days{2,2}=mgbDays;expRange=1:8; days{2,3}=expRange;
 days{3,1}='sk175'; mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 1 0 0 0 0 0];mgbDays=logical(mgbDays);expRange=25:32;
 days{3,2}=mgbDays; days{3,3}=expRange;
-days{4,1}='sk176'; mgbDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 1 0 1 1 0 1 0 0 1];expRange=20:length(mgbDays);
+days{4,1}='sk176'; mgbDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 1 0 1 1 0 1 0 0 1];
+expRange=20:length(mgbDays);
 mgbDays=logical(mgbDays);days{4,2}=mgbDays; days{4,3}=expRange;
 days{5,1}='sk198'; mgbDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 0];
 mgbDays=logical(mgbDays);expRange=38:length(mgbDays); 
 days{5,2}=mgbDays; days{5,3}=expRange;
-days{6,1}='sk203';mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
-expRange=1:8; days{6,2}=mgbDays; days{6,3}=expRange;
+days{6,1}='sk203';mgbDays=[0 0 0 0 0 0 0 0 1 1 0 0 0 1 1 0 0];
+mgbDays=logical(mgbDays); expRange=9:length(mgbDays); days{6,2}=mgbDays; days{6,3}=expRange;
 days{7,1}='sk204'; mgbDays=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 0 0 0];mgbDays=logical(mgbDays);
-expRange=27:length(mgbDays);days{6,2}=mgbDays; days{6,3}=expRange;
+expRange=27:length(mgbDays);days{7,2}=mgbDays; days{7,3}=expRange;
 for nbsubj=2:size(allDataTestsOnly,1)
+    lickDays=days{nbsubj,2};
+    expRange=days{nbsubj,3};lickDays=lickDays(expRange);
     matrix=allDataTestsOnly{nbsubj,26};
-    lickMatOut=getLickLatHist(matrix,nbsubj,subjlist,days,optoflag);
+    lickMatOut=getLickLatHist(matrix,nbsubj,subjlist,lickDays,expRange,optoflag);
     lickMat{nbsubj}=lickMatOut;
 end
+%% lick latency histograms for each opto condition--is there a difference for each inactivation condition?
+% for each column in the LickMat, it's each animal
+% within there, it's each condition by trial type
+% hitR, probeHit, Full Opto Hit, Tone Opto Hit, Choice Opto Hit
+% then the FAs, with 10 columns
+% within each of those is a session for that trial type--eg
+% LickMat{1,2}{1,1} is sk163, hitLick Reinf,all sessions
+cd('O:\sjk\Figures\MGB IC Opto');
+ff=figure(9); % first, hit trials by condition
+width=1000;height=300;
+for tt=2:nbsubj
+    clear lickRTemp
+    lickTemp=lickMat{1,tt}{1,1};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    for pp=1:2
+        if pp==1
+            lickRTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickRTemp=padcat(lickRTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    if tt==2
+        lickReinfHit=nanmean(lickRTemp,2);
+    else
+        lickReinfHitTemp=nanmean(lickRTemp,2);
+        lickReinfHit=padcat(lickReinfHit,lickReinfHitTemp);
+        lickReinfHit=nanmean(lickReinfHit,2);
+    end
+end
+subplot(1,4,1); title('Reinf Hit'); hold on;
+xlim([0 1]);ylim([0 1]);
+histogram(lickReinfHit, 50,'Normalization','cdf');
+ylabel('probability'); xlabel('');
 
+for tt=2:nbsubj
+    pp=1;
+    clear lickRTemp
+    lickTemp=lickMat{1,tt}{1,3};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    for pp=1:2
+        if pp==1
+            lickRTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickRTemp=padcat(lickRTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    if tt==2
+        lickReinfHit=nanmean(lickRTemp,2);
+    else
+        lickReinfHitTemp=nanmean(lickRTemp,2);
+        lickReinfHit=padcat(lickReinfHit,lickReinfHitTemp);
+        lickReinfHit=nanmean(lickReinfHit,2);
+    end
+end
+subplot(1,4,2);title('Full Trial Opto Hit'); hold on;
+xlim([0 1]);ylim([0 1]);
+histogram(lickReinfHit,50,'Normalization','cdf');
+xlabel('');
+
+for tt=2:nbsubj
+    clear lickRTemp
+    lickTemp=lickMat{1,tt}{1,4};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    for pp=1:2
+        if pp==1
+            lickRTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickRTemp=padcat(lickRTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    if tt==2
+        lickReinfHit=nanmean(lickRTemp,2);
+    else
+        lickReinfHitTemp=nanmean(lickRTemp,2);
+        lickReinfHit=padcat(lickReinfHit,lickReinfHitTemp);
+        lickReinfHit=nanmean(lickReinfHit,2);
+    end
+end
+subplot(1,4,3);title('Stimulus Opto Hit'); hold on;
+xlim([0 1]);ylim([0 1]);
+histogram(lickReinfHit,50,'Normalization','cdf');
+xlabel('');
+
+for tt=2:nbsubj
+    clear lickRTemp
+    lickTemp=lickMat{1,tt}{1,5};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    for pp=1:2
+        if pp==1
+            lickRTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickRTemp=padcat(lickRTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    if tt==2
+        lickReinfHit=nanmean(lickRTemp,2);
+    else
+        lickReinfHitTemp=nanmean(lickRTemp,2);
+        lickReinfHit=padcat(lickReinfHit,lickReinfHitTemp);
+        lickReinfHit=nanmean(lickReinfHit,2);
+    end
+end
+subplot(1,4,4);title('Choice Opto Hit'); hold on;
+xlim([0 1]);ylim([0 1]);
+histogram(lickReinfHit,50,'Normalization','cdf');
+xlabel('');
+ff.Position = [10, 10, width, height];
+saveas(ff,'AvgAllAnimals_LickLatHistHit_ByCondition');
+saveas(ff,'AvgAllAnimals_LickLatHistHit_ByCondition','png');
+
+
+f=figure(11); % FA trials by condition
+for tt=2:nbsubj
+    lickTemp=lickMat{1,tt}{1,6};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    clear lickRTemp
+    for pp=1:2
+        if pp==1
+            lickRTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickRTemp=padcat(lickRTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    lickReinfHit=nanmean(lickRTemp,2);
+end
+subplot(1,4,1); title('Reinf FA'); hold on;
+xlim([0 1.5]);ylim([0 1]);
+histogram(lickReinfHit,50,'Normalization','cdf');
+ylabel('probability'); xlabel('');
+
+for tt=2:nbsubj
+    lickTemp=lickMat{1,tt}{1,8};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    clear lickFTemp
+    for pp=1:2
+        if pp==1
+            lickFTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickFTemp=padcat(lickFTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    lickReinfHit=nanmean(lickFTemp,2);
+end
+subplot(1,4,2);title('Full Trial Opto FA'); hold on;xlim([0 1.5]);ylim([0 1]);
+histogram(lickReinfHit,50,'Normalization','cdf');
+xlabel('');
+
+for tt=2:nbsubj
+    lickTemp=lickMat{1,tt}{1,9};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    clear lickTTemp
+    for pp=1:2
+        if pp==1
+            lickTTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickTTemp=padcat(lickTTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    lickReinfHit=nanmean(lickTTemp,2);
+end
+subplot(1,4,3);title('Stimulus Opto FA'); hold on;xlim([0 1.5]);ylim([0 1]);
+histogram(lickReinfHit,50,'Normalization','cdf');
+xlabel('');
+
+for tt=2:nbsubj
+    lickTemp=lickMat{1,tt}{1,10};
+    lickTemp=lickTemp(~cellfun('isempty',lickTemp));
+    clear lickCTemp
+    for pp=1:2
+        if pp==1
+            lickCTemp(:,pp) = lickTemp{1,pp};
+        else
+            lickCTemp=padcat(lickCTemp,lickTemp{1,pp},lickTemp{1,length(lickTemp)});
+        end
+    end
+    lickReinfHit=nanmean(lickCTemp,2);
+end
+subplot(1,4,4);title('Choice Opto FA'); hold on;xlim([0 1.5]);ylim([0 1]);
+histogram(lickReinfHit,50,'Normalization','cdf');xlabel('seconds');
+xlabel('');
+f.Position = [10, 10, width, height];
+saveas(f,'AvgAllAnimals_LickLatHistFA_ByCondition');
+saveas(f,'AvgAllAnimals_LickLatHistFA_ByCondition','png');
 %% AC Expert Data
 cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials
 expertACSummaryData=load('O:\sjk\Behavior\AC9010Expert\summary_90optoexpert_day.mat'); 

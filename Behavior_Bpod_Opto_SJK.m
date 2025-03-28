@@ -494,7 +494,8 @@ for nbsubj = 1:nSubj % through animals
     end
     expertdays=[];
     % lick latency histogram at only expert performance
-    getLickLatHist(matrix,nbsubj,subjlist,expertdays)
+    optoflag=0;expRange=0;
+%     getLickLatHist(matrix,nbsubj,subjlist,expertdays,expRange,optoflag)
     MAT{nbsubj,1} = matrix;
 %     %%
     if plot_indiv_data
