@@ -494,7 +494,7 @@ for nbsubj = 1:nSubj % through animals
     end
     expertdays=[];
     % lick latency histogram at only expert performance
-    optoflag=0;expRange=0;
+    optoflag=1;expRange=0;
 %     getLickLatHist(matrix,nbsubj,subjlist,expertdays,expRange,optoflag)
     MAT{nbsubj,1} = matrix;
 %     %%
@@ -684,7 +684,7 @@ for nbsubj = 1:nSubj % through animals
 % else
 %     optoplot=0;
 % end
-optoplot=0;
+optoplot=1;
 
 % bar graphs for opto
 if optoplot==1 % now make bar graphs, averaged, for all conditions 
@@ -947,7 +947,45 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
             expRange=7:length(icDays);
     
         end
-        
+    elseif contains(path,'cohort_7')==1
+        if nbsubj==3 % sk232
+            mgbDays=[0 0 0 0 0 0 ...
+                0 0 0 0 0 0 ...
+                0 0 0 ...
+                0 0 0];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 ...
+                0 0 0 0 0 0 ...
+                0 0 1 ...
+                1 1 1];
+            icDays=logical(icDays);
+            expRange=15:length(icDays);
+        elseif nbsubj==5 %sk234
+            mgbDays=[0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 ...
+                0 0 0 0 0 0 1 ...
+                1 1 1];
+            icDays=logical(icDays);
+            expRange=14:length(icDays);
+        elseif nbsubj==6 %sk235
+            mgbDays=[0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 1 ...
+                1 1 1];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                0 0 0];
+            icDays=logical(icDays);
+            expRange=14:length(icDays);
+        else
+            mgbDays=[0 0 0 0];
+            icDays=[0 0 0 0];
+            icDays=logical(icDays);
+            mgbDays=logical(mgbDays);expRange=1:4;
+        end    
     end
     
     mgbDays=mgbDays(expRange);
