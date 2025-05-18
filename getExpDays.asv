@@ -264,17 +264,19 @@ function [mgbDays, icDays, expRange] = getExpDays(path, nbsubj)
                 0 0 0 0 0 0 0 0 0 0 0 0 0];
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 ...
-                0 0 0 0 0 1 0 1];
+                0 0 0 0 ...
+                0 0 1 1 1 ...
+                1 1 1 1 0 0 0 0 0 1 1];
             icDays=logical(icDays);
             expRange=14:length(icDays);
         elseif nbsubj==6 %sk251
             mgbDays=[0 0 0 0 0 0 ...
-                0 0 0 0 0 0];
+                0 0 0 0 0 0 0 0];
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 ...
-                0 0 0 0 0 1 1 1];
+                0 0 0 0 ];
             icDays=logical(icDays);
-            expRange=9:length(icDays);
+            expRange=14:length(icDays);
         else
             mgbDays=[0 0 0 0];
             icDays=[0 0 0 0];
