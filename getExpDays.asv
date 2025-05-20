@@ -1,4 +1,6 @@
-function [mgbDays, icDays, expRange] = getExpDays(path, nbsubj)
+function [mgbDays, icDays, expRange,dreadds] = getExpDays(path, nbsubj)
+mgbDays =0; icDays =0; expRange=0;
+dreadds=0;
 %     if contains(path,'1')==1        
 %         if nbsubj ==4 % cohort 1
 %             mgbDays = [1 1 0 0 1 1 0 1 1 1];mgbDays=logical(mgbDays);
@@ -245,38 +247,64 @@ function [mgbDays, icDays, expRange] = getExpDays(path, nbsubj)
             expRange=7:length(icDays);
     
         end
-    elseif contains(path,'cohort_7')==1
-        if nbsubj==3 % sk246
+    elseif contains(path,'cohort_8')==1
+        if nbsubj==1 % sk246
+            mgbDays=[0 0 0 0 0 ...
+                0 0 0 0 0 ...
+                0 0 0 0 0];
+            mgbDays=logical(mgbDays);
+            dreadds=[0 0 0 0 ...
+                0 0 0 1 2 ...
+                0 0 1 2 2]; % 1 is saline, 2 is ligand
+            expRange=8:length(dreadds);
+        elseif nbsubj==2 % sk247
+            mgbDays=[0 0 0 0 0 ...
+                0 0 0 0 0 ...
+                0 0 0 0 0];
+            mgbDays=logical(mgbDays);
+            dreadds=[0 0 0 0 ...
+                0 0 0 1 1 ...
+                1 2 1 2 2]; % 1 is saline, 2 is ligand
+            expRange=8:length(dreadds);
+        elseif nbsubj==4 % sk249
             mgbDays=[0 0 0 0 0 0 ...
-                0 0 0 0 0 0 ...
-                0 0 0 ...
+                0 0 ...
                 0 0 0];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 ...
-                0 0 0 0 0 0 ...
-                0 0 1 ...
-                1 1 1];
-            icDays=logical(icDays);
-            expRange=15:length(icDays);
+            dreadds=[0 0 0 0 0 0 ...
+                0 1 ...
+                2 1 2]; % 1 is saline, 2 is ligand
+%             dreadds=logical(dreadds);
+            expRange=8:length(dreadds);
         elseif nbsubj==5 %sk250
             mgbDays=[0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 0 0 0];
+                0 0 0 0 0 ...
+                0 0 0 0];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 ...
-                0 0 0 0 ...
+            icDays=[0 0 0 0 0 ...
                 0 0 1 1 1 ...
-                1 1 1 1 0 0 0 0 0 1 1];
+                1 0 1 1];
             icDays=logical(icDays);
-            expRange=14:length(icDays);
+            expRange=10:length(icDays);
+            dreadds=0;
         elseif nbsubj==6 %sk251
             mgbDays=[0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0];
+                0 0 0];
             mgbDays=logical(mgbDays);
-            icDays=[0 0 0 0 0 0 ...
-                0 0 0 0 ];
+            icDays=[0 0 0 0 0 ...
+                0 1 1 1 1];
             icDays=logical(icDays);
-            expRange=14:length(icDays);
+            expRange=7:length(icDays);
+            dreadds=0;
+        elseif nbsubj==6 %sk251
+            mgbDays=[0 0 0 0 0 0 ...
+                0 0 0];
+            mgbDays=logical(mgbDays);
+            icDays=[0 0 0 0 0 ...
+                0 1 1 1 1];
+            icDays=logical(icDays);
+            expRange=7:length(icDays);
+            dreadds=0;
         else
             mgbDays=[0 0 0 0];
             icDays=[0 0 0 0];
@@ -286,5 +314,9 @@ function [mgbDays, icDays, expRange] = getExpDays(path, nbsubj)
     end
     
     mgbDays=mgbDays(expRange);
-    icDays=icDays(expRange);
+    if length(icDays)>1
+        icDays=icDays(expRange);
+    else
+        dreadds=dreadds(expRange);
+    end
 end

@@ -30,7 +30,10 @@ function allCohorts = loadAllOptoCohorts(cohortRange)
                 cd('O:\sjk\Behavior\cohort_7')
                 load('summaryData.mat');
                 cohort7=optomeanMat;
-                
+        elseif cohortRange(ii)==8
+                cd('O:\sjk\Behavior\cohort_8')
+                load('summaryData.mat');
+                cohort8=optomeanMat;        
         else disp('Cohort not found')
             
         end
@@ -52,7 +55,7 @@ function allCohorts = loadAllOptoCohorts(cohortRange)
     cohort2(1,:)=[];cohort3(1,:)=[];cohort4(1,:)=[];cohort5(1,:)=[];
     cohort6(1,:)=[];
     cohort7(1,:)=[];
-    allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5, cohort6, cohort7);
+    allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5, cohort6, cohort7, cohort8);
     allCohorts(26:27,:)=[]; 
     allCohorts(28:31,:)=[]; 
     allCohorts(30:33,:)=[];
@@ -60,7 +63,9 @@ function allCohorts = loadAllOptoCohorts(cohortRange)
     allCohorts(38:41,:)=[]; %keep 198, 203-205
     allCohorts(40:47,:)=[];
     allCohorts(44:45,:)=[];
-    save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5','cohort6','cohort7');
+    allCohorts(60:68,:)=[];
+    allCohorts(66:67,:)=[];
+    save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5','cohort6','cohort7','cohort8');
     cd('O:\sjk\Figures\MGB IC Opto')
-    clear cohort1 cohort2 cohort3 cohort4 cohort5 cohort6 cohort7 optomeanMat
+    clear cohort1 cohort2 cohort3 cohort4 cohort5 cohort6 cohort7 cohort8 optomeanMat
 end

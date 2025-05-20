@@ -668,7 +668,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
             eee(2).CData=[optocolor;optocolor];ylim([0 1]);
             scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(dreadds==2),1),1),1),(rates(expRange(dreadds==2),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
             scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(dreadds==2),1),1),2),(rates(expRange(dreadds==2),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            xticklabels({'','hit','fa'}); ylabel('Average Action Rate'); title(['Dreadds']);
+            xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Dreadds']);
             legend('vehicle','ligand');
             if savefig
                 cd(pathsave);
@@ -678,8 +678,8 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
             end
             optomeanMat{nbsubj+nbsubj,1}=subjlist(nbsubj);
             optomeanMat{nbsubj+nbsubj,2}=mean(rates(expRange(dreadds==1),1));
-            optomeanMat{nbsubj+nbsubj,3}=mean(rates(expRange(dreadds==1),2)); 
-            optomeanMat{nbsubj+nbsubj,4}=mean(rates(expRange(dreadds==2),1));
+            optomeanMat{nbsubj+nbsubj,3}=mean(rates(expRange(dreadds==2),2)); 
+            optomeanMat{nbsubj+nbsubj,4}=mean(rates(expRange(dreadds==1),1));
             optomeanMat{nbsubj+nbsubj,5}=mean(rates(expRange(dreadds==2),2)); 
         else
             eeeFig=figure('Position', [10 10 725 575]);hold on;
