@@ -75,14 +75,6 @@ for nbsubj = 1:nSubj % through animals
     if str2double(subj(end-2:end))>100
         subj = lower(subj);
     end  
-%     if explist(nbsubj)>= 4 || nbsubj > 65
-%         subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\']; 
-%     elseif str2double(subj(end-2:end)) >= 123
-%         subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\']; 
-%     else
-%         subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine\Session Data\'];
-%     end
-%     subjPath = [path subj '\GNG_LaserSineWavePhasicTone_Celine_ZZAW\Session Data\'];
 %     subjPath = [path subj '\GNG_MultiProbOpto_SJK\Session Data\'];
     subjPath = [path subj '\GNG_MultiProbOptoChoice_SJK\Session Data\'];
 %     subjPath = [path subj '\LickingGNG\Session Data\'];
@@ -298,6 +290,7 @@ for nbsubj = 1:nSubj % through animals
         lickhistot(i,:) = hist(rt_ot,bins)/sum(topto);
         lickhistoc(i,:) = hist(rt_oc,bins)/sum(copto);
         hit = tempMat(:,OUTCOME)==1;fa = tempMat(:,OUTCOME)==3;
+        miss = tempMat(:,OUTCOME)==2; cr=tempMat(:,OUTCOME)==4;
         rt_r_hit = RelativeTimes(templicks,[tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T)-1 tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T) tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T)+4],[-1 0 4]);
         rt_o_hit = RelativeTimes(templicks,[tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T)-1 tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T) tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T)+4],[-1 0 4]);
         rt_ot_hit = RelativeTimes(templicks,[tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T)-1 tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T) tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T)+4],[-1 0 4]);
@@ -307,34 +300,34 @@ for nbsubj = 1:nSubj % through animals
         rt_ot_fa = RelativeTimes(templicks,[tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)-1 tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T) tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)+4],[-1 0 4]);
         rt_oc_fa = RelativeTimes(templicks,[tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)-1 tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T) tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)+4],[-1 0 4]);
         
-        rt_r_miss = RelativeTimes(templicks,[tempMat(reinf&~hit,START)+tempMat(reinf&~hit,TONE_T)-1 tempMat(reinf&~hit,START)+tempMat(reinf&~hit,TONE_T) tempMat(reinf&~hit,START)+tempMat(reinf&~hit,TONE_T)+5],[-1 0 5]);
-        rt_r_cr = RelativeTimes(templicks,[tempMat(reinf&~fa,START)+tempMat(reinf&~fa,TONE_T)-1 tempMat(reinf&~fa,START)+tempMat(reinf&~fa,TONE_T) tempMat(reinf&~fa,START)+tempMat(reinf&~fa,TONE_T)+5],[-1 0 5]);
-        rt_o_miss = RelativeTimes(templicks,[tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T)-1 tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T) tempMat(opto&~hit,START)+tempMat(opto&~hit,TONE_T)+5],[-1 0 5]);
-        rt_ot_miss = RelativeTimes(templicks,[tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T)-1 tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T) tempMat(topto&~hit,START)+tempMat(topto&~hit,TONE_T)+5],[-1 0 5]);
-        rt_oc_miss = RelativeTimes(templicks,[tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T)-1 tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T) tempMat(copto&~hit,START)+tempMat(copto&~hit,TONE_T)+5],[-1 0 5]);
-        rt_o_cr = RelativeTimes(templicks,[tempMat(opto&~fa,START)+tempMat(opto&~fa,TONE_T)-1 tempMat(opto&~fa,START)+tempMat(opto&~fa,TONE_T) tempMat(opto&~fa,START)+tempMat(opto&~fa,TONE_T)+5],[-1 0 5]);
-        rt_ot_cr = RelativeTimes(templicks,[tempMat(topto&~fa,START)+tempMat(topto&~fa,TONE_T)-1 tempMat(topto&~fa,START)+tempMat(topto&~fa,TONE_T) tempMat(topto&~fa,START)+tempMat(topto&~fa,TONE_T)+5],[-1 0 5]);
-        rt_oc_cr = RelativeTimes(templicks,[tempMat(copto&~fa,START)+tempMat(copto&~fa,TONE_T)-1 tempMat(copto&~fa,START)+tempMat(copto&~fa,TONE_T) tempMat(copto&~fa,START)+tempMat(copto&~fa,TONE_T)+5],[-1 0 5]);
+        rt_r_miss = RelativeTimes(templicks,[tempMat(reinf&miss,START)+tempMat(reinf&miss,TONE_T)-1 tempMat(reinf&miss,START)+tempMat(reinf&miss,TONE_T) tempMat(reinf&miss,START)+tempMat(reinf&miss,TONE_T)+5],[-1 0 5]);
+        rt_r_cr = RelativeTimes(templicks,[tempMat(reinf&cr,START)+tempMat(reinf&cr,TONE_T)-1 tempMat(reinf&cr,START)+tempMat(reinf&cr,TONE_T) tempMat(reinf&cr,START)+tempMat(reinf&cr,TONE_T)+5],[-1 0 5]);
+        rt_o_miss = RelativeTimes(templicks,[tempMat(opto&miss,START)+tempMat(opto&miss,TONE_T)-1 tempMat(opto&miss,START)+tempMat(opto&miss,TONE_T) tempMat(opto&miss,START)+tempMat(opto&miss,TONE_T)+5],[-1 0 5]);
+        rt_ot_miss = RelativeTimes(templicks,[tempMat(topto&miss,START)+tempMat(topto&miss,TONE_T)-1 tempMat(topto&miss,START)+tempMat(topto&miss,TONE_T) tempMat(topto&miss,START)+tempMat(topto&miss,TONE_T)+5],[-1 0 5]);
+        rt_oc_miss = RelativeTimes(templicks,[tempMat(copto&miss,START)+tempMat(copto&miss,TONE_T)-1 tempMat(copto&miss,START)+tempMat(copto&miss,TONE_T) tempMat(copto&miss,START)+tempMat(copto&miss,TONE_T)+5],[-1 0 5]);
+        rt_o_cr = RelativeTimes(templicks,[tempMat(opto&cr,START)+tempMat(opto&cr,TONE_T)-1 tempMat(opto&cr,START)+tempMat(opto&cr,TONE_T) tempMat(opto&cr,START)+tempMat(opto&cr,TONE_T)+5],[-1 0 5]);
+        rt_ot_cr = RelativeTimes(templicks,[tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T)-1 tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T) tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T)+5],[-1 0 5]);
+        rt_oc_cr = RelativeTimes(templicks,[tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T)-1 tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T) tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T)+5],[-1 0 5]);
         
         lickhistr_hit(i,:) = hist(rt_r_hit,bins)/sum(reinf&hit);
         lickhistr_fa(i,:) = hist(rt_r_fa,bins)/sum(reinf&fa);
-        lickhistr_miss(i,:) = hist(rt_r_miss,bins)/sum(reinf&~hit);
-        lickhistr_cr(i,:) = hist(rt_r_cr,bins)/sum(reinf&~fa);
+        lickhistr_miss(i,:) = hist(rt_r_miss,bins)/sum(reinf&miss);
+        lickhistr_cr(i,:) = hist(rt_r_cr,bins)/sum(reinf&cr);
         
         lickhisto_hit(i,:) = hist(rt_o_hit,bins)/sum(opto&hit);
         lickhisto_fa(i,:) = hist(rt_o_fa,bins)/sum(opto&fa);
-        lickhisto_miss(i,:) = hist(rt_o_miss,bins)/sum(opto&~hit);
-        lickhisto_cr(i,:) = hist(rt_o_cr,bins)/sum(opto&~fa);
+        lickhisto_miss(i,:) = hist(rt_o_miss,bins)/sum(opto&miss);
+        lickhisto_cr(i,:) = hist(rt_o_cr,bins)/sum(opto&cr);
         
         lickhistot_hit(i,:) = hist(rt_ot_hit,bins)/sum(topto&hit);
         lickhistot_fa(i,:) = hist(rt_ot_fa,bins)/sum(topto&fa); 
-        lickhistot_miss(i,:) = hist(rt_ot_miss,bins)/sum(topto&~hit);
-        lickhistot_cr(i,:) = hist(rt_oc_cr,bins)/sum(topto&~fa);
+        lickhistot_miss(i,:) = hist(rt_ot_miss,bins)/sum(topto&miss);
+        lickhistot_cr(i,:) = hist(rt_oc_cr,bins)/sum(topto&cr);
         
         lickhistoc_hit(i,:) = hist(rt_oc_hit,bins)/sum(copto&hit);
         lickhistoc_fa(i,:) = hist(rt_oc_fa,bins)/sum(copto&fa);
-        lickhistoc_miss(i,:) = hist(rt_oc_miss,bins)/sum(copto&~hit);
-        lickhistoc_cr(i,:) = hist(rt_oc_cr,bins)/sum(copto&~fa);        
+        lickhistoc_miss(i,:) = hist(rt_oc_miss,bins)/sum(copto&miss);
+        lickhistoc_cr(i,:) = hist(rt_oc_cr,bins)/sum(copto&cr);        
         
         rt_p_hit = RelativeTimes(templicks,[tempMat(probe&hit,START)+tempMat(probe&hit,TONE_T)-1 tempMat(probe&hit,START)+tempMat(probe&hit,TONE_T) tempMat(probe&hit,START)+tempMat(probe&hit,TONE_T)+4],[-1 0 4]);
         rt_p_fa = RelativeTimes(templicks,[tempMat(probe&fa,START)+tempMat(probe&fa,TONE_T)-1 tempMat(probe&fa,START)+tempMat(probe&fa,TONE_T) tempMat(probe&fa,START)+tempMat(probe&fa,TONE_T)+4],[-1 0 4]);
@@ -367,7 +360,7 @@ for nbsubj = 1:nSubj % through animals
     lickhistocr{nbsubj} = lickhisto_cr;
     lickhistotmiss{nbsubj} = lickhistot_miss;
     lickhistotcr{nbsubj} = lickhistot_cr;
-    lickhistochit{nbsubj} = lickhistoc_miss;
+    lickhistocmiss{nbsubj} = lickhistoc_miss;
     lickhistoccr{nbsubj} = lickhistoc_cr;
     
     ratescorr = rates;
@@ -659,6 +652,31 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
     if sum(mgbDays)==0
         if sum(dreadds)>0
             eeeFig=figure('Position', [10 10 725 220]);hold on;
+            eee=bar([mean(rates(expRange(dreadds==3),1)) ...
+                mean(rates(expRange(dreadds==4),1)); mean(rates(expRange(dreadds==3),2)) ...
+                mean(rates(expRange(dreadds==4),2))]);
+            eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
+            scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(dreadds==3),1),1),1),(rates(expRange(dreadds==3),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+            scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(dreadds==3),1),1),2),(rates(expRange(dreadds==3),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+            eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+            scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(dreadds==4),1),1),1),(rates(expRange(dreadds==4),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+            scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(dreadds==4),1),1),2),(rates(expRange(dreadds==4),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+            xticklabels({'','hit','fa'}); ylabel('Average Action Rate'); title(['Dreadds @ 70dB']);
+            legend('vehicle','ligand');
+            if savefig
+                cd(pathsave);
+                saveas(eeeFig,[subjlist{nbsubj} '-Dreadds70dBBarScatter-' num2str(nbins) '.' filetype]);
+                saveas(eeeFig,[subjlist{nbsubj} '-Dreadds70dBBarScatter-' num2str(nbins) '.png']);
+                close(eeeFig);
+            end
+            optomeanMat{nbsubj+nbsubj,1}=subjlist(nbsubj);
+            optomeanMat{nbsubj+nbsubj,2}=mean(rates(expRange(dreadds==3),1));
+            optomeanMat{nbsubj+nbsubj,3}=mean(rates(expRange(dreadds==4),2)); 
+            optomeanMat{nbsubj+nbsubj,4}=mean(rates(expRange(dreadds==3),1));
+            optomeanMat{nbsubj+nbsubj,5}=mean(rates(expRange(dreadds==4),2)); 
+            
+            
+            eeeFig=figure('Position', [10 10 725 220]);hold on;
             eee=bar([mean(rates(expRange(dreadds==1),1)) ...
                 mean(rates(expRange(dreadds==2),1)); mean(rates(expRange(dreadds==1),2)) ...
                 mean(rates(expRange(dreadds==2),2))]);
@@ -668,19 +686,18 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
             eee(2).CData=[optocolor;optocolor];ylim([0 1]);
             scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(dreadds==2),1),1),1),(rates(expRange(dreadds==2),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
             scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(dreadds==2),1),1),2),(rates(expRange(dreadds==2),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            xticklabels({'','hit','fa'}); ylabel('Average Action Rate'); title(['Dreadds']);
+            xticklabels({'','hit','fa'}); ylabel('Average Action Rate'); title(['Dreadds @ 60dB']);
             legend('vehicle','ligand');
             if savefig
                 cd(pathsave);
-                saveas(eeeFig,[subjlist{nbsubj} '-DreaddsBarScatter-' num2str(nbins) '.' filetype]);
-                saveas(eeeFig,[subjlist{nbsubj} '-DreaddsBarScatter-' num2str(nbins) '.png']);
+                saveas(eeeFig,[subjlist{nbsubj} '-Dreadds60dBBarScatter-' num2str(nbins) '.' filetype]);
+                saveas(eeeFig,[subjlist{nbsubj} '-Dreadds60dBBarScatter-' num2str(nbins) '.png']);
                 close(eeeFig);
             end
-            optomeanMat{nbsubj+nbsubj,1}=subjlist(nbsubj);
-            optomeanMat{nbsubj+nbsubj,2}=mean(rates(expRange(dreadds==1),1));
-            optomeanMat{nbsubj+nbsubj,3}=mean(rates(expRange(dreadds==1),2)); 
-            optomeanMat{nbsubj+nbsubj,4}=mean(rates(expRange(dreadds==2),1));
-            optomeanMat{nbsubj+nbsubj,5}=mean(rates(expRange(dreadds==2),2)); 
+            optomeanMat{nbsubj+nbsubj,6}=mean(rates(expRange(dreadds==1),1));
+            optomeanMat{nbsubj+nbsubj,7}=mean(rates(expRange(dreadds==1),2)); 
+            optomeanMat{nbsubj+nbsubj,8}=mean(rates(expRange(dreadds==2),1));
+            optomeanMat{nbsubj+nbsubj,9}=mean(rates(expRange(dreadds==2),2)); 
         else
             eeeFig=figure('Position', [10 10 725 575]);hold on;
             subplot(3, 1, 1);eee=bar([mean(rates(expRange(icDays),1)) nanmean(rates(expRange(icDays),5)); ...
@@ -779,6 +796,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
         end
         
     else
+        eeeFig=figure('Position', [10 10 725 220]);hold on;
         subplot(3,3,1);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
             mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
         eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;

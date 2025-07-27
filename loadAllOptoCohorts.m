@@ -64,7 +64,7 @@ function allCohorts = loadAllOptoCohorts(cohortRange)
     allCohorts(40:47,:)=[];
     allCohorts(44:45,:)=[];
     allCohorts(60:68,:)=[];
-    allCohorts(66:67,:)=[];
+%     allCohorts(66:67,:)=[];
     save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5','cohort6','cohort7','cohort8');
     cd('O:\sjk\Figures\MGB IC Opto')
     clear cohort1 cohort2 cohort3 cohort4 cohort5 cohort6 cohort7 cohort8 optomeanMat
