@@ -9,7 +9,6 @@ function Behavior_Bpod_Opto_SJK(cohort)
 
 expnames = {'TEST', 'CTL'};
 path=pathsave;
-
 nSubj = length(subjlist);
 plot_indiv_data = true;
 plot_lick_psth = true;
@@ -68,6 +67,15 @@ optomeanMat{1,ii+20}='IC Tone Opto Hit';  optomeanMat{1,ii+21}='IC Tone Opto FA'
 optomeanMat{1,ii+22}='IC Choice Opto Hit'; optomeanMat{1,ii+23}='IC Choice Opto FA';
 optomeanMat{1,ii+24}='Matrix Variable';optomeanMat{1,ii+25}='Rates Variable';
 
+lickHistMat = {};
+lickHistMat{1,ii} = 'Catch Off';lickHistMat{1,ii+1} = 'Catch On';lickHistMat{1,ii+2} = 'Reinf Hit';
+lickHistMat{1,ii+3} = 'Reinf FA';lickHistMat{1,ii+4} = 'Full hit';lickHistMat{1,ii+5} = 'Full FA';
+lickHistMat{1,ii+6} = 'Tone Hit';lickHistMat{1,ii+7} = 'Tone FA';lickHistMat{1,ii+8} = 'Choice Hit';
+lickHistMat{1,ii+9} = 'Choice FA';lickHistMat{1,ii+10} = 'Probe Hit';lickHistMat{1,ii+11} = 'Probe FA';
+lickHistMat{1,ii+12} = 'Reinf Miss';lickHistMat{1,ii+13} = 'Reinf CR';lickHistMat{1,ii+14} = 'Full Miss';
+lickHistMat{1,ii+15} = 'Full CR';lickHistMat{1,ii+16} = 'Tone Miss';lickHistMat{1,ii+17} = 'Tone CR';
+lickHistMat{1,ii+18} = 'Choice Miss'; lickHistMat{1,ii+19} = 'Choice CR';
+
 for nbsubj = 1:nSubj % through animals
     % Localize data
     subj = subjlist{nbsubj}; 
@@ -124,7 +132,7 @@ for nbsubj = 1:nSubj % through animals
             toremove = toremove+1;
         end
             
-        numSess = i - toremove;
+        numSess = i;
         tempMat(:,[SESS CTXT]) = [numSess*ones(SessionData.nTrials,1) SessionData.TrialSettings(1).context(1:SessionData.nTrials)]; 
         tempMat(:,START) = SessionData.TrialStartTimestamp;
         tempMat(:,STOP) = SessionData.TrialEndTimestamp;
@@ -440,6 +448,7 @@ for nbsubj = 1:nSubj % through animals
     optoflag=1;expRange=0;
 %     getLickLatHist(matrix,nbsubj,subjlist,expertdays,expRange,optoflag)
     MAT{nbsubj,1} = matrix;
+   
 %     %%
     if plot_indiv_data
 %         % Plot subj data: H and FA rates, dprimes, lick latency, lick rate
@@ -966,7 +975,30 @@ end
 save('summaryData.mat','optomeanMat');
 disp('saved opto data to mat file.');
 end
+lickHistMat{2,1}=subjlist;
+lickHistMat{2,2} = lickhistcOFF;
+lickHistMat{2,3} = lickhistcON;
+lickHistMat{2,4} = lickhistrhit;
+lickHistMat{2,5} = lickhistrfa;
+lickHistMat{2,6} = lickhistohit;
+lickHistMat{2,7} = lickhistofa;
+lickHistMat{2,8} = lickhistothit;
+lickHistMat{2,9} = lickhistotfa;
+lickHistMat{2,10} = lickhistochit;
+lickHistMat{2,11} = lickhistocfa;
+lickHistMat{2,12} = lickhistphit;
+lickHistMat{2,13} = lickhistpfa;
     
+lickHistMat{2,14} = lickhistrmiss;
+lickHistMat{2,15} = lickhistrcr;
+lickHistMat{2,16} = lickhistomiss;
+lickHistMat{2,17} = lickhistocr;
+lickHistMat{2,18} = lickhistotmiss; 
+lickHistMat{2,19} = lickhistotcr;
+lickHistMat{2,20} = lickhistocmiss; 
+lickHistMat{2,21} = lickhistoccr;
+save('summaryData.mat','optomeanMat','lickHistMat');
+disp('saved opto data to mat file.');
 %% single animal, single day bar plot to see hit/m/cr/fa 
 
 % figure;hold on;bbb=bar([sum(reinf&hit) sum(reinf)/2-sum(reinf&hit) sum(reinf)/2-sum(reinf&fa) sum(reinf&fa)...

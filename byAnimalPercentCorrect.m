@@ -82,82 +82,80 @@ saveas(gcf,['ByAnimal_T_MGB_PercentCorrect_Opto']);
 saveas(gcf,['ByAnimal_T_MGB_PercentCorrect_Opto.png']);
 
 % 
-% wwFig=figure(15);
-% clear rpc opc
-% xVector = [1 2 1 2 1 2 1 2];
-% for jj=2:size(icDataTestsOnly,1) % test IC Full
+wwFig=figure(15);
+clear rpc opc
+xVector = [1 2 1 2];
+for jj=2:size(icDataTestsOnly,1) % test IC Full
+    rpc(jj-1)=nanmean(icDataTestsOnly{jj,33});
+    opc(jj-1)=nanmean(icDataTestsOnly{jj,34});
+end
+% for jj=2:size(allDataTestsOnly,1) % test IC Full
+% % use only sk175 and sk195
+% icDataTestsOnly(1,:)=allDataTestsOnly(1,:);
+% icDataTestsOnly(2,:)=allDataTestsOnly(3,:);
+% icDataTestsOnly(3:5,:)=allDataTestsOnly(5:7,:);
+% for jj=2:size(icDataTestsOnly,1)
 %     rpc(jj-1)=nanmean(icDataTestsOnly{jj,33});
 %     opc(jj-1)=nanmean(icDataTestsOnly{jj,34});
 % end
-% % for jj=2:size(allDataTestsOnly,1) % test IC Full
-% % % use only sk175 and sk195
-% % tempTestsOnly(1,:)=allDataTestsOnly(1,:);
-% % tempTestsOnly(2,:)=allDataTestsOnly(3,:);
-% % tempTestsOnly(3:5,:)=allDataTestsOnly(5:7,:);
-% % for jj=2:size(tempTestsOnly,1)
-% %     rpc(jj-1)=nanmean(tempTestsOnly{jj,33});
-% %     opc(jj-1)=nanmean(tempTestsOnly{jj,34});
-% % end
-% subplot(2,3,4)
-% qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-% percentCorrect = [rpc(1) opc(1)];
-% qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-% scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-%     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-% scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-%     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-% line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
-% [h,p,ci,stats] = ttest2(rpc,opc);
-% sigstar({[1,2]}, p)
-% ylabel('percent correct');
-% title(['IC Full Trial Inactivation']);
-% xticklabels({'light off', 'light on'});
-% allDataTestsOnly{jj,27}=rpc;
-% allDataTestsOnly{jj,28}=opc;
-% 
-% clear rpc opc 
-% for jj=2:size(icDataTestsOnly,1) % IC Tone
-%     rpc(jj-1)=nanmean(icDataTestsOnly{jj,35});
-%     opc(jj-1)=nanmean(icDataTestsOnly{jj,36});
-% end
-% subplot(2,3,5)
-% qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-% percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
-%     rpc(4) opc(4)];
-% qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-% scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-%     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-% scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-%     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-% line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
-% [h,p,ci,stats] = ttest2(rpc,opc);
-% sigstar({[1,2]}, p)
-% title(['IC Tone Inactivation']);
-% xticklabels({'light off', 'light on'});
-% 
-% clear rpc opc 
-% for jj=2:size(tempTestsOnly,1) % IC Choice
-%     rpc(jj-1)=nanmean(tempTestsOnly{jj,37});
-%     opc(jj-1)=nanmean(tempTestsOnly{jj,38});
-% end
-% subplot(2,3,6)
-% qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-% percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
-%     rpc(4) opc(4)];
-% qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
-% scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
-%     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-% scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
-%     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-% line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
-% [h,p,ci,stats] = ttest2(rpc,opc);
-% sigstar({[1,2]}, p)
-% title(['IC Choice Inactivation']);
-% xticklabels({'light off', 'light on'});
-% 
-% wwFig.Position(3:4)=[725 475];
-% saveas(gcf,['ByAnimal_T_IC_PercentCorrect_Opto']);
-% saveas(gcf,['ByAnimal_T_IC_PercentCorrect_Opto.png']);
+subplot(2,3,4)
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2)];
+qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
+    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,p,ci,stats] = ttest2(rpc,opc);
+sigstar({[1,2]}, p)
+ylabel('percent correct');
+title(['IC Full Trial Inactivation']);
+xticklabels({'light off', 'light on'});
+allDataTestsOnly{jj,27}=rpc;
+allDataTestsOnly{jj,28}=opc;
+
+clear rpc opc 
+for jj=2:size(icDataTestsOnly,1) % IC Tone
+    rpc(jj-1)=nanmean(icDataTestsOnly{jj,35});
+    opc(jj-1)=nanmean(icDataTestsOnly{jj,36});
+end
+subplot(2,3,5)
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2)];
+qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
+    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,p,ci,stats] = ttest2(rpc,opc);
+sigstar({[1,2]}, p)
+title(['IC Tone Inactivation']);
+xticklabels({'light off', 'light on'});
+
+clear rpc opc 
+for jj=2:size(icDataTestsOnly,1) % IC Choice
+    rpc(jj-1)=nanmean(icDataTestsOnly{jj,37});
+    opc(jj-1)=nanmean(icDataTestsOnly{jj,38});
+end
+subplot(2,3,6)
+qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2)];
+qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
+scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
+    rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
+    opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
+[h,p,ci,stats] = ttest2(rpc,opc);
+sigstar({[1,2]}, p)
+title(['IC Choice Inactivation']);
+xticklabels({'light off', 'light on'});
+
+wwFig.Position(3:4)=[725 475];
+saveas(gcf,['ByAnimal_T_IC_PercentCorrect_Opto']);
+saveas(gcf,['ByAnimal_T_IC_PercentCorrect_Opto.png']);
 
 
 clear rpc opc % Controls

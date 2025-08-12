@@ -4,7 +4,7 @@
 % Behavior_Bpod_Opto_SJK(cohort)
 %% now load the data for each cohort and make one big file called allCohorts
 cohortRange=1:8;
-allCohorts=loadAllOptoCohorts(cohortRange);
+[allCohorts,allLickMat] =loadAllOptoCohorts(cohortRange);
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 
@@ -22,17 +22,21 @@ condition=[0 0 1 0 1 0 1 0 1 ... %158-162
 %     0 0 0 0 0 0 ...  % 200, 201, 202 who did not learn
 % condition=[0 0 0 0 0 0 0 0 0 0 0 0 2]; % cohort 6, 198, 203, 204 
 
-testIdx=find(condition==2);
-allDataTestsOnly=allCohorts(1,:);
+testIdx=find(condition==2); allDataTestsOnly=allCohorts(1,:); lickMatTestsOnly=allLickMat(1,:);
+lickIdx=[1 1 1 1 1 2 1 1 2 2 1 1 1 2 1 1 1 1 2 2 1];
+lickIdx=find(lickIdx==2);
 allDataTestsOnly(2:length(testIdx)+1,:)=allCohorts(testIdx,:);
+lickMatTestsOnly(2:length(lickIdx)+1,:)=allLickMat(lickIdx,:);
 allDataTestsOnly(8:10,:)=[];
 % allDataTestsOnly(8:10,:)=[];
 ctlIdx=[21,25,27,31,33,35]; % not all controls are good
 allDataCtlOnly=allCohorts(1,:);
 allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
-icDataTestsOnly=allCohorts(1,:);
-icIdx=[61, 63, 65];
-icDataTestsOnly(2:4,:)=allCohorts(icIdx,:);
+% icDataTestsOnly=allCohorts(1,:);
+% icIdx=[61, 63, 65];
+load('O:\sjk\Behavior\cohort_8\summaryData.mat')
+icDataTestsOnly=optomeanMat(1,:);
+icDataTestsOnly(2,:)=optomeanMat(11,:);
 % icDataTestsOnly(2,:)=allCohorts(49,:);
 allDataTestsOnly{1,27}='RPC MGB Full Trial';
 allDataTestsOnly{1,28}='OPC MGB Full Trial';
@@ -72,6 +76,9 @@ icDataTestsOnly{1,36}='OPC IC Tone Trial';
 icDataTestsOnly{1,37}='RPC IC Choice Trial';
 icDataTestsOnly{1,38}='OPC IC Choice Trial';
 
+rates={};rates=allDataTestsOnly{:,1};
+rates{1,2}='Rates variable';
+rates(2:7,2)=allDataTestsOnly(2:7,27);
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
@@ -80,7 +87,7 @@ optocolor=[102/255 178/255 255/255];
 
 close all
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2];
-plotMGB=0;
+plotMGB=1;
 if plotMGB==1
     for jj=2:size(allDataTestsOnly,1)
         eeFig=figure(jj);hold on;
@@ -421,7 +428,7 @@ end
 close all
 %% make plots to compare hit and fa rate with light on vs light off
 close all
-plotMGB=0;
+plotMGB=1;
 if plotMGB==1
     for jj=2:size(allDataTestsOnly,1)
         eeFig=figure(jj+3);hold on;
@@ -641,7 +648,10 @@ end
 clear eee eeFig 
 close all
 %CONTROLS
-for jj=2:size(allDataCtlOnly,1)
+controls=0;
+if controls==0
+else
+    for jj=2:size(allDataCtlOnly,1)
     eeFig=figure(jj+10);hold on;
     rhit=allDataCtlOnly{jj,10}; % full trial MGB
     rfa=allDataCtlOnly{jj,11};
@@ -807,6 +817,7 @@ for jj=2:size(allDataCtlOnly,1)
     saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_HitFARate_Opto']);
     saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_HitFARate_Opto.png']);
 end
+end
 close all
 %% all animal summary analysis
 % group by animal
@@ -825,6 +836,9 @@ mgbTempTestsOnly{1,41} = 'dprime MGB T Choice, light on and light off';
 allDataCtlOnly{1,39} = 'dprime MGB C Full, light on and light off';
 allDataCtlOnly{1,40} = 'dprime MGB C Tone, light on and light off';
 allDataCtlOnly{1,41} = 'dprime MGB C Choice, light on and light off';
+icDataTestsOnly{1,39} = 'dprime MGB C Full, light on and light off';
+icDataTestsOnly{1,40} = 'dprime MGB C Tone, light on and light off';
+icDataTestsOnly{1,41} = 'dprime MGB C Choice, light on and light off';
 
 close all
 [mgbTempTestsOnly,allDataCtlOnly,allDataTestsOnly]=byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor);
@@ -1209,8 +1223,68 @@ saveas(f,'AvgAllAnimals_LickLatHistFA_ByCondition','png');
 
 %% check for rebound licking
 
-% plotlicks_after_light(lickMat,allDataTestsOnly, allDataCtlOnly,icDataTestsOnly)
+plotlicks_after_light(lickMatTestsOnly)
 
+%% get learning curves...
+
+% load rates variable for each animal, and specify the 
+
+%% regression on binned trial periods
+allOptoMat={};allOptoMat{1,1}='Matrix'; allOptoMat{1,2}='Opto Light bins';
+allOptoMat{1,3}='Outcome';
+SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
+START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
+% first take all of the trials from the matrix variable 
+for ee=2:size(allDataTestsOnly)
+    tempMat=allDataTestsOnly{ee,26};
+    daysIdx=days{ee,2}; % this is the logical variable for what days are used for the experimental data
+    expRange=days{ee,3}; daysIdx=daysIdx(expRange);
+    daysIdx=expRange(daysIdx);
+    optoMat=[];
+    for ww=1:length(daysIdx)
+        optoIdx=find(tempMat(:,SESS)==daysIdx(ww));
+        optoMatTemp=tempMat(optoIdx,:);
+        optoMat=vertcat(optoMat, optoMatTemp);
+    end
+    allOptoMat{ee}=optoMat;
+end
+allOptoMat=allOptoMat';
+clear tempMat
+% using 100ms bins
+for ww=2:size(allOptoMat)
+    optoDummyCode={};
+    tempMat=allOptoMat{ww,1};
+    for qq=1:size(tempMat)
+        if tempMat(qq,CTXT)==6
+            % use lick latency for the choice context, which is closed loop
+            optoOffTime=tempMat(qq,LICKL);
+            if isnan(optoOffTime)
+                optoDummyCode{qq}=[0 1 1 1 1 1 1 1 1 1 1 1 1 ...
+                    1 1 1 1 1 1 1 1 1 1 ...
+                    1 1 1 1 1];
+            else
+                optoBins=optoOffTime*10;optoBins=floor(optoBins);
+                optoBins=ones(1,optoBins);
+                optoDummyCode{qq}=horzcat(0,optoBins);
+                optoDummyCode{qq}= padarray(optoDummyCode,28,0,'post'); % check if this works... 
+            end
+
+        elseif tempMat(qq,CTXT)==5
+            optoDummyCode{qq}=[1 0 0 0 0 0 0 0 0 0 0 0 0 ...
+                0 0 0 0 0 0 0 0 0 0 ... 
+                0 0 0 0 0];
+        elseif tempMat(qq,CTXT)==2
+            optoDummyCode{qq}=[1 1 1 1 1 1 1 1 1 1 1 1 1 ...
+                1 1 1 1 1 1 1 1 1 1 ...
+                1 1 1 1 1];
+        else
+            optoDummyCode{qq}=[0 0 0 0 0 0 0];
+        end
+        % also add the outcome; whether the animal got it right
+    allOptoMat{ww,2}=optoDummyCode;
+    end
+end
+                
 
 
 %% AC Expert Data

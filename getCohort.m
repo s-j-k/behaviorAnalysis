@@ -49,9 +49,18 @@ switch cohort
     
     case 10
     pathsave='O:\sjk\Behavior\cohort_8\';
-    subjlist={'sk246','sk247','sk248','sk249','sk250','sk251','sk252','sk253'}; %dreads - 5, window - 1, fibers - 3
+    subjlist={'sk246','sk247','sk248','sk249','sk250','sk251','sk252','sk253'};
     explist=[1 1 1 1 1 1 1 1];
     
+    case 11
+    pathsave='O:\sjk\Behavior\cohort_9\';
+    subjlist={'sk258','sk259','sk260','sk261','sk262','sk263','sk264','sk265','sk266'}; 
+    explist=[1 1 1 1 1 1 1 1 1];
+    
+    case 12
+    pathsave='O:\sjk\Behavior\cohort_10\';
+    subjlist={'sk273','sk274','sk275'}; 
+    explist=[1 1 1];
     
     otherwise
         disp('Cohort not found');    
