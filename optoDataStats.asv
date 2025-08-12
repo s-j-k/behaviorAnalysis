@@ -1314,10 +1314,6 @@ for ww=2:size(allOptoMat)
                     1 1 1 1 1];
             else
                 optoBins=optoOffTime*10;optoBins=floor(optoBins);
-                if optoBins > 27
-                    optoBins=27;
-                else
-                end
                 optoBins=ones(1,optoBins);
                 optoDummyCode{qq}=horzcat(0,optoBins);
                 optoDummyCode{qq}= [optoDummyCode{qq} zeros(1,(28-length(optoDummyCode{qq})))]; % check if this works... 
@@ -1360,14 +1356,10 @@ for tt=2:7
     lickTemp=cell2mat(lickTemp);lickTemp=lickTemp';
     lickBinary=vertcat(lickBinary, lickTemp);
     optoTemp=allOptoMat{tt,2};
-    for pp=1:length(optoTemp)
-        clear optoTemp2
-        optoTemp2=cell2mat(optoTemp(1,pp));
-        disp(pp)
-        optoBins=vertcat(optoBins, optoTemp2);
-    end
+    optoTemp=cell2mat(optoTemp);
+    optoBins=vertcat(optoBins, optoTemp');
 end
-
+optoBins=allOptoMat{2:7,2};
 tbl = table(lickBinary,optoBins,VariableNames=["lickBinary","optoBins"]);
 modelspec = "LickBinary ~ Opto";
 mdl = fitglm(tbl,modelspec,Distribution="binomial");
