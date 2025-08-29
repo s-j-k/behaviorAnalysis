@@ -97,6 +97,19 @@ for nbsubj = 1:nSubj % through animals
     SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
     START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
     toremove = 0;
+    %to make sure files with less than 270 trials are not taken into
+        %consideration
+%     for maf=1:length(nFiles)
+%         clear namemat
+%         namemat=filenames{maf};
+%         load(namemat);
+%         if SessionData.nTrials<270
+%             movefolder= ([subjPath 'bad']);
+%             movefile(namemat, movefolder) %moves files to sessionOut folder per animal
+%         end
+%         cd(subjPath);
+%     end
+
     for i=1:nFiles
 
         if ~exist([subjPath 'bad']) % TRYING TO remove files that are too
@@ -106,18 +119,7 @@ for nbsubj = 1:nSubj % through animals
         cd(subjPath)
         matfiles2 = dir('*.mat'); %finds all GNG sessions for the selected animal
 
-        %to make sure files with less than 270 trials are not taken into
-        %consideration
-        for maf=1:length(matfiles2)
-            clear namemat
-            namemat=matfiles2(maf).name;
-            load(namemat);
-            if SessionData.nTrials<270
-                movefolder= ([subjPath 'bad']);
-                movefile(namemat, movefolder) %moves files to sessionOut folder per animal
-            end
-            cd(subjPath);
-        end
+        
     end
     
     files = dir([subjPath '*.mat']); % do it again to get the new file list

@@ -1,5 +1,4 @@
-%Calculates discriminability index " d' " and criterion "c" according to 
-%animal's Hit (H),
+%Calculates discriminability index " d' " and criterion "c" according to animal's Hit (H),
 %Misses (M), False alarms (FA) and Correct rejects (CR) total numbers
 %by S.M. 11/1/2019
 %Updated by S.M. 12/03/2020
@@ -10,19 +9,34 @@ if nargin==4
     M=b;
     CR=c;
     FA=d;
+    
+    %calculate H and FA probabolity from values
+    total_go=H+M;
+    total_nogo=FA+CR;
+    pH=H/total_go;
+    pFA=FA/total_nogo;
+    
 elseif nargin==1
     H=a(1);
     M=a(2);
     CR=a(3);
     FA=a(4);
+    
+    %calculate H and FA probabolity from values
+    total_go=H+M;
+    total_nogo=FA+CR;
+    pH=H/total_go;
+    pFA=FA/total_nogo;
+    
+elseif nargin==2
+    
+    pH=a;
+    pFA=b;
+    total_go=25;
+    total_nogo=25;
 end
 
-%calculate H and FA probabolity from values
-total_go=H+M;
-total_nogo=FA+CR;
 
-pH=H/total_go;
-pFA=FA/total_nogo;
 
 %if probability of H or FA is 0 or 1 aproximate according to Kuchibhotla et
 %al 2019 for zero=1/2n and for one=1-1/2n

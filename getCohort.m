@@ -54,8 +54,10 @@ switch cohort
     
     case 11
     pathsave='O:\sjk\Behavior\cohort_9\';
-    subjlist={'sk258','sk259','sk260','sk261','sk262','sk263','sk264','sk265','sk266'}; 
-    explist=[1 1 1 1 1 1 1 1 1];
+%     subjlist={'sk258','sk259','sk260','sk261','sk262','sk263','sk264','sk265','sk266'}; 
+%     explist=[1 1 1 1 1 1 1 1 1];
+    subjlist={'sk260','sk261','sk262','sk263','sk264','sk265','sk266'}; 
+    explist=[1 1 1 1 1 1 1];
     
     case 12
     pathsave='O:\sjk\Behavior\cohort_10\';

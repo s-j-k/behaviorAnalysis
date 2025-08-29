@@ -34,10 +34,13 @@ allDataCtlOnly=allCohorts(1,:);
 allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
 % icDataTestsOnly=allCohorts(1,:);
 % icIdx=[61, 63, 65];
-load('O:\sjk\Behavior\cohort_8\summaryData.mat')
+% load('O:\sjk\Behavior\cohort_8\summaryData.mat') % window animal, sk250,
+% row 11
+% icDataTestsOnly(2,:)=optomeanMat(11,:);
+load('O:\sjk\Behavior\cohort_9\summaryData.mat')
 icDataTestsOnly=optomeanMat(1,:);
-icDataTestsOnly(2,:)=optomeanMat(11,:);
-% icDataTestsOnly(2,:)=allCohorts(49,:);
+icDataTestsOnly(2,:)=optomeanMat(3,:);
+icDataTestsOnly(3,:)=optomeanMat(5,:);
 allDataTestsOnly{1,27}='RPC MGB Full Trial';
 allDataTestsOnly{1,28}='OPC MGB Full Trial';
 allDataTestsOnly{1,29}='RPC MGB Tone Trial';
@@ -428,7 +431,7 @@ end
 close all
 %% make plots to compare hit and fa rate with light on vs light off
 close all
-plotMGB=1;
+plotMGB=0;
 if plotMGB==1
     for jj=2:size(allDataTestsOnly,1)
         eeFig=figure(jj+3);hold on;
@@ -1281,96 +1284,9 @@ close(dpFig);
 
 
 %% regression on binned trial periods
-allOptoMat={};allOptoMat{1,1}='Matrix'; 
-SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
-START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
-% first take all of the trials from the matrix variable 
-for ee=2:size(allDataTestsOnly)
-    tempMat=allDataTestsOnly{ee,26};
-    daysIdx=days{ee,2}; % this is the logical variable for what days are used for the experimental data
-    expRange=days{ee,3}; daysIdx=daysIdx(expRange);
-    daysIdx=expRange(daysIdx);
-    optoMat=[];
-    for ww=1:length(daysIdx)
-        optoIdx=find(tempMat(:,SESS)==daysIdx(ww));
-        optoMatTemp=tempMat(optoIdx,:);
-        optoMat=vertcat(optoMat, optoMatTemp);
-    end
-    allOptoMat{ee}=optoMat;
-end
-allOptoMat=allOptoMat';
-clear tempMat
-% using 100ms bins
-for ww=2:size(allOptoMat)
-    optoDummyCode={};lickPredictor={};
-    tempMat=allOptoMat{ww,1};
-    for qq=1:size(tempMat)
-        if tempMat(qq,CTXT)==6
-            % use lick latency for the choice context, which is closed loop
-            optoOffTime=tempMat(qq,LICKL);
-            if isnan(optoOffTime)
-                optoDummyCode{qq}=[0 1 1 1 1 1 1 1 1 1 1 1 1 ...
-                    1 1 1 1 1 1 1 1 1 1 ...
-                    1 1 1 1 1];
-            else
-                optoBins=optoOffTime*10;optoBins=floor(optoBins);
-                if optoBins > 27
-                    optoBins=27;
-                else
-                end
-                optoBins=ones(1,optoBins);
-                optoDummyCode{qq}=horzcat(0,optoBins);
-                optoDummyCode{qq}= [optoDummyCode{qq} zeros(1,(28-length(optoDummyCode{qq})))]; % check if this works... 
-            end
 
-        elseif tempMat(qq,CTXT)==5
-            optoDummyCode{qq}=[1 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ... 
-                0 0 0 0 0];
-        elseif tempMat(qq,CTXT)==2
-            optoDummyCode{qq}=[1 1 1 1 1 1 1 1 1 1 1 1 1 ...
-                1 1 1 1 1 1 1 1 1 1 ...
-                1 1 1 1 1];
-        else
-            optoDummyCode{qq}=[0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 0 0 0 0 ... 
-                0 0 0 0 0];
-        end
-        % also add the outcome; whether the animal got it right
-        if tempMat(qq,OUTCOME)==1 
-            lickPredictor{qq}=1;
-        elseif tempMat(qq,OUTCOME)==3
-            lickPredictor{qq}=1;
-        elseif tempMat(qq,OUTCOME)==2
-            lickPredictor{qq}=0;
-        elseif tempMat(qq,OUTCOME)==4
-            lickPredictor{qq}=0;
-        else
-            warning('Error. Outcome is a weird value.');
-        end
-    allOptoMat{ww,2}=optoDummyCode;
-    allOptoMat{ww,3}=lickPredictor;
-    end
-end
-allOptoMat{1,2}='Opto Light bins'; allOptoMat{1,3}='Lick Binary';   
-lickBinary=[];optoBins=[];
-for tt=2:7
-    clear lickTemp
-    lickTemp=allOptoMat{tt,3};
-    lickTemp=cell2mat(lickTemp);lickTemp=lickTemp';
-    lickBinary=vertcat(lickBinary, lickTemp);
-    optoTemp=allOptoMat{tt,2};
-    for pp=1:length(optoTemp)
-        clear optoTemp2
-        optoTemp2=cell2mat(optoTemp(1,pp));
-        disp(pp)
-        optoBins=vertcat(optoBins, optoTemp2);
-    end
-end
+[allOptoMat,X,y,tbl,mdl]=optoRegression(allDataTestsOnly,days);
 
-tbl = table(lickBinary,optoBins,VariableNames=["lickBinary","optoBins"]);
-modelspec = "LickBinary ~ Opto";
-mdl = fitglm(tbl,modelspec,Distribution="binomial");
 
 %% AC Expert Data
 cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials

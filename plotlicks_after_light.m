@@ -1,4 +1,4 @@
-function plotlicks_after_light(lickMatTestsOnly)
+editfunction plotlicks_after_light(lickMatTestsOnly)
 
 % for sk198 39+42 - full and choice, 40+44 - tone and choice
 nbins = 50;
