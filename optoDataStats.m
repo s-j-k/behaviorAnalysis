@@ -27,6 +27,12 @@ lickIdx=[1 1 1 1 1 2 1 1 2 2 1 1 1 2 1 1 1 1 2 2 1];
 lickIdx=find(lickIdx==2);
 allDataTestsOnly(2:length(testIdx)+1,:)=allCohorts(testIdx,:);
 lickMatTestsOnly(2:length(lickIdx)+1,:)=allLickMat(lickIdx,:);
+for rr=2:7
+    lickArray=lickMatTestsOnly{rr,19};
+    lickArray(isinf(lickArray)) = 0;
+    lickMatTestsOnly{rr,19}=lickArray;
+end
+
 allDataTestsOnly(8:10,:)=[];
 % allDataTestsOnly(8:10,:)=[];
 ctlIdx=[21,25,27,31,33,35]; % not all controls are good
@@ -37,10 +43,12 @@ allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
 % load('O:\sjk\Behavior\cohort_8\summaryData.mat') % window animal, sk250,
 % row 11
 % icDataTestsOnly(2,:)=optomeanMat(11,:);
-load('O:\sjk\Behavior\cohort_9\summaryData.mat')
-icDataTestsOnly=optomeanMat(1,:);
-icDataTestsOnly(2,:)=optomeanMat(3,:);
-icDataTestsOnly(3,:)=optomeanMat(5,:);
+
+% load('O:\sjk\Behavior\cohort_9\summaryData.mat')
+% icDataTestsOnly=optomeanMat(1,:);
+% icDataTestsOnly(2,:)=optomeanMat(3,:);
+% icDataTestsOnly(3,:)=optomeanMat(5,:);
+
 allDataTestsOnly{1,27}='RPC MGB Full Trial';
 allDataTestsOnly{1,28}='OPC MGB Full Trial';
 allDataTestsOnly{1,29}='RPC MGB Tone Trial';
@@ -1033,6 +1041,7 @@ subplot(2,4,5); title('Reinf Hit'); hold on;
 histogram(lickReinfHit,50,'Normalization','probability');
 ylabel('probability'); xlabel('');xlabel('seconds');
 
+
 for tt=2:nbsubj
     pp=1;
     clear lickRTemp
@@ -1284,7 +1293,7 @@ close(dpFig);
 
 
 %% regression on binned trial periods
-
+% needs updating 8/29/25
 [allOptoMat,X,y,tbl,mdl]=optoRegression(allDataTestsOnly,days);
 
 

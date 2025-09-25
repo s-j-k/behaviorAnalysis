@@ -1,4 +1,4 @@
-editfunction plotlicks_after_light(lickMatTestsOnly)
+function plotlicks_after_light(lickMatTestsOnly)
 
 % for sk198 39+42 - full and choice, 40+44 - tone and choice
 nbins = 50;
@@ -32,61 +32,73 @@ for uu=2:size(lickMatTestsOnly,1)
     subplot(4,3,1);title('full trial hit');hold on;
     plot(bins,nanmean(lickhisto_hit,1),'b');
     plot(bins,nanmean(lickhistr_hit,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhisto_hit,lickhistr_hit);
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,2);title('choice hit');hold on;
     plot(bins,nanmean(lickhistoc_hit,1),'b');
     plot(bins,nanmean(lickhistr_hit,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistoc_hit,lickhistr_hit);
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,3);title('tone hit');hold on;
     plot(bins,nanmean(lickhistot_hit,1),'b');
     plot(bins,nanmean(lickhistr_hit,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistot_hit,lickhistr_hit);
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,4);title('full trial, miss,');hold on;
     plot(bins,nanmean(lickhisto_miss,1),'b');
     plot(bins,nanmean(lickhistr_miss,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhisto_miss,lickhistr_miss);
     xline(2.8);xline(0.3);axis tight;ylim([0 0.3]);
 
     subplot(4,3,5);title('choice, miss');hold on;
     plot(bins,nanmean(lickhistoc_miss,1),'b');
     plot(bins,nanmean(lickhistr_miss,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistoc_miss,lickhistr_miss);
     xline(2.8);xline(0.3);axis tight;ylim([0 0.3]);
 
     subplot(4,3,6);title('tone, miss');hold on;
     plot(bins,nanmean(lickhistot_miss,1),'b');
     plot(bins,nanmean(lickhistr_miss,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistot_miss,lickhistr_miss);
     xline(2.8);xline(0.3);axis tight;ylim([0 0.3]);
 
     subplot(4,3,7);title('full trial cr');hold on;
     plot(bins,nanmean(lickhisto_cr,1),'b');
     plot(bins,nanmean(lickhistr_cr,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhisto_cr,lickhistr_cr);
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,8);title('choice cr');hold on;
     plot(bins,nanmean(lickhistoc_cr,1),'b');
     plot(bins,nanmean(lickhistr_cr,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistoc_cr,lickhistr_cr);
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,9);title('tone cr');hold on;
     plot(bins,nanmean(lickhistot_cr,1),'b');
     plot(bins,nanmean(lickhistr_cr,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistot_cr,lickhistr_cr);
     xline(2.8);xline(0.3);axis tight;
     
     subplot(4,3,10);title('full trial fa');hold on;
     plot(bins,nanmean(lickhisto_fa,1),'b');
     plot(bins,nanmean(lickhistr_fa,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhisto_fa,lickhistr_fa);
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,11);title('choice fa');hold on;
     plot(bins,nanmean(lickhistoc_fa,1),'b');
     plot(bins,nanmean(lickhistr_fa,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistoc_cr,lickhistr_cr);
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,12);title('tone fa');hold on;
     plot(bins,nanmean(lickhistot_fa,1),'b');
     plot(bins,nanmean(lickhistr_fa,1),'k');
+    [h,pHit,ci,stats] = ttest2(lickhistot_fa,lickhistr_fa);
     xline(2.8);xline(0.3);axis tight;
 
     filetype='fig';
@@ -115,61 +127,85 @@ end
     subplot(4,3,1);title('full trial hit');hold on;
     plot(bins,nanmean(ohit,1),'b');
     plot(bins,nanmean(rhit,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(ohit,1),nanmean(rhit,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,2);title('choice hit');hold on;
     plot(bins,nanmean(chit,1),'b');
     plot(bins,nanmean(rhit,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(chit,1),nanmean(rhit,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,3);title('tone hit');hold on;
     plot(bins,nanmean(thit,1),'b');
     plot(bins,nanmean(rhit,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(thit,1),nanmean(rhit,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,4);title('full trial, miss,');hold on;
     plot(bins,nanmean(omiss,1),'b');
     plot(bins,nanmean(rmiss,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(omiss,1),nanmean(rmiss,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;ylim([0 0.3]);
 
     subplot(4,3,5);title('choice, miss');hold on;
     plot(bins,nanmean(cmiss,1),'b');
     plot(bins,nanmean(rmiss,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(cmiss,1),nanmean(rmiss,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;ylim([0 0.3]);
 
     subplot(4,3,6);title('tone, miss');hold on;
     plot(bins,nanmean(tmiss,1),'b');
     plot(bins,nanmean(rmiss,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(tmiss,1),nanmean(rmiss,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;ylim([0 0.3]);
 
     subplot(4,3,7);title('full trial cr');hold on;
     plot(bins,nanmean(ocr,1),'b');
     plot(bins,nanmean(rcr,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(ocr,1),nanmean(rcr,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,8);title('choice cr');hold on;
     plot(bins,nanmean(ccr,1),'b');
     plot(bins,nanmean(rcr,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(ccr,1),nanmean(rcr,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,9);title('tone cr');hold on;
     plot(bins,nanmean(tcr,1),'b');
     plot(bins,nanmean(rcr,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(tcr,1),nanmean(rcr,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
     
     subplot(4,3,10);title('full trial fa');hold on;
     plot(bins,nanmean(ofa,1),'b');
     plot(bins,nanmean(rfa,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(ofa,1),nanmean(rfa,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,11);title('choice fa');hold on;
     plot(bins,nanmean(cfa,1),'b');
     plot(bins,nanmean(rfa,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(cfa,1),nanmean(rfa,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     subplot(4,3,12);title('tone fa');hold on;
     plot(bins,nanmean(tfa,1),'b');
     plot(bins,nanmean(rfa,1),'k');
+    [h,pHit,ci,stats] = ttest2(nanmean(tfa,1),nanmean(rfa,1));
+    text(min(xlim), min(ylim),num2str(pHit));
     xline(2.8);xline(0.3);axis tight;
 
     filetype='fig';
