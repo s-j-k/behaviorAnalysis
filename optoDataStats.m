@@ -44,10 +44,11 @@ allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
 % row 11
 % icDataTestsOnly(2,:)=optomeanMat(11,:);
 
-% load('O:\sjk\Behavior\cohort_9\summaryData.mat')
-% icDataTestsOnly=optomeanMat(1,:);
-% icDataTestsOnly(2,:)=optomeanMat(3,:);
-% icDataTestsOnly(3,:)=optomeanMat(5,:);
+load('O:\sjk\Behavior\cohort_9\summaryData.mat')
+icDataTestsOnly=optomeanMat(1,:);
+icDataTestsOnly(2,:)=optomeanMat(3,:);
+icDataTestsOnly(3,:)=optomeanMat(5,:);
+icDataTestsOnly(4,:)=optomeanMat(7,:);
 
 allDataTestsOnly{1,27}='RPC MGB Full Trial';
 allDataTestsOnly{1,28}='OPC MGB Full Trial';
@@ -98,7 +99,7 @@ optocolor=[102/255 178/255 255/255];
 
 close all
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2];
-plotMGB=1;
+plotMGB=0;
 if plotMGB==1
     for jj=2:size(allDataTestsOnly,1)
         eeFig=figure(jj);hold on;

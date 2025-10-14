@@ -86,10 +86,11 @@ for nbsubj = 1:nSubj % through animals
 %     subjPath = [path subj '\GNG_MultiProbOpto_SJK\Session Data\'];
     subjPath = [path subj '\GNG_MultiProbOptoChoice_SJK\Session Data\'];
 %     subjPath = [path subj '\LickingGNG\Session Data\'];
-    cd(subjPath)
-    files = dir('*.mat');
+
+    files = dir([subjPath '*.mat']); 
     nFiles = length(files);
     if nFiles == 0; end
+    
     filenames = cell(nFiles,1); 
     licks = cell(nFiles,1);
     matrix = []; 
@@ -103,8 +104,8 @@ for nbsubj = 1:nSubj % through animals
             mkdir(subjPath, 'bad') 
         end 
         cd(subjPath)
-%         matfiles2 = dir('*.mat'); %finds all GNG sessions for the selected animal
-        namemat=files(i);
+        matfiles2 = dir('*.mat'); %finds all GNG sessions for the selected animal
+        namemat=matfiles2(i);
         namemat=namemat.name;
         load([subjPath namemat]);
         if SessionData.nTrials<270
