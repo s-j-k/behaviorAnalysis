@@ -2338,16 +2338,16 @@ for jj=1:length(icIdx)
     ICsr_fa2=ICslr_fa;
     ICmr_hit2(isnan(ICmlo_hit))=nan;
     ICmr_fa2(isnan(ICmlo_fa))=nan;
-    hitLickRate(jj)=nanmean(ICmr_hit2(icIdx(jj),:));
+    hitLickRate(jj)=nanmean(ICmlr_hit(icIdx(jj),:));
     ohitLickRate(jj)=nanmean(ICmlo_hit(icIdx(jj),:));
-    faLickRate(jj)=nanmean(ICmr_fa2(icIdx(jj),:));
+    faLickRate(jj)=nanmean(ICmlr_fa(icIdx(jj),:));
     ofaLickRate(jj)=nanmean(ICmlo_fa(icIdx(jj),:));
     
     ICsr_hit2(isnan(ICslo_hit))=nan;
     ICsr_fa2(isnan(ICslo_fa))=nan;
-    hitLickRateE(jj)=nanmean(ICsr_hit2(icIdx(jj),:));
+    hitLickRateE(jj)=nanmean(ICslr_hit(icIdx(jj),:));
     ohitLickRateE(jj)=nanmean(ICslo_hit(icIdx(jj),:));
-    faLickRateE(jj)=nanmean(ICsr_fa2(icIdx(jj),:));
+    faLickRateE(jj)=nanmean(ICslr_fa(icIdx(jj),:));
     ofaLickRateE(jj)=nanmean(ICslo_fa(icIdx(jj),:));
 end
 
@@ -2388,20 +2388,18 @@ for jj=1:length(icIdx)
     ICmr_fa2=ICmlr_fa;
     ICsr_hit2=ICslr_hit;
     ICsr_fa2=ICslr_fa;
-    ICmr_hit2(isnan(ICmlto_hit))=nan;
-    ICmr_fa2(isnan(ICmlto_fa))=nan;
-    hitLickRate(jj)=nanmean(ICmr_hit2(icIdx(jj),:));
+    ICmr_hit2(isnan(ICmlo_hit))=nan;
+    ICmr_fa2(isnan(ICmlo_fa))=nan;
     othitLickRate(jj)=nanmean(ICmlto_hit(icIdx(jj),:));
-    faLickRate(jj)=nanmean(ICmr_fa2(icIdx(jj),:));
     otfaLickRate(jj)=nanmean(ICmlto_fa(icIdx(jj),:));
-    
-    ICsr_hit2(isnan(ICslto_hit))=nan;
-    ICsr_fa2(isnan(ICslto_fa))=nan;
-    hitLickRateE(jj)=nanmean(ICsr_hit2(icIdx(jj),:));
     othitLickRateE(jj)=nanmean(ICslto_hit(icIdx(jj),:));
-    faLickRateE(jj)=nanmean(ICsr_fa2(icIdx(jj),:));
     otfaLickRateE(jj)=nanmean(ICslto_fa(icIdx(jj),:));
-end
+    
+    ICsr_hit2(isnan(ICslo_hit))=nan;
+    ICsr_fa2(isnan(ICslo_fa))=nan;
+    
+
+    
 
 subplot(2,3,5) % tone IC
 lickbarT=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(othitLickRate) nanmean(otfaLickRate)]); hold on;
@@ -2435,25 +2433,11 @@ ylabel('mean lick rate');ylim([0 8]);
 title(['By Animal IC Tone']);
 xticklabels({'hit', 'fa','hit','fa'});
 
-for jj=1:length(icIdx)
-    ICmr_hit2=ICmlr_hit;
-    ICmr_fa2=ICmlr_fa;
-    ICsr_hit2=ICslr_hit;
-    ICsr_fa2=ICslr_fa;
-    ICmr_hit2(isnan(ICmlco_hit))=nan;
-    ICmr_fa2(isnan(ICmlco_fa))=nan;
-    hitLickRate(jj)=nanmean(ICmr_hit2(icIdx(jj),:));
+
     ochitLickRate(jj)=nanmean(ICmlco_hit(icIdx(jj),:));
-    faLickRate(jj)=nanmean(ICmr_fa2(icIdx(jj),:));
     ocfaLickRate(jj)=nanmean(ICmlco_fa(icIdx(jj),:));
-    
-    ICsr_hit2(isnan(ICslto_hit))=nan;
-    ICsr_fa2(isnan(ICslto_fa))=nan;
-    hitLickRateE(jj)=nanmean(ICsr_hit2(icIdx(jj),:));
     ochitLickRateE(jj)=nanmean(ICslco_hit(icIdx(jj),:));
-    faLickRateE(jj)=nanmean(ICsr_fa2(icIdx(jj),:));
     ocfaLickRateE(jj)=nanmean(ICslco_fa(icIdx(jj),:));  
-end
 
 subplot(2,3,6); % choice IC
 lickbarC=bar([nanmean(hitLickRate) nanmean(faLickRate) nanmean(ochitLickRate) nanmean(ocfaLickRate)]); hold on;

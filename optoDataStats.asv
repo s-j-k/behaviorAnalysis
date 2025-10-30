@@ -845,12 +845,10 @@ close all
 % group by animal
 close all
 clear qqq wwFig rpc opc
-mgbTempTestsOnly={};
-mgbTempTestsOnly=allDataTestsOnly;
-[mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor);
+[mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
-% [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
+[allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
@@ -931,6 +929,7 @@ if skip==0
     end
     %% compare differences in percent correct across each light off vs light on condition
     %this is by session
+    % none of these analyses are significant 2025/01
     allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
     allDataTestsOnly{1,40}='MGB Difference PC Tone';
     allDataTestsOnly{1,41}='MGB Difference PC Choice';
@@ -987,7 +986,7 @@ allDataCtlOnly{1,45} = 'lick rate MGB T Full, light on and light off';
 allDataCtlOnly{1,46} = 'lick rate MGB T Tone, light on and light off';
 allDataCtlOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
 
-lickLatOptoPerAnimal(mgbTempTestsOnly,allDataTestsOnly,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+lickLatOptoPerAnimal(mgbTempTestsOnly,allDataTestsOnly,allDataTestsOnly2,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 
 %% organize lick data

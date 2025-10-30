@@ -1,4 +1,4 @@
-function [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,tempTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor)
+function [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor)
 
 % reinfcolor1= [0.2,0.2,0.2]; %this is to plot each animal as a different
 % color
@@ -97,18 +97,6 @@ scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(6:9),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor2);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(10:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor3);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor1);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(6:9),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor2);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(10:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor3);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 title(['MGB Choice Inactivation']);
@@ -116,9 +104,9 @@ xticklabels({'light off', 'light on'});
 
 % now do the IC
 rpc=NaN;opc=NaN; 
-for jj=2:size(tempTestsOnly,1)% IC Full
-    rpc=cat(1,rpc,tempTestsOnly{jj,33});
-    opc=cat(1,opc,tempTestsOnly{jj,34});
+for jj=2:size(icDataTestsOnly,1)% IC Full
+    rpc=cat(1,rpc,icDataTestsOnly{jj,33});
+    opc=cat(1,opc,icDataTestsOnly{jj,34});
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -149,9 +137,9 @@ allDataTestsOnly{jj,28}=opc;
 
 clear rpc opc
 rpc=NaN;opc=NaN;
-for jj=2:size(tempTestsOnly,1) % IC Tone
-    rpc=cat(1,rpc,tempTestsOnly{jj,35});
-    opc=cat(1,opc,tempTestsOnly{jj,36});
+for jj=2:size(icDataTestsOnly,1) % IC Tone
+    rpc=cat(1,rpc,icDataTestsOnly{jj,35});
+    opc=cat(1,opc,icDataTestsOnly{jj,36});
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -160,18 +148,6 @@ scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(6:9),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor2);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(10:13),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor3);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor1);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(6:9),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor2);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(10:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor3);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 title(['IC Tone Inactivation']);
@@ -180,9 +156,9 @@ xticklabels({'light off', 'light on'});
 
 clear rpc opc
 rpc=NaN;opc=NaN;
-for jj=2:size(tempTestsOnly,1) % IC Choice
-    rpc=cat(1,rpc,tempTestsOnly{jj,37});
-    opc=cat(1,opc,tempTestsOnly{jj,38});
+for jj=2:size(icDataTestsOnly,1) % IC Choice
+    rpc=cat(1,rpc,icDataTestsOnly{jj,37});
+    opc=cat(1,opc,icDataTestsOnly{jj,38});
 end
 subplot(2,3,6)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -191,18 +167,6 @@ scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor1);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(6:9),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor2);
-% scatter(repmat(qqq(1).XEndPoints(1),4,1), ...
-%     rpc(10:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor3);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(1:4),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor1);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(6:9),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor2);
-% scatter(repmat(qqq(1).XEndPoints(2),4,1), ...
-%     opc(10:16),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor3);
 [h,p,ci,stats] = ttest2(rpc,opc);
 sigstar({[1,2]}, p)
 title(['IC Choice Inactivation']);

@@ -43,6 +43,11 @@ function [allCohorts, allLickMat] = loadAllOptoCohorts(cohortRange)
                 load('summaryData.mat');
                 cohort8=optomeanMat;  
                 lickMat8 = lickHistMat;
+        elseif cohortRange(ii)==11
+                cd('O:\sjk\Behavior\cohort_11')
+                load('summaryData.mat');
+                cohort11=optomeanMat;  
+                lickMat8 = lickHistMat;
         else disp('Cohort not found')
             
         end

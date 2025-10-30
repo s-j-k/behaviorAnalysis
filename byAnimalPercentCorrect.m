@@ -1,4 +1,4 @@
-function [mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor)
+function [mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor)
 
 % reinfcolor1= [0.2,0.2,0.2]; %this is to plot each animal as a different
 % color
@@ -9,8 +9,9 @@ function [mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorre
 % optocolor3=[181/255 216/255 255/255];
 
 % mgbTempTestsOnly=allDataTestsOnly(1:4,:);
-% mgbTempTestsOnly(5:7,:)=allDataTestsOnly(6:8,:);
-mgbTempTestsOnly=allDataTestsOnly;
+% mgbTempTestsOnly(5,:)=allDataTestsOnly(6,:);
+% mgbTempTestsOnly(6,:)=allDataTestsOnly(7,:);
+
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
 % discount sk194, fiber missing from right side
 % for 194-196, the height of the implant over the MGB (which connects to
@@ -84,7 +85,6 @@ saveas(gcf,['ByAnimal_T_MGB_PercentCorrect_Opto.png']);
 % 
 wwFig=figure(15);
 clear rpc opc
-xVector = [1 2 1 2];
 for jj=2:size(icDataTestsOnly,1) % test IC Full
     rpc(jj-1)=nanmean(icDataTestsOnly{jj,33});
     opc(jj-1)=nanmean(icDataTestsOnly{jj,34});
@@ -100,7 +100,8 @@ end
 % end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-percentCorrect = [rpc(1) opc(1) rpc(2) opc(2)];
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
+    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -122,7 +123,8 @@ for jj=2:size(icDataTestsOnly,1) % IC Tone
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-percentCorrect = [rpc(1) opc(1) rpc(2) opc(2)];
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
+    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -141,7 +143,8 @@ for jj=2:size(icDataTestsOnly,1) % IC Choice
 end
 subplot(2,3,6)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
-percentCorrect = [rpc(1) opc(1) rpc(2) opc(2)];
+percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
+    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);

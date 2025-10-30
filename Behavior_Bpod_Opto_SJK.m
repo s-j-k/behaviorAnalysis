@@ -619,15 +619,7 @@ for nbsubj = 1:nSubj % through animals
     end
     
 %% TO PLOT OPTO
-% if nbsubj==1
-%     optoplot=1;
-% elseif nbsubj==6
-%     optoplot=1; 
-% elseif nbsubj==7
-%     optoplot=1; 
-% else
-%     optoplot=0;
-% end
+
 optoplot=1;
 
 % bar graphs for opto
