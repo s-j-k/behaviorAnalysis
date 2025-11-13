@@ -24,8 +24,8 @@ switch cohort
     case 5
     pathsave='O:\sjk\Behavior\MGBIC_5\';
     subjlist={'sk190','sk191','sk192','sk193','sk194','sk195','sk196','sk197'}; %GTACR
-%     explist=[2 2 1 1 1 1 1 1];
-    explist=[1 1 1 1 1 2 1 1];
+    explist=[2 2 1 1 1 1 1 1];
+%     explist=[1 1 1 1 1 2 1 1];
     
     case 6
     pathsave='O:\sjk\Behavior\MGBIC_6\';
@@ -65,7 +65,7 @@ switch cohort
     case 13
     pathsave='O:\sjk\Behavior\cohort_11\';
     subjlist={'sk276','sk277','sk278','sk279','sk280','sk283'}; 
-    explist=[1 1 1 2 1 2];
+    explist=[1 2 1 2 1 2];
     
     otherwise
         disp('Cohort not found');    
