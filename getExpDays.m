@@ -280,7 +280,6 @@ dreadds=0;
                 4 1 2 1 2]; % 1 is saline, 2 is ligand
             expRange=8:length(dreadds);
         elseif nbsubj==4 % sk249
-            dreadds=0;
             mgbDays=[0 0 0 0 0 0 ...
                 0 0 ...
                 0 0 0 0 0 0];

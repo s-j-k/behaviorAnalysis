@@ -301,7 +301,7 @@ allDataCtlOnly{1,36}='OPC IC Tone Trial';
 allDataCtlOnly{1,37}='RPC IC Choice Trial';
 allDataCtlOnly{1,38}='OPC IC Choice Trial';
 
-ctlData=0;
+ctlData=1;
 if ctlData==0
 else
     for jj=2:size(allDataCtlOnly,1) % control animals
@@ -670,7 +670,7 @@ end
 clear eee eeFig 
 close all
 %CONTROLS
-controls=0;
+controls=1;
 if controls==0
 else
     for jj=2:size(allDataCtlOnly,1)
@@ -987,7 +987,7 @@ allDataCtlOnly{1,45} = 'lick rate MGB T Full, light on and light off';
 allDataCtlOnly{1,46} = 'lick rate MGB T Tone, light on and light off';
 allDataCtlOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
 
-lickLatOptoPerAnimal(mgbTempTestsOnly,allDataTestsOnly,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+lickLatOptoPerAnimal2(mgbTempTestsOnly,allDataTestsOnly,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 
 %% organize lick data
@@ -1047,6 +1047,7 @@ for tt=2:nbsubj
 end
 subplot(2,4,1); title('Reinf Hit'); hold on;
 xlim([0 1]);ylim([0 1]);
+
 histogram(lickReinfHit, 50,'Normalization','cdf');
 ylabel('probability'); xlabel('');xlabel('seconds');
 subplot(2,4,5); title('Reinf Hit'); hold on;

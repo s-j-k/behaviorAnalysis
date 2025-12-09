@@ -1,0 +1,39 @@
+function [pHit,pFA,hitLickRate,faLickRate,ohitLickRate,ofaLickRate]=lickBoxPlot(hitLickRate,faLickRate,ohitLickRate,ofaLickRate)
+
+reinfcolor= [0.4,0.4,0.4];
+optocolor=[102/255 178/255 255/255];
+colors=vertcat(reinfcolor, reinfcolor,optocolor,optocolor);
+lickbar=boxplot([hitLickRate',faLickRate',ohitLickRate',ofaLickRate'],'Color',colors,'boxstyle','outline','whisker',1000); hold on;
+%     error=[nanmean(hitLickRateE) nanmean(faLickRateE) nanmean(ohitLickRateE) nanmean(ofaLickRateE)];
+%     lickbar(1).FaceColor='flat'; lickbar(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
+%     scatter(repmat(lickbar(1).XEndPoints(1),size(hitLickRate,1),1), ...
+%         hitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     scatter(repmat(lickbar(1).XEndPoints(2),size(faLickRate,1),1), ...
+%         faLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     scatter(repmat(lickbar(1).XEndPoints(3),size(ohitLickRate,1),1), ...
+%         ohitLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     scatter(repmat(lickbar(1).XEndPoints(4),size(ofaLickRate,1),1), ...
+%         ofaLickRate,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     lickRate = [hitLickRate(1) faLickRate(1) hitLickRate(2) faLickRate(2)...
+%         hitLickRate(3) faLickRate(3) hitLickRate(4) faLickRate(4) ...
+%         hitLickRate(5) faLickRate(5) hitLickRate(6) faLickRate(6)];
+%     oLickRate=[ohitLickRate(1) ofaLickRate(1) ohitLickRate(2) ofaLickRate(2)...
+%         ohitLickRate(3) ofaLickRate(3) ohitLickRate(4) ofaLickRate(4)...
+%         ohitLickRate(5) ofaLickRate(5) ohitLickRate(6) ofaLickRate(6)];
+%     line([1 2],lickRate(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([1 2],lickRate(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([1 2],lickRate(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([1 2],lickRate(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([1 2],lickRate(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([1 2],lickRate(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([3 4],oLickRate(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([3 4],oLickRate(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([3 4],oLickRate(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([3 4],oLickRate(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([3 4],oLickRate(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
+%     line([3 4],oLickRate(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
+    
+[h,pHit,ci,stats] = ttest2(hitLickRate,ohitLickRate);
+[h,pFA,ci,stats] = ttest2(faLickRate,ofaLickRate);
+
+end
