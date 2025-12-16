@@ -48,9 +48,9 @@ switch cohort
     explist=[1 1 1 1 1 1 1 1];
     
     case 10
-    pathsave='O:\sjk\Behavior\cohort_8\';
+    pathsave='O:\sjk\Behavior\cohort_8\'; % dreadds cohort                                      
     subjlist={'sk246','sk247','sk248','sk249','sk250','sk251','sk252','sk253'};
-    explist=[3 3 1 3 1 1 1 1];
+    explist=[3 3 1 3 1 1 1 1]; %248 discounted because adverse reaction to injection, forgot task, recovered but wasn't consistent
     
     case 11
     pathsave='O:\sjk\Behavior\cohort_9\';
