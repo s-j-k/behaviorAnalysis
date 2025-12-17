@@ -259,7 +259,6 @@ dreadds=0;
         end
     elseif contains(path,'cohort_8')==1
         if nbsubj==1 % sk246
-            dreadds=0;
             mgbDays=[0 0 0 0 ...
                 0 0 0 0 0 ...
                 0 0 0 0 0];
@@ -293,7 +292,7 @@ dreadds=0;
             dreadds=[0 1 3 4 4 3]; % 1 is baseline
             % 3 is saline, 4 is ligand at 70dB
 %             dreadds=logical(dreadds);
-            expRange=8:length(dreadds);
+            expRange=1:length(dreadds);
 %         elseif nbsubj==5 %sk250
 %             mgbDays=[0 0 0 0 0 ...
 %                 0 0 0 0 0 ...

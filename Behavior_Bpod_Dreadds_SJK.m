@@ -541,12 +541,6 @@ for nbsubj = 1:nSubj % through animals
 % 
 %         ylabel('FA Lick rate (Hz)');legend('','reinforced','','full opto','','tone opto','','choice opto');
 %         xlabel('Days'); 
- 
-%         if savefig
-%             cd(pathsave);
-%             saveas(fig,[subjlist{nbsubj} '-ActionAndPerformance.' filetype]);
-%             close(fig);
-%         end
         
         if plot_lick_psth
             fig=figure;hold on;
@@ -703,51 +697,6 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
                 saveas(eeeFig,[subjlist{nbsubj} '-Dreadds60dBBarScatter-' num2str(nbins) '.png']);
                 close(eeeFig);
             end
-            optomeanMat{nbsubj+nbsubj,6}=mean(rates(expRange(dreadds==1),1));
-            optomeanMat{nbsubj+nbsubj,7}=mean(rates(expRange(dreadds==1),2)); 
-            optomeanMat{nbsubj+nbsubj,8}=mean(rates(expRange(dreadds==2),1));
-            optomeanMat{nbsubj+nbsubj,9}=mean(rates(expRange(dreadds==2),2)); 
-        else
-            eeeFig=figure('Position', [10 10 725 575]);hold on;
-            subplot(3, 1, 1);eee=bar([mean(rates(expRange(icDays),1)) nanmean(rates(expRange(icDays),5)); ...
-                mean(rates(expRange(icDays),2)) nanmean(rates(expRange(icDays),6))]); %hit, full opto hit, fa, opto fa
-            eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
-            scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-            scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-            eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-            scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['IC Full Opto']);
-            % legend('light off','light on');
-
-            subplot(3,1,2);eee=bar([mean(rates(expRange(icDays),1)) nanmean(rates(expRange(icDays),15)); ...
-                mean(rates(expRange(icDays),2)) nanmean(rates(expRange(icDays),16))]); %hit, full opto hit, fa, opto fa
-            eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-            scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-            scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-            eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-            scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            xticklabels({'hit','fa'}); title('IC Tone Opto');
-            % legend('light off','light on');
-
-            subplot(3,1,3);eee=bar([mean(rates(expRange(icDays),1)) nanmean(rates(expRange(icDays),17)); ...
-                mean(rates(expRange(icDays),2)) nanmean(rates(expRange(icDays),18))]); %hit, full opto hit, fa, opto fa
-            eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-            scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-            scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-            eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-            scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange(icDays),1),1),1),(rates(expRange(icDays),17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-            xticklabels({'hit','fa'}); title('IC Choice Opto');
-            % legend('light off','light on');
-
-            if savefig
-                cd(pathsave);
-                saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.' filetype]);
-                saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.png']);
-                close(eeeFig);
-            end
 
             optomeanMat{nbsubj+nbsubj,1}=subjlist(nbsubj);
             optomeanMat{nbsubj+nbsubj,2}=mean(rates(:,1));
@@ -758,22 +707,15 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
             optomeanMat{nbsubj+nbsubj,7}=nanmean(rates(:,16));
             optomeanMat{nbsubj+nbsubj,8}=mean(rates(:,17));
             optomeanMat{nbsubj+nbsubj,9}=mean(rates(:,18));
-            optomeanMat{nbsubj+nbsubj,10}=mean(rates(expRange(mgbDays),1)); % MGB Data
-            optomeanMat{nbsubj+nbsubj,11}=mean(rates(expRange(mgbDays),2));
-            optomeanMat{nbsubj+nbsubj,12}=nanmean(rates(expRange(mgbDays),5));
-            optomeanMat{nbsubj+nbsubj,13}=nanmean(rates(expRange(mgbDays),6));
-            optomeanMat{nbsubj+nbsubj,14}=nanmean(rates(expRange(mgbDays),15));
-            optomeanMat{nbsubj+nbsubj,15}=nanmean(rates(expRange(mgbDays),16));
-            optomeanMat{nbsubj+nbsubj,16}=mean(rates(expRange(mgbDays),17));
-            optomeanMat{nbsubj+nbsubj,17}=mean(rates(expRange(mgbDays),18));
-            optomeanMat{nbsubj+nbsubj,18}=mean(rates(expRange(icDays),1)); % IC Data
-            optomeanMat{nbsubj+nbsubj,19}=mean(rates(expRange(icDays),2));
-            optomeanMat{nbsubj+nbsubj,20}=nanmean(rates(expRange(icDays),5));
-            optomeanMat{nbsubj+nbsubj,21}=nanmean(rates(expRange(icDays),6));
-            optomeanMat{nbsubj+nbsubj,22}=nanmean(rates(expRange(icDays),15));
-            optomeanMat{nbsubj+nbsubj,23}=nanmean(rates(expRange(icDays),16));
-            optomeanMat{nbsubj+nbsubj,24}=mean(rates(expRange(icDays),17));
-            optomeanMat{nbsubj+nbsubj,25}=mean(rates(expRange(icDays),18));
+            optomeanMat{nbsubj+nbsubj,10}=mean(rates(expRange(dreadds==3),1)); % MGB Data
+            optomeanMat{nbsubj+nbsubj,11}=mean(rates(expRange(dreadds==3),2));
+            optomeanMat{nbsubj+nbsubj,12}=nanmean(rates(expRange(dreadds==3),5));
+            optomeanMat{nbsubj+nbsubj,13}=nanmean(rates(expRange(dreadds==3),6));
+            optomeanMat{nbsubj+nbsubj,14}=nanmean(rates(expRange(dreadds==4),15));
+            optomeanMat{nbsubj+nbsubj,15}=nanmean(rates(expRange(dreadds==4),16));
+            optomeanMat{nbsubj+nbsubj,16}=mean(rates(expRange(dreadds==4),17));
+            optomeanMat{nbsubj+nbsubj,17}=mean(rates(expRange(dreadds==4),18));
+
 
             optomeanMat{nbsubj+nbsubj+1,1}=subjlist(nbsubj);
             optomeanMat{nbsubj+nbsubj+1,2}=rates(:,1);
@@ -784,22 +726,54 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
             optomeanMat{nbsubj+nbsubj+1,7}=rates(:,16);
             optomeanMat{nbsubj+nbsubj+1,8}=rates(:,17);
             optomeanMat{nbsubj+nbsubj+1,9}=rates(:,18);
-            optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange(mgbDays),1); % MGB Data
-            optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange(mgbDays),2);
-            optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange(mgbDays),5);
-            optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange(mgbDays),6);
-            optomeanMat{nbsubj+nbsubj+1,14}=rates(expRange(mgbDays),15);
-            optomeanMat{nbsubj+nbsubj+1,15}=rates(expRange(mgbDays),16);
-            optomeanMat{nbsubj+nbsubj+1,16}=rates(expRange(mgbDays),17);
-            optomeanMat{nbsubj+nbsubj+1,17}=rates(expRange(mgbDays),18);
-            optomeanMat{nbsubj+nbsubj+1,18}=rates(expRange(icDays),1); % IC Data
-            optomeanMat{nbsubj+nbsubj+1,19}=rates(expRange(icDays),2);
-            optomeanMat{nbsubj+nbsubj+1,20}=rates(expRange(icDays),5);
-            optomeanMat{nbsubj+nbsubj+1,21}=rates(expRange(icDays),6);
-            optomeanMat{nbsubj+nbsubj+1,22}=rates(expRange(icDays),15);
-            optomeanMat{nbsubj+nbsubj+1,23}=rates(expRange(icDays),16);
-            optomeanMat{nbsubj+nbsubj+1,24}=rates(expRange(icDays),17);
-            optomeanMat{nbsubj+nbsubj+1,25}=rates(expRange(icDays),18);
+            optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange(dreadds==3),1); % MGB Data
+            optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange(dreadds==3),2);
+            optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange(dreadds==3),5);
+            optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange(dreadds==3),6);
+            optomeanMat{nbsubj+nbsubj+1,14}=rates(expRange(dreadds==4),15);
+            optomeanMat{nbsubj+nbsubj+1,15}=rates(expRange(dreadds==4),16);
+            optomeanMat{nbsubj+nbsubj+1,16}=rates(expRange(dreadds==4),17);
+            optomeanMat{nbsubj+nbsubj+1,17}=rates(expRange(dreadds==4),18);
+            optomeanMat{nbsubj+nbsubj+1,26}=MAT{nbsubj,1};
+            optomeanMat{nbsubj+nbsubj+1,27}=rates;
+        else
+            
+            optomeanMat{nbsubj+nbsubj,1}=subjlist(nbsubj);
+            optomeanMat{nbsubj+nbsubj,2}=mean(rates(:,1));
+            optomeanMat{nbsubj+nbsubj,3}=mean(rates(:,2)); 
+            optomeanMat{nbsubj+nbsubj,4}=nanmean(rates(:,5));
+            optomeanMat{nbsubj+nbsubj,5}=nanmean(rates(:,6));
+            optomeanMat{nbsubj+nbsubj,6}=nanmean(rates(:,15));
+            optomeanMat{nbsubj+nbsubj,7}=nanmean(rates(:,16));
+            optomeanMat{nbsubj+nbsubj,8}=mean(rates(:,17));
+            optomeanMat{nbsubj+nbsubj,9}=mean(rates(:,18));
+            optomeanMat{nbsubj+nbsubj,10}=mean(rates(expRange(dreadds==3),1)); % MGB Data
+            optomeanMat{nbsubj+nbsubj,11}=mean(rates(expRange(dreadds==3),2));
+            optomeanMat{nbsubj+nbsubj,12}=nanmean(rates(expRange(dreadds==3),5));
+            optomeanMat{nbsubj+nbsubj,13}=nanmean(rates(expRange(dreadds==3),6));
+            optomeanMat{nbsubj+nbsubj,14}=nanmean(rates(expRange(dreadds==4),15));
+            optomeanMat{nbsubj+nbsubj,15}=nanmean(rates(expRange(dreadds==4),16));
+            optomeanMat{nbsubj+nbsubj,16}=mean(rates(expRange(dreadds==4),17));
+            optomeanMat{nbsubj+nbsubj,17}=mean(rates(expRange(dreadds==4),18));
+
+
+            optomeanMat{nbsubj+nbsubj+1,1}=subjlist(nbsubj);
+            optomeanMat{nbsubj+nbsubj+1,2}=rates(:,1);
+            optomeanMat{nbsubj+nbsubj+1,3}=rates(:,2); 
+            optomeanMat{nbsubj+nbsubj+1,4}=rates(:,5);
+            optomeanMat{nbsubj+nbsubj+1,5}=rates(:,6);
+            optomeanMat{nbsubj+nbsubj+1,6}=rates(:,15);
+            optomeanMat{nbsubj+nbsubj+1,7}=rates(:,16);
+            optomeanMat{nbsubj+nbsubj+1,8}=rates(:,17);
+            optomeanMat{nbsubj+nbsubj+1,9}=rates(:,18);
+            optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange(dreadds==3),1); % MGB Data
+            optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange(dreadds==3),2);
+            optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange(dreadds==3),5);
+            optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange(dreadds==3),6);
+            optomeanMat{nbsubj+nbsubj+1,14}=rates(expRange(dreadds==4),15);
+            optomeanMat{nbsubj+nbsubj+1,15}=rates(expRange(dreadds==4),16);
+            optomeanMat{nbsubj+nbsubj+1,16}=rates(expRange(dreadds==4),17);
+            optomeanMat{nbsubj+nbsubj+1,17}=rates(expRange(dreadds==4),18);
             optomeanMat{nbsubj+nbsubj+1,26}=MAT{nbsubj,1};
             optomeanMat{nbsubj+nbsubj+1,27}=rates;
         end
