@@ -640,8 +640,8 @@ dreadds=0;
         end
         
     end
-    
-%     mgbDays=mgbDays(expRange);
+    icDays=logical(icDays);    
+    mgbDays=logical(mgbDays);
     if length(icDays)>1
         icDays=icDays(expRange);
     else
