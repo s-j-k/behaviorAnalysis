@@ -905,7 +905,7 @@ if skip==0
     reinfcolor= [0.4,0.4,0.4];
     optocolor=[102/255 178/255 255/255];
     animalIdx=[3,4,5,7];
-    for ww=1:length(animalIdx)
+    for ww=2:length(animalIdx)
         animalNum=animalIdx(ww);
         animalRates=rates{animalNum,2}; % which animal are we plotting
         uu=2;yyyFig=figure('Position', [100 100 800 200]);
@@ -918,18 +918,18 @@ if skip==0
         %             othit otfa ochit ocfa];
         yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
         yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-        yyy(2).CData=[optocolor;optocolor;optocolor];box off; 
-        xticklabels({'hit','','fa','','catch fa'}); legend('off','on');
-        title([string(allDataTestsOnly{animalIdx(ww),1}) 'MGB Catch']);
+        yyy(2).CData=[optocolor;optocolor;optocolor];box on; 
+        xticklabels({'hit','','fa','','catch fa'}); legend('light off','light on');
+        title([string(optomeanMat{animalIdx(ww),1}) 'MGB Catch']);
 
-        uu=1;subplot(1,3,2); hold on;
+        uu=1;subplot(1,3,2);
         end1=size(animalRates,1);
         yyy=bar([animalRates(end1-uu,1) animalRates(end1-uu,5); ...
             animalRates(end1-uu,2) animalRates(end1-uu,6); 0 animalRates(end1-uu,10)]);
         yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
         yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-        yyy(2).CData=[optocolor;optocolor;optocolor]; box off; 
-        xticklabels({'hit','fa','catch fa'}); legend('off','on');
+        yyy(2).CData=[optocolor;optocolor;optocolor];
+        xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
         title('IC Catch');
 
         subplot(1,3,3);
@@ -938,12 +938,12 @@ if skip==0
             animalRates(end1,2) animalRates(end1,6); 0 animalRates(end1,10)]);
         yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
         yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-        yyy(2).CData=[optocolor;optocolor;optocolor]; box off; 
-        xticklabels({'hit','fa','catch fa'}); legend('off','on');
+        yyy(2).CData=[optocolor;optocolor;optocolor];
+        xticklabels({'hit','fa','catch fa'}); legend('light off','light on');
         title('LOB Catch');       
-        animalName=allDataTestsOnly{animalIdx(ww),1};
-            saveas(yyyFig,[char(allDataTestsOnly{animalIdx(ww),1}) '-CatchBar.fig']);
-            saveas(yyyFig,[char(allDataTestsOnly{animalIdx(ww),1}) '-CatchBar.png']);
+        animalName=optomeanMat{animalIdx(ww),1};
+            saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.fig']);
+            saveas(yyyFig,[char(optomeanMat{animalIdx(ww),1}) '-CatchBar.png']);
             close(yyyFig);
 
     end
@@ -1005,7 +1005,7 @@ allDataCtlOnly{1,45} = 'lick rate MGB T Full, light on and light off';
 allDataCtlOnly{1,46} = 'lick rate MGB T Tone, light on and light off';
 allDataCtlOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
 
-lickLatOptoPerAnimal2(mgbTempTestsOnly,allDataTestsOnly,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+% lickLatOptoPerAnimal2(mgbTempTestsOnly,allDataTestsOnly,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
 
 
 %% organize lick data

@@ -1,17 +1,19 @@
 function [mgbDays, icDays, expRange,dreadds] = getExpDays(path, nbsubj)
 mgbDays =0; icDays =0; expRange=0;
 dreadds=0;
-    if contains(path,'OptoMGBIC_1')==1        
+    if contains(path,'optoMGBIC_1')==1        
         if nbsubj ==4 % cohort 1
             mgbDays = [1 1 0 0 1 1 0 1 1 1];mgbDays=logical(mgbDays);
             icDays = [0 0 1 1 0 0 1 0 0 0];icDays=logical(icDays);
+            dreadds=0;
             expRange=1:8; % Cohort 1
             mgbDays = mgbDays(expRange);
             icDays=icDays(expRange);
         elseif nbsubj==5 % sk163
-            mgbDays = [1 1 0 0 1 1 0 0 1 1 1 0 0];mgbDays=logical(mgbDays);
+            mgbDays = [1 0 0 0 0 1 0 0 1 0 1 0 0];mgbDays=logical(mgbDays);
             icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
-            expRange=1:8; % Cohort 1
+            dreadds=0;
+            expRange=1:10; % Cohort 1
             mgbDays = mgbDays(expRange);
             icDays=icDays(expRange);
         else
@@ -47,13 +49,13 @@ dreadds=0;
         if nbsubj==1 %sk176
             mgbDays=[0 0 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 0 ...
-                1 0 1 1 0 1 1 0 1 0 0 1];
+                0 0 0 1 0 1 1 0 0 0 0 1];
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 0 ... 
                 0 1 0 0 1 0 0 1 0 1 1 0];
             icDays=logical(icDays);
-            expRange=20:length(mgbDays); % cohort 3 sk177
+            expRange=21:length(mgbDays); % cohort 3 sk177
         elseif nbsubj==2 %sk177
             mgbDays=[0 0 0 0 0 0 0 0 1 1 0 0 0 1 1 0 0];
             mgbDays=logical(mgbDays);
@@ -191,12 +193,12 @@ dreadds=0;
             expRange=38:length(mgbDays);
         elseif nbsubj==6 %sk203, started on d9
             mgbDays=[0 0 0 0 0 0 0 0 ...
-                1 1 0 0 0 1 1 0 0];%...
-%                 1 0 0]; % catch MGB, catch IC, LOB
+                1 1 0 0 0 1 1 0 0 ...
+                0 0 0]; % catch MGB, catch IC, LOB
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 0 0 ...
-                0 0 0 1 1 0 0 1 1];%...
-%                 0 1 0]; % catch MGB, catch IC, LOB
+                0 0 0 1 1 0 0 1 1 ...
+                 0 0 0]; % catch MGB, catch IC, LOB
             icDays=logical(icDays);
             expRange=9:length(mgbDays);
         elseif nbsubj==7 %sk204, started on d29
@@ -643,6 +645,6 @@ dreadds=0;
     if length(icDays)>1
         icDays=icDays(expRange);
     else
-        dreadds=dreadds(expRange);
+%         dreadds=dreadds(expRange);
     end
 end

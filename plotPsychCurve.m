@@ -5,7 +5,7 @@ function plotPsychCurve(allRpc,allDpc)
 % vehicle
 trials=50;
 trialsfrac=trials*.01;
-x   = [40 50 60 70]';     % stimulus levels (e.g., contrast)
+x   = [70 60 50 40]';     % stimulus levels (e.g., contrast)
 k   = [mean(allRpc(:,1))*trialsfrac mean(allRpc(:,2))*trialsfrac mean(allRpc(:,3))*trialsfrac mean(allRpc(:,4))*trialsfrac]';              % # "correct" (or "yes") responses
 n   = [trials trials trials trials]';              % total trials at each level
 
@@ -26,18 +26,18 @@ thr  = (log(crit/(1-crit)) - b(1)) / b(2);
 
 figure;  hold on; box off
 % Data points sized by trial count (optional)
-scatter(x, p, 60, 'filled', 'MarkerFaceAlpha', 0.9);
+scatter(x, p, 60, 'filled', 'MarkerFaceAlpha', 0.9); hold on;
 % Fitted curve
 plot(xq, pq, 'LineWidth', 2);
 
 xlabel('Stimulus level');
 ylabel('P(correct / yes)');
-ylim([0 1]);
-title('Psychometric curve (logistic GLM)');
+ylim([0.3 1]);
+title('Psychometric curve');
 
 
 % vehicle
-x   = [40 50 60 70]';     % stimulus levels (e.g., contrast)
+x   = [70 60 50 40]';     % stimulus levels (e.g., contrast)
 k   = [mean(allDpc(:,1))*trialsfrac mean(allDpc(:,2))*trialsfrac mean(allDpc(:,3))*trialsfrac mean(allDpc(:,4))*trialsfrac]';              % # "correct" (or "yes") responses
 n   = [trials trials trials trials]';              % total trials at each level
 
@@ -57,7 +57,7 @@ crit = 0.75;
 thr  = (log(crit/(1-crit)) - b(1)) / b(2);
 
 % Data points sized by trial count (optional)
-scatter(x, p, 60, 'filled', 'MarkerFaceAlpha', 0.9);
+scatter(x, p, 60, 'filled', 'MarkerFaceAlpha', 0.9);  hold on;
 
 % Fitted curve
 plot(xq, pq, 'LineWidth', 2);

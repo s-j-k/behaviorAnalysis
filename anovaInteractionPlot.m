@@ -1,8 +1,6 @@
 function anovaInteractionPlot(aovMGBbyAn,statsMGBbyAn,aovIC,statsIC)
 %% Repeated-measures example: 2 groups (between) x 3 conditions (within)
 % Example data + "best practice" plots:
-%  1) Spaghetti (each subject across conditions) within each group
-%  2) Group mean ± within-subject 95% CI (Cousineau–Morey) overlaid
 
 clear; close all; clc
 rng(4);
