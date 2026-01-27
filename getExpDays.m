@@ -10,10 +10,10 @@ dreadds=0;
             mgbDays = mgbDays(expRange);
             icDays=icDays(expRange);
         elseif nbsubj==5 % sk163
-            mgbDays = [1 0 0 0 0 1 0 0 1 0 1 0 0];mgbDays=logical(mgbDays);
+            mgbDays = [0 0 0 0 1 1 0 0 1 0 1 0 0];mgbDays=logical(mgbDays);
             icDays = [0 0 1 1 0 0 1 1 0 0 0 1 1];icDays=logical(icDays);
             dreadds=0;
-            expRange=1:10; % Cohort 1
+            expRange=1:11; % Cohort 1
             mgbDays = mgbDays(expRange);
             icDays=icDays(expRange);
         else
@@ -36,9 +36,7 @@ dreadds=0;
             icDays=icDays(expRange);
         elseif nbsubj==2
             expRange=22:32; % cohort 2
-            mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
-                0 0 0 1 1 0 0 1 1 0 0 ...
-                0 0 0];mgbDays=logical(mgbDays);
+            mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 1 0 0 0 0 0];mgbDays=logical(mgbDays);
             icDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
                 1 1 1 0 0 1 1 0 0 1 1 ...
                 0 0 0];icDays=logical(icDays);
@@ -178,8 +176,8 @@ dreadds=0;
                 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 ...
                 0 0 0 0 0 0 0 0 ...
-                0 0 0 0 0 0 1 1 ...
-                0 1 0 1 0 0 0 ...
+                0 0 0 0 0 0 0 0 ...
+                1 1 0 1 0 1 0 ...
                 0 0 0]; %... % catch mgb, catch ic, lob
             mgbDays=logical(mgbDays);
             icDays=[0 0 0 0 0 0 0 0 ...
@@ -642,6 +640,7 @@ dreadds=0;
     end
     icDays=logical(icDays);    
     mgbDays=logical(mgbDays);
+    mgbDays=mgbDays(expRange);
     if length(icDays)>1
         icDays=icDays(expRange);
     else
