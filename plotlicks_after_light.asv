@@ -148,87 +148,87 @@ end
     
     subplot(4,3,1);title('full trial hit');hold on;
     shadedErrorBar(bins,nanmean(rHitFull,1),std(rHitFull,1),'k');
-    shadedErrorBar(bins,nanmean(ohit,1),std(ohit,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(ohit,1),std(ohit,1),'b');
     [h,pHit,ci,stats] = ttest2(nanmean(ohit,1),nanmean(rHitFull,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,2);title('choice hit');hold on;
     shadedErrorBar(bins,nanmean(rHitChoice,1),std(rHitChoice,1),'k');
-    shadedErrorBar(bins,nanmean(chit,1),std(chit,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(chit,1),std(chit,1),'b');
     [h,pHit,ci,stats] = ttest2(nanmean(chit,1),nanmean(rHitChoice,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,3);title('tone hit');hold on;
     shadedErrorBar(bins,nanmean(rHitTone,1),std(rHitTone,1),'k');
-    shadedErrorBar(bins,nanmean(thit,1),std(thit,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(thit,1),std(thit,1),'b');
     [h,pHit,ci,stats] = ttest2(nanmean(thit,1),nanmean(rHitTone,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,4);title('full trial, miss,');hold on;
     shadedErrorBar(bins,nanmean(rMissFull,1),std(rMissFull,1),'k');
-    shadedErrorBar(bins,nanmean(omiss,1),std(omiss,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(omiss,1),std(omiss,1),'b');
     [h,pHit,ci,stats] = ttest2(nanmean(omiss,1),nanmean(rMissFull,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,5);title('choice, miss');hold on;
-    shadedErrorBar(bins,nanmean(cmiss,1),std(cmiss,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(cmiss,1),std(cmiss,1),'b');
     shadedErrorBar(bins,nanmean(rMissChoice,1),std(rMissChoice,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(cmiss,1),nanmean(rMissChoice,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,6);title('tone, miss');hold on;
-    shadedErrorBar(bins,nanmean(tmiss,1),std(tmiss,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(tmiss,1),std(tmiss,1),'b');
     shadedErrorBar(bins,nanmean(rMissTone,1),std(rMissTone,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(tmiss,1),nanmean(rMissTone,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,7);title('full trial cr');hold on;
-    shadedErrorBar(bins,nanmean(ocr,1),std(ocr,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(ocr,1),std(ocr,1),'b');
     shadedErrorBar(bins,nanmean(rCrFull,1),std(rCrFull,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(ocr,1),nanmean(rCrFull,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,8);title('choice cr');hold on;
-    shadedErrorBar(bins,nanmean(ccr,1),std(ccr,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(ccr,1),std(ccr,1),'b');
     shadedErrorBar(bins,nanmean(rCrChoice,1),std(rCrChoice,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(ccr,1),nanmean(rCrChoice,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,9);title('tone cr');hold on;
-    shadedErrorBar(bins,nanmean(tcr,1),std(tcr,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(tcr,1),std(tcr,1),'b');
     shadedErrorBar(bins,nanmean(rCrTone,1),std(rCrTone,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(tcr,1),nanmean(rCrTone,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
     
     subplot(4,3,10);title('full trial fa');hold on;
-    shadedErrorBar(bins,nanmean(ofa,1),std(ofa,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(ofa,1),std(ofa,1),'b');
     shadedErrorBar(bins,nanmean(rFaFull,1),std(rFaFull,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(ofa,1),nanmean(rFaFull,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,11);title('choice fa');hold on;
-    shadedErrorBar(bins,nanmean(cfa,1),std(cfa,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(cfa,1),std(cfa,1),'b');
     shadedErrorBar(bins,nanmean(rFaChoice,1),std(rFaChoice,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(cfa,1),nanmean(rFaChoice,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     subplot(4,3,12);title('tone fa');hold on;
-    shadedErrorBar(bins,nanmean(tfa,1),std(tfa,1,"omitnan"),'b');
+    shadedErrorBar(bins,nanmean(tfa,1),std(tfa,1),'b');
     shadedErrorBar(bins,nanmean(rFaTone,1),std(rFaTone,1),'k');
     [h,pHit,ci,stats] = ttest2(nanmean(tfa,1),nanmean(rFaTone,1));
     text(min(xlim), min(ylim),num2str(pHit));
-    xline(2.8);xline(0.3);axis tight;ylim([0 1.5]);xlim([0 4]);
+    xline(2.8);xline(0.3);axis tight;ylim([0 1]);xlim([0 4]);
 
     filetype='fig';
     saveas(figlightAvg,['AVG_allmice_licks_after_light' num2str(nbins) 'bins.' filetype]);

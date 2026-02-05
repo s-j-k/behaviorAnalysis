@@ -32,10 +32,15 @@ end
 for rr=1:length(dreaddsList) 
     dreadds=dreaddsList{rr};
     dreaddsDay=find(dreadds==4);
+    vehicleDay=find(dreadds==3);
     allDataHit=allDataTestsOnly{rr+1,2};%70dB
     allDataFa=allDataTestsOnly{rr+1,3};
     dreaddsHit=allDataHit(dreaddsDay);
     dreaddsFa=allDataFa(dreaddsDay);
+    vehicleHit=allDataHit(vehicleDay);
+    vehicleFa=allDataFa(vehicleDay);
+    allDataTestsOnly{rr+1,10}=vehicleHit;
+    allDataTestsOnly{rr+1,11}=vehicleFa;
     allDataTestsOnly{rr+1,18}=dreaddsHit;
     allDataTestsOnly{rr+1,19}=dreaddsFa;
 
@@ -45,6 +50,10 @@ for rr=1:length(dreaddsList)
     dreaddsFa=allDataFa(dreaddsDay);
     allDataTestsOnly{rr+1,20}=dreaddsHit;
     allDataTestsOnly{rr+1,21}=dreaddsFa;
+    vehicleHit=allDataHit(vehicleDay);
+    vehicleFa=allDataFa(vehicleDay);
+    allDataTestsOnly{rr+1,12}=vehicleHit;
+    allDataTestsOnly{rr+1,13}=vehicleFa;
 
     allDataHit=allDataTestsOnly{rr+1,6};%50dB
     allDataFa=allDataTestsOnly{rr+1,7};
@@ -52,6 +61,10 @@ for rr=1:length(dreaddsList)
     dreaddsFa=allDataFa(dreaddsDay);
     allDataTestsOnly{rr+1,22}=dreaddsHit;
     allDataTestsOnly{rr+1,23}=dreaddsFa;
+    vehicleHit=allDataHit(vehicleDay);
+    vehicleFa=allDataFa(vehicleDay);
+    allDataTestsOnly{rr+1,14}=vehicleHit;
+    allDataTestsOnly{rr+1,15}=vehicleFa;
 
     allDataHit=allDataTestsOnly{rr+1,8};%40dB
     allDataFa=allDataTestsOnly{rr+1,9};
@@ -59,6 +72,10 @@ for rr=1:length(dreaddsList)
     dreaddsFa=allDataFa(dreaddsDay);
     allDataTestsOnly{rr+1,24}=dreaddsHit;
     allDataTestsOnly{rr+1,25}=dreaddsFa;
+    vehicleHit=allDataHit(vehicleDay);
+    vehicleFa=allDataFa(vehicleDay);
+    allDataTestsOnly{rr+1,16}=vehicleHit;
+    allDataTestsOnly{rr+1,17}=vehicleFa;
 end
 
 rates={};rates=allDataTestsOnly{:,1};
@@ -72,10 +89,10 @@ dreaddscolor=[0.8660 0.3290 0];
 close all
 xVector = [1 2 1 2 1 2];
 % for each animal
+
 plotsingleAnimal=1;
 if plotsingleAnimal==1 % Compute percent correct, by session
     for jj=2:size(allDataTestsOnly,1) 
-        eeFig=figure(jj);hold on;
         rhit70=allDataTestsOnly{jj,10}; %Vehicle
         rfa70=allDataTestsOnly{jj,11};
         rhit60 = allDataTestsOnly{jj,12};
@@ -106,7 +123,7 @@ if plotsingleAnimal==1 % Compute percent correct, by session
         allDpc=[dpc70,dpc60,dpc50,dpc40];
         
         plotPsychCurve(allRpc,allDpc);
-        eeFig.Position(3:4)=[725 475];
+        title([char(allDataTestsOnly{jj,1}) 'Psychometric curve']);
         saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_dreadds_psychPercentCorr']);
         saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_dreadds_psychPercentCorr.png']);    
         close all
@@ -120,7 +137,6 @@ allRpc={};allDpc={};
 plotAllAnimals=1;
 if plotAllAnimals==1
    for jj=2:size(allDataTestsOnly,1) 
-        eeFig=figure(jj);hold on;
         rhit70=allDataTestsOnly{jj,10}; %Vehicle
         rfa70=allDataTestsOnly{jj,11};
         rhit60 = allDataTestsOnly{jj,12};

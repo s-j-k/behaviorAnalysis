@@ -29,8 +29,10 @@ switch cohort
     
     case 6
     pathsave='O:\sjk\Behavior\MGBIC_6\';
-    subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
-    explist=[1 1 1 1 2 1 1 1];    
+%     subjlist={'sk198','sk199','sk200','sk201','sk202','sk203','sk204','sk205'}; %GTACR
+%     explist=[1 1 1 1 2 1 1 1];    
+    subjlist={'sk203','sk204'}; 
+    explist=[1 1];
     
    case 7
     pathsave='O:\sjk\Behavior\IC_cohort_1\';

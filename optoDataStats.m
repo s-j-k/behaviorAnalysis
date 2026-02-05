@@ -3,8 +3,8 @@
 %first preprocess the data for a given cohort
 % cohort=5;
 % Behavior_Bpod_Opto_SJK(cohort)
-%% now load the data for each cohort and make one big file called allCohorts
-cohortRange=1:8;
+
+cohortRange=1:8; % now load the data for each cohort and make one big file called allCohorts
 [allCohorts,allLickMat] =loadAllOptoCohorts(cohortRange);
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
@@ -99,6 +99,9 @@ rates{1,2}='Rates variable';
 rates(2:7,2)=allDataTestsOnly(2:7,27);
 
 days=getOptoDays;
+%%
+rollingAverage(allDataTestsOnly,days)
+
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
 reinfcolor= [0.4,0.4,0.4];
@@ -1250,8 +1253,7 @@ saveas(f,'AvgAllAnimals_LickLatHistFA_ByCondition');
 saveas(f,'AvgAllAnimals_LickLatHistFA_ByCondition','png');
 
 %% check for rebound licking
-
-plotlicks_after_light(lickMatTestsOnly)
+plotlicks_after_light(lickMatTestsOnly,days)
 
 %% get learning curves...
 

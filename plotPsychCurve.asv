@@ -7,12 +7,11 @@ trials=100;
 % trialsfrac=trials*.01;
 x   = [70 60 50 40]';     % stimulus levels (e.g., contrast)
 k   = [mean(allRpc(:,1)) mean(allRpc(:,2)) mean(allRpc(:,3)) mean(allRpc(:,4))]';              % # "correct" (or "yes") responses
-n   = [trials trials trials trials]';              % total trials at each level
+% n   = [trials trials trials trials]';              % total trials at each level
 x = x-55;
 % Proportion correct/yes
-p = k ./ n;
+p = k;
 p=(p - 0.5) / 0.5;
-p(p<0)=0.1;
 
 % --- Fit a logistic psychometric (binomial GLM with logit link) ---
 % Model: logit(p) = b0 + b1*x
@@ -47,14 +46,13 @@ k   = [mean(allDpc(:,1)) mean(allDpc(:,2)) mean(allDpc(:,3)) mean(allDpc(:,4))]'
 n   = [trials trials trials trials]';              % total trials at each level
 x = x-55;
 % Proportion correct/yes
-p = k ./ n;
+p = k;
 p=(p - 0.5) / 0.5;
-p(p<0)=0.1;
 
 % --- Fit a logistic psychometric (binomial GLM with logit link) ---
 % Model: logit(p) = b0 + b1*x
 clear b
-b = glmfit(x, p, 'binomial', 'link', 'logit');
+b = glmfit(x, k, 'binomial', 'link', 'logit');
 
 % Dense x-grid for smooth curve
 xq = linspace(min(x), max(x), 40)';
@@ -66,7 +64,7 @@ thr  = (log(crit/(1-crit)) - b(1)) / b(2);
 
 
 % Data points sized by trial count (optional)
-scatter(x, p, 60, 'filled',"MarkerEdgeColor","r", ...
+scatter(x, k, 60, 'filled',"MarkerEdgeColor","r", ...
     "MarkerFaceColor",[0.8500, 0.3250, 0.0980], 'MarkerFaceAlpha', 0.9); hold on;
 % Fitted curve
 plot(xq, pq, 'Color',[0.8500, 0.3250, 0.0980],'LineWidth', 2);

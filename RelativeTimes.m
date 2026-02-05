@@ -1,4 +1,4 @@
-function r = RelativeTimes(t,intervals,values),
+function r = RelativeTimes(t,intervals,values)
 
 % This function calls RelativeTime, but it takes in multiple-column intervals. 
 % Provide values for each column of the interval (if t coincides with a an element

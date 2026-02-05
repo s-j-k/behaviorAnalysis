@@ -1781,7 +1781,7 @@ for jj=2:size(allDataTestsOnly,1)
         errorbar(xtips,ytips,error,'.k','MarkerSize',0.1);
     end
 
-    [h,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlo_hit(jj,:));
+    [~,pHit,ci,stats] = ttest2(ICmlr_hit(jj,:),ICmlo_hit(jj,:));
     [h,pFA,ci,stats] = ttest2(ICmlr_fa(jj,:),ICmlo_fa(jj,:));
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('mean lick rate');

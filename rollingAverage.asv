@@ -1,159 +1,237 @@
-function rollingAverage(allDataTestsOnly)
+function rollingAverage(allDataTestsOnly,days)
 % plot to make rolling behavior average
-
+counter=1;counter2=1;
     for qq=2:size(allDataTestsOnly,1)
-        exampleSessionn=allDataTestsOnly{qq,26}; 
-        mgbDays=days{qq,5}; % tone days
-        sessionId = mgbDays(1); 
-        exampleTrials=find(exampleSessionn(:,1)==sessionId);
-        exampleTrials=exampleSessionn(exampleTrials,:);
-        exampleDays={'Day'};
-        exampleDays(1,2)={'context'};
-        exampleDays(1,3)={'stimulus'};
-        exampleDays(1,4)={'outcome'};
-        exampleDays(1,5)={'Start'};exampleDays(1,6)={'stop'};exampleDays(1,7)={'lick lat'};
-        exampleDays(1,9)={'lick rate'};
+        exampleSession=allDataTestsOnly{qq,26}; 
+        mgbDays=days{qq,5}; 
+        for ww=1:2
+            sessionId = mgbDays(ww); % tone day 1
+            exampleTrials=find(exampleSession(:,1)==sessionId);
+            exampleTrials=exampleSession(exampleTrials,:);
 
-    reinfDataD1=find(exampleTrials(1:300,2)==2);
-    reinfDataD1= exampleTrials(reinfDataD1,:);
-    reinfDataD1Target=find(reinfDataD1(:,3)==1);
-    reinfDataD1Foil=find(reinfDataD1(:,3)==2);
-    reinfDataD1Target=reinfDataD1(reinfDataD1Target,:);
-    reinfDataD1Foil=reinfDataD1(reinfDataD1Foil,:);
-    % now relabel false alarms as zeroes instead of twos
-    missIdx=find(reinfDataD1Target(:,4)==2);
-    reinfDataD1Target(missIdx,4)=0;
-    %relabel CR and FA as 0 and 1
-    crIdx=find(reinfDataD1Foil(:,4)==4);
-    reinfDataD1Foil(crIdx,4)=0;
-    faIdx=find(reinfDataD1Foil(:,4)==3);
-    reinfDataD1Foil(faIdx,4)=1;
+            reinfDataD1TargetIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
+            reinfDataD1FoilIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            reinfDataD1Target=exampleTrials(reinfDataD1TargetIdx,:);
+            reinfDataD1Foil=exampleTrials(reinfDataD1FoilIdx,:);
+            % now relabel misses as zeroes instead of twos
+            % TXT = 2; TONE = 3; OUTCOME = 4; 
+            missIdx=find(reinfDataD1Target(:,4)==2);
+            reinfDataD1Target(missIdx,4)=0;
+            %relabel CR and FA as 0 and 1
+            crIdx=find(reinfDataD1Foil(:,4)==4);
+            reinfDataD1Foil(crIdx,4)=0;
+            faIdx=find(reinfDataD1Foil(:,4)==3);
+            reinfDataD1Foil(faIdx,4)=1;
+
+            %Tone
+            toneDataD1TargetIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
+            toneDataD1FoilIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
+            toneDataD1Target=exampleTrials(toneDataD1TargetIdx,:);
+            toneDataD1Foil=exampleTrials(toneDataD1FoilIdx,:);
+            % now relabel false alarms as zeroes instead of twos
+            missIdx=find(toneDataD1Target(:,4)==2);
+            toneDataD1Target(missIdx,4)=0;
+            %relabel CR and FA as 0 and 1
+            crIdx=find(toneDataD1Foil(:,4)==4);
+            toneDataD1Foil(crIdx,4)=0;
+            faIdx=find(toneDataD1Foil(:,4)==3);
+            toneDataD1Foil(faIdx,4)=1;
+
+            choiceDataD1TargetIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==1);
+            choiceDataD1FoilIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==2);
+            choiceDataD1Target=exampleTrials(choiceDataD1TargetIdx,:);
+            choiceDataD1Foil=exampleTrials(choiceDataD1FoilIdx,:);
+            % now relabel false alarms as zeroes instead of twos
+            missIdx=find(choiceDataD1Target(:,4)==2);
+            choiceDataD1Target(missIdx,4)=0;
+            %relabel CR and FA as 0 and 1
+            crIdx=find(choiceDataD1Foil(:,4)==4);
+            choiceDataD1Foil(crIdx,4)=0;
+            faIdx=find(choiceDataD1Foil(:,4)==3);
+            choiceDataD1Foil(faIdx,4)=1;
+            
+            allMiceRTTargetIdx(counter,:)=reinfDataD1TargetIdx;
+            allMiceRTFoilIdx(counter,:)=reinfDataD1FoilIdx;
+            allMiceToneTargetIdx(counter,:)=toneDataD1TargetIdx;
+            allMiceToneFoilIdx(counter,:)=toneDataD1FoilIdx;
+            allMiceChoiceTTargetIdx(counter,:)=choiceDataD1TargetIdx;
+            allMiceChoiceTFoilIdx(counter,:)=choiceDataD1FoilIdx;
+            
+            allMiceRTTarget(counter,:)=reinfDataD1Target(1:70,4);
+            allMiceRTFoil(counter,:)=reinfDataD1Foil(1:70,4);
+            allMiceToneTarget(counter,:)=toneDataD1Target(1:35,4);
+            allMiceToneFoil(counter,:)=toneDataD1Foil(1:35,4);
+            allMiceCTTarget(counter,:)=choiceDataD1Target(1:35,4);
+            allMiceCTFoil(counter,:)=choiceDataD1Foil(1:35,4);
+            counter=counter+1;
+        end
+
+        % full trial data
+        mgbDays=days{qq,4}; % full trial days
+        clear reinfDataD1 reinfDataD1Target reinfDataD1Foil
+        for ee=1:2
+            sessionId = mgbDays(ee); 
+            exampleTrials=find(exampleSession(:,1)==sessionId);
+            exampleTrials=exampleSession(exampleTrials,:);
+            reinfDataD1TargetIdx=find(exampleTrials(:,2)==2 & exampleTrials(:,3)==1);
+            reinfDataD1FoilIdx=find(exampleTrials(:,2)==2 & exampleTrials(:,3)==2);
+            reinfDataD1Target=exampleTrials(reinfDataD1TargetIdx,:);
+            reinfDataD1Foil=exampleTrials(reinfDataD1FoilIdx,:);
+            % now relabel misses as zeroes instead of twos
+            missIdx=find(reinfDataD1Target(:,4)==2);
+            reinfDataD1Target(missIdx,4)=0;
+            %relabel CR and FA as 0 and 1
+            crIdx=find(reinfDataD1Foil(:,4)==4);
+            reinfDataD1Foil(crIdx,4)=0;
+            faIdx=find(reinfDataD1Foil(:,4)==3);
+            reinfDataD1Foil(faIdx,4)=1;
 
 
-    %Tone
-    toneDataD1= find(exampleTrials(1:300,2)==5);
-    toneDataD1= exampleTrials(toneDataD1,:);
-    toneDataD1Target=find(toneDataD1(:,3)==1);
-    toneDataD1Foil=find(toneDataD1(:,3)==2);
-    toneDataD1Target=toneDataD1(toneDataD1Target,:);
-    toneDataD1Foil=toneDataD1(toneDataD1Foil,:);
-    % now relabel false alarms as zeroes instead of twos
-    missIdx=find(toneDataD1Target(:,4)==2);
-    toneDataD1Target(missIdx,4)=0;
-    %relabel CR and FA as 0 and 1
-    crIdx=find(toneDataD1Foil(:,4)==4);
-    toneDataD1Foil(crIdx,4)=0;
-    faIdx=find(toneDataD1Foil(:,4)==3);
-    toneDataD1Foil(faIdx,4)=1;
-
-
-    choiceDataD1 = find(exampleTrials(1:300,2)==6);
-    choiceDataD1=exampleTrials(choiceDataD1,:);
-    choiceDataD1Target=find(choiceDataD1(:,3)==1);
-    choiceDataD1Foil=find(choiceDataD1(:,3)==2);
-    choiceDataD1Target=choiceDataD1(choiceDataD1Target,:);
-    choiceDataD1Foil=choiceDataD1(choiceDataD1Foil,:);
-    % now relabel false alarms as zeroes instead of twos
-    missIdx=find(choiceDataD1Target(:,4)==2);
-    choiceDataD1Target(missIdx,4)=0;
-    %relabel CR and FA as 0 and 1
-    crIdx=find(choiceDataD1Foil(:,4)==4);
-    choiceDataD1Foil(crIdx,4)=0;
-    faIdx=find(choiceDataD1Foil(:,4)==3);
-    choiceDataD1Foil(faIdx,4)=1;
+            %Full trial
+            fullDataD1TargetIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
+            fullDataD1FoilIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
+            fullDataD1Target=exampleTrials(fullDataD1TargetIdx,:);
+            fullDataD1Foil=exampleTrials(fullDataD1FoilIdx,:);
+            missIdx=find(fullDataD1Target(:,4)==2);
+            fullDataD1Target(missIdx,4)=0;
+            %relabel CR and FA as 0 and 1
+            crIdx=find(fullDataD1Foil(:,4)==4);
+            fullDataD1Foil(crIdx,4)=0;
+            faIdx=find(fullDataD1Foil(:,4)==3);
+            fullDataD1Foil(faIdx,4)=1;
+            
+            
+            choiceDataD1TargetIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
+            choiceDataD1FoilIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+            choiceDataD1Target=exampleTrials(choiceDataD1TargetIdx,:);
+            choiceDataD1Foil=exampleTrials(choiceDataD1FoilIdx,:);
+            missIdx=find(choiceDataD1Target(:,4)==2);
+            choiceDataD1Target(missIdx,4)=0;
+            %relabel CR and FA as 0 and 1
+            crIdx=find(choiceDataD1Foil(:,4)==4);
+            choiceDataD1Foil(crIdx,4)=0;
+            faIdx=find(choiceDataD1Foil(:,4)==3);
+            choiceDataD1Foil(faIdx,4)=1;
+            
+            
+            
+            allMiceRFTargetIdx(counter2,:)=reinfDataD1TargetIdx;
+            allMiceRFFoilIdx(counter2,:)=reinfDataD1FoilIdx;
+            allMiceFullTargetIdx(counter2,:)=toneDataD1TargetIdx;
+            allMiceFullFoilIdx(counter2,:)=toneDataD1FoilIdx;
+            allMiceChoiceFTargetIdx(counter2,:)=choiceDataD1TargetIdx;
+            allMiceChoiceFFoilIdx(counter2,:)=choiceDataD1FoilIdx;
+            
+            
+            allMiceRFTarget(counter2,:)=reinfDataD1Target(1:70,4);
+            allMiceRFFoil(counter2,:)=reinfDataD1Foil(1:70,4);
+            allMiceFullTarget(counter2,:)=fullDataD1Target(1:35,4);
+            allMiceFullFoil(counter2,:)=fullDataD1Foil(1:35,4);
+            allMiceCFTarget(counter2,:)=choiceDataD1Target(1:35,4);
+            allMiceCFFoil(counter2,:)=choiceDataD1Foil(1:35,4);
+            counter2=counter2+1;
+        end
+        
+    end
+    
+    % averaged across all mice plots
     windowsize=10;
     figure; subplot(3,1,1); title('Light off'); hold on
-    plot(movmean(reinfDataD1Target(:,4),windowsize));hold on
-    plot(movmean(reinfDataD1Foil(:,4),windowsize)); legend('hit','fa');
+    stdTarget=std(movmean(mean(allMiceRTTarget,1),windowsize);
+    shadedErrorBar([],movmean(mean(allMiceRTTarget,1),windowsize),std(movmean(mean(allMiceRTTarget,1),windowsize)),'g',0);hold on
+    axis tight; ylim([0 1]);
+    shadedErrorBar([],movmean(mean(allMiceRTFoil,1),windowsize),std(movmean(mean(allMiceRTFoil,1),windowsize)), 'r',0); legend('','hit','','fa');
     ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
 
     subplot(3,1,2);title('Stimulus');hold on
-    plot(movmean(toneDataD1Target(:,4),windowsize));hold on
-    plot(movmean(toneDataD1Foil(:,4),windowsize));ylim([0 1]);
-
-
+    shadedErrorBar([],movmean(mean(allMiceToneTarget),windowsize),std(movmean(mean(allMiceToneTarget,1),windowsize)),'g',0);hold on
+    shadedErrorBar([],movmean(mean(allMiceToneFoil),windowsize),std(movmean(mean(allMiceToneFoil,1),windowsize)),'r',0);ylim([0 1]);
+    axis tight; ylim([0 1]);
     subplot(3,1,3); title('Choice');hold on
-    plot(movmean(choiceDataD1Target(:,4),windowsize));hold on
-    plot(movmean(choiceDataD1Foil(:,4),windowsize));
+    shadedErrorBar([],movmean(mean(allMiceCTTarget),windowsize),std(movmean(mean(allMiceCTTarget,1),windowsize)),'g',0);hold on
+    shadedErrorBar([],movmean(mean(allMiceCTFoil),windowsize),std(movmean(mean(allMiceToneFoil,1),windowsize)),'r',0);
+    axis tight; ylim([0 1]);
     xlabel('Trials');
-    ylim([0 1]);
-    %%
-    % full trial data
-
-    sessionIdx=find(mgbDays==1);
-    sessionId = sessionIdx(4); 
     
-    exampleSessionn=allDataTestsOnly{animalNum,26}; 
-    exampleTrials=find(exampleSessionn(:,1)==sessionId);
-    exampleTrials=exampleSessionn(exampleTrials,:);
-    exampleDays={'Day'};
-    exampleDays(1,2)={'context'};
-    exampleDays(1,3)={'stimulus'};
-    exampleDays(1,4)={'outcome'};
-    exampleDays(1,5)={'Start'};exampleDays(1,6)={'stop'};exampleDays(1,7)={'lick lat'};
-    exampleDays(1,9)={'lick rate'};
 
-    reinfDataD1=find(exampleTrials(1:300,2)==2);
-    reinfDataD1= exampleTrials(reinfDataD1,:);
-    reinfDataD1Target=find(reinfDataD1(:,3)==1);
-    reinfDataD1Foil=find(reinfDataD1(:,3)==2);
-    reinfDataD1Target=reinfDataD1(reinfDataD1Target,:);
-    reinfDataD1Foil=reinfDataD1(reinfDataD1Foil,:);
-    % now relabel false alarms as zeroes instead of twos
-    missIdx=find(reinfDataD1Target(:,4)==2);
-    reinfDataD1Target(missIdx,4)=0;
-    %relabel CR and FA as 0 and 1
-    crIdx=find(reinfDataD1Foil(:,4)==4);
-    reinfDataD1Foil(crIdx,4)=0;
-    faIdx=find(reinfDataD1Foil(:,4)==3);
-    reinfDataD1Foil(faIdx,4)=1;
-
-
-    %Full trial
-    fullIdx= find(exampleTrials(1:300,2)==1);
-    fullDataD1= exampleTrials(fullIdx,:);
-    fullDataD1Target=find(fullDataD1(:,3)==1);
-    fullDataD1Foil=find(fullDataD1(:,3)==2);
-    fullDataD1Target=fullDataD1(fullDataD1Target,:);
-    fullDataD1Foil=fullDataD1(fullDataD1Foil,:);
-    % now relabel false alarms as zeroes instead of twos
-    missIdx=find(fullDataD1Target(:,4)==2);
-    fullDataD1Target(missIdx,4)=0;
-    %relabel CR and FA as 0 and 1
-    crIdx=find(fullDataD1Foil(:,4)==4);
-    fullDataD1Foil(crIdx,4)=0;
-    faIdx=find(fullDataD1Foil(:,4)==3);
-    fullDataD1Foil(faIdx,4)=1;
-
-
-    choiceDataD1 = find(exampleTrials(1:300,2)==6);
-    choiceDataD1=exampleTrials(choiceDataD1,:);
-    choiceDataD1Target=find(choiceDataD1(:,3)==1);
-    choiceDataD1Foil=find(choiceDataD1(:,3)==2);
-    choiceDataD1Target=choiceDataD1(choiceDataD1Target,:);
-    choiceDataD1Foil=choiceDataD1(choiceDataD1Foil,:);
-    % now relabel false alarms as zeroes instead of twos
-    missIdx=find(choiceDataD1Target(:,4)==2);
-    choiceDataD1Target(missIdx,4)=0;
-    %relabel CR and FA as 0 and 1
-    crIdx=find(choiceDataD1Foil(:,4)==4);
-    choiceDataD1Foil(crIdx,4)=0;
-    faIdx=find(choiceDataD1Foil(:,4)==3);
-    choiceDataD1Foil(faIdx,4)=1;
-    windowsize=10;
     figure; subplot(3,1,1); title('Light off'); hold on
-    plot(movmean(reinfDataD1Target(:,4),windowsize));hold on
-    plot(movmean(reinfDataD1Foil(:,4),windowsize)); legend('hit','fa');
+    shadedErrorBar([],movmean(mean(allMiceRFTarget),windowsize),std(movmean(mean(allMiceRFTarget,1),windowsize)),'g',0);hold on
+    shadedErrorBar([],movmean(mean(allMiceRFFoil),windowsize),std(movmean(mean(allMiceRFFoil,1),windowsize)),'r',0); legend('','hit','','fa');
+    axis tight; ylim([0 1]);
     ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
 
     subplot(3,1,2);title('Full trial');hold on
-    plot(movmean(fullDataD1Target(:,4),windowsize));hold on
-    plot(movmean(fullDataD1Foil(:,4),windowsize));ylim([0 1]);
-
-
+    shadedErrorBar([],movmean(mean(allMiceFullTarget),windowsize),std(movmean(mean(allMiceFullTarget,1),windowsize)),'g',0);hold on
+    shadedErrorBar([],movmean(mean(allMiceFullFoil),windowsize),std(movmean(mean(allMiceFullFoil,1),windowsize)),'r',0); ylim([0 1]);
+    axis tight; ylim([0 1]);
+    
     subplot(3,1,3); title('Choice');hold on
-    plot(movmean(choiceDataD1Target(:,4),windowsize));hold on
-    plot(movmean(choiceDataD1Foil(:,4),windowsize));
+    shadedErrorBar([],movmean(mean(allMiceCFTarget),windowsize),std(movmean(mean(allMiceCFTarget,1),windowsize)),'g',0);hold on
+    shadedErrorBar([],movmean(mean(allMiceCFFoil),windowsize),std(movmean(mean(allMiceCFFoil,1),windowsize)),'r',0);
+    axis tight; ylim([0 1]);
     xlabel('Trials');
     ylim([0 1]);
+    
+    
+    %scatter plot
+    targetIdx = movmean(mean(allMiceRTTargetIdx,1),windowsize)';
+    targetData=movmean(mean(allMiceRTTarget,1),windowsize)';
+    foilIdx=movmean(mean(allMiceRTFoilIdx,1),windowsize)';
+    foilData=movmean(mean(allMiceRTFoil,1),windowsize)';
+    windowsize=10;
+    figure; subplot(3,1,1); title('Light off'); hold on
+    scatter(targetIdx,targetData);hold on;ylim([0 1]);
+    scatter(foilIdx,foilData); legend('hit','fa');
+    axis tight; ylim([0 1]);
+    ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
+
+    toneIdx = movmean(mean(allMiceToneTargetIdx,1),windowsize)';
+    toneData=movmean(mean(allMiceToneTarget,1),windowsize)';
+    toneFoilIdx=movmean(mean(allMiceToneFoilIdx,1),windowsize)';
+    toneFoilData=movmean(mean(allMiceToneFoil,1),windowsize)';
+    subplot(3,1,2);title('Stimulus');hold on
+    scatter(toneIdx,toneData);hold on;ylim([0 1]);
+    scatter(toneFoilIdx,toneFoilData); 
+    axis tight; ylim([0 1]);
+    
+    choiceIdx=movmean(mean(allMiceChoiceTTargetIdx,1),windowsize)';
+    choiceData=movmean(mean(allMiceCTTarget,1),windowsize)';
+    choiceFoilIdx=movmean(mean(allMiceChoiceTFoilIdx,1),windowsize)';
+    choiceFoilData=movmean(mean(allMiceCTFoil,1),windowsize)';
+    subplot(3,1,3); title('Choice');hold on
+    scatter(choiceIdx,choiceData);hold on;ylim([0 1]);
+    scatter(choiceFoilIdx,choiceFoilData); 
+    axis tight; ylim([0 1]);xlabel('Trials');
+
+    rfTargetIdx=movmean(mean(allMiceRFTargetIdx,1),windowsize)';
+    rfTargetData=movmean(mean(allMiceRFTarget,1),windowsize)';
+    rfFoilIdx=movmean(mean(allMiceRFFoilIdx,1),windowsize)';
+    rfFoilData=movmean(mean(allMiceRFFoil,1),windowsize)';
+    figure; subplot(3,1,1); title('Light off'); hold on
+    scatter(rfTargetIdx,rfTargetData);hold on;ylim([0 1]);
+    scatter(rfFoilIdx,rfFoilData); legend('hit','fa');
+    axis tight; ylim([0 1]);
+    ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
+
+    fullTargetIdx=movmean(mean(allMiceFullTargetIdx,1),windowsize)';
+    fullTargetData=movmean(mean(allMiceFullTarget,1),windowsize)';
+    fullFoilIdx=movmean(mean(allMiceFullFoilIdx,1),windowsize)';
+    fullFoilData=movmean(mean(allMiceFullFoil,1),windowsize)';
+    subplot(3,1,2);title('Full trial');hold on
+    scatter(fullTargetIdx,fullTargetData);hold on;ylim([0 1]);
+    scatter(fullFoilIdx,fullFoilData); 
+    axis tight; ylim([0 1]);
+    
+    cfTargetIdx=movmean(mean(allMiceChoiceFTargetIdx,1),windowsize)';
+    cfTargetData=movmean(mean(allMiceCFTarget,1),windowsize)';
+    cfFoilIdx=movmean(mean(allMiceChoiceFFoilIdx,1),windowsize)';
+    cfFoilData=movmean(mean(allMiceCFFoil,1),windowsize)';
+    subplot(3,1,3); title('Choice');hold on
+    scatter(cfTargetIdx,cfTargetData);hold on;ylim([0 1]);
+    scatter(cfFoilIdx,cfFoilData); 
+    axis tight; ylim([0 1]);
+    xlabel('Trials');
+    
+    
+    
 end
