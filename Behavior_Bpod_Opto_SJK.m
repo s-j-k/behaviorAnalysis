@@ -311,7 +311,7 @@ for nbsubj = 1:nSubj % through animals
         rt_ot_cr = RelativeTimes(templicks,[tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T)-1 tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T) tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T)+5],[-1 0 5]);
         rt_oc_cr = RelativeTimes(templicks,[tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T)-1 tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T) tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T)+5],[-1 0 5]);
         
-        lickhistr_hit(i,:) = hist(rt_r_hit,bins)/sum(reinf&hit);
+        lickhistr_hit(i,:) = hist(rt_r_hit,bins)/length(rt_r_hit);%sum(reinf&hit);
         lickhistr_fa(i,:) = hist(rt_r_fa,bins)/sum(reinf&fa);
         lickhistr_miss(i,:) = hist(rt_r_miss,bins)/sum(reinf&miss);
         lickhistr_cr(i,:) = hist(rt_r_cr,bins)/sum(reinf&cr);
@@ -669,7 +669,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
             optomeanMat{nbsubj+nbsubj,5}=mean(rates(expRange(dreadds==4),2)); 
             
             
-            eeeFig=figure('Position', [10 10 725 220]);hold on;
+            eeeFig=figure;hold on;
             eee=bar([mean(rates(expRange(dreadds==1),1)) ...
                 mean(rates(expRange(dreadds==2),1)); mean(rates(expRange(dreadds==1),2)) ...
                 mean(rates(expRange(dreadds==2),2))]);

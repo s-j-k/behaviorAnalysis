@@ -3,8 +3,9 @@ function [aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=ano
 % per session 2way anova
 % no light vs. light all inactivation condition
 % MGB by session (two sessions per condition, per animal
+
 testFullTrial=NaN(36,2); 
-% Full Trial, light OFF column 1, light ON column 2
+% % Full Trial, light OFF column 1, light ON column 2
 testFullTrial(1:2,1)=mgbTempTestsOnly{2,27}(~isnan(mgbTempTestsOnly{2,27}));
 testFullTrial(1:2,2)=mgbTempTestsOnly{2,28}(~isnan(mgbTempTestsOnly{2,28}));
 testFullTrial(3:4,1)=mgbTempTestsOnly{3,27}(~isnan(mgbTempTestsOnly{3,27}));

@@ -48,6 +48,11 @@ function [allCohorts, allLickMat] = loadAllOptoCohorts(cohortRange)
                 load('summaryData.mat');
                 cohort11=optomeanMat;  
                 lickMat8 = lickHistMat;
+        elseif cohortRange(ii)==12
+                cd('O:\sjk\Behavior\cohort_12')
+                load('summaryData.mat');
+                cohort12=optomeanMat;  
+                lickMat12 = lickHistMat;
         else disp('Cohort not found')
             
         end
@@ -69,17 +74,17 @@ function [allCohorts, allLickMat] = loadAllOptoCohorts(cohortRange)
     cohort2(1,:)=[];cohort3(1,:)=[];cohort4(1,:)=[];cohort5(1,:)=[];
     cohort6(1,:)=[];
     cohort7(1,:)=[];
-    allLickMat=extractCellArray(lickMat1,lickMat2,lickMat3,lickMat6);
+    allLickMat=extractCellArray(lickMat1,lickMat2,lickMat3,lickMat6,lickMat12);
    
-    allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5, cohort6, cohort7, cohort8);
+    allCohorts=vertcat(cohort1, cohort2, cohort3, cohort4, cohort5, cohort6, cohort7, cohort8, cohort11, cohort12);
     allCohorts(26:27,:)=[]; allCohorts(28:31,:)=[]; 
     allCohorts(30:33,:)=[]; allCohorts(36:41,:)=[]; % keep 189-191, 195, 199-205
     allCohorts(38:41,:)=[]; %keep 198, 203-205
     allCohorts(40:47,:)=[];
     allCohorts(60:68,:)=[]; 
-%     allCohorts(66:67,:)=[];
+    allCohorts(62,:)=[];allCohorts(75,:)=[];allCohorts(74,:)=[];
     save('allOptoCohortData.mat','allCohorts','cohort1','cohort2','cohort3','cohort4','cohort5','cohort6','cohort7','cohort8', ...
-        'allLickMat');
+        'cohort11', 'cohort12', 'allLickMat');
     cd('O:\sjk\Figures\MGB IC Opto')
-    clear cohort1 cohort2 cohort3 cohort4 cohort5 cohort6 cohort7 cohort8 optomeanMat
+    clear cohort1 cohort2 cohort3 cohort4 cohort5 cohort6 cohort7 cohort8 cohort 11 cohort12 optomeanMat
 end

@@ -1096,7 +1096,6 @@ line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,45}=p;
 mgbTempTestsOnly{2,39} = [dp_r_An; dp_oFull_An];
 mgbTempTestsOnly{4,39} = [c_rAn; c_oFullAn];
-mgbTempTestsOnly{6,39} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
 title('Full');ylabel('d prime');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
@@ -1196,7 +1195,6 @@ line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,46}=p;
 mgbTempTestsOnly{2,40} = [dp_r_An; dp_oFull_An];
 mgbTempTestsOnly{4,40} = [c_rAn; c_oFullAn];
-mgbTempTestsOnly{6,40} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
 title('Stimulus');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
@@ -1297,7 +1295,6 @@ line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,47}=p;
 mgbTempTestsOnly{2,41} = [dp_r_An; dp_oFull_An];
 mgbTempTestsOnly{4,41} = [c_rAn; c_oFullAn];
-mgbTempTestsOnly{6,41} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
 title('Choice');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
