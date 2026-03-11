@@ -1,4 +1,4 @@
-function rollingAverage(allDataTestsOnly,days)
+function byTrialPlots(allDataTestsOnly,days)
 % plot to make rolling behavior average
 counter=1;counter2=1;
     for qq=2:size(allDataTestsOnly,1)
@@ -63,6 +63,13 @@ counter=1;counter2=1;
             allMiceToneFoil(counter,:)=toneDataD1Foil(1:35,4);
             allMiceCTTarget(counter,:)=choiceDataD1Target(1:35,4);
             allMiceCTFoil(counter,:)=choiceDataD1Foil(1:35,4);
+            
+            allMiceRTT{counter}=reinfDataD1Target;
+            allMiceRTF{counter}=reinfDataD1Foil;
+            allMiceToneT{counter}=toneDataD1Target;
+            allMiceToneF{counter}=toneDataD1Foil;
+            allMiceCTT{counter}=choiceDataD1Target;
+            allMiceCTF{counter}=choiceDataD1Foil;
             counter=counter+1;
         end
 
@@ -113,8 +120,6 @@ counter=1;counter2=1;
             faIdx=find(choiceDataD1Foil(:,4)==3);
             choiceDataD1Foil(faIdx,4)=1;
             
-            
-            
             allMiceRFTargetIdx(counter2,:)=reinfDataD1TargetIdx;
             allMiceRFFoilIdx(counter2,:)=reinfDataD1FoilIdx;
             allMiceFullTargetIdx(counter2,:)=toneDataD1TargetIdx;
@@ -122,17 +127,47 @@ counter=1;counter2=1;
             allMiceChoiceFTargetIdx(counter2,:)=choiceDataD1TargetIdx;
             allMiceChoiceFFoilIdx(counter2,:)=choiceDataD1FoilIdx;
             
-            
             allMiceRFTarget(counter2,:)=reinfDataD1Target(1:70,4);
             allMiceRFFoil(counter2,:)=reinfDataD1Foil(1:70,4);
             allMiceFullTarget(counter2,:)=fullDataD1Target(1:35,4);
             allMiceFullFoil(counter2,:)=fullDataD1Foil(1:35,4);
             allMiceCFTarget(counter2,:)=choiceDataD1Target(1:35,4);
             allMiceCFFoil(counter2,:)=choiceDataD1Foil(1:35,4);
+            
+            allMiceRFT{counter2}=reinfDataD1Target;
+            allMiceRFF{counter2}=reinfDataD1Foil;
+            allMiceFullT{counter2}=fullDataD1Target;
+            allMiceFullF{counter2}=fullDataD1Foil;
+            allMiceCFT{counter2}=choiceDataD1Target;
+            allMiceCFF{counter2}=choiceDataD1Foil;
+            
             counter2=counter2+1;
         end
         
     end
+    
+    %lick latency by trial 
+    SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
+    START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
+    
+    for rr=6
+        lickLatRFT=allMiceRFT{1,rr}(:,LICKL);
+        lickLatRFF=allMiceRFF{1,rr}(:,LICKL);
+        lickLatFullT=allMiceFullT{1,rr}(:,LICKL);
+        lickLatFullF=allMiceFullF{1,rr}(:,LICKL);
+        lickLatCT=allMiceCFT{1,rr}(:,LICKL);
+        lickLatCF=allMiceCFF{1,rr}(:,LICKL);
+        
+        lickLatRTT=allMiceRTT{1,rr}(:,LICKL);
+        lickLatRTF=allMiceRTF{1,rr}(:,LICKL);
+        lickLatToneT=allMiceToneT{1,rr}(:,LICKL);
+        lickLatToneF=allMiceToneF{1,rr}(:,LICKL);
+        lickLatCT=allMiceCTT{1,rr}(:,LICKL);
+        lickLatCF=allMiceCTF{1,rr}(:,LICKL);
+    end
+    
+    figure;subplot(1,3,1);
+    scatter(1:70,lickLatRFT);
     
     % averaged across all mice plots
     windowsize=10;
@@ -182,7 +217,6 @@ counter=1;counter2=1;
     axis tight; ylim([0 1]);
     xlabel('Trials');
     ylim([0 1]);
-    
     
     %scatter plot
     targetIdx = movmean(mean(allMiceRTTargetIdx,1),windowsize)';
@@ -242,6 +276,7 @@ counter=1;counter2=1;
     scatter(cfFoilIdx,cfFoilData); 
     axis tight; ylim([0 1]);
     xlabel('Trials');
+    
     
     
     

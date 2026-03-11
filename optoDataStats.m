@@ -103,7 +103,7 @@ rates(2:7,2)=allDataTestsOnly(2:7,27);
 
 days=getOptoDays;
 %%
-rollingAverage(allDataTestsOnly,days)
+byTrialPlots(allDataTestsOnly,days)
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
@@ -1171,7 +1171,7 @@ plotlicks_after_light(lickMatTestsOnly,days)
     % within the rates variable, conffa is the 10th column
     % catch trials happen across the last 3 days (1st MGB, then IC, then LOB)
 
-    CatchData(rates,allDataTestsOnly,lickMatTestsOnly,days,reinfcolor,optocolor)
+    CatchData(rates,allDataTestsOnly,lickMatTestsOnly,reinfcolor,optocolor)
     
     %% compare differences in percent correct across each light off vs light on condition
     %this is by session
@@ -1232,6 +1232,7 @@ allDataCtlOnly{1,46} = 'lick rate MGB T Tone, light on and light off';
 allDataCtlOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
 
 lickLatOptoPerAnimal2(mgbTempTestsOnly,allDataTestsOnly,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
+
 
 %% organize lick data
 [lickMat]=lickDataOrganizer(allDataTestsOnly); 

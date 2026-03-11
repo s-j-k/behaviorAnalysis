@@ -1163,84 +1163,16 @@ if skip==0
     anovaInteractionPlot(aovMGBbyAn,statsMGBbyAn,aovIC,statsIC) 
     % plots the mean and error bars for d' and runs the anova
 
+%% check for rebound licking
+plotlicks_after_light(lickMatTestsOnly,days)
+
 %% plot catch trials
     % coded as conffa (catch light on false alarm)
     % within the rates variable, conffa is the 10th column
     % catch trials happen across the last 3 days (1st MGB, then IC, then LOB)
 
-    reinfcolor= [0.4,0.4,0.4];
-    optocolor=[102/255 178/255 255/255];
+    CatchData(rates,allDataTestsOnly,lickMatTestsOnly,reinfcolor,optocolor)
     
-    uu=2;
-    for ww=1:length(animalIdx)
-        animalNum=animalIdx(ww);
-        animalRates=rates{animalNum,2}; % which animal are we plotting
-        yyyFig=figure('Position', [100 100 800 200]);
-        subplot(1,3,1);hold on;
-        end1=size(animalRates,1);
-        yyy=bar([animalRates(end1-uu,1) animalRates(end1-uu,5); ...
-            animalRates(end1-uu,2) animalRates(end1-uu,6); 0 animalRates(end1-uu,10)]);
-        % rates(i,:) = [rhit rfa phit pfa ohit ofa ...
-        %             rfhit rffa cofffa conffa phit2 pfa2 ...
-        %             othit otfa ochit ocfa];
-        yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-        yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-        yyy(2).CData=[optocolor;optocolor;optocolor];box off; 
-        xticklabels({'hit','','fa','','catch fa'}); legend('off','on');
-        title([string(allDataTestsOnly{animalIdx(ww),1}) 'MGB Catch']);
-
-        uu=1;subplot(1,3,2); hold on;
-        end1=size(animalRates,1);
-        yyy=bar([animalRates(end1-uu,1) animalRates(end1-uu,5); ...
-            animalRates(end1-uu,2) animalRates(end1-uu,6); 0 animalRates(end1-uu,10)]);
-        yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-        yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-        yyy(2).CData=[optocolor;optocolor;optocolor]; box off; 
-        xticklabels({'hit','fa','catch fa'}); legend('off','on');
-        title('IC Catch');
-
-        subplot(1,3,3);
-        end1=size(animalRates,1);
-        yyy=bar([animalRates(end1,1) animalRates(end1,5); ...
-            animalRates(end1,2) animalRates(end1,6); 0 animalRates(end1,10)]);
-        yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-        yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-        yyy(2).CData=[optocolor;optocolor;optocolor]; box off; 
-        xticklabels({'hit','fa','catch fa'}); legend('off','on');
-        title('LOB Catch');       
-        animalName=allDataTestsOnly{animalIdx(ww),1};
-            saveas(yyyFig,[char(allDataTestsOnly{animalIdx(ww),1}) '-CatchBar.fig']);
-            saveas(yyyFig,[char(allDataTestsOnly{animalIdx(ww),1}) '-CatchBar.png']);
-            close(yyyFig);
-
-    end
-
-    % average of all animals
-    uu=2;
-    for ww=2:length(rates)
-        animalRates=rates{ww,2}; 
-        end1=size(animalRates,1);
-        rhit(ww)=animalRates(end1-uu,1);
-        fhit(ww)=animalRates(end1-uu,5);
-        rfa(ww)=animalRates(end1-uu,2);
-        ffa(ww)=animalRates(end1-uu,6);
-        conffa(ww)=animalRates(end1-uu,10);
-        % rates(i,:) = [rhit rfa phit pfa ohit ofa ...
-        %             rfhit rffa cofffa conffa phit2 pfa2 ...
-        %             othit otfa ochit ocfa];
-    end
-    yyyFig=figure('Position', [100 100 800 200]);
-    subplot(1,3,1);hold on;
-    yyy(1).FaceColor='flat';yyy(2).FaceColor='flat';
-    yyy(1).CData=[reinfcolor;reinfcolor;reinfcolor];ylim([0 1]);
-    yyy(2).CData=[optocolor;optocolor;optocolor];box off; 
-    xticklabels({'hit','','fa','','catch fa'}); legend('off','on');
-    title(['Averaged MGB Catch']);
-
-    subplot(1,3,2); hold on;
-    % lick histograms
-
-    subplot(1,3,3); hold on; 
     %% compare differences in percent correct across each light off vs light on condition
     %this is by session
     allDataTestsOnly{1,39}='MGB Difference PC Full Trial';
@@ -1300,18 +1232,11 @@ allDataCtlOnly{1,46} = 'lick rate MGB T Tone, light on and light off';
 allDataCtlOnly{1,47} = 'lick rate MGB T Choice, light on and light off';
 
 lickLatOptoPerAnimal2(mgbTempTestsOnly,allDataTestsOnly,icDataTestsOnly,allDataCtlOnly,reinfcolor,optocolor)
-
+% this code also contains the 
 
 %% organize lick data
-lickMat={};
-optoflag=1;subjlist=NaN;
-for nbsubj=2:size(allDataTestsOnly,1)
-    lickDays=days{nbsubj,2};
-    expRange=days{nbsubj,3};lickDays=lickDays(expRange);
-    matrix=allDataTestsOnly{nbsubj,26};
-    lickMatOut=getLickLatHist(matrix,nbsubj,subjlist,lickDays,expRange,optoflag);
-    lickMat{nbsubj}=lickMatOut;
-end
+[lickMat]=lickDataOrganizer(allDataTestsOnly); 
+
 %% lick latency histograms for each opto condition--is there a difference for each inactivation condition?
 % for each column in the LickMat, it's each animal
 % within there, it's each condition by trial type
@@ -1542,12 +1467,10 @@ f.Position = [10, 10, width, height];
 saveas(f,'AvgAllAnimals_LickLatHistFA_ByCondition');
 saveas(f,'AvgAllAnimals_LickLatHistFA_ByCondition','png');
 
-%% check for rebound licking
-plotlicks_after_light(lickMatTestsOnly,days)
 
 %% plot ROC curve with d' and criterion
 
-[]=rocPlots(mgbTempTestsOnly);
+rocPlots(mgbTempTestsOnly);
 
 %% get learning curves...
 % load rates variable for each animal, and specify the 

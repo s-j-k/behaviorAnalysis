@@ -120,11 +120,11 @@ for nbsubj=2:size(allDataTestsOnly,1)
             MGBslco_fa(nbsubj,mgbDays) = slco_fa(nbsubj,mgbDays);
             
             % do the IC
-            ICsr_hit(nbsubj,mgbDays) = sr_hit(nbsubj,mgbDays); ICsr_hit(ICsr_hit==0)=NaN;
-            ICmp_hit(nbsubj,mgbDays) = mp_hit(nbsubj,mgbDays); ICmp_hit(ICmp_hit==0)=NaN;
-            ICsp_hit(nbsubj,mgbDays) = sp_hit(nbsubj,mgbDays); ICsp_hit(ICsp_hit==0)=NaN;
-            ICmo_hit(nbsubj,mgbDays) = mo_hit(nbsubj,mgbDays); ICmo_hit(ICmo_hit==0)=NaN;
-            ICso_hit(nbsubj,mgbDays) = so_hit(nbsubj,mgbDays); ICso_hit(ICso_hit==0)=NaN;
+            ICsr_hit(nbsubj,icDays) = sr_hit(nbsubj,icDays); ICsr_hit(ICsr_hit==0)=NaN;
+            ICmp_hit(nbsubj,icDays) = mp_hit(nbsubj,icDays); ICmp_hit(ICmp_hit==0)=NaN;
+            ICsp_hit(nbsubj,icDays) = sp_hit(nbsubj,icDays); ICsp_hit(ICsp_hit==0)=NaN;
+            ICmo_hit(nbsubj,icDays) = mo_hit(nbsubj,icDays); ICmo_hit(ICmo_hit==0)=NaN;
+            ICso_hit(nbsubj,icDays) = so_hit(nbsubj,icDays); ICso_hit(ICso_hit==0)=NaN;
             ICmto_hit(nbsubj,mgbDays) = mto_hit(nbsubj,mgbDays);ICmto_hit(ICmto_hit==0)=NaN;
             ICsto_hit(nbsubj,mgbDays) = sto_hit(nbsubj,mgbDays); ICsto_hit(ICsto_hit==0)=NaN;
             ICmco_hit(nbsubj,mgbDays) = mco_hit(nbsubj,mgbDays); ICmco_hit(ICmco_hit==0)=NaN;
@@ -1607,7 +1607,7 @@ ICslco_fa(ICslco_fa==0) = NaN;
 
 close all
 % % plots by session
-bySess=0;
+bySess=1;
 if bySess==1
     jj=2;     
     for jj=2:size(allDataTestsOnly,1)
@@ -1860,7 +1860,7 @@ if bySess==1
 end
 
 %%
-makeLickLat=0;
+makeLickLat=1;
 if makeLickLat==0
 else
     jj=2;
