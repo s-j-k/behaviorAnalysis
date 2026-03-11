@@ -102,13 +102,13 @@ rates{1,2}='Rates variable';
 rates(2:7,2)=allDataTestsOnly(2:7,27);
 
 days=getOptoDays;
+reinfcolor= [0.4,0.4,0.4];
+optocolor=[102/255 178/255 255/255];
 %%
-byTrialPlots(allDataTestsOnly,days)
+byTrialPlots(allDataTestsOnly,days,reinfcolor,optocolor)
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
-reinfcolor= [0.4,0.4,0.4];
-optocolor=[102/255 178/255 255/255];
 
 close all
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2];

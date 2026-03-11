@@ -1,6 +1,6 @@
-function byTrialPlots(allDataTestsOnly,days)
+function byTrialPlots(allDataTestsOnly,days,reinfcolor,optocolor)
 % plot to make rolling behavior average
-counter=1;counter2=1;
+    counter=1;counter2=1;
     for qq=2:size(allDataTestsOnly,1)
         exampleSession=allDataTestsOnly{qq,26}; 
         mgbDays=days{qq,5}; 
@@ -142,144 +142,226 @@ counter=1;counter2=1;
             allMiceCFF{counter2}=choiceDataD1Foil;
             
             counter2=counter2+1;
-        end
-        
+        end    
     end
     
-    %lick latency by trial 
-    SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
-    START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
+%lick latency by trial 
+SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
+START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
     
-    for rr=6
-        lickLatRFT=allMiceRFT{1,rr}(:,LICKL);
-        lickLatRFF=allMiceRFF{1,rr}(:,LICKL);
-        lickLatFullT=allMiceFullT{1,rr}(:,LICKL);
-        lickLatFullF=allMiceFullF{1,rr}(:,LICKL);
-        lickLatCT=allMiceCFT{1,rr}(:,LICKL);
-        lickLatCF=allMiceCFF{1,rr}(:,LICKL);
-        
-        lickLatRTT=allMiceRTT{1,rr}(:,LICKL);
-        lickLatRTF=allMiceRTF{1,rr}(:,LICKL);
-        lickLatToneT=allMiceToneT{1,rr}(:,LICKL);
-        lickLatToneF=allMiceToneF{1,rr}(:,LICKL);
-        lickLatCT=allMiceCTT{1,rr}(:,LICKL);
-        lickLatCF=allMiceCTF{1,rr}(:,LICKL);
+idx=6;
+for rr=idx
+    lickLatRFT=allMiceRFT{1,rr}(:,LICKL);
+    lickLatRFF=allMiceRFF{1,rr}(:,LICKL);
+    lickLatFullT=allMiceFullT{1,rr}(:,LICKL);
+    lickLatFullF=allMiceFullF{1,rr}(:,LICKL);
+    lickLatCFT=allMiceCFT{1,rr}(:,LICKL);
+    lickLatCFF=allMiceCFF{1,rr}(:,LICKL);
+
+    lickLatRTT=allMiceRTT{1,rr}(:,LICKL);
+    lickLatRTF=allMiceRTF{1,rr}(:,LICKL);
+    lickLatToneT=allMiceToneT{1,rr}(:,LICKL);
+    lickLatToneF=allMiceToneF{1,rr}(:,LICKL);
+    lickLatCT=allMiceCTT{1,rr}(:,LICKL);
+    lickLatCF=allMiceCTF{1,rr}(:,LICKL);
+end
+    
+lickLatRFTNoNan=lickLatRFT(~isnan(lickLatRFT));
+lickLatRFFNoNan=lickLatRFF(~isnan(lickLatRFF));    
+lickLatFullTNoNan=lickLatFullT(~isnan(lickLatFullT));
+lickLatFullTFNoNan=lickLatFullF(~isnan(lickLatFullF));
+lickLatCFTNoNan=lickLatCFT(~isnan(lickLatCFT));
+lickLatCFFNoNan=lickLatCFF(~isnan(lickLatCFF));
+
+lickLatRTTNoNan=lickLatRTT(~isnan(lickLatRTT));
+lickLatTTNoNan=lickLatToneT(~isnan(lickLatToneT));
+lickLatRTFNoNan=lickLatRTF(~isnan(lickLatRTF));
+lickLatTFNoNan=lickLatToneF(~isnan(lickLatToneF));
+lickLatCTNoNan=lickLatCT(~isnan(lickLatCT));
+lickLatCFNoNan=lickLatCF(~isnan(lickLatCF));
+    
+rollingb=1;
+    if rollingb==1
+        % averaged across all mice plots
+        windowsize=10;
+        figure; subplot(3,1,1); title('Light off'); hold on
+        stdTTarget=std(movmean(mean(allMiceRTTarget,1),windowsize));
+        stdTFoil=std(movmean(mean(allMiceRTFoil,1),windowsize));
+        shadedErrorBar([],movmean(mean(allMiceRTTarget,1),windowsize),std(movmean(mean(allMiceRTTarget,1),windowsize)),'g',0);hold on
+        axis tight; ylim([0 1]);
+        shadedErrorBar([],movmean(mean(allMiceRTFoil,1),windowsize),std(movmean(mean(allMiceRTFoil,1),windowsize)), 'r',0); legend('','hit','','fa');
+        ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
+
+        stdToneTarget=std(movmean(mean(allMiceToneTarget,1),windowsize));
+        stdToneFoil=std(movmean(mean(allMiceToneFoil,1),windowsize));
+        subplot(3,1,2);title('Stimulus');hold on
+        shadedErrorBar([],movmean(mean(allMiceToneTarget),windowsize),std(movmean(mean(allMiceToneTarget,1),windowsize)),'g',0);hold on
+        shadedErrorBar([],movmean(mean(allMiceToneFoil),windowsize),std(movmean(mean(allMiceToneFoil,1),windowsize)),'r',0);ylim([0 1]);
+        axis tight; ylim([0 1]);
+
+        stdChoiceTTarget=std(movmean(mean(allMiceCTTarget,1),windowsize));
+        stdChoiceTFoil=std(movmean(mean(allMiceCTFoil,1),windowsize));
+        subplot(3,1,3); title('Choice');hold on
+        shadedErrorBar([],movmean(mean(allMiceCTTarget),windowsize),std(movmean(mean(allMiceCTTarget,1),windowsize)),'g',0);hold on
+        shadedErrorBar([],movmean(mean(allMiceCTFoil),windowsize),std(movmean(mean(allMiceToneFoil,1),windowsize)),'r',0);
+        axis tight; ylim([0 1]);
+        xlabel('Trials');
+
+        stdFTarget=std(movmean(mean(allMiceRFTarget,1),windowsize));
+        stdFFoil=std(movmean(mean(allMiceRFFoil,1),windowsize));
+        figure; subplot(3,1,1); title('Light off'); hold on
+        shadedErrorBar([],movmean(mean(allMiceRFTarget),windowsize),std(movmean(mean(allMiceRFTarget,1),windowsize)),'g',0);hold on
+        shadedErrorBar([],movmean(mean(allMiceRFFoil),windowsize),std(movmean(mean(allMiceRFFoil,1),windowsize)),'r',0); legend('','hit','','fa');
+        axis tight; ylim([0 1]);
+        ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
+
+        stdFullTarget=std(movmean(mean(allMiceFullTarget,1),windowsize));
+        stdFullFoil=std(movmean(mean(allMiceFullFoil,1),windowsize));
+        subplot(3,1,2);title('Full trial');hold on
+        shadedErrorBar([],movmean(mean(allMiceFullTarget),windowsize),std(movmean(mean(allMiceFullTarget,1),windowsize)),'g',0);hold on
+        shadedErrorBar([],movmean(mean(allMiceFullFoil),windowsize),std(movmean(mean(allMiceFullFoil,1),windowsize)),'r',0); ylim([0 1]);
+        axis tight; ylim([0 1]);
+
+        stdChoiceTTarget=std(movmean(mean(allMiceCFTarget,1),windowsize));
+        stdChoiceTFoil=std(movmean(mean(allMiceCFFoil,1),windowsize));   
+        subplot(3,1,3); title('Choice');hold on
+        shadedErrorBar([],movmean(mean(allMiceCFTarget),windowsize),std(movmean(mean(allMiceCFTarget,1),windowsize)),'g',0);hold on
+        shadedErrorBar([],movmean(mean(allMiceCFFoil),windowsize),std(movmean(mean(allMiceCFFoil,1),windowsize)),'r',0);
+        axis tight; ylim([0 1]);
+        xlabel('Trials');
+        ylim([0 1]);
+
+        %scatter plot
+        targetIdx = movmean(mean(allMiceRTTargetIdx,1),windowsize)';
+        targetData=movmean(mean(allMiceRTTarget,1),windowsize)';
+        foilIdx=movmean(mean(allMiceRTFoilIdx,1),windowsize)';
+        foilData=movmean(mean(allMiceRTFoil,1),windowsize)';
+        windowsize=10;
+        figure; subplot(3,1,1); title('Light off'); hold on
+        scatter(targetIdx,targetData);hold on;ylim([0 1]);
+        scatter(foilIdx,foilData); legend('hit','fa');
+        axis tight; ylim([0 1]);
+        ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
+
+        toneIdx = movmean(mean(allMiceToneTargetIdx,1),windowsize)';
+        toneData=movmean(mean(allMiceToneTarget,1),windowsize)';
+        toneFoilIdx=movmean(mean(allMiceToneFoilIdx,1),windowsize)';
+        toneFoilData=movmean(mean(allMiceToneFoil,1),windowsize)';
+        subplot(3,1,2);title('Stimulus');hold on
+        scatter(toneIdx,toneData);hold on;ylim([0 1]);
+        scatter(toneFoilIdx,toneFoilData); 
+        axis tight; ylim([0 1]);
+
+        choiceIdx=movmean(mean(allMiceChoiceTTargetIdx,1),windowsize)';
+        choiceData=movmean(mean(allMiceCTTarget,1),windowsize)';
+        choiceFoilIdx=movmean(mean(allMiceChoiceTFoilIdx,1),windowsize)';
+        choiceFoilData=movmean(mean(allMiceCTFoil,1),windowsize)';
+        subplot(3,1,3); title('Choice');hold on
+        scatter(choiceIdx,choiceData);hold on;ylim([0 1]);
+        scatter(choiceFoilIdx,choiceFoilData); 
+        axis tight; ylim([0 1]);xlabel('Trials');
+
+        rfTargetIdx=movmean(mean(allMiceRFTargetIdx,1),windowsize)';
+        rfTargetData=movmean(mean(allMiceRFTarget,1),windowsize)';
+        rfFoilIdx=movmean(mean(allMiceRFFoilIdx,1),windowsize)';
+        rfFoilData=movmean(mean(allMiceRFFoil,1),windowsize)';
+        figure; subplot(3,1,1); title('Light off'); hold on
+        scatter(rfTargetIdx,rfTargetData);hold on;ylim([0 1]);
+        scatter(rfFoilIdx,rfFoilData); legend('hit','fa');
+        axis tight; ylim([0 1]);
+        ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
+
+        fullTargetIdx=movmean(mean(allMiceFullTargetIdx,1),windowsize)';
+        fullTargetData=movmean(mean(allMiceFullTarget,1),windowsize)';
+        fullFoilIdx=movmean(mean(allMiceFullFoilIdx,1),windowsize)';
+        fullFoilData=movmean(mean(allMiceFullFoil,1),windowsize)';
+        subplot(3,1,2);title('Full trial');hold on
+        scatter(fullTargetIdx,fullTargetData);hold on;ylim([0 1]);
+        scatter(fullFoilIdx,fullFoilData); 
+        axis tight; ylim([0 1]);
+
+        cfTargetIdx=movmean(mean(allMiceChoiceFTargetIdx,1),windowsize)';
+        cfTargetData=movmean(mean(allMiceCFTarget,1),windowsize)';
+        cfFoilIdx=movmean(mean(allMiceChoiceFFoilIdx,1),windowsize)';
+        cfFoilData=movmean(mean(allMiceCFFoil,1),windowsize)';
+        subplot(3,1,3); title('Choice');hold on
+        scatter(cfTargetIdx,cfTargetData);hold on;ylim([0 1]);
+        scatter(cfFoilIdx,cfFoilData); 
+        axis tight; ylim([0 1]);
+        xlabel('Trials');
+
+    else
     end
     
-    figure;subplot(2,2,1);
-    scatter(lickLatRFT,1:70);
-    subplot(2,2,2);plot(1:length(lickLatTone),lickLatToneT); 
-    subplot(2,2,3);scatter(lickLatToneT,1:length(lickLatTone)); 
-    subplot(2,2,4);plot(1:length(lickLatTone),lickLatTone);
-    % averaged across all mice plots
-    windowsize=10;
-    figure; subplot(3,1,1); title('Light off'); hold on
-    stdTTarget=std(movmean(mean(allMiceRTTarget,1),windowsize));
-    stdTFoil=std(movmean(mean(allMiceRTFoil,1),windowsize));
-    shadedErrorBar([],movmean(mean(allMiceRTTarget,1),windowsize),std(movmean(mean(allMiceRTTarget,1),windowsize)),'g',0);hold on
-    axis tight; ylim([0 1]);
-    shadedErrorBar([],movmean(mean(allMiceRTFoil,1),windowsize),std(movmean(mean(allMiceRTFoil,1),windowsize)), 'r',0); legend('','hit','','fa');
-    ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
-
-    stdToneTarget=std(movmean(mean(allMiceToneTarget,1),windowsize));
-    stdToneFoil=std(movmean(mean(allMiceToneFoil,1),windowsize));
-    subplot(3,1,2);title('Stimulus');hold on
-    shadedErrorBar([],movmean(mean(allMiceToneTarget),windowsize),std(movmean(mean(allMiceToneTarget,1),windowsize)),'g',0);hold on
-    shadedErrorBar([],movmean(mean(allMiceToneFoil),windowsize),std(movmean(mean(allMiceToneFoil,1),windowsize)),'r',0);ylim([0 1]);
-    axis tight; ylim([0 1]);
+    %add open circles aligned to 0 for the misses and CRs
+    missIdx=find(allMiceRFTarget(idx,:)==0);
+    missFIdx=find(allMiceFullTarget(idx,:)==0);
+    missFCIdx=find(allMiceCFTarget(idx,:)==0);
     
-    stdChoiceTTarget=std(movmean(mean(allMiceCTTarget,1),windowsize));
-    stdChoiceTFoil=std(movmean(mean(allMiceCTFoil,1),windowsize));
-    subplot(3,1,3); title('Choice');hold on
-    shadedErrorBar([],movmean(mean(allMiceCTTarget),windowsize),std(movmean(mean(allMiceCTTarget,1),windowsize)),'g',0);hold on
-    shadedErrorBar([],movmean(mean(allMiceCTFoil),windowsize),std(movmean(mean(allMiceToneFoil,1),windowsize)),'r',0);
-    axis tight; ylim([0 1]);
-    xlabel('Trials');
+    missRTIdx=find(allMiceRTTarget(idx,:)==0);
+    missTIdx=find(allMiceToneTarget(idx,:)==0);
+    missTCIdx=find(allMiceCTTarget(idx,:)==0);
+    %add consummatory licks
+    sz=20;
+    hitFullFig=figure;
+    subplot(5,1,1);scatter(lickLatRFT,allMiceRFTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
+    hold on;ylabel('Trial');
+    scatter(zeros(1,length(missIdx)),allMiceRFTargetIdx(idx,missIdx)',sz,reinfcolor);
     
-    stdFTarget=std(movmean(mean(allMiceRFTarget,1),windowsize));
-    stdFFoil=std(movmean(mean(allMiceRFFoil,1),windowsize));
-    figure; subplot(3,1,1); title('Light off'); hold on
-    shadedErrorBar([],movmean(mean(allMiceRFTarget),windowsize),std(movmean(mean(allMiceRFTarget,1),windowsize)),'g',0);hold on
-    shadedErrorBar([],movmean(mean(allMiceRFFoil),windowsize),std(movmean(mean(allMiceRFFoil,1),windowsize)),'r',0); legend('','hit','','fa');
-    axis tight; ylim([0 1]);
-    ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
-
-    stdFullTarget=std(movmean(mean(allMiceFullTarget,1),windowsize));
-    stdFullFoil=std(movmean(mean(allMiceFullFoil,1),windowsize));
-    subplot(3,1,2);title('Full trial');hold on
-    shadedErrorBar([],movmean(mean(allMiceFullTarget),windowsize),std(movmean(mean(allMiceFullTarget,1),windowsize)),'g',0);hold on
-    shadedErrorBar([],movmean(mean(allMiceFullFoil),windowsize),std(movmean(mean(allMiceFullFoil,1),windowsize)),'r',0); ylim([0 1]);
-    axis tight; ylim([0 1]);
+    subplot(5,1,2);scatter(lickLatFullT,allMiceFullTargetIdx(idx,:)',sz,optocolor,'filled'); title('Full opto');xlim([0 2]);
+    hold on;ylabel('Trial');
+    scatter(zeros(1,length(missFIdx)),allMiceFullTargetIdx(idx,missFIdx)',sz,optocolor);ylabel('Trial');
     
-    stdChoiceTTarget=std(movmean(mean(allMiceCFTarget,1),windowsize));
-    stdChoiceTFoil=std(movmean(mean(allMiceCFFoil,1),windowsize));   
-    subplot(3,1,3); title('Choice');hold on
-    shadedErrorBar([],movmean(mean(allMiceCFTarget),windowsize),std(movmean(mean(allMiceCFTarget,1),windowsize)),'g',0);hold on
-    shadedErrorBar([],movmean(mean(allMiceCFFoil),windowsize),std(movmean(mean(allMiceCFFoil,1),windowsize)),'r',0);
-    axis tight; ylim([0 1]);
-    xlabel('Trials');
-    ylim([0 1]);
+    subplot(5,1,3);scatter(lickLatCT,allMiceChoiceFTargetIdx(idx,:)',sz,optocolor,'filled');title('Choice opto');xlim([0 2]);
+    ylabel('Trial');xlabel('Time (s)');
+    hold on;scatter(zeros(1,length(missFCIdx)),allMiceChoiceFTargetIdx(idx,missFCIdx)',sz,optocolor);ylabel('Trial');
     
-    %scatter plot
-    targetIdx = movmean(mean(allMiceRTTargetIdx,1),windowsize)';
-    targetData=movmean(mean(allMiceRTTarget,1),windowsize)';
-    foilIdx=movmean(mean(allMiceRTFoilIdx,1),windowsize)';
-    foilData=movmean(mean(allMiceRTFoil,1),windowsize)';
-    windowsize=10;
-    figure; subplot(3,1,1); title('Light off'); hold on
-    scatter(targetIdx,targetData);hold on;ylim([0 1]);
-    scatter(foilIdx,foilData); legend('hit','fa');
-    axis tight; ylim([0 1]);
-    ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
-
-    toneIdx = movmean(mean(allMiceToneTargetIdx,1),windowsize)';
-    toneData=movmean(mean(allMiceToneTarget,1),windowsize)';
-    toneFoilIdx=movmean(mean(allMiceToneFoilIdx,1),windowsize)';
-    toneFoilData=movmean(mean(allMiceToneFoil,1),windowsize)';
-    subplot(3,1,2);title('Stimulus');hold on
-    scatter(toneIdx,toneData);hold on;ylim([0 1]);
-    scatter(toneFoilIdx,toneFoilData); 
-    axis tight; ylim([0 1]);
+    subplot(5,1,4);shadedErrorBar(1:length(lickLatRFTNoNan),lickLatRFTNoNan,std(lickLatRFTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatFullTNoNan),lickLatFullTNoNan(1:length(lickLatFullTNoNan)),std(lickLatFullTNoNan),'b');ylabel('First lick latency (s)');
+    xlim([1 20]);box off;
+    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFTNoNan),lickLatRFTNoNan(1:length(lickLatCFTNoNan)),std(lickLatRFTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatCFTNoNan),lickLatCFTNoNan,std(lickLatCFTNoNan),'b');box off;
+    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);
+    hitFullFig.Position(3:4)=[250 875];
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto']);
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto.png']);    
     
-    choiceIdx=movmean(mean(allMiceChoiceTTargetIdx,1),windowsize)';
-    choiceData=movmean(mean(allMiceCTTarget,1),windowsize)';
-    choiceFoilIdx=movmean(mean(allMiceChoiceTFoilIdx,1),windowsize)';
-    choiceFoilData=movmean(mean(allMiceCTFoil,1),windowsize)';
-    subplot(3,1,3); title('Choice');hold on
-    scatter(choiceIdx,choiceData);hold on;ylim([0 1]);
-    scatter(choiceFoilIdx,choiceFoilData); 
-    axis tight; ylim([0 1]);xlabel('Trials');
-
-    rfTargetIdx=movmean(mean(allMiceRFTargetIdx,1),windowsize)';
-    rfTargetData=movmean(mean(allMiceRFTarget,1),windowsize)';
-    rfFoilIdx=movmean(mean(allMiceRFFoilIdx,1),windowsize)';
-    rfFoilData=movmean(mean(allMiceRFFoil,1),windowsize)';
-    figure; subplot(3,1,1); title('Light off'); hold on
-    scatter(rfTargetIdx,rfTargetData);hold on;ylim([0 1]);
-    scatter(rfFoilIdx,rfFoilData); legend('hit','fa');
-    axis tight; ylim([0 1]);
-    ylabel(['Rate, rolling average of ' num2str(windowsize) ' trials']);
-
-    fullTargetIdx=movmean(mean(allMiceFullTargetIdx,1),windowsize)';
-    fullTargetData=movmean(mean(allMiceFullTarget,1),windowsize)';
-    fullFoilIdx=movmean(mean(allMiceFullFoilIdx,1),windowsize)';
-    fullFoilData=movmean(mean(allMiceFullFoil,1),windowsize)';
-    subplot(3,1,2);title('Full trial');hold on
-    scatter(fullTargetIdx,fullTargetData);hold on;ylim([0 1]);
-    scatter(fullFoilIdx,fullFoilData); 
-    axis tight; ylim([0 1]);
+    hitFig=figure;
+    subplot(5,1,1);scatter(lickLatRFT,allMiceRTTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
+    ylabel('Trial');hold on;
+    scatter(zeros(1,length(missRTIdx)),allMiceRTTargetIdx(idx,missRTIdx)',sz,reinfcolor);
+    subplot(5,1,2);scatter(lickLatToneT,allMiceToneTargetIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus opto');xlim([0 2]);
+    ylabel('Trial');hold on;scatter(zeros(1,length(missTIdx)),allMiceToneTargetIdx(idx,missTIdx)',sz,optocolor);
     
-    cfTargetIdx=movmean(mean(allMiceChoiceFTargetIdx,1),windowsize)';
-    cfTargetData=movmean(mean(allMiceCFTarget,1),windowsize)';
-    cfFoilIdx=movmean(mean(allMiceChoiceFFoilIdx,1),windowsize)';
-    cfFoilData=movmean(mean(allMiceCFFoil,1),windowsize)';
-    subplot(3,1,3); title('Choice');hold on
-    scatter(cfTargetIdx,cfTargetData);hold on;ylim([0 1]);
-    scatter(cfFoilIdx,cfFoilData); 
-    axis tight; ylim([0 1]);
-    xlabel('Trials');
+    subplot(5,1,3);scatter(lickLatCT,allMiceChoiceTTargetIdx(idx,:)',sz,optocolor,'filled');title('Choice opto');xlim([0 2]);
+    ylabel('Trial');xlabel('Time (s)');hold on;
+    scatter(zeros(1,length(missTCIdx)),allMiceChoiceTTargetIdx(idx,missTCIdx)',sz,optocolor);
+    subplot(5,1,4);shadedErrorBar(1:length(lickLatTTNoNan),lickLatRTTNoNan(1:length(lickLatTTNoNan)),std(lickLatRTTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatTTNoNan),lickLatTTNoNan,std(lickLatTTNoNan),'b');ylabel('First lick latency (s)');
+    xlim([1 20]);box off;ylim([-0.5 4.5]);
+    subplot(5,1,5);shadedErrorBar(1:length(lickLatCTNoNan),lickLatTTNoNan(1:length(lickLatCTNoNan)),std(lickLatTTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatCTNoNan),lickLatCTNoNan,std(lickLatCTNoNan),'b');box off;
+    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
+    hitFig.Position(3:4)=[250 875];
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto']);
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto.png']);    
     
-    
+    FAFig=figure;
+    subplot(5,1,1);scatter(lickLatRTF,allMiceRTFoilIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
+    ylabel('Trial');
+    subplot(5,1,2);scatter(lickLatToneF,allMiceToneFoilIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus opto');xlim([0 2]);ylim([1 300]);
+    ylabel('Trial');
+    subplot(5,1,3);scatter(lickLatCF,allMiceChoiceTFoilIdx(idx,:)',sz,optocolor,'filled');title('Choice opto');xlim([0 2]);ylim([1 300]);
+    ylabel('Trial');xlabel('Time (s)');
+    subplot(5,1,4);shadedErrorBar(1:length(lickLatRTFNoNan),lickLatRTFNoNan(1:length(lickLatRTFNoNan)),std(lickLatRTFNoNan));
+    hold on;shadedErrorBar(1:length(lickLatTFNoNan),lickLatTFNoNan,std(lickLatRTFNoNan),'b');ylabel('First lick latency (s)');
+    xlim([1 20]);box off;
+    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFNoNan),lickLatRFTNoNan(1:length(lickLatCFNoNan)),std(lickLatRFTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatCFNoNan),lickLatCFNoNan,std(lickLatCFNoNan),'b');box off;
+    xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 20]);
+    FAFig.Position(3:4)=[250 875];
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto']);
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto.png']);    
     
     
 end
