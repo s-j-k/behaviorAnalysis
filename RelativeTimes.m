@@ -13,7 +13,7 @@ function r = RelativeTimes(t,intervals,values)
 % i.e. a value of 0.25 will reflect the timestamp is just after a spindle peak, 25% of the
 % between the spindle peak and the spindle end.
 
-if nargin<3,
+if nargin<3
     values = 0:size(intervals,2)-1;
 end
 

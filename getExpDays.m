@@ -23,7 +23,7 @@ dreadds=0;
             mgbDays = mgbDays(expRange);
             icDays=icDays(expRange);
         end
-    elseif contains(path,'_2')==1
+    elseif contains(path,'OptoMGBIC_2')==1
         if nbsubj==1
             expRange=25:32; % cohort 2
             mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
@@ -32,16 +32,12 @@ dreadds=0;
             icDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
                 0 0 1 1 0 0 1 1 ...
                 0 0 0];icDays=logical(icDays);
-            mgbDays=mgbDays(expRange);
-            icDays=icDays(expRange);
         elseif nbsubj==2
             expRange=22:32; % cohort 2
             mgbDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 1 0 0 0 0 0];mgbDays=logical(mgbDays);
             icDays = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ...
                 1 1 1 0 0 1 1 0 0 1 1 ...
                 0 0 0];icDays=logical(icDays);
-            mgbDays=mgbDays(expRange);
-            icDays=icDays(expRange);
         end
     elseif contains(path,'_3')==1
         if nbsubj==1 %sk176
@@ -748,6 +744,6 @@ dreadds=0;
     if length(icDays)>1
         icDays=icDays(expRange);
     else
-%         dreadds=dreadds(expRange);
+        dreadds=dreadds(expRange);
     end
 end

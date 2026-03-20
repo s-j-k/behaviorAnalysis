@@ -97,7 +97,7 @@ function [allCohorts, allLickMat,allLicks,expList] = loadAllOptoCohorts(cohortRa
     cohort6(1,:)=[];
 %     cohort7(1,:)=[];
     allLickMat=extractCellArray(lickMat1,lickMat2,lickMat3,lickMat6);
-    allLicks=vertcat(licks1,licks2,licks3,licks6);
+    allLicks=vertcat(licks1;licks2';licks3';licks6');
     allCohorts=vertcat(cohort1,cohort2,cohort3,cohort6);
     expList=vertcat(expList1',expList2',expList3',expList6');
     allCohorts(14,:)=[];allCohorts(18,:)=[];
