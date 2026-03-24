@@ -180,140 +180,233 @@ tTLickMat=NaN(300,60);
 tFLickMat=NaN(300,60);
 cTTLickMat=NaN(300,60);
 cTFLickMat=NaN(300,60);
-% get consummatory licks
-for pp=1:2
-    if pp==1
-        dayIdx=fullDays(1,2);
-    else
-        dayIdx=toneDays(1,2);
-    end
-    nextIdx=1; %templicks is all of the lick data for that session;
-    sessAllLicks=allLicksTest{lickIdx,2}{dayIdx};
-    exampleSession=allDataTestsOnly{lickIdx+1,26}; 
-    exampleTrials=find(exampleSession(:,1)==dayIdx);
-    exampleTrials=exampleSession(exampleTrials,:);
-    for tt=1:size(exampleTrials)-1
-        nextIdxTemp=find(sessAllLicks>exampleTrials(tt,6));
-        try
-            nextIdx(tt+1)=nextIdxTemp(1);
-        catch
-            disp(tt)
+    % get consummatory licks
+    for pp=1:2
+        if pp==1
+            dayIdx=fullDays(1,2);
+        else
+            dayIdx=toneDays(1,2);
         end
-    end
-    for yy=1:size(exampleTrials)-2
-        tempLickMat(yy,1:length(sessAllLicks(nextIdx(yy):nextIdx(yy+1)-1)))=sessAllLicks(nextIdx(yy):nextIdx(yy+1)-1);
-    end
-    %now tempLickMat is the licks, for each trial, for the entire session
-    %sort tempLickMat now by tone and context/condition
-    if pp==1
-        reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-        reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-        fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
-        fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
-        choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-        choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-        reinfFTLicks=tempLickMat(reinfTIdx,:);
-        reinfFFLicks=tempLickMat(reinfFIdx,:);
-        fullTLicks=tempLickMat(fullTIdx,:);
-        fullFLicks=tempLickMat(fullFIdx,:);
-        choiceFTLicks=tempLickMat(choiceTIdx,:);
-        choiceFFLicks=tempLickMat(choiceFIdx,:);
-    else
-        reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-        reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-        toneTIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
-        toneFIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
-        choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-        choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-
-        reinfTTLicks=tempLickMat(reinfTIdx,:);
-        reinfTFLicks=tempLickMat(reinfFIdx,:);
-        toneTLicks=tempLickMat(toneTIdx,:);
-        toneFLicks=tempLickMat(toneFIdx,:);
-        choiceFTLicks=tempLickMat(choiceTIdx,:);
-        choiceFFLicks=tempLickMat(choiceFIdx,:);
-    end
-
-% for whatever reason this code does not work....
-    if pp==1
-        reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-        reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-        fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
-        fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
-        choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-        choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+        nextIdx=1; %templicks is all of the lick data for that session;
+        sessAllLicks=allLicksTest{lickIdx,2}{dayIdx};
+        exampleSession=allDataTestsOnly{lickIdx+1,26}; 
+        exampleTrials=find(exampleSession(:,1)==dayIdx);
+        exampleTrials=exampleSession(exampleTrials,:);
+        for tt=1:size(exampleTrials)-1
+            nextIdxTemp=find(sessAllLicks>exampleTrials(tt,6));
+            try
+                nextIdx(tt+1)=nextIdxTemp(1);
+            catch
+                disp(tt)
+            end
+        end
         for yy=1:size(exampleTrials)-2
-            rFTLickMat(yy,1:length(licksRFT(nextIdx(yy):nextIdx(yy+1)-1)))=licksRFT(nextIdx(yy):nextIdx(yy+1)-1);
-            rFFLickMat(yy,1:length(licksRFF(nextIdx(yy):nextIdx(yy+1)-1)))=licksRFF(nextIdx(yy):nextIdx(yy+1)-1);
-            fTLickMat(yy,1:length(licksFT(nextIdx(yy):nextIdx(yy+1)-1)))=licksFT(nextIdx(yy):nextIdx(yy+1)-1);
-            fFLickMat(yy,1:length(licksFF(nextIdx(yy):nextIdx(yy+1)-1)))=licksFF(nextIdx(yy):nextIdx(yy+1)-1);
-            cFTLickMat(yy,1:length(licksCFT(nextIdx(yy):nextIdx(yy+1)-1)))=licksCFT(nextIdx(yy):nextIdx(yy+1)-1);
-            cFFLickMat(yy,1:length(licksCFF(nextIdx(yy):nextIdx(yy+1)-1)))=licksCFF(nextIdx(yy):nextIdx(yy+1)-1);
+            tempLickMat(yy,1:length(sessAllLicks(nextIdx(yy):nextIdx(yy+1)-1)))=sessAllLicks(nextIdx(yy):nextIdx(yy+1)-1);
         end
-        rFTLickMat=rFTLickMat(reinfTIdx,:);
-        rFFLickMat=rFFLickMat(reinfFIdx,:);
-        fTLickMat=fTLickMat(fullTIdx,:);
-        fFLickMat=fFLickMat(fullFIdx,:);
-        cFTLickMat=cFTLickMat(choiceTIdx,:);
-        cFFLickMat=cFFLickMat(choiceFIdx,:);
-    else
-        reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-        reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-        toneTIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
-        toneFIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
-        choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-        choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-        for yy=1:size(exampleTrials)-2
-            rRTLickMat(yy,1:length(licksRTT(nextIdx(yy):nextIdx(yy+1)-1)))=licksRTT(nextIdx(yy):nextIdx(yy+1)-1);
-            rRFLickMat(yy,1:length(licksRTF(nextIdx(yy):nextIdx(yy+1)-1)))=licksRTF(nextIdx(yy):nextIdx(yy+1)-1);
-            tTLickMat(yy,1:length(licksTT(nextIdx(yy):nextIdx(yy+1)-1)))=licksTT(nextIdx(yy):nextIdx(yy+1)-1);
-            tFLickMat(yy,1:length(licksTF(nextIdx(yy):nextIdx(yy+1)-1)))=licksTF(nextIdx(yy):nextIdx(yy+1)-1);
-            cTTLickMat(yy,1:length(licksCTT(nextIdx(yy):nextIdx(yy+1)-1)))=licksCTT(nextIdx(yy):nextIdx(yy+1)-1);
-            cTFLickMat(yy,1:length(licksCTF(nextIdx(yy):nextIdx(yy+1)-1)))=licksCTF(nextIdx(yy):nextIdx(yy+1)-1);
+        %now tempLickMat is the licks, for each trial, for the entire session
+        %sort tempLickMat now by tone and context/condition
+        if pp==1
+            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
+            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
+            fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
+            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
+            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+            reinfFTLicks=tempLickMat(reinfTIdx,:);
+            reinfFFLicks=tempLickMat(reinfFIdx,:);
+            fullTLicks=tempLickMat(fullTIdx,:);
+            fullFLicks=tempLickMat(fullFIdx,:);
+            choiceFTLicks=tempLickMat(choiceTIdx,:);
+            choiceFFLicks=tempLickMat(choiceFIdx,:);
+        else
+            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
+            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            toneTIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
+            toneFIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
+            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
+            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+
+            reinfTTLicks=tempLickMat(reinfTIdx,:);
+            reinfTFLicks=tempLickMat(reinfFIdx,:);
+            toneTLicks=tempLickMat(toneTIdx,:);
+            toneFLicks=tempLickMat(toneFIdx,:);
+            choiceFTLicks=tempLickMat(choiceTIdx,:);
+            choiceFFLicks=tempLickMat(choiceFIdx,:);
         end
-        rRTLickMat=rRTLickMat(reinfTIdx,:);
-        rRFLickMat=rRFLickMat(reinfFIdx,:);
-        tTLickMat=tTLickMat(toneTIdx,:);
-        tFLickMat=tFLickMat(toneFIdx,:);
-        cTTLickMat=cTTLickMat(choiceTIdx,:);
-        cTFLickMat=cTFLickMat(choiceFIdx,:);
+
+    % for whatever reason this code does not work....
+        if pp==1
+            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
+            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
+            fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
+            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
+            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+            for yy=1:size(exampleTrials)-2
+                rFTLickMat(yy,1:length(licksRFT(nextIdx(yy):nextIdx(yy+1)-1)))=licksRFT(nextIdx(yy):nextIdx(yy+1)-1);
+                rFFLickMat(yy,1:length(licksRFF(nextIdx(yy):nextIdx(yy+1)-1)))=licksRFF(nextIdx(yy):nextIdx(yy+1)-1);
+                fTLickMat(yy,1:length(licksFT(nextIdx(yy):nextIdx(yy+1)-1)))=licksFT(nextIdx(yy):nextIdx(yy+1)-1);
+                fFLickMat(yy,1:length(licksFF(nextIdx(yy):nextIdx(yy+1)-1)))=licksFF(nextIdx(yy):nextIdx(yy+1)-1);
+                cFTLickMat(yy,1:length(licksCFT(nextIdx(yy):nextIdx(yy+1)-1)))=licksCFT(nextIdx(yy):nextIdx(yy+1)-1);
+                cFFLickMat(yy,1:length(licksCFF(nextIdx(yy):nextIdx(yy+1)-1)))=licksCFF(nextIdx(yy):nextIdx(yy+1)-1);
+            end
+            rFTLickMat=rFTLickMat(reinfTIdx,:);
+            rFFLickMat=rFFLickMat(reinfFIdx,:);
+            fTLickMat=fTLickMat(fullTIdx,:);
+            fFLickMat=fFLickMat(fullFIdx,:);
+            cFTLickMat=cFTLickMat(choiceTIdx,:);
+            cFFLickMat=cFFLickMat(choiceFIdx,:);
+        else
+            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
+            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            toneTIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
+            toneFIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
+            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
+            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+            for yy=1:size(exampleTrials)-2
+                rRTLickMat(yy,1:length(licksRTT(nextIdx(yy):nextIdx(yy+1)-1)))=licksRTT(nextIdx(yy):nextIdx(yy+1)-1);
+                rRFLickMat(yy,1:length(licksRTF(nextIdx(yy):nextIdx(yy+1)-1)))=licksRTF(nextIdx(yy):nextIdx(yy+1)-1);
+                tTLickMat(yy,1:length(licksTT(nextIdx(yy):nextIdx(yy+1)-1)))=licksTT(nextIdx(yy):nextIdx(yy+1)-1);
+                tFLickMat(yy,1:length(licksTF(nextIdx(yy):nextIdx(yy+1)-1)))=licksTF(nextIdx(yy):nextIdx(yy+1)-1);
+                cTTLickMat(yy,1:length(licksCTT(nextIdx(yy):nextIdx(yy+1)-1)))=licksCTT(nextIdx(yy):nextIdx(yy+1)-1);
+                cTFLickMat(yy,1:length(licksCTF(nextIdx(yy):nextIdx(yy+1)-1)))=licksCTF(nextIdx(yy):nextIdx(yy+1)-1);
+            end
+            rRTLickMat=rRTLickMat(reinfTIdx,:);
+            rRFLickMat=rRFLickMat(reinfFIdx,:);
+            tTLickMat=tTLickMat(toneTIdx,:);
+            tFLickMat=tFLickMat(toneFIdx,:);
+            cTTLickMat=cTTLickMat(choiceTIdx,:);
+            cTFLickMat=cTFLickMat(choiceFIdx,:);
+        end
     end
-end
 
-% consider removing all negative values... (licks before tone)
+    % now remove the probe block indices
 
-idx=6;
-for rr=idx
-    lickLatRFT=allMiceRFT{1,rr}(:,LICKL);
-    lickLatRFF=allMiceRFF{1,rr}(:,LICKL);
-    lickLatFullT=allMiceFullT{1,rr}(:,LICKL);
-    lickLatFullF=allMiceFullF{1,rr}(:,LICKL);
-    lickLatCFT=allMiceCFT{1,rr}(:,LICKL);
-    lickLatCFF=allMiceCFF{1,rr}(:,LICKL);
+    allMiceRTTargetIdx;
+    allMiceRTFoilIdx;
+    allMiceToneTargetIdx;
+    allMiceToneFoilIdx;
+    allMiceChoiceTTargetIdx;
+    allMiceChoiceTFoilIdx;
 
-    lickLatRTT=allMiceRTT{1,rr}(:,LICKL);
-    lickLatRTF=allMiceRTF{1,rr}(:,LICKL);
-    lickLatToneT=allMiceToneT{1,rr}(:,LICKL);
-    lickLatToneF=allMiceToneF{1,rr}(:,LICKL);
-    lickLatCT=allMiceCTT{1,rr}(:,LICKL);
-    lickLatCF=allMiceCTF{1,rr}(:,LICKL);
-end
+    allMiceRFTargetIdx;
+    allMiceRFFoilIdx;
+    allMiceFullTargetIdx;
+    allMiceFullFoilIdxx;
+    allMiceChoiceFTargetIdx;
+    allMiceChoiceFFoilIdx;
 
-lickLatRFTNoNan=lickLatRFT(~isnan(lickLatRFT));
-lickLatRFFNoNan=lickLatRFF(~isnan(lickLatRFF));    
-lickLatFullTNoNan=lickLatFullT(~isnan(lickLatFullT));
-lickLatFullTFNoNan=lickLatFullF(~isnan(lickLatFullF));
-lickLatCFTNoNan=lickLatCFT(~isnan(lickLatCFT));
-lickLatCFFNoNan=lickLatCFF(~isnan(lickLatCFF));
+    idx=6;
+    for rr=idx
+        lickLatRFT=allMiceRFT{1,rr}(:,LICKL);
+        lickLatRFF=allMiceRFF{1,rr}(:,LICKL);
+        lickLatFullT=allMiceFullT{1,rr}(:,LICKL);
+        lickLatFullF=allMiceFullF{1,rr}(:,LICKL);
+        lickLatCFT=allMiceCFT{1,rr}(:,LICKL);
+        lickLatCFF=allMiceCFF{1,rr}(:,LICKL);
 
-lickLatRTTNoNan=lickLatRTT(~isnan(lickLatRTT));
-lickLatTTNoNan=lickLatToneT(~isnan(lickLatToneT));
-lickLatRTFNoNan=lickLatRTF(~isnan(lickLatRTF));
-lickLatTFNoNan=lickLatToneF(~isnan(lickLatToneF));
-lickLatCTNoNan=lickLatCT(~isnan(lickLatCT));
-lickLatCFNoNan=lickLatCF(~isnan(lickLatCF));
+        lickLatRTT=allMiceRTT{1,rr}(:,LICKL);
+        lickLatRTF=allMiceRTF{1,rr}(:,LICKL);
+        lickLatToneT=allMiceToneT{1,rr}(:,LICKL);
+        lickLatToneF=allMiceToneF{1,rr}(:,LICKL);
+        lickLatCT=allMiceCTT{1,rr}(:,LICKL);
+        lickLatCF=allMiceCTF{1,rr}(:,LICKL);
+    end
+
+    lickLatRFTNoNan=lickLatRFT(~isnan(lickLatRFT));
+    lickLatRFFNoNan=lickLatRFF(~isnan(lickLatRFF));    
+    lickLatFullTNoNan=lickLatFullT(~isnan(lickLatFullT));
+    lickLatFullTFNoNan=lickLatFullF(~isnan(lickLatFullF));
+    lickLatCFTNoNan=lickLatCFT(~isnan(lickLatCFT));
+    lickLatCFFNoNan=lickLatCFF(~isnan(lickLatCFF));
+
+    lickLatRTTNoNan=lickLatRTT(~isnan(lickLatRTT));
+    lickLatTTNoNan=lickLatToneT(~isnan(lickLatToneT));
+    lickLatRTFNoNan=lickLatRTF(~isnan(lickLatRTF));
+    lickLatTFNoNan=lickLatToneF(~isnan(lickLatToneF));
+    lickLatCTNoNan=lickLatCT(~isnan(lickLatCT));
+    lickLatCFNoNan=lickLatCF(~isnan(lickLatCF));
+
     
-rollingb=1;
+    %add open circles aligned to 0 for the misses
+    missIdx=find(allMiceRFTarget(idx,:)==0);
+    missFIdx=find(allMiceFullTarget(idx,:)==0);
+    missFCIdx=find(allMiceCFTarget(idx,:)==0);
+    missRTIdx=find(allMiceRTTarget(idx,:)==0);
+    missTIdx=find(allMiceToneTarget(idx,:)==0);
+    missTCIdx=find(allMiceCTTarget(idx,:)==0);
+
+    sz=10;licksColor=[0.9 0.9 0.9];
+    hitFullFig=figure;
+    subplot(5,1,1);scatter(rFTLickMat,allMiceRFTargetIdx(idx,:)',sz,licksColor,'filled');
+    hold on;scatter(lickLatRFT,allMiceRFTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
+    ylabel('Trial');xlim([-0.5 3]);
+    scatter(zeros(1,length(missIdx)),allMiceRFTargetIdx(idx,missIdx)',sz,reinfcolor);
+    
+    subplot(5,1,2);    scatter(fTLickMat,allMiceFullTargetIdx(idx,:)',sz,licksColor,'filled');
+    hold on;scatter(lickLatFullT,allMiceFullTargetIdx(idx,:)',sz,optocolor,'filled'); title('Full, Hit');xlim([0 2]);
+    ylabel('Trial');xlim([-0.5 3]);
+    scatter(zeros(1,length(missFIdx)),allMiceFullTargetIdx(idx,missFIdx)',sz,optocolor);ylabel('Trial');
+    
+    subplot(5,1,3);scatter(cFTLickMat,allMiceChoiceFTargetIdx(idx,:)',sz,licksColor,'filled');
+    hold on;scatter(lickLatCFT,allMiceChoiceFTargetIdx(idx,:)',sz,optocolor,'filled');title('Choice, Hit');xlim([0 2]);
+    ylabel('Trial');xlabel('Time (s)');xlim([-0.5 3]);
+    scatter(zeros(1,length(missFCIdx)),allMiceChoiceFTargetIdx(idx,missFCIdx)',sz,optocolor);ylabel('Trial');
+    
+    subplot(5,1,4);shadedErrorBar(1:length(lickLatRFTNoNan),lickLatRFTNoNan,std(lickLatRFTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatFullTNoNan),lickLatFullTNoNan(1:length(lickLatFullTNoNan)),std(lickLatFullTNoNan),'b');ylabel('First lick latency (s)');
+    xlim([1 20]);box off;title('Full');
+    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFTNoNan),lickLatRFTNoNan(1:length(lickLatCFTNoNan)),std(lickLatRFTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatCFTNoNan),lickLatCFTNoNan,std(lickLatCFTNoNan),'b');box off;title('Choice');
+    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
+    hitFullFig.Position(3:4)=[250 875];
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto']);
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto.png']);    
+    
+    hitFig=figure;
+    subplot(5,1,1);scatter(rRTLickMat,allMiceRTTargetIdx(idx,:)',sz,licksColor,'filled');
+    hold on;scatter(lickLatRTT,allMiceRTTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
+    ylabel('Trial');scatter(zeros(1,length(missRTIdx)),allMiceRTTargetIdx(idx,missRTIdx)',sz,reinfcolor);
+    xlim([-0.5 3]);
+    subplot(5,1,2);scatter(tTLickMat,allMiceToneTargetIdx(idx,:)',sz,licksColor,'filled');
+    hold on;scatter(lickLatToneT,allMiceToneTargetIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus, Hit');xlim([0 2]);
+    ylabel('Trial');scatter(zeros(1,length(missTIdx)),allMiceToneTargetIdx(idx,missTIdx)',sz,optocolor);
+    xlim([-0.5 3]);
+    subplot(5,1,3);hold on;title('Stimulus, Hit');xlim([0 2]);
+    scatter(cTTLickMat,allMiceChoiceTTargetIdx(idx,:)',sz,licksColor,'filled');scatter(lickLatCT,allMiceChoiceTTargetIdx(idx,:)',sz,optocolor,'filled'); 
+    title('Choice, Hit');xlim([0 2]);
+    ylabel('Trial');xlabel('Time (s)');hold on;
+    scatter(zeros(1,length(missTCIdx)),allMiceChoiceTTargetIdx(idx,missTCIdx)',sz,optocolor);
+    xlim([-0.5 3]);
+    subplot(5,1,4);title('Stimulus');shadedErrorBar(1:length(lickLatTTNoNan),lickLatRTTNoNan(1:length(lickLatTTNoNan)),std(lickLatRTTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatTTNoNan),lickLatTTNoNan,std(lickLatTTNoNan),'b');ylabel('First lick latency (s)');
+    xlim([1 20]);box off;ylim([-0.5 4.5]);
+    subplot(5,1,5);title('Choice');shadedErrorBar(1:length(lickLatCTNoNan),lickLatTTNoNan(1:length(lickLatCTNoNan)),std(lickLatTTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatCTNoNan),lickLatCTNoNan,std(lickLatCTNoNan),'b');box off;
+    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
+    hitFig.Position(3:4)=[250 875];
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto']);
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto.png']);    
+    
+    FAFig=figure;
+    subplot(5,1,1);scatter(lickLatRTF,allMiceRTFoilIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
+    ylabel('Trial');
+    subplot(5,1,2);scatter(lickLatToneF,allMiceToneFoilIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus opto');xlim([0 2]);ylim([1 300]);
+    ylabel('Trial');
+    subplot(5,1,3);scatter(lickLatCF,allMiceChoiceTFoilIdx(idx,:)',sz,optocolor,'filled');title('Choice opto');xlim([0 2]);ylim([1 300]);
+    ylabel('Trial');xlabel('Time (s)');
+    subplot(5,1,4);shadedErrorBar(1:length(lickLatRTFNoNan),lickLatRTFNoNan(1:length(lickLatRTFNoNan)),std(lickLatRTFNoNan));
+    hold on;shadedErrorBar(1:length(lickLatTFNoNan),lickLatTFNoNan,std(lickLatRTFNoNan),'b');ylabel('First lick latency (s)');
+    xlim([1 20]);box off;
+    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFNoNan),lickLatRFTNoNan(1:length(lickLatCFNoNan)),std(lickLatRFTNoNan));
+    hold on;shadedErrorBar(1:length(lickLatCFNoNan),lickLatCFNoNan,std(lickLatCFNoNan),'b');box off;
+    xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 20]);
+    FAFig.Position(3:4)=[250 875];
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto']);
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto.png']);    
+    
+
+    rollingb=1;
     if rollingb==1
         % averaged across all mice plots
         windowsize=10;
@@ -364,7 +457,7 @@ rollingb=1;
         xlabel('Trials');
         ylim([0 1]);
 
-        %scatter plot
+        %%%%%scatter plot
         targetIdx = movmean(mean(allMiceRTTargetIdx,1),windowsize)';
         targetData=movmean(mean(allMiceRTTarget,1),windowsize)';
         foilIdx=movmean(mean(allMiceRTFoilIdx,1),windowsize)';
@@ -425,82 +518,5 @@ rollingb=1;
 
     else
     end
-    
-    %add open circles aligned to 0 for the misses
-    missIdx=find(allMiceRFTarget(idx,:)==0);
-    missFIdx=find(allMiceFullTarget(idx,:)==0);
-    missFCIdx=find(allMiceCFTarget(idx,:)==0);
-    missRTIdx=find(allMiceRTTarget(idx,:)==0);
-    missTIdx=find(allMiceToneTarget(idx,:)==0);
-    missTCIdx=find(allMiceCTTarget(idx,:)==0);
-    % do this also for teh CRs
-    % add consummatory licks
-    sz=10;
-    hitFullFig=figure;
-    subplot(5,1,1);scatter(rFTLickMat,allMiceRFTargetIdx(idx,:)',sz,[0.8 0.8 0.8],'filled');
-    hold on;scatter(lickLatRFT,allMiceRFTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
-    ylabel('Trial');xlim([-0.5 3]);
-    scatter(zeros(1,length(missIdx)),allMiceRFTargetIdx(idx,missIdx)',sz,reinfcolor);
-    
-    subplot(5,1,2);    scatter(fTLickMat,allMiceFullTargetIdx(idx,:)',sz,[0.8 0.8 0.8],'filled');
-    hold on;scatter(lickLatFullT,allMiceFullTargetIdx(idx,:)',sz,optocolor,'filled'); title('Full, Hit');xlim([0 2]);
-    ylabel('Trial');xlim([-0.5 3]);
-    scatter(zeros(1,length(missFIdx)),allMiceFullTargetIdx(idx,missFIdx)',sz,optocolor);ylabel('Trial');
-    
-    subplot(5,1,3);scatter(cFTLickMat,allMiceChoiceFTargetIdx(idx,:)',sz,[0.8 0.8 0.8],'filled');
-    hold on;scatter(lickLatCT,allMiceChoiceFTargetIdx(idx,:)',sz,optocolor,'filled');title('Choice, Hit');xlim([0 2]);
-    ylabel('Trial');xlabel('Time (s)');xlim([-0.5 3]);
-    scatter(zeros(1,length(missFCIdx)),allMiceChoiceFTargetIdx(idx,missFCIdx)',sz,optocolor);ylabel('Trial');
-    
-    subplot(5,1,4);shadedErrorBar(1:length(lickLatRFTNoNan),lickLatRFTNoNan,std(lickLatRFTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatFullTNoNan),lickLatFullTNoNan(1:length(lickLatFullTNoNan)),std(lickLatFullTNoNan),'b');ylabel('First lick latency (s)');
-    xlim([1 20]);box off;title('Full');
-    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFTNoNan),lickLatRFTNoNan(1:length(lickLatCFTNoNan)),std(lickLatRFTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatCFTNoNan),lickLatCFTNoNan,std(lickLatCFTNoNan),'b');box off;title('Choice');
-    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);
-    hitFullFig.Position(3:4)=[250 875];
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto']);
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto.png']);    
-    
-    hitFig=figure;
-    subplot(5,1,1);scatter(rRTLickMat,allMiceRTTargetIdx(idx,:)',sz,[0.8 0.8 0.8],'filled');
-    hold on;scatter(lickLatRTT,allMiceRTTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
-    ylabel('Trial');scatter(zeros(1,length(missRTIdx)),allMiceRTTargetIdx(idx,missRTIdx)',sz,reinfcolor);
-    xlim([-0.5 3]);
-    subplot(5,1,2);scatter(tTLickMat,allMiceToneTargetIdx(idx,:)',sz,[0.8 0.8 0.8],'filled');
-    hold on;scatter(lickLatToneT,allMiceToneTargetIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus, Hit');xlim([0 2]);
-    ylabel('Trial');scatter(zeros(1,length(missTIdx)),allMiceToneTargetIdx(idx,missTIdx)',sz,optocolor);
-    xlim([-0.5 3]);
-    subplot(5,1,3);scatter(cTTLickMat,allMiceChoiceTTargetIdx(idx,:)',sz,[0.8 0.8 0.8],'filled');title('Choice, Hit');xlim([0 2]);
-    ylabel('Trial');xlabel('Time (s)');hold on;
-    scatter(zeros(1,length(missTCIdx)),allMiceChoiceTTargetIdx(idx,missTCIdx)',sz,optocolor);
-    xlim([-0.5 3]);
-    subplot(5,1,4);title('Stimulus');shadedErrorBar(1:length(lickLatTTNoNan),lickLatRTTNoNan(1:length(lickLatTTNoNan)),std(lickLatRTTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatTTNoNan),lickLatTTNoNan,std(lickLatTTNoNan),'b');ylabel('First lick latency (s)');
-    xlim([1 20]);box off;ylim([-0.5 4.5]);
-    subplot(5,1,5);title('Choice');shadedErrorBar(1:length(lickLatCTNoNan),lickLatTTNoNan(1:length(lickLatCTNoNan)),std(lickLatTTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatCTNoNan),lickLatCTNoNan,std(lickLatCTNoNan),'b');box off;
-    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
-    hitFig.Position(3:4)=[250 875];
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto']);
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto.png']);    
-    
-    FAFig=figure;
-    subplot(5,1,1);scatter(lickLatRTF,allMiceRTFoilIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
-    ylabel('Trial');
-    subplot(5,1,2);scatter(lickLatToneF,allMiceToneFoilIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus opto');xlim([0 2]);ylim([1 300]);
-    ylabel('Trial');
-    subplot(5,1,3);scatter(lickLatCF,allMiceChoiceTFoilIdx(idx,:)',sz,optocolor,'filled');title('Choice opto');xlim([0 2]);ylim([1 300]);
-    ylabel('Trial');xlabel('Time (s)');
-    subplot(5,1,4);shadedErrorBar(1:length(lickLatRTFNoNan),lickLatRTFNoNan(1:length(lickLatRTFNoNan)),std(lickLatRTFNoNan));
-    hold on;shadedErrorBar(1:length(lickLatTFNoNan),lickLatTFNoNan,std(lickLatRTFNoNan),'b');ylabel('First lick latency (s)');
-    xlim([1 20]);box off;
-    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFNoNan),lickLatRFTNoNan(1:length(lickLatCFNoNan)),std(lickLatRFTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatCFNoNan),lickLatCFNoNan,std(lickLatCFNoNan),'b');box off;
-    xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 20]);
-    FAFig.Position(3:4)=[250 875];
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto']);
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto.png']);    
-    
     
 end
