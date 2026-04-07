@@ -64,7 +64,8 @@ days=getOptoDays;
 reinfcolor= [0.4,0.4,0.4];
 optocolor=[102/255 178/255 255/255];
 %%
-byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
+% byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
+byTrialPlotsSingle(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
