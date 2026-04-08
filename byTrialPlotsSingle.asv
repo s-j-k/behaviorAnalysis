@@ -1,6 +1,7 @@
 function byTrialPlotsSingle(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
 % plot to make rolling behavior average
     counter=1;counter2=1;
+    nbins=50;bins = linspace(-1,4,nbins);  
     for qq=2:size(allDataTestsOnly,1)
         exampleSession=allDataTestsOnly{qq,26}; 
         mgbDays=days{qq,5}; 
@@ -8,7 +9,6 @@ function byTrialPlotsSingle(allDataTestsOnly,allLicksTest,days,reinfcolor,optoco
             sessionId = mgbDays(ww); % tone day 1
             exampleTrials=find(exampleSession(:,1)==sessionId);
             exampleTrials=exampleSession(exampleTrials,:);
-
             reinfDataD1TargetIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
             reinfDataD1FoilIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
             reinfDataD1Target=exampleTrials(reinfDataD1TargetIdx,:);
@@ -303,21 +303,35 @@ cTFLickMat=NaN(300,60);
         lickLatFullF=allMiceFullF{1,rr}(:,LICKL);
         lickLatCFT=allMiceCFT{1,rr}(:,LICKL);
         lickLatCFF=allMiceCFF{1,rr}(:,LICKL);
-
+        
+        lickLatRFTHist=hist(lickLatRFT,bins)/length(lickLatRFT);
+        lickLatRFFHist=hist(lickLatRFF,bins)/length(lickLatRFF);
+        lickLatFullTHist=hist(lickLatFullT,bins)/length(lickLatFullT);
+        lickLatFullFHist=hist(lickLatFullF,bins)/length(lickLatFullF);
+        lickLatCFTHist=hist(lickLatCFT,bins)/length(lickLatCFT);
+        lickLatCFFHist=hist(lickLatCFF,bins)/length(lickLatCFF);
+        
         lickLatRTT=allMiceRTT{1,rr}(:,LICKL);
         lickLatRTF=allMiceRTF{1,rr}(:,LICKL);
         lickLatToneT=allMiceToneT{1,rr}(:,LICKL);
         lickLatToneF=allMiceToneF{1,rr}(:,LICKL);
         lickLatCT=allMiceCTT{1,rr}(:,LICKL);
         lickLatCF=allMiceCTF{1,rr}(:,LICKL);
+        
+        lickLatRTTHist=hist(lickLatRTT,bins)/length(lickLatRTT);
+        lickLatRTFHist=hist(lickLatRTF,bins)/length(lickLatRTF);
+        lickLatToneTHist=hist(lickLatToneT,bins)/length(lickLatToneT);
+        lickLatToneFHist=hist(lickLatToneF,bins)/length(lickLatToneF);
+        lickLatCTHist=hist(lickLatCT,bins)/length(lickLatCT);
+        lickLatCFHist=hist(lickLatCF,bins)/length(lickLatCF);
     end
     
-        lickLatRFTNoNan=lickLatRFT(~isnan(lickLatRFT));
+    lickLatRFTNoNan=lickLatRFT(~isnan(lickLatRFT));
     lickLatRFFNoNan=lickLatRFF(~isnan(lickLatRFF));    
     lickLatFullTNoNan=lickLatFullT(~isnan(lickLatFullT));
-    lickLatFullTFNoNan=lickLatFullF(~isnan(lickLatFullF));
-    lickLatCFTNoNan=lickLatCFT(~isnan(lickLatCFT));
-    lickLatCFFNoNan=lickLatCFF(~isnan(lickLatCFF));
+    lickLatFullFNoNan=lickLatFullF(~isnan(lickLatFullF));
+    lickLatCFullTNoNan=lickLatCFT(~isnan(lickLatCFT));
+    lickLatCFullFNoNan=lickLatCFF(~isnan(lickLatCFF));
 
     lickLatRTTNoNan=lickLatRTT(~isnan(lickLatRTT));
     lickLatTTNoNan=lickLatToneT(~isnan(lickLatToneT));
@@ -333,126 +347,151 @@ cTFLickMat=NaN(300,60);
     missRTIdx=find(allMiceRTTarget(idx,:)==0);
     missTIdx=find(allMiceToneTarget(idx,:)==0);
     missTCIdx=find(allMiceCTTarget(idx,:)==0);
+    
+    crIdx=find(allMiceRFFoil(idx,:)==0);
+    crFIdx=find(allMiceFullFoil(idx,:)==0);
+    crFCIdx=find(allMiceCFFoil(idx,:)==0);
+    crRTIdx=find(allMiceRTFoil(idx,:)==0);
+    crTIdx=find(allMiceToneFoil(idx,:)==0);
+    crTCIdx=find(allMiceCTFoil(idx,:)==0);
+
 
     sz=10;licksColor=[0.9 0.9 0.9];
     hitFullFig=figure;
-    subplot(5,1,1);scatter(rFTLickMat,allMiceRFTargetIdx(idx,:)',sz,licksColor,'filled');
-    hold on;scatter(lickLatRFT,allMiceRFTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
+    subplot(5,1,1);scatter(rFTLickMat(1:35,:),allMiceRFTargetIdx(idx,1:35)',sz,licksColor,'filled');
+    hold on;scatter(lickLatRFT(1:35,:),allMiceRFTargetIdx(idx,1:35)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
     ylabel('Trial');xlim([-0.5 3]);
-    scatter(zeros(1,length(missIdx)),allMiceRFTargetIdx(idx,missIdx)',sz,reinfcolor);
+    scatter(zeros(1,7),allMiceRFTargetIdx(idx,missIdx(1:7))',sz,reinfcolor);
     
-    subplot(5,1,2);    scatter(fTLickMat,allMiceFullTargetIdx(idx,:)',sz,licksColor,'filled');
-    hold on;scatter(lickLatFullT,allMiceFullTargetIdx(idx,:)',sz,optocolor,'filled'); title('Full, Hit');xlim([0 2]);
+    subplot(5,1,2);    scatter(fTLickMat(1:17,:),allMiceFullTargetIdx(idx,1:17)',sz,licksColor,'filled');
+    hold on;scatter(lickLatFullT(1:17,:),allMiceFullTargetIdx(idx,1:17)',sz,optocolor,'filled'); title('Full, Hit');xlim([0 2]);
     ylabel('Trial');xlim([-0.5 3]);
-    scatter(zeros(1,length(missFIdx)),allMiceFullTargetIdx(idx,missFIdx)',sz,optocolor);ylabel('Trial');
+    scatter(zeros(1,8),allMiceFullTargetIdx(idx,missFIdx(1:8))',sz,optocolor);ylabel('Trial');
     
-    subplot(5,1,3);scatter(cFTLickMat,allMiceChoiceFTargetIdx(idx,:)',sz,licksColor,'filled');
-    hold on;scatter(lickLatCFT,allMiceChoiceFTargetIdx(idx,:)',sz,optocolor,'filled');title('Choice, Hit');xlim([0 2]);
+    subplot(5,1,3);scatter(cFTLickMat(1:17,:),allMiceChoiceFTargetIdx(idx,1:17)',sz,licksColor,'filled');
+    hold on;scatter(lickLatCFT(1:17,:),allMiceChoiceFTargetIdx(idx,1:17)',sz,optocolor,'filled');title('Choice, Hit');xlim([0 2]);
     ylabel('Trial');xlabel('Time (s)');xlim([-0.5 3]);
-    scatter(zeros(1,length(missFCIdx)),allMiceChoiceFTargetIdx(idx,missFCIdx)',sz,optocolor);ylabel('Trial');
-    
-    subplot(5,1,4);shadedErrorBar(1:length(lickLatRFTNoNan),lickLatRFTNoNan,std(lickLatRFTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatFullTNoNan),lickLatFullTNoNan(1:length(lickLatFullTNoNan)),std(lickLatFullTNoNan),'b');ylabel('First lick latency (s)');
-    xlim([1 20]);box off;title('Full');
-    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFTNoNan),lickLatRFTNoNan(1:length(lickLatCFTNoNan)),std(lickLatRFTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatCFTNoNan),lickLatCFTNoNan,std(lickLatCFTNoNan),'b');box off;title('Choice');
-    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
+    scatter(zeros(1,10),allMiceChoiceFTargetIdx(idx,missFCIdx(1:10))',sz,optocolor);ylabel('Trial');
+ 
+    subplot(5,1,4);
+    plot(bins,lickLatRFTHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatFullTHist,'Color',optocolor);xlabel('First lick latency (s)');
+    ylabel('Proportion of S+ Trials');
+%     plot(1:length(lickLatRFTNoNan),lickLatRFTNoNan,'Color',reinfcolor);
+%     hold on;plot(1:length(lickLatFullTNoNan),lickLatFullTNoNan(1:length(lickLatFullTNoNan)),'Color','b');ylabel('First lick latency (s)');
+%     xlim([1 20]);
+    box off;title('Full');
+    subplot(5,1,5);
+    plot(bins,lickLatRFTHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatCFTHist,'Color',optocolor);
+%     plot(1:length(lickLatCFullTNoNan),lickLatRFTNoNan(1:length(lickLatCFullTNoNan)),'Color',reinfcolor);
+%     hold on;plot(1:length(lickLatCFullTNoNan),lickLatCFullTNoNan,'Color','b');xlim([1 20]);ylim([-0.5 4.5]);
+    box off;title('Choice');
+    xlabel('Hit Trial');ylabel('First lick latency (s)');
     hitFullFig.Position(3:4)=[250 875];
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto']);
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHitFull_Opto.png']);    
+    saveas(gcf,['sk176D2_T_MGB_HitFull_OptoHist']);
+    saveas(gcf,['sk176D2_T_MGB_HitFull_OptoHist.png']);    
     
     hitFig=figure;
-    subplot(5,1,1);scatter(rRTLickMat,allMiceRTTargetIdx(idx,:)',sz,licksColor,'filled');
-    hold on;scatter(lickLatRTT,allMiceRTTargetIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
-    ylabel('Trial');scatter(zeros(1,length(missRTIdx)),allMiceRTTargetIdx(idx,missRTIdx)',sz,reinfcolor);
+    subplot(5,1,1);scatter(rRTLickMat(1:35,:),allMiceRTTargetIdx(idx,1:35)',sz,licksColor,'filled');
+    hold on;scatter(lickLatRTT(1:35,:),allMiceRTTargetIdx(idx,1:35)',sz,reinfcolor,'filled');
+    title('Light off, Hit');
+    ylabel('Trial');
+%     scatter(zeros(1,length(missRTIdx)),allMiceRTTargetIdx(idx,missRTIdx)',sz,reinfcolor);
     xlim([-0.5 3]);
-    subplot(5,1,2);scatter(tTLickMat,allMiceToneTargetIdx(idx,:)',sz,licksColor,'filled');
-    hold on;scatter(lickLatToneT,allMiceToneTargetIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus, Hit');xlim([0 2]);
-    ylabel('Trial');scatter(zeros(1,length(missTIdx)),allMiceToneTargetIdx(idx,missTIdx)',sz,optocolor);
+    subplot(5,1,2);scatter(tTLickMat(1:17,:),allMiceToneTargetIdx(idx,1:17)',sz,licksColor,'filled');
+    hold on;scatter(lickLatToneT(1:17,:),allMiceToneTargetIdx(idx,1:17)',sz,optocolor,'filled'); title('Stimulus, Hit');xlim([0 2]);
+    ylabel('Trial');
+    scatter(zeros(1,5),allMiceToneTargetIdx(idx,missTIdx(1:5))',sz,optocolor);
     xlim([-0.5 3]);
     subplot(5,1,3);hold on;title('Stimulus, Hit');xlim([0 2]);
-    scatter(cTTLickMat,allMiceChoiceTTargetIdx(idx,:)',sz,licksColor,'filled');scatter(lickLatCT,allMiceChoiceTTargetIdx(idx,:)',sz,optocolor,'filled'); 
+    scatter(cTTLickMat(1:17,:),allMiceChoiceTTargetIdx(idx,1:17)',sz,licksColor,'filled');
+    scatter(lickLatCT(1:17,:),allMiceChoiceTTargetIdx(idx,1:17)',sz,optocolor,'filled'); 
     title('Choice, Hit');xlim([0 2]);
     ylabel('Trial');xlabel('Time (s)');hold on;
-    scatter(zeros(1,length(missTCIdx)),allMiceChoiceTTargetIdx(idx,missTCIdx)',sz,optocolor);
+    scatter(zeros(1,8),allMiceChoiceTTargetIdx(idx,missTCIdx(1:8))',sz,optocolor);
     xlim([-0.5 3]);
-    subplot(5,1,4);title('Stimulus');shadedErrorBar(1:length(lickLatTTNoNan),lickLatRTTNoNan(1:length(lickLatTTNoNan)),std(lickLatRTTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatTTNoNan),lickLatTTNoNan,std(lickLatTTNoNan),'b');ylabel('First lick latency (s)');
-    xlim([1 20]);box off;ylim([-0.5 4.5]);
-    subplot(5,1,5);title('Choice');shadedErrorBar(1:length(lickLatCTNoNan),lickLatTTNoNan(1:length(lickLatCTNoNan)),std(lickLatTTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatCTNoNan),lickLatCTNoNan,std(lickLatCTNoNan),'b');box off;
-    xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
+    subplot(5,1,4);title('Stimulus');
+    plot(bins,lickLatRTTHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatToneTHist,'Color',optocolor);xlabel('First lick latency (s)');
+    ylabel('Proportion of S+ Trials');
+%     plot(1:length(lickLatTTNoNan),lickLatRTTNoNan(1:length(lickLatTTNoNan)),'Color',reinfcolor);
+%     hold on;plot(1:length(lickLatTTNoNan),lickLatTTNoNan,'Color','b');ylabel('First lick latency (s)');
+%     xlim([1 20]);box off;ylim([-0.5 4.5]);
+    subplot(5,1,5);title('Choice');
+    plot(bins,lickLatRTTHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatCTHist,'Color',optocolor);xlabel('First lick latency (s)');
+    ylabel('Proportion of S+ Trials');
+%     plot(1:length(lickLatCTNoNan),lickLatTTNoNan(1:length(lickLatCTNoNan)),'Color',reinfcolor);
+%     hold on;plot(1:length(lickLatCTNoNan),lickLatCTNoNan,'Color','b');box off;
+%     xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
     hitFig.Position(3:4)=[250 875];
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto']);
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalHit_Opto.png']);    
+    saveas(gcf,['sk176D2_T_MGB_Hit_OptoHist']);
+    saveas(gcf,['sk176D2_T_MGB_Hit_OptoHist.png']);    
     
     FAFig=figure;
-    subplot(5,1,1);scatter(rTFLickMat,allMiceRTFoil(idx,:)',sz,licksColor,'filled');
-    hold on;scatter(lickLatRTF,allMiceRTFoilIdx(idx,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
+    subplot(5,1,1);hold on;scatter(rRFLickMat(1:35,:),allMiceRTFoilIdx(idx,1:35)',sz,licksColor,'filled');
+    scatter(lickLatRTF(1:35,:),allMiceRTFoilIdx(idx,1:35)',sz,reinfcolor,'filled');title('Light off, FA');
+    xlim([-0.5 3]);scatter(zeros(1,33)+3,allMiceRTFoilIdx(idx,crIdx(1:33))',sz,'red');
     ylabel('Trial');
-    subplot(5,1,2);scatter(rTFLickMat,allMiceToneFoil(idx,:)',sz,licksColor,'filled');
-    hold on;scatter(lickLatToneF,allMiceToneFoilIdx(idx,:)',sz,optocolor,'filled'); title('Stimulus opto');xlim([0 2]);ylim([1 300]);
+    subplot(5,1,2);scatter(tFLickMat(1:17,:),allMiceToneFoilIdx(idx,1:17)',sz,licksColor,'filled');
+    hold on;scatter(lickLatToneF(1:17,:),allMiceToneFoilIdx(idx,1:17)',sz,optocolor,'filled'); title('Stimulus opto');
+    xlim([-0.5 3]);scatter(zeros(1,6)+3,allMiceToneFoilIdx(idx,crTIdx(1:6))',sz,'red');
     ylabel('Trial');
-    subplot(5,1,3);scatter(lickLatCF,allMiceChoiceTFoilIdx(idx,:)',sz,optocolor,'filled');title('Choice opto');xlim([0 2]);ylim([1 300]);
+    subplot(5,1,3);scatter(cTFLickMat(1:17,:),allMiceChoiceTFoilIdx(idx,1:17)',sz,licksColor,'filled');
+    hold on;scatter(lickLatCF(1:17,:),allMiceChoiceTFoilIdx(idx,1:17)',sz,optocolor,'filled');title('Choice opto');
+    xlim([-0.5 3]);scatter(zeros(1,12)+3,allMiceChoiceTFoilIdx(idx,crTCIdx(1:12))',sz,'red');
     ylabel('Trial');xlabel('Time (s)');
-    subplot(5,1,4);shadedErrorBar(1:length(lickLatRTFNoNan),lickLatRTFNoNan(1:length(lickLatRTFNoNan)),std(lickLatRTFNoNan));
-    hold on;shadedErrorBar(1:length(lickLatTFNoNan),lickLatTFNoNan,std(lickLatRTFNoNan),'b');ylabel('First lick latency (s)');
-    xlim([1 20]);box off;
-    subplot(5,1,5);shadedErrorBar(1:length(lickLatCFNoNan),lickLatRFTNoNan(1:length(lickLatCFNoNan)),std(lickLatRFTNoNan));
-    hold on;shadedErrorBar(1:length(lickLatCFNoNan),lickLatCFNoNan,std(lickLatCFNoNan),'b');box off;
-    xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 20]);
+    subplot(5,1,4);
+    plot(bins,lickLatRTFHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatFullFHist,'Color',optocolor);xlabel('First lick latency (s)');
+    ylabel('Proportion of S- Trials');
+%     shadedErrorBar(1:length(lickLatRTFNoNan),lickLatRTFNoNan(1:length(lickLatRTFNoNan)),'Color',reinfcolor);
+%     hold on;shadedErrorBar(1:length(lickLatTFNoNan),lickLatTFNoNan,'Color','b');ylabel('First lick latency (s)');
+%     xlim([1 20]);box off;
+    subplot(5,1,5);
+    plot(bins,lickLatRTFHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatCFHist,'Color',optocolor);xlabel('First lick latency (s)');
+    ylabel('Proportion of S- Trials');
+%     plot(1:length(lickLatCFNoNan),lickLatRFTNoNan(1:length(lickLatCFNoNan)),'Color',reinfcolor);
+%     hold on;plot(1:length(lickLatCFNoNan),lickLatCFNoNan,'Color','b');box off;
+%     xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 20]);
     FAFig.Position(3:4)=[250 875];
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto']);
-    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFA_Opto.png']);    
+    saveas(gcf,['sk176D2_T_MGB_FA_OptoHist']);
+    saveas(gcf,['sk176D2_T_MGB_FA_OptoHist.png']);    
     
     
-    
-            FAFig=figure;
-            subplot(5,1,1);hold on;scatter(rTFLickMat,idxAllMice{2,3}(count,:)',sz,licksColor,'filled');
-            scatter(lickLatRTF,idxAllMice{2,3}(count,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
-            ylabel('Trial');scatter(zeros(1,length(crRTIdx)),idxAllMice{2,3}(count,crRTIdx)',sz,reinfcolor);
-            xlim([-0.5 3]);ylim([0 280]);
-            subplot(5,1,2);hold on;scatter(tFLickMat,idxAllMice{4,3}(count,:)',sz,licksColor,'filled');
-            scatter(lickLatToneF,idxAllMice{4,3}(count,:)',sz,optocolor,'filled'); title('Stimulus');xlim([0 2]);ylim([1 300]);
-            scatter(zeros(1,length(crTIdx)),idxAllMice{4,3}(count,crTIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-            ylabel('Trial');
-            subplot(5,1,3);hold on;scatter(cTFLickMat,idxAllMice{6,3}(count,:)',sz,licksColor,'filled');
-            scatter(lickLatCF,idxAllMice{6,3}(count,:)',sz,optocolor,'filled');title('Choice');xlim([0 2]);ylim([1 300]);
-            scatter(zeros(1,length(crTCIdx)),idxAllMice{6,3}(count,crTCIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-            ylabel('Trial');xlabel('Time (s)');
-
-            subplot(5,1,4);shadedErrorBar(1:length(lickLatRToneFNoNan),lickLatRToneFNoNan,std(lickLatRToneFNoNan)); 
-            hold on;shadedErrorBar(1:length(lickLatToneFNoNan),lickLatToneFNoNan,std(lickLatToneFNoNan),'b');ylabel('First lick latency (s)');
-            xlim([1 20]);box off;title('Stimulus');
-            subplot(5,1,5);shadedErrorBar(1:length(lickLatRToneFNoNan),lickLatRToneFNoNan,std(lickLatRToneFNoNan)); 
-            hold on;shadedErrorBar(1:length(lickLatCFNoNan),lickLatCFNoNan,std(lickLatCFNoNan),'b');box off;
-            xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 20]);title('Choice');
-            FAFig.Position(3:4)=[250 875];
-            saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFA_Opto']);
-            saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFA_Opto.png']);    
-
-            FAFullFig=figure;
-            subplot(5,1,1);hold on;scatter(rFFLickMat,idxAllMice{8,3}(count,:)',sz,licksColor,'filled');
-            scatter(lickLatRFF,idxAllMice{8,3}(count,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
-            ylabel('Trial');scatter(zeros(1,length(crIdx)),idxAllMice{8,3}(count,crIdx)',sz,reinfcolor);
-            xlim([-0.5 3]);ylim([0 280]);
-            subplot(5,1,2);hold on;scatter(fFLickMat,idxAllMice{10,3}(count,:)',sz,licksColor,'filled');
-            scatter(lickLatFullF,idxAllMice{10,3}(count,:)',sz,optocolor,'filled'); title('Full');xlim([0 2]);ylim([1 300]);
-            scatter(zeros(1,length(crFIdx)),idxAllMice{10,3}(count,crFIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-            ylabel('Trial');
-            subplot(5,1,3);hold on;scatter(cFFLickMat,idxAllMice{12,3}(count,:)',sz,licksColor,'filled');
-            scatter(lickLatCFullF,idxAllMice{12,3}(count,:)',sz,optocolor,'filled');title('Choice');
-            xlim([0 2]);ylim([1 300]);
-            scatter(zeros(1,length(crFCIdx)),idxAllMice{12,3}(count,crFCIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-            ylabel('Trial');xlabel('Time (s)');
-            subplot(5,1,4);shadedErrorBar(1:length(lickLatRFFNoNan),lickLatRFFNoNan(1:length(lickLatRFFNoNan)),std(lickLatRFFNoNan));
-            hold on;shadedErrorBar(1:length(lickLatFullFNoNan),lickLatFullFNoNan,std(lickLatFullFNoNan),'b');ylabel('First lick latency (s)');
-            xlim([1 10]);box off;
-            subplot(5,1,5);shadedErrorBar(1:length(lickLatRFFNoNan),lickLatRFFNoNan(1:length(lickLatRFFNoNan)),std(lickLatRFFNoNan));
-            hold on;shadedErrorBar(1:length(lickLatCFullFNoNan),lickLatCFullFNoNan,std(lickLatCFullFNoNan),'b');box off;
-            xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 10]);
-            FAFullFig.Position(3:4)=[250 875];
-    
+    FAFullFig=figure;
+    subplot(5,1,1);hold on;scatter(rFFLickMat(1:35,:),allMiceRFFoilIdx(idx,1:35)',sz,licksColor,'filled');
+    scatter(lickLatRFF(1:35,:),allMiceRFFoilIdx(idx,1:35)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
+    ylabel('Trial');scatter(zeros(1,33),allMiceRFFoilIdx(idx,crIdx(1:33))',sz,reinfcolor);
+    xlim([-0.5 3]);ylim([0 280]);
+    subplot(5,1,2);hold on;scatter(fFLickMat,allMiceFullFoilIdx(idx,:)',sz,licksColor,'filled');
+    scatter(lickLatFullF,allMiceFullFoilIdx(idx,:)',sz,optocolor,'filled'); title('Full');xlim([0 2]);ylim([1 300]);
+    scatter(zeros(1,length(crFIdx)),allMiceFullFoilIdx(idx,crFIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
+    ylabel('Trial');
+    subplot(5,1,3);hold on;scatter(cFFLickMat,allMiceChoiceFFoilIdx(idx,:)',sz,licksColor,'filled');
+    scatter(lickLatCFF,allMiceChoiceFFoilIdx(idx,:)',sz,optocolor,'filled');title('Choice');
+    xlim([0 2]);ylim([1 300]);
+    scatter(zeros(1,length(crFCIdx)),allMiceChoiceFFoilIdx(idx,crFCIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
+    ylabel('Trial');xlabel('Time (s)');
+    subplot(5,1,4);
+    plot(bins,lickLatRFFHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatFullFHist,'Color',optocolor);xlabel('First lick latency (s)');
+    ylabel('Proportion of S+ Trials');
+%     plot(1:length(lickLatRFFNoNan),lickLatRFFNoNan,'Color',reinfcolor);
+%     hold on;plot(1:length(lickLatFullFNoNan),lickLatFullFNoNan,'b');ylabel('First lick latency (s)');
+%     xlim([1 10]);box off;
+    subplot(5,1,5);
+    plot(bins,lickLatRFFHist,'Color',reinfcolor); hold on;
+    plot(bins,lickLatCFFHist,'Color',optocolor);xlabel('First lick latency (s)');
+    ylabel('Proportion of S+ Trials');
+%     plot(1:length(lickLatRFFNoNan),lickLatRFFNoNan,'Color',reinfcolor);
+%     hold on;plot(1:length(lickLatCFullFNoNan),lickLatCFullFNoNan,'b');box off;
+%     xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 10]);
+    FAFullFig.Position(3:4)=[250 875];
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFAFull_OptoHist']);
+    saveas(gcf,['sk176D2_T_MGB_Example_AnimalFAFull_OptoHist.png']);    
     
     
 
