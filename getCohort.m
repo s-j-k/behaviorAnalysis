@@ -77,6 +77,13 @@ switch cohort
     explist=[2 2 2 2 1 1 1];
 %     subjlist={'sk313','sk314','sk315'};
 %     explist=[1 1 1];
+
+    case 15 %delay period data
+    pathsave='O:\sjk\Behavior\MGBIC_6\';
+    %     pathsave='C:\Users\sjkim1\Desktop\OptoData\MGBIC_5\';
+    subjlist={'sk198','sk203','sk204'}; %GTACR
+    explist=[1 1 1];   
+    
     otherwise
         disp('Cohort not found');    
 end

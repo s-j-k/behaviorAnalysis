@@ -2,7 +2,6 @@ function Behavior_Opto_Dead(cohort)
 % takes deadProtocol and animal as strings
 % 'first,'second','thirdOne','thirdTwo' and animal as 'sk198,' 'sk203,' and
 % 'sk204'
-% cohort 15
 
 [subjlist, explist, pathsave]=getCohort(cohort);
 
@@ -72,27 +71,6 @@ lickHistMat{1,ii+12} = 'Reinf Miss';lickHistMat{1,ii+13} = 'Reinf CR';lickHistMa
 lickHistMat{1,ii+15} = 'Full CR';lickHistMat{1,ii+16} = 'Tone Miss';lickHistMat{1,ii+17} = 'Tone CR';
 lickHistMat{1,ii+18} = 'Choice Miss'; lickHistMat{1,ii+19} = 'Choice CR';
 allLickData={};
-
-lickhistcOFF_allmice = cell(nSubj,1);
-lickhistcON_allmice = cell(nSubj,1);
-lickhistrhit_allmice = cell(nSubj,1);
-lickhistrfa_allmice = cell(nSubj,1);
-lickhistohit_allmice = cell(nSubj,1);
-lickhistofa_allmice = cell(nSubj,1);
-lickhistothit_allmice = cell(nSubj,1);
-lickhistotfa_allmice = cell(nSubj,1);
-lickhistochit_allmice = cell(nSubj,1);
-lickhistocfa_allmice = cell(nSubj,1);
-lickhistphit_allmice = cell(nSubj,1);
-lickhistpfa_allmice = cell(nSubj,1);
-lickhistrmiss_allmice = cell(nSubj,1);
-lickhistrcr_allmice = cell(nSubj,1);
-lickhistomiss_allmice = cell(nSubj,1);
-lickhistocr_allmice = cell(nSubj,1);
-lickhistotmiss_allmice = cell(nSubj,1);
-lickhistotcr_allmice = cell(nSubj,1);
-lickhistocmiss_allmice = cell(nSubj,1);
-lickhistoccr_allmice = cell(nSubj,1);
 
 for nbsubj = 1:nSubj % through subjects
     % Localize data
@@ -316,8 +294,7 @@ for nbsubj = 1:nSubj % through subjects
             lickhisto(i,:) = hist(rt_o,bins)/sum(opto);
             lickhistot(i,:) = hist(rt_ot,bins)/sum(topto);
             lickhistoc(i,:) = hist(rt_oc,bins)/sum(copto);
-            hit = tempMat(:,OUTCOME)==1;fa = tempMat(:,OUTCOME)==3;miss = tempMat(:,OUTCOME)==2; cr=tempMat(:,OUTCOME)==4;
-            
+            hit = tempMat(:,OUTCOME)==1;fa = tempMat(:,OUTCOME)==3;
             rt_r_hit = RelativeTimes(templicks,[tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T)-1 tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T) tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T)+4],[-1 0 4]);
             rt_o_hit = RelativeTimes(templicks,[tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T)-1 tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T) tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T)+4],[-1 0 4]);
             rt_ot_hit = RelativeTimes(templicks,[tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T)-1 tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T) tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T)+4],[-1 0 4]);
@@ -326,15 +303,7 @@ for nbsubj = 1:nSubj % through subjects
             rt_o_fa = RelativeTimes(templicks,[tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T)-1 tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T) tempMat(opto&fa,START)+tempMat(opto&fa,TONE_T)+4],[-1 0 4]);
             rt_ot_fa = RelativeTimes(templicks,[tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)-1 tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T) tempMat(topto&fa,START)+tempMat(topto&fa,TONE_T)+4],[-1 0 4]);
             rt_oc_fa = RelativeTimes(templicks,[tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)-1 tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T) tempMat(copto&fa,START)+tempMat(copto&fa,TONE_T)+4],[-1 0 4]);
-            rt_r_miss = RelativeTimes(templicks,[tempMat(reinf&miss,START)+tempMat(reinf&miss,TONE_T)-1 tempMat(reinf&miss,START)+tempMat(reinf&miss,TONE_T) tempMat(reinf&miss,START)+tempMat(reinf&miss,TONE_T)+5],[-1 0 5]);
-            rt_r_cr = RelativeTimes(templicks,[tempMat(reinf&cr,START)+tempMat(reinf&cr,TONE_T)-1 tempMat(reinf&cr,START)+tempMat(reinf&cr,TONE_T) tempMat(reinf&cr,START)+tempMat(reinf&cr,TONE_T)+5],[-1 0 5]);
-            rt_o_miss = RelativeTimes(templicks,[tempMat(opto&miss,START)+tempMat(opto&miss,TONE_T)-1 tempMat(opto&miss,START)+tempMat(opto&miss,TONE_T) tempMat(opto&miss,START)+tempMat(opto&miss,TONE_T)+5],[-1 0 5]);
-            rt_ot_miss = RelativeTimes(templicks,[tempMat(topto&miss,START)+tempMat(topto&miss,TONE_T)-1 tempMat(topto&miss,START)+tempMat(topto&miss,TONE_T) tempMat(topto&miss,START)+tempMat(topto&miss,TONE_T)+5],[-1 0 5]);
-            rt_oc_miss = RelativeTimes(templicks,[tempMat(copto&miss,START)+tempMat(copto&miss,TONE_T)-1 tempMat(copto&miss,START)+tempMat(copto&miss,TONE_T) tempMat(copto&miss,START)+tempMat(copto&miss,TONE_T)+5],[-1 0 5]);
-            rt_o_cr = RelativeTimes(templicks,[tempMat(opto&cr,START)+tempMat(opto&cr,TONE_T)-1 tempMat(opto&cr,START)+tempMat(opto&cr,TONE_T) tempMat(opto&cr,START)+tempMat(opto&cr,TONE_T)+5],[-1 0 5]);
-            rt_ot_cr = RelativeTimes(templicks,[tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T)-1 tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T) tempMat(topto&cr,START)+tempMat(topto&cr,TONE_T)+5],[-1 0 5]);
-            rt_oc_cr = RelativeTimes(templicks,[tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T)-1 tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T) tempMat(copto&cr,START)+tempMat(copto&cr,TONE_T)+5],[-1 0 5]);
-        
+            
             lickhistr_hit(i,:) = hist(rt_r_hit,bins)/length(rt_r_hit);%sum(reinf&hit);
             lickhistr_fa(i,:) = hist(rt_r_fa,bins)/sum(reinf&fa);
             lickhistr_miss(i,:) = hist(rt_r_miss,bins)/sum(reinf&miss);
@@ -394,9 +363,6 @@ for nbsubj = 1:nSubj % through subjects
             lickAnimalData{i+1,8}=rt_ocF;
             counter=counter+1;
         end   
-        
-        allLickData{nbproto,1}=lickAnimalData;
-        allLickData{nbproto,2}=licks;    
         lickhistcOFF{nbproto} = lickhistcoff;
         lickhistcON{nbproto} = lickhistcon;
         lickhistrhit{nbproto} = lickhistr_hit;
@@ -409,15 +375,6 @@ for nbsubj = 1:nSubj % through subjects
         lickhistocfa{nbproto} = lickhistoc_fa;
         lickhistphit{nbproto} = lickhistp_hit;
         lickhistpfa{nbproto} = lickhistp_fa;
-        lickhistrmiss{nbproto} = lickhistr_miss;
-        lickhistrcr{nbproto} = lickhistr_cr;
-        lickhistomiss{nbproto} = lickhisto_miss;
-        lickhistocr{nbproto} = lickhisto_cr;
-        lickhistotmiss{nbproto} = lickhistot_miss;
-        lickhistotcr{nbproto} = lickhistot_cr;
-        lickhistocmiss{nbproto} = lickhistoc_miss;
-        lickhistoccr{nbproto} = lickhistoc_cr;
-        
         ratescorr = rates;
         for j=1:size(rates,2)
             ratescorr(ratescorr(:,j)==0,j) = 1./(2*nctxt(ratescorr(:,j)==0,j)); 
@@ -647,56 +604,23 @@ end
 save('deadSummaryData.mat','optomeanMat');
 disp('saved opto data to mat file.');
 close all
-
-lickhistcOFF_allMice{nbsubj} = lickhistcOFF;
-lickhistcON_allMice{nbsubj} = lickhistcON;
-lickhistrhit_allMice{nbsubj} = lickhistrhit;
-lickhistrfa_allMice{nbsubj} = lickhistrfa;
-lickhistohit_allMice{nbsubj} = lickhistohit;
-lickhistofa_allMice{nbsubj} = lickhistofa;
-lickhistothit_allMice{nbsubj} = lickhistothit;
-lickhistotfa_allMice{nbsubj} = lickhistotfa;
-lickhistochit_allMice{nbsubj} = lickhistochit;
-lickhistocfa_allMice{nbsubj} = lickhistocfa;
-lickhistphit_allMice{nbsubj} = lickhistphit;
-lickhistpfa_allMice{nbsubj} = lickhistpfa;
-
-lickhistrmiss_allMice{nbsubj} = lickhistrmiss;
-lickhistrcr_allMice{nbsubj} = lickhistrcr;
-lickhistomiss_allMice{nbsubj} = lickhistomiss;
-lickhistocr_allMice{nbsubj} = lickhistocr;
-lickhistotmiss_allMice{nbsubj} = lickhistotmiss;
-lickhistotcr_allMice{nbsubj} = lickhistotcr;
-lickhistocmiss_allMice{nbsubj} = lickhistocmiss;
-lickhistoccr_allMice{nbsubj} = lickhistoccr;
-
 end
-
-lickHistMat{2,1}=subjlist;
-lickHistMat{2,2} = lickhistcOFF_allMice;
-lickHistMat{2,3} = lickhistcON_allMice;
-lickHistMat{2,4} = lickhistrhit_allMice;
-lickHistMat{2,5} = lickhistrfa_allMice;
-lickHistMat{2,6} = lickhistohit_allMice;
-lickHistMat{2,7} = lickhistofa_allMice;
-lickHistMat{2,8} = lickhistothit_allMice;
-lickHistMat{2,9} = lickhistotfa_allMice;
-lickHistMat{2,10} = lickhistochit_allMice;
-lickHistMat{2,11} = lickhistocfa_allMice;
-lickHistMat{2,12} = lickhistphit_allMice;
-lickHistMat{2,13} = lickhistpfa_allMice;
     
-lickHistMat{2,14} = lickhistrmiss_allMice;
-lickHistMat{2,15} = lickhistrcr_allMice;
-lickHistMat{2,16} = lickhistomiss_allMice;
-lickHistMat{2,17} = lickhistocr_allMice;
-lickHistMat{2,18} = lickhistotmiss_allMice; 
-lickHistMat{2,19} = lickhistotcr_allMice;
-lickHistMat{2,20} = lickhistocmiss_allMice; 
-lickHistMat{2,21} = lickhistoccr_allMice;
+%% single animal, single day bar plot to see hit/m/cr/fa 
 
-save('deadSummaryData.mat','optomeanMat','lickHistMat','allLickData','explist');
-disp('saved opto data to mat file.');
+% figure;hold on;bbb=bar([sum(reinf&hit) sum(reinf)/2-sum(reinf&hit) sum(reinf)/2-sum(reinf&fa) sum(reinf&fa)...
+%     sum(probe&hit) sum(probe)/2-sum(probe&hit) sum(probe)/2-sum(probe&fa) sum(probe&fa)...
+%     sum(opto&hit) sum(opto)/2-sum(opto&hit) sum(opto)/2-sum(opto&fa) sum(opto&fa)...
+%     sum(copto&hit) sum(copto)/2-sum(copto&hit) sum(copto)/2-sum(copto&fa) sum(copto&fa)],'FaceColor','flat');
+% xticks([1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16]);
+% title([subjlist{nbsubj} ' (' expnames{explist(nbsubj)} ') - Raw Data']);
+% xticklabels({'Reinf Hit','Reinf Miss','Reinf CR','Reinf FA','Probe Hit','Probe Miss','Probe CR','Probe FA',...
+%     'Full Opto Hit','Full Opto miss','Full Opto CR','Full Opto FA',...
+%     'Choice Opto Hit','Choice Opto Miss','Choice Opto CR','Choice Opto FA'});
+% bbb.CData(1:4,:)=[0.5 0.5 0.5;0.5 0.5 0.5;0.5 0.5 0.5;0.5 0.5 0.5]; % Reinf colors
+% bbb.CData(5:8,:)=[.7 .7 .7;.7 .7 .7;.7 .7 .7;.7 .7 .7]; % probe colors
+% bbb.CData(9:12,:)=[0,0,255/255;0,0,255/255;0,0,255/255;0,0,255/255]; % Opto colors
+% bbb.CData(13:16,:)=[102/255 178/255 255/255;102/255 178/255 255/255;102/255 178/255 255/255;102/255 178/255 255/255]; % Choice pto colors
 
    %% now make plots averaged across test and ctl for MGB
    ctl = find(explist==2);

@@ -34,15 +34,15 @@ end
 % allDataCtlOnly=allCohorts(1,:);
 % allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
 % 
-% load('O:\sjk\Behavior\cohort_9\summaryData.mat')
-% icDataTestsOnly=optomeanMat(1,:);
-% icDataTestsOnly(2,:)=optomeanMat(3,:);
-% icDataTestsOnly(3,:)=optomeanMat(5,:);
-% icDataTestsOnly(4,:)=optomeanMat(7,:);
-% icDataTestsOnly(5,:)=optomeanMat(11,:);
-% load('O:\sjk\Behavior\cohort_11\summaryData.mat')
-% icDataTestsOnly(6,:)=optomeanMat(3,:);
-% icDataTestsOnly(7,:)=optomeanMat(7,:);
+load('O:\sjk\Behavior\cohort_9\summaryData.mat')
+icDataTestsOnly=optomeanMat(1,:);
+icDataTestsOnly(2,:)=optomeanMat(3,:);
+icDataTestsOnly(3,:)=optomeanMat(5,:);
+icDataTestsOnly(4,:)=optomeanMat(7,:);
+icDataTestsOnly(5,:)=optomeanMat(11,:);
+load('O:\sjk\Behavior\cohort_11\summaryData.mat')
+icDataTestsOnly(6,:)=optomeanMat(3,:);
+icDataTestsOnly(7,:)=optomeanMat(7,:);
 % 
 % icDataCtlOnly(1,:)=allCohorts(1,:);
 % icDataCtlOnly(2,:)=allCohorts(75,:);
@@ -64,8 +64,8 @@ days=getOptoDays;
 reinfcolor= [0.4,0.4,0.4];
 optocolor=[102/255 178/255 255/255];
 %%
-% byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
-byTrialPlotsSingle(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
+byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
+% byTrialPlotsSingle(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session

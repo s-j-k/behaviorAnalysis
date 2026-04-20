@@ -76,10 +76,10 @@ lickHistMat{1,ii+12} = 'Reinf Miss';lickHistMat{1,ii+13} = 'Reinf CR';lickHistMa
 lickHistMat{1,ii+15} = 'Full CR';lickHistMat{1,ii+16} = 'Tone Miss';lickHistMat{1,ii+17} = 'Tone CR';
 lickHistMat{1,ii+18} = 'Choice Miss'; lickHistMat{1,ii+19} = 'Choice CR';
 allLickData={};
+
 for nbsubj = 1:nSubj % through animals
     % Localize data
     subj = subjlist{nbsubj}; 
-  
     if str2double(subj(end-2:end))>100
         subj = lower(subj);
     end  
@@ -109,7 +109,7 @@ for nbsubj = 1:nSubj % through animals
         load([subjPath namemat]);
         if SessionData.nTrials<270
             movefolder= ([subjPath 'bad']);
-            movefile(namemat, movefolder) %moves files to sessionOut folder per animal
+            movefile(namemat, movefolder)
         end
         cd(subjPath);
     end
@@ -240,7 +240,6 @@ for nbsubj = 1:nSubj % through animals
     for i=1:ndays
         templicks = licks{i};
         tempMat = matrix(matrix(:,SESS)==i,:);
-        
         probeIdx = find(tempMat(:,CTXT)==0); 
         probeIdx1 = zeros(size(tempMat,1),1);
         probeIdx1(probeIdx(1):probeIdx(10)) = 1;
@@ -248,7 +247,6 @@ for nbsubj = 1:nSubj % through animals
         probeIdx2 = zeros(size(tempMat,1),1);
         probeIdx2(probeIdx(11):probeIdx(end)) = 1;
         probeIdx2 = logical(probeIdx2);
-    
         rhit = sum(tempMat(:,OUTCOME)==1 & tempMat(:,CTXT)==2) / sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1); % hit in reinforced light off
         phit = sum(tempMat(:,OUTCOME)==1 & tempMat(:,CTXT)==0) / sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==1); % hit in probe
         ohit = sum(tempMat(:,OUTCOME)==1 & tempMat(:,CTXT)==1) / sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==1); % hit in opto (i.e. reinforced light on)
@@ -269,14 +267,12 @@ for nbsubj = 1:nSubj % through animals
         otfa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==5) / sum(tempMat(:,CTXT)==5 & tempMat(:,TONE)==2); % fa in opto tone (i.e. reinforced light on)
         ocfa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==6) / sum(tempMat(:,CTXT)==6 & tempMat(:,TONE)==2); % fa in opto tone (i.e. reinforced light on)
         
-
         cofffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==3) / sum(tempMat(:,CTXT)==3 & tempMat(:,TONE)==0); % catch light off FA
         conffa = sum(tempMat(:,OUTCOME)==3 & tempMat(:,CTXT)==4) / sum(tempMat(:,CTXT)==4 & tempMat(:,TONE)==0); % catch light on FA
         rates(i,:) = [rhit rfa phit pfa ohit ofa ...
                     rfhit rffa cofffa conffa phit2 pfa2 ...
                     othit otfa ochit ocfa];
                 
-
         nctxt(i,:) = [sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==2 & tempMat(:,TONE)==2)... % numbers: e.g nb of HIT and nb of Target trials
             sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==0 & tempMat(:,TONE)==2)...
             sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==1) sum(tempMat(:,CTXT)==1 & tempMat(:,TONE)==2)...
@@ -315,8 +311,7 @@ for nbsubj = 1:nSubj % through animals
         lickhisto(i,:) = hist(rt_o,bins)/sum(opto);
         lickhistot(i,:) = hist(rt_ot,bins)/sum(topto);
         lickhistoc(i,:) = hist(rt_oc,bins)/sum(copto);
-        hit = tempMat(:,OUTCOME)==1;fa = tempMat(:,OUTCOME)==3;
-        miss = tempMat(:,OUTCOME)==2; cr=tempMat(:,OUTCOME)==4;
+        hit = tempMat(:,OUTCOME)==1;fa = tempMat(:,OUTCOME)==3;miss = tempMat(:,OUTCOME)==2; cr=tempMat(:,OUTCOME)==4;
         rt_r_hit = RelativeTimes(templicks,[tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T)-1 tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T) tempMat(reinf&hit,START)+tempMat(reinf&hit,TONE_T)+4],[-1 0 4]);
         rt_o_hit = RelativeTimes(templicks,[tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T)-1 tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T) tempMat(opto&hit,START)+tempMat(opto&hit,TONE_T)+4],[-1 0 4]);
         rt_ot_hit = RelativeTimes(templicks,[tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T)-1 tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T) tempMat(topto&hit,START)+tempMat(topto&hit,TONE_T)+4],[-1 0 4]);
@@ -348,7 +343,7 @@ for nbsubj = 1:nSubj % through animals
         lickhistot_hit(i,:) = hist(rt_ot_hit,bins)/sum(topto&hit);
         lickhistot_fa(i,:) = hist(rt_ot_fa,bins)/sum(topto&fa); 
         lickhistot_miss(i,:) = hist(rt_ot_miss,bins)/sum(topto&miss);
-        lickhistot_cr(i,:) = hist(rt_oc_cr,bins)/sum(topto&cr);
+        lickhistot_cr(i,:) = hist(rt_ot_cr,bins)/sum(topto&cr);
         
         lickhistoc_hit(i,:) = hist(rt_oc_hit,bins)/sum(copto&hit);
         lickhistoc_fa(i,:) = hist(rt_oc_fa,bins)/sum(copto&fa);
@@ -364,7 +359,6 @@ for nbsubj = 1:nSubj % through animals
         rt_con = RelativeTimes(templicks,[tempMat(con,START)+tempMat(con,TONE_T)-1 tempMat(con,START)+tempMat(con,TONE_T) tempMat(con,START)+tempMat(con,TONE_T)+4],[-1 0 4]);
         lickhistcoff(i,:) = hist(rt_coff,bins)/sum(coff);
         lickhistcon(i,:) = hist(rt_con,bins)/sum(con);
-        
         
         target=tempMat(:,TONE)==1;foil=tempMat(:,TONE)==2;
         rt_rT = RelativeTimes(templicks,[tempMat(reinf&target,START)+tempMat(reinf&target,TONE_T)-1 tempMat(reinf&target,START)+tempMat(reinf&target,TONE_T) ...
