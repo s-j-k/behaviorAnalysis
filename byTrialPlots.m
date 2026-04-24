@@ -200,7 +200,7 @@ count=0;
                 exampleSession=allDataTestsOnly{yy+1,26}; 
                 exampleTrials=find(exampleSession(:,1)==dayIdx);
                 exampleTrials=exampleSession(exampleTrials,:);
-                for tt=1:size(exampleTrials)-1
+                for tt=1:size(exampleTrials)
                     nextIdxTemp=find(sessAllLicks>exampleTrials(tt,6));
                     try
                         nextIdx(tt+1)=nextIdxTemp(1);
@@ -521,85 +521,93 @@ count=0;
     ylabel('Trial Number');xlabel('Time of first lick(s)');
     scatter(lickLatRFT,1:length(lickLatRFT),sz,reinfcolor);
     subplot(2,3,2); title('Full, Hit'); hold on;xlim([-0.5 4]);
-    xlabel('Time of first lick(s)');
+    xlabel('Time of first lick(s)');ylim([0 35]);
     scatter(lickLatFullT,1:length(lickLatFullT),sz,optocolor);
     subplot(2,3,3); title('Choice, Hit'); hold on;xlabel('Time of first lick(s)');
-    scatter(lickLatCFullT,1:length(lickLatCFullT),sz,optocolor);xlim([-0.5 4]);
+    scatter(lickLatCFullT,1:length(lickLatCFullT),sz,optocolor);xlim([-0.5 4]);ylim([0 35]);
     subplot(2,3,4);
     plot(bins,RFTHist,'Color',reinfcolor,'LineWidth',2);xlim([-0.5 4]);
-    ylabel('Proportion of licks');xlabel('Time of first lick(s)');
-    yyaxis right
+    ylabel('p(licks)');xlabel('Time of first lick(s)');ylim([0 0.6]);
+    yyaxis right;ylabel('% of misses');
     hold on; rftMiss=bar(4,length(missIdx)/(size(allMiceRFTarget,1)*size(allMiceRFTarget,2)));
-    rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off;ylim([0 0.8]);
+    rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off;ylim([0 1]);
     subplot(2,3,5);hold off;
-    plot(bins,FullTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);ylim([0 0.6]);
-    yyaxis right
+    plot(bins,FullTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.6]);xlim([-0.5 4]);
+    yyaxis right;ylabel('% of misses');
     hold on; rftMiss=bar(4,length(missFIdx)/(size(allMiceFullTarget,1)*size(allMiceFullTarget,2)));
-    rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];ylim([0 0.8]);box off
-    subplot(2,3,6);plot(bins,CFTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);ylim([0 0.6]);
-    yyaxis right
+    rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];ylim([0 1]);box off
+    subplot(2,3,6);plot(bins,CFTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.6]);xlim([-0.5 4]);
+    yyaxis right;ylim([0 1]);
     hold on; rftMiss=bar(4,length(missFCIdx)/(size(allMiceCFTarget,1)*size(allMiceCFTarget,2)));box off
-    rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];ylim([0 0.8]);
-    ylabel('Percentage of misses');
+    rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];ylim([0 1]);
+    ylabel('% of misses');
     lickLatScatterHitFull.Position(3:4)=[700 275];
     saveas(gcf,['allmice_T_MGB_HitFull_LickLatHist']);
     saveas(gcf,['allmice_T_MGB_HitFull_LickLatHist.png']);    
-      
+     saveas(gcf,['allmice_T_MGB_HitFull_LickLatHist.pdf']);  
+     
     lickLatScatterHitTone=figure;
     subplot(2,3,1);title('Light off, Hit'); hold on;xlim([-0.5 4]);
     ylabel('Trial Number');xlabel('Time of first lick(s)');
     scatter(lickLatRTT,1:length(lickLatRTT),sz,reinfcolor);
     subplot(2,3,2); title('Stimulus, Hit'); hold on;xlim([-0.5 4]);
-    xlabel('Time of first lick(s)');
+    xlabel('Time of first lick(s)');ylim([0 35]);
     scatter(lickLatToneT,1:length(lickLatToneT),sz,optocolor);
     subplot(2,3,3); title('Choice, Hit'); hold on;xlabel('Time of first lick(s)');
-    scatter(lickLatCT,1:length(lickLatCT),sz,optocolor);xlim([-0.5 4]);
+    scatter(lickLatCT,1:length(lickLatCT),sz,optocolor);xlim([-0.5 4]);ylim([0 35]);
     subplot(2,3,4);plot(bins,RTTHist,'Color',reinfcolor,'LineWidth',2);
-    xlim([-0.5 4]);xlabel('Time of first lick(s)');
+    xlim([-0.5 4]);xlabel('Time of first lick(s)');ylabel('p(licks)');
     yyaxis right
     hold on; rftMiss=bar(4,length(missRTIdx)/(size(allMiceRTTarget,1)*size(allMiceRTTarget,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);
-    subplot(2,3,5);plot(bins,ToneTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);ylim([0 0.6]);
+	ylim([0 1]);ylabel('% of misses');
+    subplot(2,3,5);plot(bins,ToneTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);
+    ylim([0 0.6]);
     yyaxis right
     hold on; rftMiss=bar(4,length(missTIdx)/(size(allMiceToneTarget,1)*size(allMiceToneTarget,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);
-    subplot(2,3,6);plot(bins,CTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);ylim([0 0.6]);
+	ylim([0 1]);ylabel('% of misses');
+    subplot(2,3,6);plot(bins,CTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);
+    ylim([0 0.6]);
     yyaxis right
     hold on; rftMiss=bar(4,length(missTCIdx)/(size(allMiceCTTarget,1)*size(allMiceCTTarget,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);ylabel('Percentage of misses');
+	ylim([0 1]);ylabel('% of misses');
     lickLatScatterHitTone.Position(3:4)=[700 275];
     saveas(gcf,['allmice_T_MGB_HitStim_LickLatHist']);
-    saveas(gcf,['allmice_T_MGB_HitStim_LickLatHist.png']);    
+    saveas(gcf,['allmice_T_MGB_HitStim_LickLatHist.png']);  
+    saveas(gcf,['allmice_T_MGB_HitStim_LickLatHist.pdf']);  
     
     lickLatScatterFAFull=figure;
     subplot(2,3,1);title('Light off, FA'); hold on;xlim([-0.5 4]);
     ylabel('Trial Number');xlabel('Time of first lick(s)');
     scatter(lickLatRFF,1:length(lickLatRFF),sz,reinfcolor);
     subplot(2,3,2); title('Full, FA'); hold on;xlim([-0.5 4]);
-    xlabel('Time of first lick(s)');
-    scatter(lickLatFullF,1:length(lickLatFullF),sz,optocolor);
+    xlabel('Time of first lick(s)');ylim([0 35]);
+    scatter(lickLatFullF,1:length(lickLatFullF),sz,optocolor);ylim([0 35]);
     subplot(2,3,3); title('Choice, FA'); hold on;xlabel('Time of first lick(s)');
-    scatter(lickLatCFullF,1:length(lickLatCFullF),sz,optocolor);xlim([-0.5 4]);
-    subplot(2,3,4);plot(bins,RFFHist,'Color',reinfcolor,'LineWidth',2);ylim([0 0.4]);
-    xlim([-0.5 4]);xlabel('Time of first lick(s)');ylabel('Proportion of licks');
-    yyaxis right
+    scatter(lickLatCFullF,1:length(lickLatCFullF),sz,optocolor);xlim([-0.5 4]);ylim([0 35]);
+    subplot(2,3,4);plot(bins,RFFHist,'Color',reinfcolor,'LineWidth',2);ylim([0 0.6]);
+    ylabel('% of misses');
+    xlim([-0.5 4]);xlabel('Time of first lick(s)');
+    yyaxis right;ylabel('p(licks)');
     hold on; rftMiss=bar(4,length(crIdx)/(size(allMiceRFFoil,1)*size(allMiceRFFoil,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);
-    subplot(2,3,5);plot(bins,FullFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);ylim([0 0.4]);
-    yyaxis right
+	ylim([0 1]);
+    subplot(2,3,5);plot(bins,FullFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);
+    ylim([0 0.6]);
+    yyaxis right;
     hold on; rftMiss=bar(4,length(crFIdx)/(size(allMiceFullFoil,1)*size(allMiceFullFoil,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);
-    subplot(2,3,6);plot(bins,CFFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);ylim([0 0.4]);
+	ylim([0 1]);
+    ylabel('% of correct rejects');
+    subplot(2,3,6);plot(bins,CFFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);
+    ylim([0 0.6]);
     yyaxis right
     hold on; rftMiss=bar(4,length(crFCIdx)/(size(allMiceCFFoil,1)*size(allMiceCFFoil,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);
-    ylabel('Percentage of misses');
+	ylim([0 1]);
+    ylabel('% of correct rejects');
     lickLatScatterFAFull.Position(3:4)=[700 275];
     saveas(gcf,['allmice_T_MGB_FAFull_LickLatHist']);
     saveas(gcf,['allmice_T_MGB_FAFull_LickLatHist.png']);    
@@ -609,62 +617,66 @@ count=0;
     ylabel('Trial Number');xlabel('Time of first lick(s)');xlim([-0.5 4]);
     scatter(lickLatRTF,1:length(lickLatRTF),sz,reinfcolor);
     subplot(2,3,2); title('Stimulus, FA'); hold on;xlim([-0.5 4]);
-    xlabel('Time of first lick(s)');
+    xlabel('Time of first lick(s)');ylim([0 35]);
     scatter(lickLatToneF,1:length(lickLatToneF),sz,optocolor);
     subplot(2,3,3); title('Choice, FA'); hold on;xlabel('Time of first lick(s)');
-    scatter(lickLatCF,1:length(lickLatCF),sz,optocolor);xlim([-0.5 4]);
-    subplot(2,3,4);plot(bins,RTFHist,'Color',reinfcolor,'LineWidth',2);ylim([0 0.4]);ylabel('Proportion of licks');
+    scatter(lickLatCF,1:length(lickLatCF),sz,optocolor);xlim([-0.5 4]);ylim([0 35]);
+    subplot(2,3,4);plot(bins,RTFHist,'Color',reinfcolor,'LineWidth',2);ylim([0 0.6]);ylabel('p(licks)');
     xlim([-0.5 4]);
-    yyaxis right
+    yyaxis right;ylim([0 1]);ylabel('% of correct rejects');
     hold on; rftMiss=bar(4,length(crRTIdx)/(size(allMiceRTFoil,1)*size(allMiceRTFoil,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);xlabel('Time of first lick(s)');
-    subplot(2,3,5);plot(bins,ToneFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.4]);xlim([-0.5 4]);
-    yyaxis right
+	ylim([0 1]);xlabel('Time of first lick(s)');
+    subplot(2,3,5);plot(bins,ToneFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.6]);xlim([-0.5 4]);
+    yyaxis right;ylim([0 1]);ylabel('% of correct rejects');
     hold on; rftMiss=bar(4,length(crTIdx)/(size(allMiceToneFoil,1)*size(allMiceToneFoil,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);xlabel('Time of first lick(s)');
+	ylim([0 1]);xlabel('Time of first lick(s)');
     
-    subplot(2,3,6);plot(bins,CFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.4]);xlim([-0.5 4]);
-    yyaxis right
+    subplot(2,3,6);plot(bins,CFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.6]);xlim([-0.5 4]);
+    yyaxis right;ylim([0 1])
     hold on; rftMiss=bar(4,length(crTCIdx)/(size(allMiceCTFoil,1)*size(allMiceCTFoil,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
-	ylim([0 0.8]);xlabel('Time of first lick(s)');ylabel('Percentage of misses');
+	ylim([0 1]);xlabel('Time of first lick(s)');ylabel('% of correct rejects');
     lickLatScatterFATone.Position(3:4)=[700 275];
     saveas(gcf,['allmice_T_MGB_FAStim_LickLatHist']);
     saveas(gcf,['allmice_T_MGB_FAStim_LickLatHist.png']);    
+    saveas(gcf,['allmice_T_MGB_FAStim_LickLatHist.pdf']);  
     
-    
-    
-    summaryLickLatHits=figure;
-    subplot(2,1,1);
-    padlickLatFullT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
-    padlickLatFullT(1:size(lickLatFullT,1),1:size(lickLatFullT,2))=lickLatFullT;
-    padlickLatToneT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
-    padlickLatToneT(1:size(lickLatToneT,1),1:size(lickLatToneT,2))=lickLatToneT;
-    padlickLatCAllT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
-    padlickLatCAllT=[lickLatCFullT;lickLatCT];
-    violins=violinplot([lickLatRFT(:),padlickLatFullT(:),padlickLatToneT(:),padlickLatCAllT(:)]);hold on;
-    set(violins(1).ViolinPlot(:),'FaceColor',reinfcolor,'EdgeColor','none');
-    set(violins(1).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-        'MarkerFaceColor',reinfcolor-0.2);
-    violins(1).ViolinColor{:}=reinfcolor;
-    darkOptoColor=optocolor-0.3;
-    set(violins(2).ViolinPlot(:),'FaceColor',darkOptoColor,'EdgeColor','none');
-    set(violins(2).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-        'MarkerFaceColor',optocolor-0.1);
-    violins(2).ViolinColor{:}=optocolor-0.1;
-    set(violins(3).ViolinPlot(:),'FaceColor',lightOptoColor,'EdgeColor','none');
-    set(violins(3).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-        'MarkerFaceColor',lightOptoColor-0.2);
-    violins(3).ViolinColor{:}=lightOptoColor;
-    set(violins(4).ViolinPlot(:),'FaceColor',lighterOptoColor,'EdgeColor','none');
-    set(violins(4).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-        'MarkerFaceColor',lighterOptoColor-0.1);
-    violins(4).ViolinColor{:}=lighterOptoColor;xlim([0.5 4.5]);
-    box off;
-    ylabel('Time of first S+ lick (s)');xticklabels({'Light off','Full','Stimulus','Choice'});
-
+    violinYes=0;
+        if violinYes==1
+        summaryLickLatHits=figure;
+        subplot(2,1,1);
+        padlickLatFullT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
+        padlickLatFullT(1:size(lickLatFullT,1),1:size(lickLatFullT,2))=lickLatFullT;
+        padlickLatToneT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
+        padlickLatToneT(1:size(lickLatToneT,1),1:size(lickLatToneT,2))=lickLatToneT;
+        padlickLatCAllT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
+        padlickLatCAllT=[lickLatCFullT;lickLatCT];
+        violins=violinplot([lickLatRFT(:),padlickLatFullT(:),padlickLatToneT(:),padlickLatCAllT(:)]);hold on;
+        set(violins(1).ViolinPlot(:),'FaceColor',reinfcolor,'EdgeColor','none');
+        set(violins(1).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+            'MarkerFaceColor',reinfcolor-0.2);
+        violins(1).ViolinColor{:}=reinfcolor;
+        darkOptoColor=optocolor-0.3;
+        set(violins(2).ViolinPlot(:),'FaceColor',darkOptoColor,'EdgeColor','none');
+        set(violins(2).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+            'MarkerFaceColor',optocolor-0.1);
+        violins(2).ViolinColor{:}=optocolor-0.1;
+        set(violins(3).ViolinPlot(:),'FaceColor',lightOptoColor,'EdgeColor','none');
+        set(violins(3).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+            'MarkerFaceColor',lightOptoColor-0.2);
+        violins(3).ViolinColor{:}=lightOptoColor;
+        set(violins(4).ViolinPlot(:),'FaceColor',lighterOptoColor,'EdgeColor','none');
+        set(violins(4).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+            'MarkerFaceColor',lighterOptoColor-0.1);
+        violins(4).ViolinColor{:}=lighterOptoColor;xlim([0.5 4.5]);
+        box off;
+        ylabel('Time of first S+ lick (s)');xticklabels({'Light off','Full','Stimulus','Choice'});
+        else
+        end
+        
+        
     subplot(2,1,2);hold off;
     [rftF,rftX,rftO,rftUp]=ecdf(lickLatRFT(:),'Bounds','on');
     [fulltF,fulltX,fulltO,fulltUp]=ecdf(lickLatFullT(:),'Bounds','on');
@@ -685,6 +697,59 @@ count=0;
     summaryLickLatHits.Position(3:4)=[250 500];
     saveas(gcf,['allmice_T_MGB_HitFull_LickLatSum']);
     saveas(gcf,['allmice_T_MGB_HitFull_LickLatSum.png']);
+    
+    
+    summaryLickLatFAs=figure;
+    subplot(2,1,1);
+    padlickLatFullF=nan(size(lickLatRFF,1),size(lickLatRFF,2));
+    padlickLatFullF(1:size(lickLatFullF,1),1:size(lickLatFullF,2))=lickLatFullF;
+    padlickLatToneF=nan(size(lickLatRFF,1),size(lickLatRFF,2));
+    padlickLatToneF(1:size(lickLatToneF,1),1:size(lickLatToneF,2))=lickLatToneF;
+    padlickLatCAllF=nan(size(lickLatRFF,1),size(lickLatRFF,2));
+    padlickLatCAllF=[lickLatCFullF;lickLatCF];
+    violins=violinplot([lickLatRFF(:),padlickLatFullF(:),padlickLatToneF(:),padlickLatCAllF(:)]);hold on;
+    set(violins(1).ViolinPlot(:),'FaceColor',reinfcolor,'EdgeColor','none');
+    set(violins(1).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',reinfcolor-0.2);
+    violins(1).ViolinColor{:}=reinfcolor;
+    darkOptoColor=optocolor-0.3;
+    set(violins(2).ViolinPlot(:),'FaceColor',darkOptoColor,'EdgeColor','none');
+    set(violins(2).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',optocolor-0.1);
+    violins(2).ViolinColor{:}=optocolor-0.1;
+    set(violins(3).ViolinPlot(:),'FaceColor',lightOptoColor,'EdgeColor','none');
+    set(violins(3).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',lightOptoColor-0.2);
+    violins(3).ViolinColor{:}=lightOptoColor;
+    set(violins(4).ViolinPlot(:),'FaceColor',lighterOptoColor,'EdgeColor','none');
+    set(violins(4).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',lighterOptoColor-0.1);
+    violins(4).ViolinColor{:}=lighterOptoColor;xlim([0.5 4.5]);
+    box off;
+    ylabel('Time of first S+ lick (s)');xticklabels({'Light off','Full','Stimulus','Choice'});
+    
+    subplot(2,1,2);hold off;
+    [rffF,rffX,rffO,rffUp]=ecdf(lickLatRFF(:),'Bounds','on');
+    [fullfF,fullfX,fullfO,fullfUp]=ecdf(lickLatFullF(:),'Bounds','on');
+    [tfF,tfX,tfO,tfUp]=ecdf(lickLatToneF(:),'Bounds','on');
+    allLickLatCFullF=[lickLatCFullF;lickLatCF];
+    [cfF,cfX,cfO,cfUp]=ecdf(allLickLatCFullF(:),'Bounds','on');
+    plot(rffX,rffF,'Color',reinfcolor,'LineWidth',2);hold on;
+    plot(rffX,rffO,':','Color',reinfcolor,'LineWidth',1);
+    plot(rffX,rffUp,':','Color',reinfcolor,'LineWidth',1);
+    plot(fullfX,fullfF,'Color',darkOptoColor,'LineWidth',2);
+    plot(fullfX,fullfO,':','Color',darkOptoColor,'LineWidth',1);
+    plot(fullfX,fullfUp,':','Color',darkOptoColor,'LineWidth',1);
+    plot(tfX,tfF,'Color',optocolor,'LineWidth',2);
+    plot(tfX,tfO,':','Color',optocolor,'LineWidth',1); plot(tfX,tfUp,':','Color',optocolor,'LineWidth',1);
+    plot(cfX,cfF,'Color',lighterOptoColor,'LineWidth',2);
+    plot(cfX,cfO,':','Color',lighterOptoColor,'LineWidth',1);
+    plot(cfX,cfUp,':','Color',lighterOptoColor,'LineWidth',1);
+    legend('Light off','','','Full','','','Stimulus','','','Choice','','','Location','Best');xlim([0 4]);
+    ylabel('p(first lick)');xlabel('Time of first S+ lick (s)');box off;
+    summaryLickLatFAs.Position(3:4)=[250 500];
+    saveas(gcf,['allmice_T_MGB_FAFull_LickLatSum']);
+    saveas(gcf,['allmice_T_MGB_FAFull_LickLatSum.png']);
     
     
     lickLatHistsAll=figure; % separated by pairs of same-day condition 
