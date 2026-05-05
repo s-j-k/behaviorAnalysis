@@ -1,22 +1,22 @@
-function [mgbTempTestsOnly,allDataCtlOnly,allDataTestsOnly]=byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor)
+function [allDataCtlOnly,allDataTestsOnly]=byAnimalHFA(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor)
 
 ppFig=figure(15);
 
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
 xoVector = xVector+2;
-% rpc=NaN;opc=NaN;
-% for jj=2:size(allDataTestsOnly,1)
-%     rpc=cat(1,rpc,allDataTestsOnly{jj,27});
-%     opc=cat(1,opc,allDataTestsOnly{jj,28});
-% end
+rpc=NaN;opc=NaN;
+for jj=2:size(allDataTestsOnly,1)
+    rpc=cat(1,rpc,allDataTestsOnly{jj,27});
+    opc=cat(1,opc,allDataTestsOnly{jj,28});
+end
 
 clear rhit ohit rfa ofa
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(mgbTempTestsOnly,1)
-    rhittemp=mgbTempTestsOnly{jj,10}; % full MGB
-    rfatemp=mgbTempTestsOnly{jj,11};
-    ohittemp=mgbTempTestsOnly{jj,12};
-    ofatemp=mgbTempTestsOnly{jj,13};
+for jj=2:size(allDataTestsOnly,1)
+    rhittemp=allDataTestsOnly{jj,10}; % full MGB
+    rfatemp=allDataTestsOnly{jj,11};
+    ohittemp=allDataTestsOnly{jj,12};
+    ofatemp=allDataTestsOnly{jj,13};
     rhittemp(isnan(ohittemp))=nan;
     rfatemp(isnan(ofatemp))=nan;
     rhit(jj-1)=nanmean(rhittemp);
@@ -61,11 +61,11 @@ xticklabels({'hit','fa','hit','fa'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(mgbTempTestsOnly,1)
-    rhittemp=mgbTempTestsOnly{jj,10}; % tone MGB
-    rfatemp=mgbTempTestsOnly{jj,11};
-    ohittemp = mgbTempTestsOnly{jj,14};
-    ofatemp = mgbTempTestsOnly{jj,15};
+for jj=2:size(allDataTestsOnly,1)
+    rhittemp=allDataTestsOnly{jj,10}; % tone MGB
+    rfatemp=allDataTestsOnly{jj,11};
+    ohittemp = allDataTestsOnly{jj,14};
+    ofatemp = allDataTestsOnly{jj,15};
     rhittemp(isnan(ohittemp))=nan;
     rfatemp(isnan(ofatemp))=nan;
     rhit(jj-1)=nanmean(rhittemp);
@@ -110,11 +110,11 @@ xticklabels({'hit','fa','hit','fa'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(mgbTempTestsOnly,1)
-    rhittemp=mgbTempTestsOnly{jj,10}; % choice MGB
-    rfatemp=mgbTempTestsOnly{jj,11};
-    ohittemp = mgbTempTestsOnly{jj,16};
-    ofatemp = mgbTempTestsOnly{jj,17};
+for jj=2:size(allDataTestsOnly,1)
+    rhittemp=allDataTestsOnly{jj,10}; % choice MGB
+    rfatemp=allDataTestsOnly{jj,11};
+    ohittemp = allDataTestsOnly{jj,16};
+    ofatemp = allDataTestsOnly{jj,17};
     rhittemp(isnan(ohittemp))=nan;
     rfatemp(isnan(ofatemp))=nan;
     rhit(jj-1)=nanmean(rhittemp);
@@ -309,24 +309,31 @@ ppFig.Position(3:4)=[725 475];
 saveas(gcf,['By Animal T_MGB_IC_HitFARate_Opto']);
 saveas(gcf,['By Animal T_MGB_IC_HitFARate_Opto.png']);
 saveas(gcf,['By Animal T_MGB_IC_HitFARate_Opto.pdf']);
-% CONTROL by animal hit and false alarm rate
+
+
+%%%%%%%%%%%% CONTROL by animal hit and false alarm rate%%%%%%%%%%%%%
+ctlYes=0;
+if ctlYes==0
+    
+else
+
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
 ppFig=figure(16);
 
-% for jj=2:size(allDataCtlOnly,1)
-%     if size(allDataCtlOnly{jj,27},2)>1
-%         allDataCtlOnly{jj,27}=allDataCtlOnly{jj,27}';
-%         rpc=cat(1,rpc,allDataCtlOnly{jj,27});
-%     else
-%         rpc=cat(1,rpc,allDataCtlOnly{jj,27});
-%     end
-%     if size(allDataCtlOnly{jj,28},2)>1
-%         allDataCtlOnly{jj,28}=allDataCtlOnly{jj,28}';
-%         opc=cat(1,opc,allDataCtlOnly{jj,28});
-%     else
-%         opc=cat(1,opc,allDataCtlOnly{jj,28});
-%     end
-% end
+for jj=2:size(allDataCtlOnly,1)
+    if size(allDataCtlOnly{jj,27},2)>1
+        allDataCtlOnly{jj,27}=allDataCtlOnly{jj,27}';
+        rpc=cat(1,rpc,allDataCtlOnly{jj,27});
+    else
+        rpc=cat(1,rpc,allDataCtlOnly{jj,27});
+    end
+    if size(allDataCtlOnly{jj,28},2)>1
+        allDataCtlOnly{jj,28}=allDataCtlOnly{jj,28}';
+        opc=cat(1,opc,allDataCtlOnly{jj,28});
+    else
+        opc=cat(1,opc,allDataCtlOnly{jj,28});
+    end
+end
 
 clear rhit ohit rfa ofa
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
@@ -621,18 +628,18 @@ xticklabels({'hit', 'fa','hit','fa'});
 ppFig.Position(3:4)=[725 475];
 saveas(gcf,['By Animal C_MGB_HitFARate_Opto']);
 saveas(gcf,['By Animal C_MGB_HitFARate_Opto.png']);
-
+end
 
 %%
 % plot d' for all animals averaged together
 dprimeFig=figure(18);
 title('MGB');
 hold on;
-for jj=2:size(icDataTestsOnly,1)
-    rhittemp=mgbTempTestsOnly{jj,10}; % full MGB
-    rfatemp=mgbTempTestsOnly{jj,11};
-    ohittemp=mgbTempTestsOnly{jj,12};
-    ofatemp=mgbTempTestsOnly{jj,13};
+for jj=2:size(allDataTestsOnly,1)
+    rhittemp=allDataTestsOnly{jj,10}; % full MGB
+    rfatemp=allDataTestsOnly{jj,11};
+    ohittemp=allDataTestsOnly{jj,12};
+    ofatemp=allDataTestsOnly{jj,13};
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
     rhit(jj-1)=nanmean(rhittemp);
@@ -644,16 +651,16 @@ end
 [dp_oFull,c_oFull]=dprime_simple(ohit, ofa);
 subplot(1,3,1); plot(dp_r,'-o','Color',reinfcolor); hold on;plot(dp_oFull,'-o','Color',optocolor);
 title('Full');
-mgbTempTestsOnly{2,39}=[dp_r;dp_oFull];
+allDataTestsOnly{2,39}=[dp_r;dp_oFull];
 ylim([-0.5 3.5]);
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(mgbTempTestsOnly,1)
-    rhittemp=mgbTempTestsOnly{jj,10}; % tone MGB
-    rfatemp=mgbTempTestsOnly{jj,11};
-    ohittemp = mgbTempTestsOnly{jj,14};
-    ofatemp = mgbTempTestsOnly{jj,15};
+for jj=2:size(allDataTestsOnly,1)
+    rhittemp=allDataTestsOnly{jj,10}; % tone MGB
+    rfatemp=allDataTestsOnly{jj,11};
+    ohittemp = allDataTestsOnly{jj,14};
+    ofatemp = allDataTestsOnly{jj,15};
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
     rhit(jj-1)=nanmean(rhittemp);
@@ -667,15 +674,15 @@ subplot(1,3,2); plot(dp_r,'-o','Color',reinfcolor); hold on;plot(dp_otFull,'-o',
 title('Stimulus');
 legend('light off','light on','Location','best');
 ylim([-0.5 3.5]);
-mgbTempTestsOnly{2,40}=[dp_r;dp_otFull];
+allDataTestsOnly{2,40}=[dp_r;dp_otFull];
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(mgbTempTestsOnly,1)
-    rhittemp=mgbTempTestsOnly{jj,10}; % choice MGB
-    rfatemp=mgbTempTestsOnly{jj,11};
-    ohittemp = mgbTempTestsOnly{jj,16};
-    ofatemp = mgbTempTestsOnly{jj,17};
+for jj=2:size(allDataTestsOnly,1)
+    rhittemp=allDataTestsOnly{jj,10}; % choice MGB
+    rfatemp=allDataTestsOnly{jj,11};
+    ohittemp = allDataTestsOnly{jj,16};
+    ofatemp = allDataTestsOnly{jj,17};
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
     rhit(jj-1)=nanmean(rhittemp);
@@ -685,7 +692,7 @@ for jj=2:size(mgbTempTestsOnly,1)
 end
 [dp_r,c_r]=dprime_simple(rhit,rfa);
 [dp_ocFull,c_ocFull]=dprime_simple(ohit, ofa);
-mgbTempTestsOnly{2,41}=[dp_r;dp_ocFull];
+allDataTestsOnly{2,41}=[dp_r;dp_ocFull];
 subplot(1,3,3); plot(dp_r,'-o','Color',reinfcolor);hold on; plot(dp_ocFull,'-o','Color',optocolor);
 title('Choice');
 ylim([-0.5 3.5]);
@@ -693,7 +700,6 @@ dprimeFig.Position(3:4)=[725 200];
 saveas(gcf,['By_Animal_T_MGB_dp_Opto_Avg']);
 saveas(gcf,['By_Animal_T_MGB_dp_Opto_Avg.png']);
 %%
-% 
 % dprimeFig=figure(18);
 % title('IC');
 % hold on;
@@ -765,26 +771,26 @@ saveas(gcf,['By_Animal_T_MGB_dp_Opto_Avg.png']);
 % title('MGB');
 % hold on;
 % clear rhittemp rfatemp rfatemp2 rhittemp2
-% for jj=2:size(mgbTempTestsOnly,1)
-%     if length(mgbTempTestsOnly{jj,10})>4
-%         rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+% for jj=2:size(allDataTestsOnly,1)
+%     if length(allDataTestsOnly{jj,10})>4
+%         rhittemp(:,jj-1)=allDataTestsOnly{jj,10}(1:4);
 %     else
-%         rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % full MGB
+%         rhittemp(:,jj-1)=allDataTestsOnly{jj,10}; % full MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,11})>4
-%         rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+%     if length(allDataTestsOnly{jj,11})>4
+%         rfatemp(:,jj-1)=allDataTestsOnly{jj,11}(1:4);
 %     else
-%         rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % full MGB
+%         rfatemp(:,jj-1)=allDataTestsOnly{jj,11}; % full MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,12})>4
-%         ohittemp(:,jj-1)=mgbTempTestsOnly{jj,12}(1:4);
+%     if length(allDataTestsOnly{jj,12})>4
+%         ohittemp(:,jj-1)=allDataTestsOnly{jj,12}(1:4);
 %     else
-%         ohittemp(:,jj-1)=mgbTempTestsOnly{jj,12}; % full MGB
+%         ohittemp(:,jj-1)=allDataTestsOnly{jj,12}; % full MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,13})>4
-%         ofatemp(:,jj-1)=mgbTempTestsOnly{jj,13}(1:4);
+%     if length(allDataTestsOnly{jj,13})>4
+%         ofatemp(:,jj-1)=allDataTestsOnly{jj,13}(1:4);
 %     else
-%         ofatemp(:,jj-1)=mgbTempTestsOnly{jj,13}; % full MGB
+%         ofatemp(:,jj-1)=allDataTestsOnly{jj,13}; % full MGB
 %     end
 %     rhittemp(isnan(ohit))=nan;
 %     rfatemp(isnan(ofa))=nan;
@@ -842,26 +848,26 @@ saveas(gcf,['By_Animal_T_MGB_dp_Opto_Avg.png']);
 % 
 % clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 % rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-% for jj=2:size(mgbTempTestsOnly,1)
-%     if length(mgbTempTestsOnly{jj,10})>4
-%         rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+% for jj=2:size(allDataTestsOnly,1)
+%     if length(allDataTestsOnly{jj,10})>4
+%         rhittemp(:,jj-1)=allDataTestsOnly{jj,10}(1:4);
 %     else
-%         rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % full MGB
+%         rhittemp(:,jj-1)=allDataTestsOnly{jj,10}; % full MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,11})>4
-%         rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+%     if length(allDataTestsOnly{jj,11})>4
+%         rfatemp(:,jj-1)=allDataTestsOnly{jj,11}(1:4);
 %     else
-%         rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % full MGB
+%         rfatemp(:,jj-1)=allDataTestsOnly{jj,11}; % full MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,14})>4
-%         ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}(1:4);
+%     if length(allDataTestsOnly{jj,14})>4
+%         ohittemp(:,jj-1)=allDataTestsOnly{jj,14}(1:4);
 %     else
-%         ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}; % full MGB
+%         ohittemp(:,jj-1)=allDataTestsOnly{jj,14}; % full MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,15})>4
-%         ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15}(1:4);
+%     if length(allDataTestsOnly{jj,15})>4
+%         ofatemp(:,jj-1)=allDataTestsOnly{jj,15}(1:4);
 %     else
-%         ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15}; % full MGB
+%         ofatemp(:,jj-1)=allDataTestsOnly{jj,15}; % full MGB
 %     end
 %     rhittemp(isnan(ohit))=nan;
 %     rfatemp(isnan(ofa))=nan;
@@ -914,26 +920,26 @@ saveas(gcf,['By_Animal_T_MGB_dp_Opto_Avg.png']);
 % shadedErrorBar(1:2,dp_rm,dp_re,{'LineStyle','-','LineWidth',2,'color',optocolor,'markerfacecolor',optocolor},0.5);
 % title('Stimulus');ylim([-1 3.5]);
 % 
-% for jj=2:size(mgbTempTestsOnly,1)
-%     if length(mgbTempTestsOnly{jj,10})>4
-%         rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+% for jj=2:size(allDataTestsOnly,1)
+%     if length(allDataTestsOnly{jj,10})>4
+%         rhittemp(:,jj-1)=allDataTestsOnly{jj,10}(1:4);
 %     else
-%         rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % choice MGB
+%         rhittemp(:,jj-1)=allDataTestsOnly{jj,10}; % choice MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,11})>4
-%         rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+%     if length(allDataTestsOnly{jj,11})>4
+%         rfatemp(:,jj-1)=allDataTestsOnly{jj,11}(1:4);
 %     else
-%         rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % choice MGB
+%         rfatemp(:,jj-1)=allDataTestsOnly{jj,11}; % choice MGB
 %     end
-%     if length(mgbTempTestsOnly{jj,16})>4
-%         ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}(1:4);
+%     if length(allDataTestsOnly{jj,16})>4
+%         ohittemp(:,jj-1)=allDataTestsOnly{jj,16}(1:4);
 %     else
-%         ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}; 
+%         ohittemp(:,jj-1)=allDataTestsOnly{jj,16}; 
 %     end
-%     if length(mgbTempTestsOnly{jj,17})>4
-%         ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}(1:4);
+%     if length(allDataTestsOnly{jj,17})>4
+%         ofatemp(:,jj-1)=allDataTestsOnly{jj,17}(1:4);
 %     else
-%         ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}; 
+%         ofatemp(:,jj-1)=allDataTestsOnly{jj,17}; 
 %     end
 %     rhittemp(isnan(ohit))=nan;
 %     rfatemp(isnan(ofa))=nan;
@@ -996,26 +1002,26 @@ clear dprimeFIg
 dprimeFig=figure(21);xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
 hold on;
 clear rhittemp rfatemp rfatemp2 rhittemp2
-for jj=2:size(mgbTempTestsOnly,1)
-    if length(mgbTempTestsOnly{jj,10})>4
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+for jj=2:size(allDataTestsOnly,1)
+    if length(allDataTestsOnly{jj,10})>4
+        rhittemp(:,jj-1)=allDataTestsOnly{jj,10}(1:4);
     else
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % full MGB
+        rhittemp(:,jj-1)=allDataTestsOnly{jj,10}; % full MGB
     end
-    if length(mgbTempTestsOnly{jj,11})>4
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+    if length(allDataTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=allDataTestsOnly{jj,11}(1:4);
     else 
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % full MGB
+        rfatemp(:,jj-1)=allDataTestsOnly{jj,11}; % full MGB
     end
-    if length(mgbTempTestsOnly{jj,12})>4
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,12}(1:4);
+    if length(allDataTestsOnly{jj,12})>4
+        ohittemp(:,jj-1)=allDataTestsOnly{jj,12}(1:4);
     else
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,12}; % full MGB
+        ohittemp(:,jj-1)=allDataTestsOnly{jj,12}; % full MGB
     end
-    if length(mgbTempTestsOnly{jj,13})>4
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,13}(1:4);
+    if length(allDataTestsOnly{jj,13})>4
+        ofatemp(:,jj-1)=allDataTestsOnly{jj,13}(1:4);
     else
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,13}; % full MGB
+        ofatemp(:,jj-1)=allDataTestsOnly{jj,13}; % full MGB
     end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
@@ -1094,34 +1100,35 @@ line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,45}=p;
-mgbTempTestsOnly{2,39} = [dp_r_An; dp_oFull_An];
-mgbTempTestsOnly{4,39} = [c_rAn; c_oFullAn];
-mgbTempTestsOnly{6,39} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
+allDataTestsOnly{2,39} = [dp_r_An; dp_oFull_An];
+
+allDataTestsOnly{3,39} = 'Criterion';allDataTestsOnly{4,39} = [c_rAn; c_oFullAn];
+allDataTestsOnly{5,39} = 'RHit, RFA, OptoHit, OptoFA';allDataTestsOnly{6,39} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
 title('Full');ylabel('d prime');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;
-for jj=2:size(mgbTempTestsOnly,1)
-    if length(mgbTempTestsOnly{jj,10})>4
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+for jj=2:size(allDataTestsOnly,1)
+    if length(allDataTestsOnly{jj,10})>4
+        rhittemp(:,jj-1)=allDataTestsOnly{jj,10}(1:4);
     else
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % tone MGB
+        rhittemp(:,jj-1)=allDataTestsOnly{jj,10}; % tone MGB
     end
-    if length(mgbTempTestsOnly{jj,11})>4
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+    if length(allDataTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=allDataTestsOnly{jj,11}(1:4);
     else
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; 
+        rfatemp(:,jj-1)=allDataTestsOnly{jj,11}; 
     end
-    if length(mgbTempTestsOnly{jj,14})>4
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}(1:4);
+    if length(allDataTestsOnly{jj,14})>4
+        ohittemp(:,jj-1)=allDataTestsOnly{jj,14}(1:4);
     else
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,14}; 
+        ohittemp(:,jj-1)=allDataTestsOnly{jj,14}; 
     end
-    if length(mgbTempTestsOnly{jj,15})>4
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15}(1:4);
+    if length(allDataTestsOnly{jj,15})>4
+        ofatemp(:,jj-1)=allDataTestsOnly{jj,15}(1:4);
     else
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,15};
+        ofatemp(:,jj-1)=allDataTestsOnly{jj,15};
     end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
@@ -1194,32 +1201,32 @@ line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,46}=p;
-mgbTempTestsOnly{2,40} = [dp_r_An; dp_oFull_An];
-mgbTempTestsOnly{4,40} = [c_rAn; c_oFullAn];
-mgbTempTestsOnly{6,40} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
+allDataTestsOnly{2,40} = [dp_r_An; dp_oFull_An];
+allDataTestsOnly{4,40} = [c_rAn; c_oFullAn];
+allDataTestsOnly{6,40} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
 title('Stimulus');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
-for jj=2:size(mgbTempTestsOnly,1)
-    if length(mgbTempTestsOnly{jj,10})>4
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}(1:4);
+for jj=2:size(allDataTestsOnly,1)
+    if length(allDataTestsOnly{jj,10})>4
+        rhittemp(:,jj-1)=allDataTestsOnly{jj,10}(1:4);
     else
-        rhittemp(:,jj-1)=mgbTempTestsOnly{jj,10}; % choice MGB
+        rhittemp(:,jj-1)=allDataTestsOnly{jj,10}; % choice MGB
     end
-    if length(mgbTempTestsOnly{jj,11})>4
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}(1:4);
+    if length(allDataTestsOnly{jj,11})>4
+        rfatemp(:,jj-1)=allDataTestsOnly{jj,11}(1:4);
     else
-        rfatemp(:,jj-1)=mgbTempTestsOnly{jj,11}; % choice MGB
+        rfatemp(:,jj-1)=allDataTestsOnly{jj,11}; % choice MGB
     end
-    if length(mgbTempTestsOnly{jj,16})>4
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}(1:4);
+    if length(allDataTestsOnly{jj,16})>4
+        ohittemp(:,jj-1)=allDataTestsOnly{jj,16}(1:4);
     else
-        ohittemp(:,jj-1)=mgbTempTestsOnly{jj,16}; 
+        ohittemp(:,jj-1)=allDataTestsOnly{jj,16}; 
     end
-    if length(mgbTempTestsOnly{jj,17})>4
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}(1:4);
+    if length(allDataTestsOnly{jj,17})>4
+        ofatemp(:,jj-1)=allDataTestsOnly{jj,17}(1:4);
     else
-        ofatemp(:,jj-1)=mgbTempTestsOnly{jj,17}; 
+        ofatemp(:,jj-1)=allDataTestsOnly{jj,17}; 
     end
     rhittemp(isnan(ohit))=nan;
     rfatemp(isnan(ofa))=nan;
@@ -1295,9 +1302,9 @@ line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,47}=p;
-mgbTempTestsOnly{2,41} = [dp_r_An; dp_oFull_An];
-mgbTempTestsOnly{4,41} = [c_rAn; c_oFullAn];
-mgbTempTestsOnly{6,41} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
+allDataTestsOnly{2,41} = [dp_r_An; dp_oFull_An];
+allDataTestsOnly{4,41} = [c_rAn; c_oFullAn];
+allDataTestsOnly{6,41} = [mean(rhittemp2);mean(rfatemp2);mean(ohittemp2);mean(ofatemp2)];
 title('Choice');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
@@ -1588,6 +1595,9 @@ saveas(gcf,['Fibers_T_IC_dp_bar_Opto.pdf']);
 % saveas(gcf,['By Animal_T_IC_dp_bar_Opto.pdf']);
 
 %% ctl animals, plot d' with the bar plot, per animal 
+
+if ctlYes==0
+else
 clear dprimeFig
 dprimeFig=figure(22);xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
 hold on;
@@ -1883,7 +1893,7 @@ dprimeFig.Position(3:4)=[725 225];
 saveas(gcf,['By Animal_C_MGB_dp_bar_Opto']);
 saveas(gcf,['By Animal_C_MGB_dp_bar_Opto.png']);
 saveas(gcf,['By Animal_C_MGB_dp_bar_Opto.pdf']);
-
+end
 %% IC animal, plot d' with the bar plot, per session
 % clear dprimeFig
 % dprimeFig=figure(22);xVector = [1 2 1 2 1 2 1 2];

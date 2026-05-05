@@ -8,13 +8,12 @@ function byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
             sessionId = mgbDays(ww); % tone day 1
             exampleTrials=find(exampleSession(:,1)==sessionId);
             exampleTrials=exampleSession(exampleTrials,:);
-
-            reinfDataD1TargetIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-            reinfDataD1FoilIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            reinfDataD1TargetIdx=find(exampleTrials(:,2)==2 & exampleTrials(:,3)==1);
+            reinfDataD1FoilIdx=find(exampleTrials(:,2)==2 & exampleTrials(:,3)==2);
             reinfDataD1Target=exampleTrials(reinfDataD1TargetIdx,:);
             reinfDataD1Foil=exampleTrials(reinfDataD1FoilIdx,:);
             % now relabel misses as zeroes instead of twos
-            % TXT = 2; TONE = 3; OUTCOME = 4; 
+            % CTXT = 2; TONE = 3; OUTCOME = 4; 
             missIdx=find(reinfDataD1Target(:,4)==2);
             reinfDataD1Target(missIdx,4)=0;
             %relabel CR and FA as 0 and 1
@@ -74,6 +73,7 @@ function byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
         end
 
         % full trial data
+        clear mgbDays
         mgbDays=days{qq,4}; % full trial days
         clear reinfDataD1 reinfDataD1Target reinfDataD1Foil
         for ee=1:2
@@ -93,10 +93,9 @@ function byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
             faIdx=find(reinfDataD1Foil(:,4)==3);
             reinfDataD1Foil(faIdx,4)=1;
 
-
             %Full trial
-            fullDataD1TargetIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
-            fullDataD1FoilIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
+            fullDataD1TargetIdx=find(exampleTrials(:,2)==1 & exampleTrials(:,3)==1);
+            fullDataD1FoilIdx=find(exampleTrials(:,2)==1 & exampleTrials(:,3)==2);
             fullDataD1Target=exampleTrials(fullDataD1TargetIdx,:);
             fullDataD1Foil=exampleTrials(fullDataD1FoilIdx,:);
             missIdx=find(fullDataD1Target(:,4)==2);
@@ -122,8 +121,8 @@ function byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
             
             allMiceRFTargetIdx(counter2,:)=reinfDataD1TargetIdx;
             allMiceRFFoilIdx(counter2,:)=reinfDataD1FoilIdx;
-            allMiceFullTargetIdx(counter2,:)=toneDataD1TargetIdx;
-            allMiceFullFoilIdx(counter2,:)=toneDataD1FoilIdx;
+            allMiceFullTargetIdx(counter2,:)=fullDataD1TargetIdx;
+            allMiceFullFoilIdx(counter2,:)=fullDataD1FoilIdx;
             allMiceChoiceFTargetIdx(counter2,:)=choiceDataD1TargetIdx;
             allMiceChoiceFFoilIdx(counter2,:)=choiceDataD1FoilIdx;
             
@@ -642,65 +641,39 @@ count=0;
     saveas(gcf,['allmice_T_MGB_FAStim_LickLatHist']);
     saveas(gcf,['allmice_T_MGB_FAStim_LickLatHist.png']);    
     saveas(gcf,['allmice_T_MGB_FAStim_LickLatHist.pdf']);  
-    
-    violinYes=0;
-        if violinYes==1
-        summaryLickLatHits=figure;
-        subplot(2,1,1);
-        padlickLatFullT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
-        padlickLatFullT(1:size(lickLatFullT,1),1:size(lickLatFullT,2))=lickLatFullT;
-        padlickLatToneT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
-        padlickLatToneT(1:size(lickLatToneT,1),1:size(lickLatToneT,2))=lickLatToneT;
-        padlickLatCAllT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
-        padlickLatCAllT=[lickLatCFullT;lickLatCT];
-        violins=violinplot([lickLatRFT(:),padlickLatFullT(:),padlickLatToneT(:),padlickLatCAllT(:)]);hold on;
-        set(violins(1).ViolinPlot(:),'FaceColor',reinfcolor,'EdgeColor','none');
-        set(violins(1).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-            'MarkerFaceColor',reinfcolor-0.2);
-        violins(1).ViolinColor{:}=reinfcolor;
-        darkOptoColor=optocolor-0.3;
-        set(violins(2).ViolinPlot(:),'FaceColor',darkOptoColor,'EdgeColor','none');
-        set(violins(2).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-            'MarkerFaceColor',optocolor-0.1);
-        violins(2).ViolinColor{:}=optocolor-0.1;
-        set(violins(3).ViolinPlot(:),'FaceColor',lightOptoColor,'EdgeColor','none');
-        set(violins(3).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-            'MarkerFaceColor',lightOptoColor-0.2);
-        violins(3).ViolinColor{:}=lightOptoColor;
-        set(violins(4).ViolinPlot(:),'FaceColor',lighterOptoColor,'EdgeColor','none');
-        set(violins(4).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
-            'MarkerFaceColor',lighterOptoColor-0.1);
-        violins(4).ViolinColor{:}=lighterOptoColor;xlim([0.5 4.5]);
-        box off;
-        ylabel('Time of first S+ lick (s)');xticklabels({'Light off','Full','Stimulus','Choice'});
-        else
-        end
-        
-        
-    subplot(2,1,2);hold off;
-    [rftF,rftX,rftO,rftUp]=ecdf(lickLatRFT(:),'Bounds','on');
-    [fulltF,fulltX,fulltO,fulltUp]=ecdf(lickLatFullT(:),'Bounds','on');
-    [ttF,ttX,ttO,ttUp]=ecdf(lickLatToneT(:),'Bounds','on');
-    allLickLatCFullT=[lickLatCFullT;lickLatCT];
-    [ctF,ctX,ctO,ctUp]=ecdf(allLickLatCFullT(:),'Bounds','on');
-    plot(rftX,rftF,'Color',reinfcolor,'LineWidth',2);hold on;
-    plot(rftX,rftO,':','Color',reinfcolor,'LineWidth',1);plot(rftX,rftUp,':','Color',reinfcolor,'LineWidth',1);
-    plot(fulltX,fulltF,'Color',darkOptoColor,'LineWidth',2);
-    plot(fulltX,fulltO,':','Color',darkOptoColor,'LineWidth',1);plot(fulltX,fulltUp,':','Color',darkOptoColor,'LineWidth',1);
-    plot(ttX,ttF,'Color',optocolor,'LineWidth',2);
-    plot(ttX,ttO,':','Color',optocolor,'LineWidth',1); plot(ttX,ttUp,':','Color',optocolor,'LineWidth',1);
-    plot(ctX,ctF,'Color',lighterOptoColor,'LineWidth',2);
-    plot(ctX,ctO,':','Color',lighterOptoColor,'LineWidth',1);plot(ctX,ctUp,':','Color',lighterOptoColor,'LineWidth',1);
-    
-    legend('Light off','','','Full','','','Stimulus','','','Choice','','','Location','Best');xlim([0 4]);
-    ylabel('p(first lick)');xlabel('Time of first S+ lick (s)');box off;
-    summaryLickLatHits.Position(3:4)=[250 500];
-    saveas(gcf,['allmice_T_MGB_HitFull_LickLatSum']);
-    saveas(gcf,['allmice_T_MGB_HitFull_LickLatSum.png']);
+
+    violinFig=figure;
+    subplot(1,2,1);
+    padlickLatFullT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
+    padlickLatFullT(1:size(lickLatFullT,1),1:size(lickLatFullT,2))=lickLatFullT;
+    padlickLatToneT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
+    padlickLatToneT(1:size(lickLatToneT,1),1:size(lickLatToneT,2))=lickLatToneT;
+    padlickLatCAllT=nan(size(lickLatRFT,1),size(lickLatRFT,2));
+    padlickLatCAllT=[lickLatCFullT;lickLatCT];
+    violins=violinplot([lickLatRFT(:),padlickLatFullT(:),padlickLatToneT(:),padlickLatCAllT(:)]);hold on;
+    set(violins(1).ViolinPlot(:),'FaceColor',reinfcolor,'EdgeColor','none');
+    set(violins(1).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',reinfcolor-0.2);
+    violins(1).ViolinColor{:}=reinfcolor;
+    darkOptoColor=optocolor-0.3;
+    set(violins(2).ViolinPlot(:),'FaceColor',darkOptoColor,'EdgeColor','none');
+    set(violins(2).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',optocolor-0.1);
+    violins(2).ViolinColor{:}=optocolor-0.1;
+    set(violins(3).ViolinPlot(:),'FaceColor',lightOptoColor,'EdgeColor','none');
+    set(violins(3).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',lightOptoColor-0.2);
+    violins(3).ViolinColor{:}=lightOptoColor;
+    set(violins(4).ViolinPlot(:),'FaceColor',lighterOptoColor,'EdgeColor','none');
+    set(violins(4).BoxPlot(:),'EdgeColor',[0 0 0],'FaceColor',[1 1 1],'LineWidth',3,...
+        'MarkerFaceColor',lighterOptoColor-0.1);
+    violins(4).ViolinColor{:}=lighterOptoColor;xlim([0.5 4.5]);
+    box off;
+    ylabel('Time of first S+ lick (s)');xticklabels({'Light off','Full','Stimulus','Choice'});
+    violinFig.Position(3:4)=[250 500];
     
     
-    summaryLickLatFAs=figure;
-    subplot(2,1,1);
+    subplot(2,1,2);
     padlickLatFullF=nan(size(lickLatRFF,1),size(lickLatRFF,2));
     padlickLatFullF(1:size(lickLatFullF,1),1:size(lickLatFullF,2))=lickLatFullF;
     padlickLatToneF=nan(size(lickLatRFF,1),size(lickLatRFF,2));
@@ -727,6 +700,31 @@ count=0;
     violins(4).ViolinColor{:}=lighterOptoColor;xlim([0.5 4.5]);
     box off;
     ylabel('Time of first S+ lick (s)');xticklabels({'Light off','Full','Stimulus','Choice'});
+    saveas(gcf,['allmice_T_MGB_Violin_LickLatSum']);
+    saveas(gcf,['allmice_T_MGB_Violin_LickLatSum.png']);
+        
+    summaryLickLatcdfs=figure;
+    subplot(2,1,1);
+    [rftF,rftX,rftO,rftUp]=ecdf(lickLatRFT(:),'Bounds','on');
+    [fulltF,fulltX,fulltO,fulltUp]=ecdf(lickLatFullT(:),'Bounds','on');
+    [ttF,ttX,ttO,ttUp]=ecdf(lickLatToneT(:),'Bounds','on');
+    allLickLatCFullT=[lickLatCFullT;lickLatCT];
+    [ctF,ctX,ctO,ctUp]=ecdf(allLickLatCFullT(:),'Bounds','on');
+    plot(rftX,rftF,'Color',reinfcolor,'LineWidth',2);hold on;
+    plot(rftX,rftO,':','Color',reinfcolor,'LineWidth',1);plot(rftX,rftUp,':','Color',reinfcolor,'LineWidth',1);
+    plot(fulltX,fulltF,'Color',darkOptoColor,'LineWidth',2);
+    plot(fulltX,fulltO,':','Color',darkOptoColor,'LineWidth',1);plot(fulltX,fulltUp,':','Color',darkOptoColor,'LineWidth',1);
+    plot(ttX,ttF,'Color',optocolor,'LineWidth',2);
+    plot(ttX,ttO,':','Color',optocolor,'LineWidth',1); plot(ttX,ttUp,':','Color',optocolor,'LineWidth',1);
+    plot(ctX,ctF,'Color',lighterOptoColor,'LineWidth',2);
+    plot(ctX,ctO,':','Color',lighterOptoColor,'LineWidth',1);plot(ctX,ctUp,':','Color',lighterOptoColor,'LineWidth',1);
+    
+    legend('Light off','','','Full','','','Stimulus','','','Choice','','','Location','Best');xlim([0 4]);
+    ylabel('p(first lick)');xlabel('Time of first S+ lick (s)');box off;
+    summaryLickLatcdfs.Position(3:4)=[250 500];
+    saveas(gcf,['allmice_T_MGB_HitFull_LickLatSum']);
+    saveas(gcf,['allmice_T_MGB_HitFull_LickLatSum.png']);
+    
     
     subplot(2,1,2);hold off;
     [rffF,rffX,rffO,rffUp]=ecdf(lickLatRFF(:),'Bounds','on');
@@ -747,11 +745,12 @@ count=0;
     plot(cfX,cfUp,':','Color',lighterOptoColor,'LineWidth',1);
     legend('Light off','','','Full','','','Stimulus','','','Choice','','','Location','Best');xlim([0 4]);
     ylabel('p(first lick)');xlabel('Time of first S+ lick (s)');box off;
-    summaryLickLatFAs.Position(3:4)=[250 500];
-    saveas(gcf,['allmice_T_MGB_FAFull_LickLatSum']);
-    saveas(gcf,['allmice_T_MGB_FAFull_LickLatSum.png']);
+    summaryLickLatcdfs.Position(3:4)=[250 500];
+    saveas(gcf,['allmice_T_MGB_ecdf_LickLatSum']);
+    saveas(gcf,['allmice_T_MGB_ecdf_LickLatSum.pdf']);
     
     
+    % Lick latency PSTHs
     lickLatHistsAll=figure; % separated by pairs of same-day condition 
     subplot(1,4,1);hold on;title('Hit Trials');
     plot(bins,RFTHist,'Color',reinfcolor,'LineWidth',2);
@@ -775,31 +774,30 @@ count=0;
     plot(bins,RTFHist,'Color',reinfcolor,'LineWidth',2);
     plot(bins,ToneFHist,'Color',(optocolor-0.3),'LineWidth',2);xlabel('Time of first lick(s)');
     plot(bins,CFHist,'Color',lightOptoColor,'LineWidth',2);xlabel('Time of first lick(s)');
-    legend('light off','stimulus','choice');
     ylim([0 0.5]);xlim([-0.5 4]);
     lickLatHistsAll.Position(3:4)=[800 250];
     
     
     lickLatHistsAllTogether=figure; % separated by pairs of same-day condition 
-    subplot(2,2,1);hold on;title('Hit Trials');
+    subplot(1,2,1);hold on;title('Hit Trials');
     plot(bins,(RFTHist+RTTHist)/2,'Color',reinfcolor,'LineWidth',2);
     plot(bins,FullTHist,'Color',(optocolor-0.4),'LineWidth',2);xlabel('Time of first lick(s)');
     plot(bins,ToneTHist,'Color',(optocolor-0.1),'LineWidth',2);
     plot(bins,(CFTHist+CTHist)/2,'Color',lighterOptoColor,'LineWidth',2);xlabel('Time of first lick(s)'); ylabel('Proportion of licks');
 %     plot(bins,CTHist,'Color',lightOptoColor,'LineWidth',2);xlabel('Time of first lick(s)');
     legend('light off','full','stimulus','choice');
-    ylim([0 0.5]);xlim([-0.5 4]);
-    aucTargetN=trapz(bins,(RFTHist+RTTHist)/2);
-    aucTargetFull=trapz(bins,FullTHist);
-    aucTargetTone=trapz(bins,ToneTHist);
-    aucTargetChoice=trapz(bins,(CFTHist+CTHist)/2);
+    ylim([0 0.6]);xlim([-0.5 4]);
+%     aucTargetN=trapz(bins,(RFTHist+RTTHist)/2);
+%     aucTargetFull=trapz(bins,FullTHist);
+%     aucTargetTone=trapz(bins,ToneTHist);
+%     aucTargetChoice=trapz(bins,(CFTHist+CTHist)/2);
     
     %%%%%%%% need to calcualte AUC by doing it per animal and then
     %%%%%%%% averaging to get error bars
-    subplot(2,2,2); % add bar plot here quantifying AUC
-    hitBar=bar([aucTargetN; aucTargetFull; aucTargetTone; aucTargetChoice],'LineWidth',1.5);hold on;
-    hitBar(1).FaceColor='none';hitBar(1).EdgeColor='flat'; 
-    hitBar.CData(1,:)=reinfcolor;hitBar.CData(2:4,:)=optocolor;
+%     subplot(2,2,2); % add bar plot here quantifying AUC
+%     hitBar=bar([aucTargetN; aucTargetFull; aucTargetTone; aucTargetChoice],'LineWidth',1.5);hold on;
+%     hitBar(1).FaceColor='none';hitBar(1).EdgeColor='flat'; 
+%     hitBar.CData(1,:)=reinfcolor;hitBar.CData(2:4,:)=optocolor;
     
     subplot(1,2,2);hold on;title('FA Trials');
     plot(bins,(RFFHist+RTFHist)/2,'Color',reinfcolor,'LineWidth',2);
@@ -808,10 +806,33 @@ count=0;
     plot(bins,(CFHist+CFFHist)/2,'Color',lighterOptoColor,'LineWidth',2);xlabel('Time of first lick(s)');
     ylim([0 0.5]);xlim([-0.5 4]);
     legend('light off','full','stimulus','choice');
-    ylim([0 0.5]);xlim([-0.5 4]);
-    lickLatHistsAllTogether.Position(3:4)=[400 250];
+    ylim([0 0.6]);xlim([-0.5 4]);
+    lickLatHistsAllTogether.Position(3:4)=[300 200];
     
+    trialData{1,1}='Condition, Condition Day';trialData{1,2}='Target';trialData{1,4}='Foil';
+    trialData{2,1}='No Light, Full Trial Day';trialData{2,2}=allMiceRFTarget;
+    trialData{3,1}='Full Trial, Full Trial Day';trialData{3,2}=allMiceFullTarget;
+    trialData{2,4}=allMiceRFFoil;trialData{3,4}=allMiceFullFoil;
+    trialData{4,1}='Choice, Full Trial Day';trialData{4,2}=allMiceCFTarget;trialData{4,4}=allMiceCFFoil;
+    trialData{5,1}='No Light, Tone Day';trialData{5,2}=allMiceRTTarget;trialData{5,4}=allMiceRTFoil;
+    trialData{6,1}='Tone, Tone Day';trialData{6,2}=allMiceToneTarget;trialData{6,4}=allMiceToneFoil;
+    trialData{7,1}='Choice, Tone Day';trialData{7,2}=allMiceCTTarget;trialData{7,4}=allMiceCTFoil;
+        trialData{1,3}='Target Idx';
+    trialData{2,3}=idxAllMice{7,3};
+    trialData{3,3}=idxAllMice{9,3};
+    trialData{4,3}=idxAllMice{11,3};
+    trialData{5,3}=idxAllMice{1,3};
+    trialData{6,3}=idxAllMice{3,3};
+    trialData{7,3}=idxAllMice{5,3};
+    trialData{1,5}='Foil Idx';
+    trialData{2,5}=idxAllMice{8,3};
+    trialData{3,5}=idxAllMice{10,3};
+    trialData{4,5}=idxAllMice{12,3};
+    trialData{5,5}=idxAllMice{2,3};
+    trialData{6,5}=idxAllMice{4,3};
+    trialData{7,5}=idxAllMice{6,3};
     
+    save('byTrialData','trialData');
     
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -819,7 +840,7 @@ count=0;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     
-    rollingb=0;
+    rollingb=1;
     if rollingb==1
         % averaged across all mice plots
         windowsize=10;

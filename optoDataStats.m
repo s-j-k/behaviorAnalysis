@@ -18,6 +18,8 @@ allDataTestsOnly(2:length(testIdx)+1,:)=allCohorts(testIdx,:);
 
 lickMatTestsOnly(2:length(lickIdx)+1,:)=allLickMat(lickIdx,:);
 allLicksTest=allLicks((lickIdx-1),:);
+
+% test animals are 163, 175, 176, 198, 203, 204
 allDataTestsOnly(3,:)=[];lickMatTestsOnly(3,:)=[];allLicksTest(2,:)=[];
 allDataTestsOnly(5,:)=[];lickMatTestsOnly(5,:)=[];allLicksTest(4,:)=[];
 allDataTestsOnly(6:8,:)=[];lickMatTestsOnly(6:8,:)=[];allLicksTest(5:7,:)=[];
@@ -30,9 +32,10 @@ for rr=2:7
 end
 
 % allDataTestsOnly(8:10,:)=[];
-% ctlIdx=[21,25,27,31,33,35]; % not all controls are good
-% allDataCtlOnly=allCohorts(1,:);
-% allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
+ctlIdx=[21,25,27,31,33,35]; % not all controls are good
+% 177, 179, 183, 189, 190, 191
+allDataCtlOnly=allCohorts(1,:);
+allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
 % 
 load('O:\sjk\Behavior\cohort_9\summaryData.mat')
 icDataTestsOnly=optomeanMat(1,:);
@@ -269,150 +272,150 @@ allDataCtlOnly{1,36}='OPC IC Tone Trial';
 allDataCtlOnly{1,37}='RPC IC Choice Trial';
 allDataCtlOnly{1,38}='OPC IC Choice Trial';
 
-mgbCtlData=0;
+mgbCtlData=1;
 if mgbCtlData==0
 else
     for jj=2:size(allDataCtlOnly,1) % control animals
-    eeFig=figure(jj+10);hold on;
-    rhit=allDataCtlOnly{jj,10}; % full trial MGB
-    rfa=allDataCtlOnly{jj,11};
-    ohit = allDataCtlOnly{jj,12};
-    ofa = allDataCtlOnly{jj,13};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
-    rpc = (rhit+(1-rfa))/2*100; 
-    opc = (ohit+(1-ofa))/2*100; 
-    subplot(2,3,1)
-    eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
-    eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
-        rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
-        opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(rpc,opc);
-    sigstar({[1,2]}, p)
-    ylabel('percent correct');
-    title([allDataCtlOnly{jj,1} ' MGB Full Trial Inactivation']);
-    xticklabels({'light off', 'light on'});
-    allDataCtlOnly{jj,27}=rpc;
-    allDataCtlOnly{jj,28}=opc;
+        eeFig=figure(jj+10);hold on;
+        rhit=allDataCtlOnly{jj,10}; % full trial MGB
+        rfa=allDataCtlOnly{jj,11};
+        ohit = allDataCtlOnly{jj,12};
+        ofa = allDataCtlOnly{jj,13};
+        rhit(isnan(ohit))=nan;
+        rfa(isnan(ofa))=nan;
+        rpc = (rhit+(1-rfa))/2*100; 
+        opc = (ohit+(1-ofa))/2*100; 
+        subplot(2,3,1)
+        eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
+        eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
+            rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
+            opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        [h,p,ci,stats] = ttest2(rpc,opc);
+        sigstar({[1,2]}, p)
+        ylabel('percent correct');
+        title([allDataCtlOnly{jj,1} ' MGB Full Trial Inactivation']);
+        xticklabels({'light off', 'light on'});
+        allDataCtlOnly{jj,27}=rpc;
+        allDataCtlOnly{jj,28}=opc;
 
-    rhit=allDataCtlOnly{jj,10}; % tone MGB
-    rfa=allDataCtlOnly{jj,11};
-    ohit = allDataCtlOnly{jj,14};
-    ofa = allDataCtlOnly{jj,15};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
-    rpc = (rhit+(1-rfa))/2*100; 
-    opc = (ohit+(1-ofa))/2*100; 
-    subplot(2,3,2)
-    eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
-    eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
-        rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
-        opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(rpc,opc);
-    sigstar({[1,2]}, p)
-    title([allDataCtlOnly{jj,1} ' MGB Tone Inactivation']);
-    xticklabels({'light off', 'light on'});
-    allDataCtlOnly{jj,29}=rpc;
-    allDataCtlOnly{jj,30}=opc;
+        rhit=allDataCtlOnly{jj,10}; % tone MGB
+        rfa=allDataCtlOnly{jj,11};
+        ohit = allDataCtlOnly{jj,14};
+        ofa = allDataCtlOnly{jj,15};
+        rhit(isnan(ohit))=nan;
+        rfa(isnan(ofa))=nan;
+        rpc = (rhit+(1-rfa))/2*100; 
+        opc = (ohit+(1-ofa))/2*100; 
+        subplot(2,3,2)
+        eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
+        eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
+            rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
+            opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        [h,p,ci,stats] = ttest2(rpc,opc);
+        sigstar({[1,2]}, p)
+        title([allDataCtlOnly{jj,1} ' MGB Tone Inactivation']);
+        xticklabels({'light off', 'light on'});
+        allDataCtlOnly{jj,29}=rpc;
+        allDataCtlOnly{jj,30}=opc;
 
-    rhit=allDataCtlOnly{jj,10}; % choice MGB
-    rfa=allDataCtlOnly{jj,11};
-    ohit = allDataCtlOnly{jj,16};
-    ofa = allDataCtlOnly{jj,17};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
-    rpc = (rhit+(1-rfa))/2*100; 
-    opc = (ohit+(1-ofa))/2*100; 
-    allDataCtlOnly{jj,31}=rpc;
-    allDataCtlOnly{jj,32}=opc;
-    subplot(2,3,3)
-    eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
-    eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
-        rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
-        opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(rpc,opc);
-    sigstar({[1,2]}, p)
-    title([allDataCtlOnly{jj,1} ' MGB Choice Inactivation']);
-    xticklabels({'light off', 'light on'});
-    
-    rhit=allDataCtlOnly{jj,18}; % full IC
-    rfa=allDataCtlOnly{jj,19};
-    ohit = allDataCtlOnly{jj,20};
-    ofa = allDataCtlOnly{jj,21};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
-    rpc = (rhit+(1-rfa))/2*100; 
-    opc = (ohit+(1-ofa))/2*100; 
-    subplot(2,3,4)
-    eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
-    eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
-        rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
-        opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(rpc,opc);
-    sigstar({[1,2]}, p)
-    ylabel('percent correct');
-    title([allDataCtlOnly{jj,1} ' IC Full Trial Inactivation']);
-    xticklabels({'light off', 'light on'});
-    allDataCtlOnly{jj,33}=rpc;
-    allDataCtlOnly{jj,34}=opc;
+        rhit=allDataCtlOnly{jj,10}; % choice MGB
+        rfa=allDataCtlOnly{jj,11};
+        ohit = allDataCtlOnly{jj,16};
+        ofa = allDataCtlOnly{jj,17};
+        rhit(isnan(ohit))=nan;
+        rfa(isnan(ofa))=nan;
+        rpc = (rhit+(1-rfa))/2*100; 
+        opc = (ohit+(1-ofa))/2*100; 
+        allDataCtlOnly{jj,31}=rpc;
+        allDataCtlOnly{jj,32}=opc;
+        subplot(2,3,3)
+        eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
+        eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
+            rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
+            opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        [h,p,ci,stats] = ttest2(rpc,opc);
+        sigstar({[1,2]}, p)
+        title([allDataCtlOnly{jj,1} ' MGB Choice Inactivation']);
+        xticklabels({'light off', 'light on'});
 
-    rhit=allDataCtlOnly{jj,18}; % tone IC
-    rfa=allDataCtlOnly{jj,19};
-    ohit = allDataCtlOnly{jj,22};
-    ofa = allDataCtlOnly{jj,23};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
-    rpc = (rhit+(1-rfa))/2*100; 
-    opc = (ohit+(1-ofa))/2*100; 
-    subplot(2,3,5)
-    eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
-    eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
-        rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
-        opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(rpc,opc);
-    sigstar({[1,2]}, p)
-    title([allDataCtlOnly{jj,1} ' IC Tone Inactivation']);
-    xticklabels({'light off', 'light on'});
-    allDataCtlOnly{jj,35}=rpc;
-    allDataCtlOnly{jj,36}=opc;
+        rhit=allDataCtlOnly{jj,18}; % full IC
+        rfa=allDataCtlOnly{jj,19};
+        ohit = allDataCtlOnly{jj,20};
+        ofa = allDataCtlOnly{jj,21};
+        rhit(isnan(ohit))=nan;
+        rfa(isnan(ofa))=nan;
+        rpc = (rhit+(1-rfa))/2*100; 
+        opc = (ohit+(1-ofa))/2*100; 
+        subplot(2,3,4)
+        eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
+        eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
+            rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
+            opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        [h,p,ci,stats] = ttest2(rpc,opc);
+        sigstar({[1,2]}, p)
+        ylabel('percent correct');
+        title([allDataCtlOnly{jj,1} ' IC Full Trial Inactivation']);
+        xticklabels({'light off', 'light on'});
+        allDataCtlOnly{jj,33}=rpc;
+        allDataCtlOnly{jj,34}=opc;
 
-    rhit=allDataCtlOnly{jj,18}; % choice IC
-    rfa=allDataCtlOnly{jj,19};
-    ohit = allDataCtlOnly{jj,24};
-    ofa = allDataCtlOnly{jj,25};
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
-    rpc = (rhit+(1-rfa))/2*100; 
-    opc = (ohit+(1-ofa))/2*100; 
-    allDataCtlOnly{jj,37}=rpc;
-    allDataCtlOnly{jj,38}=opc;
-    
-    subplot(2,3,6)
-    eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
-    eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
-        rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
-        opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    [h,p,ci,stats] = ttest2(rpc,opc);
-    sigstar({[1,2]}, p)
-    title([allDataCtlOnly{jj,1} ' IC Choice Inactivation']);
-    xticklabels({'light off', 'light on'});
-    
-    eeFig.Position(3:4)=[725 475];
-    saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_PercentCorrect_Opto']);
-    saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_PercentCorrect_Opto.png']);
-end
+        rhit=allDataCtlOnly{jj,18}; % tone IC
+        rfa=allDataCtlOnly{jj,19};
+        ohit = allDataCtlOnly{jj,22};
+        ofa = allDataCtlOnly{jj,23};
+        rhit(isnan(ohit))=nan;
+        rfa(isnan(ofa))=nan;
+        rpc = (rhit+(1-rfa))/2*100; 
+        opc = (ohit+(1-ofa))/2*100; 
+        subplot(2,3,5)
+        eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
+        eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
+            rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
+            opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        [h,p,ci,stats] = ttest2(rpc,opc);
+        sigstar({[1,2]}, p)
+        title([allDataCtlOnly{jj,1} ' IC Tone Inactivation']);
+        xticklabels({'light off', 'light on'});
+        allDataCtlOnly{jj,35}=rpc;
+        allDataCtlOnly{jj,36}=opc;
+
+        rhit=allDataCtlOnly{jj,18}; % choice IC
+        rfa=allDataCtlOnly{jj,19};
+        ohit = allDataCtlOnly{jj,24};
+        ofa = allDataCtlOnly{jj,25};
+        rhit(isnan(ohit))=nan;
+        rfa(isnan(ofa))=nan;
+        rpc = (rhit+(1-rfa))/2*100; 
+        opc = (ohit+(1-ofa))/2*100; 
+        allDataCtlOnly{jj,37}=rpc;
+        allDataCtlOnly{jj,38}=opc;
+
+        subplot(2,3,6)
+        eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
+        eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;optocolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rpc,1),1), ...
+            rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(opc,1),1), ...
+            opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        [h,p,ci,stats] = ttest2(rpc,opc);
+        sigstar({[1,2]}, p)
+        title([allDataCtlOnly{jj,1} ' IC Choice Inactivation']);
+        xticklabels({'light off', 'light on'});
+
+        eeFig.Position(3:4)=[725 475];
+        saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_PercentCorrect_Opto']);
+        saveas(gcf,[char(allDataCtlOnly{jj,1}) '_C_MGB_IC_PercentCorrect_Opto.png']);
+    end
 end
 
 icCtlData=0;
@@ -916,7 +919,7 @@ end
 clear eee eeFig 
 close all
 %CONTROLS
-controls=0;
+controls=1;
 if controls==0
 else
     for jj=2:size(allDataCtlOnly,1)
@@ -1096,8 +1099,8 @@ mgbTempTestsOnly=allDataTestsOnly;
 [mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorrect(mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
-[allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
-close all
+% [allDataTestsOnly,allDataCtlOnly]=bySessPercentCorrect(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,mgbTempTestsOnly,reinfcolor,optocolor);
+% close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
 mgbTempTestsOnly{1,39} = 'dprime MGB T Full, light on and light off';
@@ -1111,16 +1114,16 @@ icDataTestsOnly{1,40} = 'dprime MGB C Tone, light on and light off';
 icDataTestsOnly{1,41} = 'dprime MGB C Choice, light on and light off';
 
 close all
-[mgbTempTestsOnly,allDataCtlOnly,allDataTestsOnly]=byAnimalHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor);
+[allDataCtlOnly,allDataTestsOnly]=byAnimalHFA(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor);
 close all
 % bySessHFA(allDataTestsOnly,allDataCtlOnly,mgbTempTestsOnly,icDataTestsOnly,reinfcolor,optocolor);
 % close all
 %%
 skip=1;
 if skip==0
-    [aovMGBbySess,statsMGBbySess,aovMGBbyAn,statsMGBbyAn,aovIC,statsIC]=anova2OptoPerAnimal(mgbTempTestsOnly);
+    [anovaMat]=anova2OptoPerAnimal(allDataTestsOnly);
     
-    anovaInteractionPlot(aovMGBbyAn,statsMGBbyAn,aovIC,statsIC) 
+    anovaInteractionPlot(anovaMat,allDataTestsOnly) 
     % plots the mean and error bars for d' and runs the anova
 
 %% check for rebound licking
