@@ -1437,35 +1437,30 @@ rocPlots(mgbTempTestsOnly);
 
 %% get learning curves...
 % load rates variable for each animal, and specify the 
-clear expertHit expertFA dprime
+
 for pp=2:size(rates)
     rateTemp=rates{pp,2};
-    expdays=days{pp,4}(1)-1;
-    expertHit(pp-1)=rateTemp(expdays,1); 
-    expertFA(pp-1)=rateTemp(expdays,2);
-    dprime(pp-1)=( norminv(expertHit(pp-1)-0.001) - norminv(expertFA(pp-1)) )';  
+    days=size(rates,1);
+    expertHit(pp-1)=rateTemp(days,1); 
+    expertFA(pp-1)=rateTemp(days,2);
+    dprime(pp-1)=( norminv(expertHit(pp-1)) - norminv(expertFA(pp-1)) )';  
 end
 perfFig=figure;
-perfFig.Position(3:4)=[350,170];
-        hitcolor=[0.47,0.67,0.3];
-        facolor=[0.93,0.69,0.3];
+perfFig.Position(3:4)=[400,700];
+    hitcolor=[0.47,0.67,0.3];
+    facolor=[0.93,0.69,0.3]; 
     subplot(1,2,1); 
-    dps=scatter(ones(1),mean(dprime),'filled');hold on;
-    dps.MarkerFaceColor=[0.4 0.4 0.4];
-    errorbar(mean(dprime),std(dprime),'Color',[0.4 0.4 0.4]);
-    ylim([0 4]);xlim([0.5 1.5]);ylabel('d prime'); box off;
+    scatter(dprime)
     subplot(1,2,2);
-    scatter(ones(1),mean(expertHit),...
-        'MarkerFaceColor',hitcolor);hold on;
-    errorbar(mean(expertHit),std(expertHit),'Color',hitcolor);
-    scatter(ones(1),mean(expertFA),...
-        'MarkerFaceColor',facolor);hold on;
-    ylabel('Action Rate');
-    errorbar(mean(expertFA),std(expertFA),'Color',facolor);
-    legend('hit','','fa','location','best');
-    ylim([0 1]);xlim([0.5 1.5]);
-    
-
+    scatter(expertHit,'color',hitcolor);
+    scatter(expertFA,'color',facolor);
+    legend('hit','fa','location','best');
+    curtick = get(gca, 'xTick');
+    xticks(unique(round(curtick)));
+    ylim([0 1]);
+    hitColorPlot=repmat(hitcolor,days,1);
+    faColorPlot=repmat(facolor,days,1);
+end
 
 title(['Al animals Test - H and FA rates']);
  ylabel('rate');xlabel('days');

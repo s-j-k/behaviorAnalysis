@@ -507,7 +507,7 @@ for nbsubj = 1:nSubj % through animals
 % %         phitp=phitp(1:nprob);
 %         pfap=rates(:,4);
 %         pfap=pfap(1:nprob);
-%         plot(1:nprob,phitp,'-o','LineWidth',2,'color',[0.8 0.8 0.8]);
+%         plot(1:nprob,pp,'-o','LineWidth',2,'color',[0.8 0.8 0.8]);
 %         plot(1:nprob,pfap,'-o','LineWidth',2,'color',[0.8 0.8 0.8]);
 % 
 %         plot(1:ndays,rates(:,5),'b-o','LineWidth',2);
