@@ -200,10 +200,6 @@ tbl1An = array2table(c1An,"VariableNames", ...
 c2An = multcompare(statsMGBbyAnDprime,"Estimate","row");
 tbl2AnD = array2table(c2An,"VariableNames", ...
     ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
-mean(allDataTestsOnly{2,40}(1,:));
-std(allDataTestsOnly{2,40}(1,:));
-mean(allDataTestsOnly{2,40}(2,:));
-std(allDataTestsOnly{2,40}(2,:));
 
 hitStats=NaN(18,2); 
 hitStats(1:6,1)=allDataTestsOnly{6,39}(1,1:6)';
