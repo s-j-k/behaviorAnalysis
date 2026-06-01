@@ -37,12 +37,12 @@ tbl2AnD = array2table(c2An,"VariableNames", ...
 reinfcolor= [0.4,0.4,0.4];
 optocolor=[102/255 178/255 255/255];
 interactionFig=figure;subplot(1,3,1);
-errorbar(muA,sigmaOff,'Color',reinfcolor+0.2,'LineWidth',2); hold on;
-scatter([1,2,3,4,5],muA,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor); hold on;
-errorbar(muB,sigmaOn,'Color',optocolor,'LineWidth',2);
-scatter([1,2,3,4,5],muB,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-xticks([1,2,3,4,5]); xticklabels(conditions)
-xlim([0.5 5.5]);
+errorbar(muA(1:3),sigmaOff(1:3),'Color',reinfcolor+0.2,'LineWidth',2); hold on;
+scatter([1,2,3],muA(1:3),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor); hold on;
+errorbar(muB(1:3),sigmaOn(1:3),'Color',optocolor,'LineWidth',2);
+scatter([1,2,3],muB(1:3),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+xticks([1,2,3]); xticklabels(conditions)
+xlim([0.5 3.5]);
 ylabel('d prime');box off;
 % legend('','Off','','On', 'Location','best')
 % sigstar({[1,2]}, table2array(tbl2AnD(1,6)))
@@ -51,16 +51,14 @@ ylabel('d prime');box off;
 ylim([0 4]);
 
 %% subplot 2 Interaction plot for both groups hit rate
-
-hitRates=[allDataTestsOnly{6,39}(1,1:6)';allDataTestsOnly{6,40}(1,1:6)';allDataTestsOnly{6,41}(1,1:6)'];
-optoHitRates=[allDataTestsOnly{6,39}(3,1:6)';allDataTestsOnly{6,40}(3,1:6)';allDataTestsOnly{6,41}(3,1:6)'];
-testFullTrial=horzcat(hitRates, optoHitRates);
-sigmaOff    = [std(testFullTrial(1:6,1)), std(testFullTrial(7:12,1)), std(testFullTrial(13:18,1))];   % between-subject variability
-sigmaOn    = [std(testFullTrial(1:6,2)), std(testFullTrial(7:12,2)), std(testFullTrial(13:18,2))];   % between-subject variability
-% True means to create a main effect + interaction 
-muA = [mean(testFullTrial(1:6,1)), mean(testFullTrial(7:12,1)), mean(testFullTrial(13:18,1))];    % Group A condition means
-muB = [mean(testFullTrial(1:6,2)), mean(testFullTrial(7:12,2)), mean(testFullTrial(13:18,2))];
-
+for ii=39:48
+    allDataTestsOnly{5,ii}=[nanmean(allDataTestsOnly{4,ii}(1:5,:),1);nanmean(allDataTestsOnly{4,ii}(6:10,:),1)];
+end
+linIdx=39:2:47;clear testFullTrial
+testFullTrial=[allDataTestsOnly{5,linIdx(1)}';allDataTestsOnly{5,linIdx(2)}';allDataTestsOnly{5,linIdx(3)}';...
+    allDataTestsOnly{5,linIdx(4)}';allDataTestsOnly{5,linIdx(5)}'];
+conditions=5;
+linIdx=1:length(firstIdxAnimal):(length(firstIdxAnimal)*conditions);
 for yy=1:length(linIdx)
     if yy==1
         sigmaOff    = std(testFullTrial(linIdx(yy):linIdx(yy)+2,1));  % between-subject variability
@@ -75,55 +73,65 @@ for yy=1:length(linIdx)
     end
 end
 
-
 % Group B condition means (flatter -> interaction)
 c2An = multcompare(anovaMat{2,3},"Estimate","row",'Display', 'off'); %full, stimulus, choicce
 tbl2AnD = array2table(c2An,"VariableNames", ...
     ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
 subplot(1,3,2);
-errorbar(muA,sigmaOff,'Color',reinfcolor+0.2,'LineWidth',2); hold on;
-scatter([1,2,3],muA,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor); hold on;
-errorbar(muB,sigmaOn,'Color',optocolor,'LineWidth',2);
-scatter([1,2,3],muB,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+errorbar(muA(1:3),sigmaOff(1:3),'Color',reinfcolor+0.2,'LineWidth',2); hold on;
+scatter([1,2,3],muA(1:3),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor); hold on;
+errorbar(muB(1:3),sigmaOn(1:3),'Color',optocolor,'LineWidth',2);
+scatter([1,2,3],muB(1:3),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 xticks([1,2,3]); xticklabels(conditions)
 xlim([0.5 3.5]);box off;
 ylabel('Hit Rate')
 % sigstar({[1,2]}, table2array(tbl2AnD(1,6)));
 % sigstar({[2,3]}, table2array(tbl2AnD(3,6)));
 % sigstar({[1,3]}, table2array(tbl2AnD(2,6)));
-ylim([0 1]);
+ylim([0 1.05]);
 
 %% subplot 3 Interaction plot for both groups FA rate
 
-faRates=[allDataTestsOnly{6,39}(2,1:6)';allDataTestsOnly{6,40}(2,1:6)';allDataTestsOnly{6,41}(2,1:6)'];
-optofaRates=[allDataTestsOnly{6,39}(4,1:6)';allDataTestsOnly{6,40}(4,1:6)';allDataTestsOnly{6,41}(4,1:6)'];
-testFullTrial=horzcat(faRates, optofaRates);
-sigmaOff    = [std(testFullTrial(1:6,1)), std(testFullTrial(7:12,1)), std(testFullTrial(13:18,1))];   % between-subject variability
-sigmaOn    = [std(testFullTrial(1:6,2)), std(testFullTrial(7:12,2)), std(testFullTrial(13:18,2))];   % between-subject variability
-% True means to create a main effect + interaction 
-muA = [mean(testFullTrial(1:6,1)), mean(testFullTrial(7:12,1)), mean(testFullTrial(13:18,1))];    % Group A condition means
-muB = [mean(testFullTrial(1:6,2)), mean(testFullTrial(7:12,2)), mean(testFullTrial(13:18,2))];
+linIdx=40:2:48;clear testFullTrial
+testFullTrial=[allDataTestsOnly{5,linIdx(1)}';allDataTestsOnly{5,linIdx(2)}';allDataTestsOnly{5,linIdx(3)}';...
+    allDataTestsOnly{5,linIdx(4)}';allDataTestsOnly{5,linIdx(5)}'];
+conditions=5;
+linIdx=1:length(firstIdxAnimal):(length(firstIdxAnimal)*conditions);
+for yy=1:length(linIdx)
+    if yy==1
+        sigmaOff    = std(testFullTrial(linIdx(yy):linIdx(yy)+2,1));  % between-subject variability
+        sigmaOn    = std(testFullTrial(linIdx(yy):linIdx(yy)+2,2));% between-subject variability
+        muA = nanmean(testFullTrial(linIdx(yy):linIdx(yy)+2,1));
+        muB = nanmean(testFullTrial(linIdx(yy):linIdx(yy)+2,2));
+    else
+        sigmaOff= vertcat(sigmaOff,std(testFullTrial(linIdx(yy):linIdx(yy)+2,1)));  % between-subject variability
+        sigmaOn    = vertcat(sigmaOn,std(testFullTrial(linIdx(yy):linIdx(yy)+2,2)));% between-subject variability
+        muA = vertcat(muA, nanmean(testFullTrial(linIdx(yy):linIdx(yy)+2,1)));
+        muB = vertcat(muB,nanmean(testFullTrial(linIdx(yy):linIdx(yy)+2,2)));
+    end
+end
 
 % Group B condition means (flatter -> interaction)
 c2An = multcompare(anovaMat{3,3},"Estimate","row",'Display', 'off'); %full, stimulus, choicce
 tbl2AnD = array2table(c2An,"VariableNames", ...
     ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
 subplot(1,3,3);
-errorbar(muA,sigmaOff,'Color',reinfcolor+0.2,'LineWidth',2); hold on;
-scatter([1,2,3],muA,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor); hold on;
-errorbar(muB,sigmaOn,'Color',optocolor,'LineWidth',2);
-scatter([1,2,3],muB,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-xticks([1,2,3]); xticklabels(conditions);box off;
+errorbar(muA(1:3),sigmaOff(1:3),'Color',reinfcolor+0.2,'LineWidth',2); hold on;
+scatter([1,2,3],muA(1:3),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor); hold on;
+errorbar(muB(1:3),sigmaOn(1:3),'Color',optocolor,'LineWidth',2);
+scatter([1,2,3],muB(1:3),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+xticks([1,2,3)]; xticklabels(conditions);box off;
 xlim([0.5 3.5]);ylim([0 1]);
 ylabel('FA Rate');
-sigstar({[1,2]}, table2array(tbl2AnD(1,6)))
-sigstar({[2,3]}, table2array(tbl2AnD(3,6)))
-sigstar({[1,3]}, table2array(tbl2AnD(2,6)))
+box off;
+% sigstar({[1,2]}, table2array(tbl2AnD(1,6)))
+% sigstar({[2,3]}, table2array(tbl2AnD(3,6)))
+% sigstar({[1,3]}, table2array(tbl2AnD(2,6)))
 
-interactionFig.Position(3:4)=[700 200];
-saveas(gcf,['interactionPlotAnova']);
-saveas(gcf,['interactionPlotAnova.png']);    
-saveas(gcf,['interactionPlotAnova.pdf']);  
+interactionFig.Position(3:4)=[750 175];
+saveas(gcf,['interactionPlotAnovaDelay1to3']);
+saveas(gcf,['interactionPlotAnovaDelay1to3.png']);    
+saveas(gcf,['interactionPlotAnovaDelay1to3.pdf']);  
 
 %% (Optional) Show the data in a table
 % T = table(S, G, C, Y, 'VariableNames', {'Subject','Group','Condition','Y'});

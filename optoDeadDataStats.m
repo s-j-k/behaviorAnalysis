@@ -361,7 +361,8 @@ close all
 % now do the anova
 [anovaMat]=anova2OptoPerAnimalDead(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor);
 anovaInteractionPlotDelay(anovaMat,firstIdxAnimal,allDataTestsOnly) 
-% plots the mean and error bars for d'
+cd('O:\sjk\Figures\MGB IC Opto');
+save DelayData.mat anovaMat firstIdxAnimal allDataTestsOnly
 
 %% make plot to compare lick latency, for each animal and across animals 
 lickLatOptoPerAnimalDead(allDataTestsOnly,reinfcolor,optocolor)

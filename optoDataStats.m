@@ -32,7 +32,9 @@ for rr=2:7
 end
 
 % allDataTestsOnly(8:10,:)=[];
-ctlIdx=[21,25,27,31,33,35]; % not all controls are good
+ctlIdx=[21,25,28,31,33,35]; % not all controls are good
+%%%%%%%%%%%%%%%%%%%%%%%
+% !!!!!!!!!!need to fix this and extract data from cohort that has 183 ad 189 
 % 177, 179, 183, 189, 190, 191
 allDataCtlOnly=allCohorts(1,:);
 allDataCtlOnly(2:length(ctlIdx)+1,:)=allCohorts(ctlIdx,:);
@@ -272,7 +274,7 @@ allDataCtlOnly{1,36}='OPC IC Tone Trial';
 allDataCtlOnly{1,37}='RPC IC Choice Trial';
 allDataCtlOnly{1,38}='OPC IC Choice Trial';
 
-mgbCtlData=1;
+mgbCtlData=0;
 if mgbCtlData==0
 else
     for jj=2:size(allDataCtlOnly,1) % control animals
@@ -1125,6 +1127,8 @@ if skip==0
     
     anovaInteractionPlot(anovaMat,allDataTestsOnly) 
     % plots the mean and error bars for d'
+    cd('O:\sjk\Figures\MGB IC Opto');
+    save mgbOptoData.mat anovaMat allDataTestsOnly
 
 %% check for rebound licking
 plotlicks_after_light(lickMatTestsOnly,days)
