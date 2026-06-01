@@ -1,4 +1,4 @@
-function [anovaMat]=anova2OptoPerAnimalDead(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor);
+function [aovMGB,statsMGB]=anova2OptoPerAnimalDead(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor);
 
 % now per animal statistical analysis as a 2way anova using d'
 % no light vs. light all inactivation condition
@@ -50,8 +50,6 @@ tbl1An = array2table(c1An,"VariableNames", ...
 c2An = multcompare(statsMGBbyAnHit,"Estimate","row");
 tbl2AnHit = array2table(c2An,"VariableNames", ...
     ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
-
-
 %%%%%%%%%%%%%%%%%% using FA rate %%%%%%%%%%%%%%%%%%
 FAStats=NaN(length(firstIdxAnimal)*conditions,2); 
 valIdx=19;
@@ -76,7 +74,7 @@ end
 delayValAvgAnimal=nanmean(delayValAnimal,2);
 reinfValAvgAnimal=nanmean(reinfValAnimal,2);
 FAStats=horzcat(reinfValAvgAnimal,delayValAvgAnimal);
-[aovMGBbyAnFA,~,statsMGBbyAnFA]=anova2(FAStats,length(firstIdxAnimal));
+[aovMGBbyAnHit,~,statsMGBbyAnHit]=anova2(FAStats,length(firstIdxAnimal));
 c1An = multcompare(statsMGBbyAnHit);
 tbl1An = array2table(c1An,"VariableNames", ...
     ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
@@ -85,9 +83,11 @@ tbl2AnHit = array2table(c2An,"VariableNames", ...
     ["Group A","Group B","Lower Limit","A-B","Upper Limit","P-value"]);
 
 anovaMat={};
-anovaMat{1,2}='p values';anovaMat{1,3}='stat values';ww=2;
-anovaMat{ww,1}='By Animal Hit Rate';anovaMat{ww,2}=aovMGBbyAnHit;anovaMat{ww,3}=statsMGBbyAnHit;ww=ww+1;
-anovaMat{ww,1}='By Animal FA Rate';anovaMat{ww,2}=aovMGBbyAnFA;anovaMat{ww,3}=statsMGBbyAnFA;ww=ww+1;
-anovaMat{ww,1}='By Animal MGB Dprime';anovaMat{ww,2}=aovMGB;anovaMat{ww,3}=statsMGB;
+anovaMat{1,2}='p values';anovaMat{1,3}='stat values';
+anovaMat{2,1}='By Session percent correct';anovaMat{2,2}=aovMGBbySess;anovaMat{2,3}=statsMGBbySess;
+anovaMat{3,1}='By animal percent correct';anovaMat{3,2}=aovMGBbyAn;anovaMat{3,3}=statsMGBbyAn;
+anovaMat{4,1}='By Animal Hit Rate';anovaMat{4,2}=aovMGBbyAnHit;anovaMat{4,3}=statsMGBbyAnHit;
+anovaMat{5,1}='By Animal FA Rate';anovaMat{5,2}=aovMGBbyAnFA;anovaMat{5,3}=statsMGBbyAnFA;
+anovaMat{6,1}='By Animal MGB Dprime';anovaMat{6,2}=aovMGBbyAnDprime;anovaMat{6,3}=statsMGBbyAnDprime;
 
 end

@@ -219,8 +219,8 @@ for jj=1:length(firstIdxAnimal)
     rfatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
     ohittemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),18});
     ofatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),19});
-    rhittemp(isnan(ohittemp))=nan;
-    rfatemp(isnan(ofatemp))=nan;
+    rhittemp(isnan(ohit))=nan;
+    rfatemp(isnan(ofa))=nan;
     rhit(jj)=nanmean(rhittemp(:,jj));
     rfa(jj)=nanmean(rfatemp(:,jj));
     ohit(jj)=nanmean(ohittemp(:,jj));
@@ -258,9 +258,6 @@ box off
 allDataTestsOnly{2,40}=p;
 allDataTestsOnly{1,39}='dprime delay 1 off,on';allDataTestsOnly{1,40}='p value dprime delay 1';
 allDataTestsOnly{2,39} = [dp_r_An; dp_opto_An];
-allDataTestsOnly{3,39}='hit rate delay 1 off,on';allDataTestsOnly{3,40}='fa rate delay 3';
-allDataTestsOnly{4,39}=[rhittemp;ohittemp];allDataTestsOnly{4,40}=[rfatemp;ofatemp];
-box off
 title('Delay 1');ylabel('d prime');ylim([-1 4]);
 xticklabels({'','light off','light on'});
 
@@ -309,8 +306,6 @@ line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,42}=p;
 allDataTestsOnly{2,41} = [dp_r_An; dp_opto_An];
 allDataTestsOnly{1,41}='dprime delay 2 off,on';allDataTestsOnly{1,42}='p value dprime delay 2';
-allDataTestsOnly{3,41}='hit rate delay 2 off,on';allDataTestsOnly{3,42}='fa rate delay 2';
-allDataTestsOnly{4,41}=[rhittemp;ohittemp];allDataTestsOnly{4,42}=[rfatemp;ofatemp];
 box off
 title('Delay 2');ylim([-1 4]);
 xticklabels({'','','light off','','light on'});
@@ -322,8 +317,8 @@ for jj=1:length(firstIdxAnimal)
     rfatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
     ohittemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),22});
     ofatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),23});
-    rhittemp(isnan(ohittemp))=nan;
-    rfatemp(isnan(ofatemp))=nan;
+    rhittemp(isnan(ohit))=nan;
+    rfatemp(isnan(ofa))=nan;
     rhit(jj)=nanmean(rhittemp(:,jj));
     rfa(jj)=nanmean(rfatemp(:,jj));
     ohit(jj)=nanmean(ohittemp(:,jj));
@@ -360,8 +355,6 @@ line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,44}=p;
 allDataTestsOnly{2,43} = [dp_r_An; dp_opto_An];
 allDataTestsOnly{1,43}='dprime delay 3 off,on';allDataTestsOnly{1,44}='p value dprime delay 3';
-allDataTestsOnly{3,43}='hit rate delay 3 off,on';allDataTestsOnly{3,44}='fa rate delay 3';
-allDataTestsOnly{4,43}=[rhittemp;ohittemp];allDataTestsOnly{4,44}=[rfatemp;ofatemp];
 box off
 title('Delay 3');ylim([-1 4]);
 xticklabels({'','light off','light on'});
@@ -373,8 +366,8 @@ for jj=1:length(firstIdxAnimal)
     rfatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
     ohittemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),24});
     ofatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),25});
-    rhittemp(isnan(ohittemp))=nan;
-    rfatemp(isnan(ofatemp))=nan;
+    rhittemp(isnan(ohit))=nan;
+    rfatemp(isnan(ofa))=nan;
     rhit(jj)=nanmean(rhittemp(:,jj));
     rfa(jj)=nanmean(rfatemp(:,jj));
     ohit(jj)=nanmean(ohittemp(:,jj));
@@ -424,8 +417,8 @@ for jj=1:length(firstIdxAnimal)
     rfatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
     ohittemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),26});
     ofatemp(:,jj)=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),27});
-    rhittemp(isnan(ohittemp))=nan;
-    rfatemp(isnan(ofatemp))=nan;
+    rhittemp(isnan(ohit))=nan;
+    rfatemp(isnan(ofa))=nan;
     rhit(jj)=nanmean(rhittemp(:,jj));
     rfa(jj)=nanmean(rfatemp(:,jj));
     ohit(jj)=nanmean(ohittemp(:,jj));

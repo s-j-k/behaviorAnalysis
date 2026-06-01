@@ -1,10 +1,12 @@
-function [allDataTestsOnly]=byAnimalPercentCorrectDelay(allDataTestsOnly,reinfcolor,optocolor)
+function [allDataTestsOnly]=byAnimalPercentCorrectDelay(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor)
 
-for jj=2:size(allDataTestsOnly,1) % test Dead 1
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,19});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,20});
-    allDataTestsOnly{jj,29}=rpc(jj-1);
-    allDataTestsOnly{jj,30}=opc(jj-1);
+% test Delay 1
+ee=1;
+for ee=1:length(firstIdxAnimal)
+    rpcVals=allDataTestsOnly{firstIdxAnimal(ee),29};
+    opcVals=allDataTestsOnly{firstIdxAnimal(ee),30};
+    rpc(ee)=nanmean(rpcVals);
+    opc(ee)=nanmean(opcVals);
 end
 wwFig=figure(10);
 subplot(2,3,1)
@@ -26,11 +28,12 @@ title(['MGB Dead 1 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % MGB Dead 2
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,21});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,22});
-    allDataTestsOnly{jj,31}=rpc(jj-1);
-    allDataTestsOnly{jj,32}=opc(jj-1);
+ee=1;
+for ee=1:length(firstIdxAnimal) % Delay 2
+    rpcVals=allDataTestsOnly{firstIdxAnimal(ee),31};
+    opcVals=allDataTestsOnly{firstIdxAnimal(ee),32};
+    rpc(ee)=nanmean(rpcVals);
+    opc(ee)=nanmean(opcVals);
 end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -50,11 +53,12 @@ title(['MGB Dead 2 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % MGB Dead 3
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,23});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,24});
-    allDataTestsOnly{jj,33}=rpc(jj-1);
-    allDataTestsOnly{jj,34}=opc(jj-1);
+ee=1;
+for ee=1:length(firstIdxAnimal) %Delay 3
+    rpcVals=allDataTestsOnly{firstIdxAnimal(ee),33};
+    opcVals=allDataTestsOnly{firstIdxAnimal(ee),34};
+    rpc(ee)=nanmean(rpcVals);
+    opc(ee)=nanmean(opcVals);
 end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -74,11 +78,12 @@ title(['MGB Dead 3 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc
-for jj=2:size(allDataTestsOnly,1) % MGB Dead 4
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,25});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,26});
-    allDataTestsOnly{jj,35}=rpc(jj-1);
-    allDataTestsOnly{jj,36}=opc(jj-1);
+ee=1;
+for ee=1:length(firstIdxAnimal) %Delay 4
+    rpcVals=allDataTestsOnly{firstIdxAnimal(ee),35};
+    opcVals=allDataTestsOnly{firstIdxAnimal(ee),36};
+    rpc(ee)=nanmean(rpcVals);
+    opc(ee)=nanmean(opcVals);
 end
 subplot(2,3,4)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -99,11 +104,12 @@ title(['MGB Dead 4 Inactivation']);
 xticklabels({'light off', 'light on'});
 
 clear rpc opc 
-for jj=2:size(allDataTestsOnly,1) % MGB Dead 5
-    rpc(jj-1)=nanmean(allDataTestsOnly{jj,27});
-    opc(jj-1)=nanmean(allDataTestsOnly{jj,28});
-    allDataTestsOnly{jj,37}=rpc(jj-1);
-    allDataTestsOnly{jj,38}=opc(jj-1);
+ee=1;
+for ee=1:length(firstIdxAnimal) % Delay 5
+    rpcVals=allDataTestsOnly{firstIdxAnimal(ee),37};
+    opcVals=allDataTestsOnly{firstIdxAnimal(ee),38};
+    rpc(ee)=nanmean(rpcVals);
+    opc(ee)=nanmean(opcVals);
 end
 subplot(2,3,5)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -122,7 +128,7 @@ sigstar({[1,2]}, p)
 title(['MGB Dead 5 Inactivation']);
 xticklabels({'light off', 'light on'});
 
-wwFig.Position(3:4)=[725 475];
+wwFig.Position(3:4)=[725 300];
 saveas(gcf,['ByAnimal_T_MGB_Dead_PercentCorrect_Opto']);
 saveas(gcf,['ByAnimal_T_MGB_Dead_PercentCorrect_Opto.png']);
 end

@@ -3,7 +3,6 @@ function [anovaMat]=anova2OptoPerAnimal(allDataTestsOnly)
 % per session 2way anova
 % no light vs. light all inactivation condition
 % MGB by session (two sessions per condition, per animal
-
 testFullTrial=NaN(36,2); 
 % % Full Trial, light OFF column 1, light ON column 2
 testFullTrial(1:2,1)=allDataTestsOnly{2,27}(~isnan(allDataTestsOnly{2,27}));

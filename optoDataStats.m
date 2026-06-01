@@ -1124,7 +1124,7 @@ if skip==0
     [anovaMat]=anova2OptoPerAnimal(allDataTestsOnly);
     
     anovaInteractionPlot(anovaMat,allDataTestsOnly) 
-    % plots the mean and error bars for d' and runs the anova
+    % plots the mean and error bars for d'
 
 %% check for rebound licking
 plotlicks_after_light(lickMatTestsOnly,days)

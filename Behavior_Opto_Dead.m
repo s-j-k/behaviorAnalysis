@@ -93,7 +93,7 @@ lickhistotmiss_allmice = cell(nSubj,1);
 lickhistotcr_allmice = cell(nSubj,1);
 lickhistocmiss_allmice = cell(nSubj,1);
 lickhistoccr_allmice = cell(nSubj,1);
-
+  pp=1;delayRates={};
 for nbsubj = 1:nSubj % through subjects
     % Localize data
     subj = subjlist{nbsubj}; 
@@ -103,7 +103,7 @@ for nbsubj = 1:nSubj % through subjects
     rates = nan(1,10);
     nctxt = nan(1,18);
     % go through protocols
-    counter=1;
+    counter=1;  
     for nbproto = 1:nProtocol
         proto=deadProtocol{nbproto};
         switch proto
@@ -526,18 +526,68 @@ for nbsubj = 1:nSubj % through subjects
         end
     end
     
-    delayRates={};
-    delayRates{1,1}='RHit';delayRates{1,2}='RFA';delayRates{1,3}='pHit';delayRates{1,4}='pFA';
-    delayRates{1,5}='Delay1Hit';delayRates{1,6}='Delay1FA';delayRates{1,7}='Delay2Hit';delayRates{1,8}='Delay2FA';
-    delayRates{1,9}='Delay3Hit';delayRates{1,10}='Delay3FA';delayRates{1,11}='Delay4Hit';delayRates{1,12}='Delay4FA';
-    delayRates{1,13}='Delay5Hit';delayRates{1,14}='Delay5FA';
-    
-    delayRates{2,1}=rates(1,1);delayRates{2,2}=rates(1,2);
-    delayRates{2,3}=rates(1,3);delayRates{2,4}=rates(1,4);
-    delayRates{2,5}=rates(1,9);delayRates{2,6}=rates(1,10);
-    delayRates{2,7}=[NaN];delayRates{2,8}=[NaN];delayRates{2,9}=[NaN];delayRates{2,10}=[NaN];
-    delayRates{2,11}=rates(1,7);delayRates{2,12}=rates(1,8);
-    
+    if pp==1    
+        delayRates{pp,1}='Animal';delayRates{pp,2}='RHit';delayRates{pp,3}='RFA';delayRates{pp,4}='pHit';delayRates{pp,5}='pFA';
+        delayRates{pp,6}='Delay1Hit';delayRates{pp,7}='Delay1FA';delayRates{pp,8}='Delay2Hit';delayRates{pp,9}='Delay2FA';
+        delayRates{pp,10}='Delay3Hit';delayRates{pp,11}='Delay3FA';delayRates{pp,12}='Delay4Hit';delayRates{pp,13}='Delay4FA';
+        delayRates{pp,14}='Delay5Hit';delayRates{pp,15}='Delay5FA';
+    else
+        pp=pp+1;
+    end
+    ww=1;
+    pp=pp+1; % delay 4, delay 1
+    delayRates(pp,1)=subjlist(nbsubj);
+    delayRates{pp,2}=rates(ww,1);delayRates{pp,3}=rates(ww,2);
+    delayRates{pp,4}=rates(ww,3);delayRates{pp,5}=rates(ww,4);
+    delayRates{pp,6}=rates(ww,9);delayRates{pp,7}=rates(ww,10);
+    delayRates{pp,8}=[NaN];delayRates{pp,9}=[NaN];
+    delayRates{pp,10}=[NaN];delayRates{pp,11}=[NaN];
+    delayRates{pp,12}=rates(ww,7);delayRates{pp,13}=rates(ww,8);
+    delayRates{pp,14}=[NaN];delayRates{pp,15}=[NaN];
+    ww=ww+1;pp=pp+1; % delay 5, delay 1
+    delayRates(pp,1)=subjlist(nbsubj);
+    delayRates{pp,2}=rates(ww,1);delayRates{pp,3}=rates(ww,2);
+    delayRates{pp,4}=rates(ww-1,3);delayRates{pp,5}=rates(ww,4);
+    delayRates{pp,6}=rates(ww,7);delayRates{pp,7}=rates(ww,8);
+    delayRates{pp,8}=[NaN];delayRates{pp,9}=[NaN];
+    delayRates{pp,10}=[NaN];delayRates{pp,11}=[NaN];
+    delayRates{pp,12}=[NaN];delayRates{pp,13}=[NaN];
+    delayRates{pp,14}=rates(ww,5);delayRates{pp,15}=rates(ww,6);
+    ww=ww+1;pp=pp+1;% delay 3, delay 2
+    delayRates(pp,1)=subjlist(nbsubj);
+    delayRates{pp,2}=rates(ww,1);delayRates{pp,3}=rates(ww,2);
+    delayRates{pp,4}=rates(ww,3);delayRates{pp,5}=rates(ww,4);
+    delayRates{pp,6}=[NaN];delayRates{pp,7}=[NaN];
+    delayRates{pp,8}=rates(ww,7);delayRates{pp,9}=rates(ww,8);
+    delayRates{pp,10}=rates(ww,5);delayRates{pp,11}=rates(ww,6);
+    delayRates{pp,12}=[NaN];delayRates{pp,13}=[NaN];
+    delayRates{pp,14}=[NaN];delayRates{pp,15}=[NaN];
+    ww=ww+1;pp=pp+1; % delay 3, delay 2
+    delayRates(pp,1)=subjlist(nbsubj);
+    delayRates{pp,2}=rates(ww,1);delayRates{pp,3}=rates(ww,2);
+    delayRates{pp,4}=rates(ww,3);delayRates{pp,5}=rates(ww,4);
+    delayRates{pp,6}=[NaN];delayRates{pp,7}=[NaN];
+    if nbsubj==1
+        delayRates{pp,8}=rates(ww,9);delayRates{pp,9}=rates(ww,10);
+    else
+        delayRates{pp,8}=rates(ww,7);delayRates{pp,9}=rates(ww,8);
+    end
+    delayRates{pp,10}=rates(ww,5);delayRates{pp,11}=rates(ww,6);
+    delayRates{pp,12}=[NaN];delayRates{pp,13}=[NaN];
+    delayRates{pp,14}=[NaN];delayRates{pp,15}=[NaN];
+    ww=ww+1;pp=pp+1; % delay 5, delay 4
+    delayRates(pp,1)=subjlist(nbsubj);
+    delayRates{pp,2}=rates(ww,1);delayRates{pp,3}=rates(ww,2);
+    delayRates{pp,4}=rates(ww,3);delayRates{pp,5}=rates(ww,4);
+    delayRates{pp,6}=[NaN];delayRates{pp,7}=[NaN];
+    delayRates{pp,8}=[NaN];delayRates{pp,9}=[NaN];
+    delayRates{pp,10}=[NaN];delayRates{pp,11}=[NaN];
+    if nbsubj==3
+        delayRates{pp,12}=rates(ww,9);delayRates{pp,13}=rates(ww,10);
+    else
+        delayRates{pp,12}=rates(ww,7);delayRates{pp,13}=rates(ww,8); %sbj 1, 2
+    end
+    delayRates{pp,14}=rates(ww,5);delayRates{pp,15}=rates(ww,6);
     
 %% TO PLOT OPTO
 optoplot=1;
@@ -550,108 +600,108 @@ optoplot=1;
 % rates 17 - 18 - choice, always dead 1 (dead 1 & 3 protocols)
 
 if optoplot==1 % now make bar graphs, averaged, for all conditions 
-    eeeFig=figure('Position', [10 10 725 575]);hold on;
-    % now deal with which trial has what protocol
-    reinfcolor= [0.4,0.4,0.4];
-    optocolor=[102/255 178/255 255/255];
-    % make a grid of 3 by 2
-    plotCol = 2; plotRow = 3;
-    subplot(plotRow,plotCol,1); % first dead
-    expRange = [1,4];
-    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,17)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,18))]); %hit, choice dead 1, choice dead 3
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); legend('light off','light on','Location','best');
-    title([subjlist{nbsubj} ' (' expnames{explist(nbproto)} ') ' 'Dead Period 1 Opto']);
-
-    subplot(plotRow,plotCol,2); % second dead
-    expRange = [1,5];
-    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,16))]); % tone for dead 1 and dead 3 (2nd) protocols
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('Second Dead Opto');
-
-    subplot(plotRow,plotCol,3); % third dead
-    expRange = [2,3];
-    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); title('Third Dead Opto');
-
-    subplot(plotRow,plotCol,4); % fourth dead
-    expRange = [2,3];
-    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,16))]); %hit, tone (dead period 4, protocol dead 2)
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fourth Dead Opto']);
-
-    subplot(plotRow,plotCol,5); % fifth dead
-    expRange = [4,5];
-    eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
-        mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
-    eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
-    scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-    eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-    scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-    xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fifth Dead Opto']);
-
-    if savefig
-        cd(pathsave);
-        saveas(eeeFig,[subjlist{nbsubj} 'dead-OptoBarScatter-' num2str(nbins) '.' filetype]);
-        saveas(eeeFig,[subjlist{nbsubj} 'dead-OptoBarScatter-' num2str(nbins) '.png']);
-        close(eeeFig);
-    end
+%     eeeFig=figure('Position', [10 10 725 575]);hold on;
+%     % now deal with which trial has what protocol
+%     reinfcolor= [0.4,0.4,0.4];
+%     optocolor=[102/255 178/255 255/255];
+%     % make a grid of 3 by 2
+%     plotCol = 2; plotRow = 3;
+%     subplot(plotRow,plotCol,1); % first dead
+%     expRange = [1,4];
+%     eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,17)); ...
+%         mean(rates(expRange,2)) nanmean(rates(expRange,18))]); %hit, choice dead 1, choice dead 3
+%     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
+%     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+%     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     xticklabels({'hit','fa'}); ylabel('Average Action Rate'); legend('light off','light on','Location','best');
+%     title([subjlist{nbsubj} ' (' expnames{explist(nbproto)} ') ' 'Dead Period 1 Opto']);
+% 
+%     subplot(plotRow,plotCol,2); % second dead
+%     expRange = [1,5];
+%     eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
+%         mean(rates(expRange,2)) nanmean(rates(expRange,16))]); % tone for dead 1 and dead 3 (2nd) protocols
+%     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
+%     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+%     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     xticklabels({'hit','fa'}); title('Second Dead Opto');
+% 
+%     subplot(plotRow,plotCol,3); % third dead
+%     expRange = [2,3];
+%     eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
+%         mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
+%     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
+%     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+%     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     xticklabels({'hit','fa'}); title('Third Dead Opto');
+% 
+%     subplot(plotRow,plotCol,4); % fourth dead
+%     expRange = [2,3];
+%     eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
+%         mean(rates(expRange,2)) nanmean(rates(expRange,16))]); %hit, tone (dead period 4, protocol dead 2)
+%     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
+%     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+%     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fourth Dead Opto']);
+% 
+%     subplot(plotRow,plotCol,5); % fifth dead
+%     expRange = [4,5];
+%     eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
+%         mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
+%     eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
+%     scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+%     eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+%     scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+%     xticklabels({'hit','fa'}); ylabel('Average Action Rate'); title(['Fifth Dead Opto']);
+% 
+%     if savefig
+%         cd(pathsave);
+%         saveas(eeeFig,[subjlist{nbsubj} 'dead-OptoBarScatter-' num2str(nbins) '.' filetype]);
+%         saveas(eeeFig,[subjlist{nbsubj} 'dead-OptoBarScatter-' num2str(nbins) '.png']);
+%         close(eeeFig);
+%     end
 
     % here, store the protocols and their corresponding inactivations as
     % separate columns to avoid future confusion
-    optomeanMat{nbsubj+nbsubj+1,1}=subjlist(nbsubj);
-    optomeanMat{nbsubj+nbsubj+1,2}=rates(:,1); %hit
-    optomeanMat{nbsubj+nbsubj+1,3}=rates(:,2); %fa
-    expRange = [1,4]; % columns 17, 18
-    optomeanMat{nbsubj+nbsubj+1,4}=rates(expRange,17); % dead 1 hit
-    optomeanMat{nbsubj+nbsubj+1,5}=rates(expRange,18); % dead 1 fa
-    expRange = [1,5]; % columns 15, 16
-    optomeanMat{nbsubj+nbsubj+1,6}=rates(expRange,15); % dead 2, hit
-    optomeanMat{nbsubj+nbsubj+1,7}=rates(expRange,16); % dead 2, fa
-    expRange = [2,3]; % columns 5, 6
-    optomeanMat{nbsubj+nbsubj+1,8}=rates(expRange,5); % dead 3, hit
-    optomeanMat{nbsubj+nbsubj+1,9}=rates(expRange,6); % dead 3, fa
-    expRange = [2,3]; % columns 15, 16
-    optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange,15); % dead 4, hit
-    optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange,16); % dead 4, fa
-    expRange = [4,5]; % columns 5, 6
-    optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange,5); % dead 5, hit
-    optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange,6); % dead 5, fa
+%     optomeanMat{nbsubj+nbsubj+1,1}=subjlist(nbsubj);
+%     optomeanMat{nbsubj+nbsubj+1,2}=delayRates(:,1); %hit
+%     optomeanMat{nbsubj+nbsubj+1,3}=delayRates(:,2); %fa
+%     expRange = [1,4]; % columns 17, 18
+%     optomeanMat{nbsubj+nbsubj+1,4}=delayRates(:,5); % dead 1 hit
+%     optomeanMat{nbsubj+nbsubj+1,5}=delayRates(expRange,18); % dead 1 fa
+%     expRange = [1,5]; % columns 15, 16
+%     optomeanMat{nbsubj+nbsubj+1,6}=delayRates(expRange,15); % dead 2, hit
+%     optomeanMat{nbsubj+nbsubj+1,7}=delayRates(expRange,16); % dead 2, fa
+%     expRange = [2,3]; % columns 5, 6
+%     optomeanMat{nbsubj+nbsubj+1,8}=rates(expRange,5); % dead 3, hit
+%     optomeanMat{nbsubj+nbsubj+1,9}=rates(expRange,6); % dead 3, fa
+%     expRange = [2,3]; % columns 15, 16
+%     optomeanMat{nbsubj+nbsubj+1,10}=rates(expRange,15); % dead 4, hit
+%     optomeanMat{nbsubj+nbsubj+1,11}=rates(expRange,16); % dead 4, fa
+%     expRange = [4,5]; % columns 5, 6
+%     optomeanMat{nbsubj+nbsubj+1,12}=rates(expRange,5); % dead 5, hit
+%     optomeanMat{nbsubj+nbsubj+1,13}=rates(expRange,6); % dead 5, fa
     optomeanMat{nbsubj+nbsubj+1,14}= [1,4,1,5,2,3,2,3,4,5];
     optomeanMat{nbsubj+nbsubj+1,15}=MAT;
     optomeanMat{nbsubj+nbsubj+1,16}=rates;
 else
 end
 
-save('deadSummaryData.mat','optomeanMat');
-disp('saved opto data to mat file.');
+save('deadSummaryData.mat','delayRates');
+disp('saved delay opto data to mat file.');
 close all
 
 lickhistcOFF_allMice{nbsubj} = lickhistcOFF;
@@ -701,7 +751,7 @@ lickHistMat{2,19} = lickhistotcr_allMice;
 lickHistMat{2,20} = lickhistocmiss_allMice; 
 lickHistMat{2,21} = lickhistoccr_allMice;
 
-save('deadSummaryData.mat','optomeanMat','lickHistMat','allLickData','explist');
+save('deadSummaryData.mat','delayRates','lickHistMat','allLickData','explist');
 disp('saved opto data to mat file.');
 
    %% now make plots averaged across test and ctl for MGB
