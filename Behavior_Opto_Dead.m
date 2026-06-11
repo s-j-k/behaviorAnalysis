@@ -478,7 +478,7 @@ for nbsubj = 1:nSubj % through subjects
 
         end
         getLickLatHistDead(matrix,deadProtocol,nbproto,subjlist, nbsubj) 
-        MAT{nbproto,1} = matrix;
+        MAT{nbproto,nbsubj} = matrix;
 
     %% make plots summarizing performance across training
         filetype='.fig';
@@ -700,7 +700,7 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 else
 end
 
-save('deadSummaryData.mat','delayRates');
+save('deadSummaryData.mat','delayRates','optomeanMat');
 disp('saved delay opto data to mat file.');
 close all
 
@@ -751,7 +751,7 @@ lickHistMat{2,19} = lickhistotcr_allMice;
 lickHistMat{2,20} = lickhistocmiss_allMice; 
 lickHistMat{2,21} = lickhistoccr_allMice;
 
-save('deadSummaryData.mat','delayRates','lickHistMat','allLickData','explist');
+save('deadSummaryData.mat','delayRates','lickHistMat','optomeanMat','allLickData','explist');
 disp('saved opto data to mat file.');
 
    %% now make plots averaged across test and ctl for MGB
