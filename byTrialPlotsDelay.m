@@ -28,67 +28,115 @@ function byTrialPlotsDelay(allDataTestsOnly,optomeanMat,allLicksTest,reinfcolor,
             if ww == 1
                 %Tone (context 5) is delay 4
                 % and choice (context 6) is delay 1
-                toneDataD1TargetIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
-                toneDataD1FoilIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
-                toneDataD1Target=exampleTrials(toneDataD1TargetIdx,:);
-                toneDataD1Foil=exampleTrials(toneDataD1FoilIdx,:);
+                delay4D1TargetIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
+                delay4D1FoilIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
+                delay4D1Target=exampleTrials(delay4D1TargetIdx,:);
+                delay4D1Foil=exampleTrials(delay4D1FoilIdx,:);
                 % now relabel false alarms as zeroes instead of twos
-                missIdx=find(toneDataD1Target(:,4)==2);
-                toneDataD1Target(missIdx,4)=0;
+                missIdx=find(delay4D1Target(:,4)==2);
+                delay4D1Target(missIdx,4)=0;
                 %relabel CR and FA as 0 and 1
-                crIdx=find(toneDataD1Foil(:,4)==4);
-                toneDataD1Foil(crIdx,4)=0;
-                faIdx=find(toneDataD1Foil(:,4)==3);
-                toneDataD1Foil(faIdx,4)=1;
+                crIdx=find(delay4D1Foil(:,4)==4);
+                delay4D1Foil(crIdx,4)=0;
+                faIdx=find(delay4D1Foil(:,4)==3);
+                delay4D1Foil(faIdx,4)=1;
 
-                choiceDataD1TargetIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==1);
-                choiceDataD1FoilIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==2);
-                choiceDataD1Target=exampleTrials(choiceDataD1TargetIdx,:);
-                choiceDataD1Foil=exampleTrials(choiceDataD1FoilIdx,:);
+                delay1D1TargetIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==1);
+                delay1D1FoilIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==2);
+                delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
+                delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
                 % now relabel false alarms as zeroes instead of twos
-                missIdx=find(choiceDataD1Target(:,4)==2);
-                choiceDataD1Target(missIdx,4)=0;
+                missIdx=find(delay1D1Target(:,4)==2);
+                delay1D1Target(missIdx,4)=0;
                 %relabel CR and FA as 0 and 1
-                crIdx=find(choiceDataD1Foil(:,4)==4);
-                choiceDataD1Foil(crIdx,4)=0;
-                faIdx=find(choiceDataD1Foil(:,4)==3);
-                choiceDataD1Foil(faIdx,4)=1;
+                crIdx=find(delay1D1Foil(:,4)==4);
+                delay1D1Foil(crIdx,4)=0;
+                faIdx=find(delay1D1Foil(:,4)==3);
+                delay1D1Foil(faIdx,4)=1;
             
-                allMiceRTTargetIdx(counter,:)=reinfDataD1TargetIdx;
-                allMiceRTFoilIdx(counter,:)=reinfDataD1FoilIdx;
-                allMiceToneTargetIdx(counter,:)=toneDataD1TargetIdx;
-                allMiceToneFoilIdx(counter,:)=toneDataD1FoilIdx;
-                allMiceChoiceTTargetIdx(counter,:)=choiceDataD1TargetIdx;
-                allMiceChoiceTFoilIdx(counter,:)=choiceDataD1FoilIdx;
+                allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
+                allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
+                allMiceDelay4TargetIdx(counter,:)=delay4D1TargetIdx;
+                allMiceDelay4FoilIdx(counter,:)=delay4D1FoilIdx;
+                allMiceDelay1TargetIdx(counter,:)=delay1D1TargetIdx;
+                allMiceDelay1FoilIdx(counter,:)=delay1D1FoilIdx;
 
-                allMiceRTTarget(counter,:)=reinfDataD1Target(1:70,4);
-                allMiceRTFoil(counter,:)=reinfDataD1Foil(1:70,4);
-                allMiceToneTarget(counter,:)=toneDataD1Target(1:35,4);
-                allMiceToneFoil(counter,:)=toneDataD1Foil(1:35,4);
-                allMiceCTTarget(counter,:)=choiceDataD1Target(1:35,4);
-                allMiceCTFoil(counter,:)=choiceDataD1Foil(1:35,4);
+                allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
+                allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
+                allMiceDelay4Target(counter,:)=delay4D1Target(1:35,4);
+                allMiceDelay4Foil(counter,:)=delay4D1Foil(1:35,4);
+                allMiceDelay1Target(counter,:)=delay1D1Target(1:35,4);
+                allMiceDelay1Foil(counter,:)=delay1D1Foil(1:35,4);
 
-                allMiceRTT{counter}=reinfDataD1Target;
-                allMiceRTF{counter}=reinfDataD1Foil;
-                allMiceToneT{counter}=toneDataD1Target;
-                allMiceToneF{counter}=toneDataD1Foil;
-                allMiceCTT{counter}=choiceDataD1Target;
-                allMiceCTF{counter}=choiceDataD1Foil;
+                allMiceRT{counter}=reinfDataD1Target;
+                allMiceRF{counter}=reinfDataD1Foil;
+                allMiceDelay4T{counter}=delay4D1Target;
+                allMiceDelay4F{counter}=delay4D1Foil;
+                allMiceDelay1T{counter}=delay1D1Target;
+                allMiceDelay1F{counter}=delay1D1Foil;
                 counter=counter+1;
                 
-        elseif ww==2
+            elseif ww==2
             % this is context 5 is delay 5
             % context 6 is delay 1
+                delay5D1TargetIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
+                delay5D1FoilIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
+                delay5D1Target=exampleTrials(delay5D1TargetIdx,:);
+                delay5D1Foil=exampleTrials(delay5D1FoilIdx,:);
+                % now relabel false alarms as zeroes instead of twos
+                missIdx=find(delay5D1Target(:,4)==2);
+                delay5D1Target(missIdx,4)=0;
+                %relabel CR and FA as 0 and 1
+                crIdx=find(delay5D1Foil(:,4)==4);
+                delay5D1Foil(crIdx,4)=0;
+                faIdx=find(delay5D1Foil(:,4)==3);
+                delay5D1Foil(faIdx,4)=1;
 
+                delay1D1TargetIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==1);
+                delay1D1FoilIdx=find(exampleTrials(:,2)==6 & exampleTrials(:,3)==2);
+                delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
+                delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
+                % now relabel false alarms as zeroes instead of twos
+                missIdx=find(delay1D1Target(:,4)==2);
+                delay1D1Target(missIdx,4)=0;
+                %relabel CR and FA as 0 and 1
+                crIdx=find(delay1D1Foil(:,4)==4);
+                delay1D1Foil(crIdx,4)=0;
+                faIdx=find(delay1D1Foil(:,4)==3);
+                delay1D1Foil(faIdx,4)=1;
+            
+                allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
+                allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
+                allMiceDelay5TargetIdx(counter,:)=delay5D1TargetIdx;
+                allMiceDelay5FoilIdx(counter,:)=delay5D1FoilIdx;
+                allMiceDelay1TargetIdx(counter,:)=delay1D1TargetIdx;
+                allMiceDelay1FoilIdx(counter,:)=delay1D1FoilIdx;
+
+                allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
+                allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
+                allMiceDelay5Target(counter,:)=delay5D1Target(1:35,4);
+                allMiceDelay5Foil(counter,:)=delay5D1Foil(1:35,4);
+                allMiceDelay1Target(counter,:)=delay1D1Target(1:35,4);
+                allMiceDelay1Foil(counter,:)=delay1D1Foil(1:35,4);
+
+                allMiceRT{counter}=reinfDataD1Target;
+                allMiceRF{counter}=reinfDataD1Foil;
+                allMiceDelay5T{counter}=delay5D1Target;
+                allMiceDelay5F{counter}=delay5D1Foil;
+                allMiceDelay1T{counter}=delay1D1Target;
+                allMiceDelay1F{counter}=delay1D1Foil;
+                counter=counter+1; 
             
             elseif ww==3 || ww==4 % these were run with the same protocol
-                % context 1 is delay 3
-                % context 5 delay 2
-
+            % context 1 is delay 3
+            % context 5 delay 2
+                
+            
             elseif ww==5
-                % context 1 is delay 5
-                % context 5 is delay 4
+            % context 1 is delay 5
+            % context 5 is delay 4
 
+            
             end 
         end
 
