@@ -4,37 +4,33 @@
 % Behavior_Opto_Dead(cohort)
 %% now load the data for each cohort and make one big file called allCohorts
 cd('O:\sjk\Behavior\MGBIC_6')
-load('deadSummaryData.mat')
+load('olddeadSummaryData.mat')
 % fix the data for 204
 % optomeanMat{7,4}(2,1) = optomeanMat{7,16}(5,17);
 % optomeanMat{7,5}(2,1) = optomeanMat{7,16}(5,18);
 % optomeanMat{7,6}(2,1) = optomeanMat{7,16}(4,15);
 % optomeanMat{7,7}(2,1) = optomeanMat{7,16}(4,16);
-% optomeanMat(2,:)=[];
-delayRates(7,:)=[];
-delayRates(12,:)=[];
-% fix the matrix variable
-optomeanMat(1,17)={'Matrix as a double'};
-optomeanMat(2,:)=[];optomeanMat(3,:)=[];optomeanMat(4,:)=[];
-optomeanMat{2,15}=optomeanMat{4,15}(1:3,1);
-optomeanMat{3,15}=optomeanMat{4,15}(1:3,2);
-optomeanMat{4,15}=optomeanMat{4,15}(1:3,3);
+optomeanMat(2,:)=[];
+optomeanMat(3,:)=[];
+optomeanMat(4,:)=[];
 %%
-
-for qq=2:size(optomeanMat,1)
+% save('deadSummaryData.mat','optomeanMat')
+% fix the matrix variable
+allDataTestsOnly(1,49)={'Matrix as a double'};
+for qq=2:size(allDataTestsOnly,1)
     clear newMat
-    for rr=1:size(optomeanMat{2,15},1)-1
+    for rr=1:size(allDataTestsOnly{2,15},1)-4
         if rr==1
-            newMat2=optomeanMat{qq,15}{rr+1,1};
+            newMat2=allDataTestsOnly{qq,15}{rr+1,1};
             newMat2(:,1)= newMat2(:,1)+rr;
-            newMat=vertcat(optomeanMat{qq,15}{rr,1},newMat2);
+            newMat=vertcat(allDataTestsOnly{qq,15}{rr,1},newMat2);
         else
-            newMat2=optomeanMat{qq,15}{rr+1,1};
+            newMat2=allDataTestsOnly{qq,15}{rr+1,1};
             newMat2(:,1)= newMat2(:,1)+rr+1;
             newMat=vertcat(newMat,newMat2);
         end
     end
-    optomeanMat(qq,17)={newMat};
+    allDataTestsOnly(qq,49)={newMat};
 end
 %%
 % cohortRange=1:6;
@@ -44,55 +40,58 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 % for each animal, record whether it's a test or ctl  % 1 is ctl, 2 is test
 condition=[0 2 2 2]; % 198, 203, 204
 testIdx=find(condition==2);
-allDataTestsOnly=delayRates;
-reinfcolor= [0.4,0.4,0.4];
-optocolor=[102/255 178/255 255/255];
-
-%% lick latency plots, by trial
-byTrialPlotsDelay(allDataTestsOnly,optomeanMat,allLickData,reinfcolor,optocolor)
+allDataTestsOnly=optomeanMat;
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
-
-firstIdxAnimal=[2,7,12];
-for ee=1:length(firstIdxAnimal)
-    ii=16;
-    allDataTestsOnly{1,ii}='RHit by condition';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,2);
-    ii=ii+1;allDataTestsOnly{1,ii}='RFA by condition';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,3);
-    ii=ii+1;allDataTestsOnly{1,ii}='Hit Delay 1';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,6);
-    ii=ii+1;allDataTestsOnly{1,ii}='FA Delay 1';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,7);
-    ii=ii+1;allDataTestsOnly{1,ii}='Hit Delay 2';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,8);
-    ii=ii+1;allDataTestsOnly{1,ii}='FA Delay 2';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,9);
-    ii=ii+1;allDataTestsOnly{1,ii}='Hit Delay 3';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,10);
-    ii=ii+1;allDataTestsOnly{1,ii}='FA Delay 3';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,11);
-    ii=ii+1;allDataTestsOnly{1,ii}='Hit Delay 4';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,12);
-    ii=ii+1;allDataTestsOnly{1,ii}='FA Delay 4';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,13);
-    ii=ii+1;allDataTestsOnly{1,ii}='Hit Delay 5';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,14);
-    ii=ii+1;allDataTestsOnly{1,ii}='FA Delay 5';
-    allDataTestsOnly{firstIdxAnimal(ee),ii}=allDataTestsOnly(firstIdxAnimal(ee):firstIdxAnimal(ee)+4,15);
+reinfcolor= [0.4,0.4,0.4];
+optocolor=[102/255 178/255 255/255];
+allDataTestsOnly{1,17}='RHit by Condition';
+allDataTestsOnly{1,18}='RFA by Condition';
+allDataTestsOnly{1,19}='RPC MGB Dead 1';
+allDataTestsOnly{1,20}='OPC MGB Dead 1';
+allDataTestsOnly{1,21}='RPC MGB Dead 2';
+allDataTestsOnly{1,22}='OPC MGB Dead 2';
+allDataTestsOnly{1,23}='RPC MGB Dead 3';
+allDataTestsOnly{1,24}='OPC MGB Dead 3';
+allDataTestsOnly{1,25}='RPC MGB Dead 4';
+allDataTestsOnly{1,26}='OPC MGB Dead 4';
+allDataTestsOnly{1,27}='RPC MGB Dead 5';
+allDataTestsOnly{1,28}='OPC MGB Dead 5';
+% organize the reinforced hit sessions by the dead periods (dead 1 through
+% dead 5 is each row)
+for jj = 2:size(allDataTestsOnly,1)
+    allDataTestsOnly{jj,17}(1,1)=allDataTestsOnly{jj,2}(1,1);
+    allDataTestsOnly{jj,17}(1,2)=allDataTestsOnly{jj,2}(4,1);
+    allDataTestsOnly{jj,17}(2,1)=allDataTestsOnly{jj,2}(1,1);
+    allDataTestsOnly{jj,17}(2,2)=allDataTestsOnly{jj,2}(5,1);
+    allDataTestsOnly{jj,17}(3,1)=allDataTestsOnly{jj,2}(2,1);
+    allDataTestsOnly{jj,17}(3,2)=allDataTestsOnly{jj,2}(3,1);
+    allDataTestsOnly{jj,17}(4,1)=allDataTestsOnly{jj,2}(2,1);
+    allDataTestsOnly{jj,17}(4,2)=allDataTestsOnly{jj,2}(3,1);
+    allDataTestsOnly{jj,17}(5,1)=allDataTestsOnly{jj,2}(4,1);
+    allDataTestsOnly{jj,17}(5,2)=allDataTestsOnly{jj,2}(5,1);
+    
+    allDataTestsOnly{jj,18}(1,1)=allDataTestsOnly{jj,3}(1,1);
+    allDataTestsOnly{jj,18}(1,2)=allDataTestsOnly{jj,3}(4,1);
+    allDataTestsOnly{jj,18}(2,1)=allDataTestsOnly{jj,3}(1,1);
+    allDataTestsOnly{jj,18}(2,2)=allDataTestsOnly{jj,3}(5,1);
+    allDataTestsOnly{jj,18}(3,1)=allDataTestsOnly{jj,3}(2,1);
+    allDataTestsOnly{jj,18}(3,2)=allDataTestsOnly{jj,3}(3,1);
+    allDataTestsOnly{jj,18}(4,1)=allDataTestsOnly{jj,3}(2,1);
+    allDataTestsOnly{jj,18}(4,2)=allDataTestsOnly{jj,3}(3,1);
+    allDataTestsOnly{jj,18}(5,1)=allDataTestsOnly{jj,3}(4,1);
+    allDataTestsOnly{jj,18}(5,2)=allDataTestsOnly{jj,3}(5,1);
 end
 
 %%
 cd('O:\sjk\Figures\MGB IC Opto');
-for jj=1:length(firstIdxAnimal)
+for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj);hold on;
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Dead 1
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),18});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),19});
-    rhit(isnan(ohit))=nan;
-    rfa(isnan(ofa))=nan;
+    rhit=allDataTestsOnly{jj,17}(1,:); % Dead 1
+    rfa=allDataTestsOnly{jj,18}(1,:);
+    ohit = allDataTestsOnly{jj,4};
+    ofa = allDataTestsOnly{jj,5};
     rpc = (rhit+(1-rfa))/2*100; 
     opc = (ohit+(1-ofa))/2*100; 
     
@@ -106,15 +105,15 @@ for jj=1:length(firstIdxAnimal)
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     ylabel('percent correct');
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 1']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 1 Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataTestsOnly{firstIdxAnimal(jj),29}=rpc;
-    allDataTestsOnly{firstIdxAnimal(jj),30}=opc;
+    allDataTestsOnly{jj,19}=rpc;
+    allDataTestsOnly{jj,20}=opc;
 
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 2
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit =cell2mat(allDataTestsOnly{firstIdxAnimal(jj),20});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),21});
+    rhit=allDataTestsOnly{jj,17}(2,:); % Dead 2
+    rfa=allDataTestsOnly{jj,18}(2,:);
+    ohit = allDataTestsOnly{jj,6};
+    ofa = allDataTestsOnly{jj,7};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -128,21 +127,21 @@ for jj=1:length(firstIdxAnimal)
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 2']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 2 Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataTestsOnly{firstIdxAnimal(jj),31}=rpc;
-    allDataTestsOnly{firstIdxAnimal(jj),32}=opc;
+    allDataTestsOnly{jj,21}=rpc;
+    allDataTestsOnly{jj,22}=opc;
 
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 3
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),22});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),23});
+    rhit=allDataTestsOnly{jj,17}(3,:); % Dead 3
+    rfa=allDataTestsOnly{jj,18}(3,:);
+    ohit = allDataTestsOnly{jj,8};
+    ofa = allDataTestsOnly{jj,9};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
     opc = (ohit+(1-ofa))/2*100; 
-    allDataTestsOnly{firstIdxAnimal(jj),33}=rpc;
-    allDataTestsOnly{firstIdxAnimal(jj),34}=opc;
+    allDataTestsOnly{jj,23}=rpc;
+    allDataTestsOnly{jj,24}=opc;
     
     subplot(2,3,3)
     eee=bar([nanmean(rpc) nanmean(opc)]); hold on;
@@ -153,13 +152,13 @@ for jj=1:length(firstIdxAnimal)
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 3']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 3 Inactivation']);
     xticklabels({'light off', 'light on'});
 
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 4
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),24});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),25});
+    rhit=allDataTestsOnly{jj,17}(4,:); % Dead 4
+    rfa=allDataTestsOnly{jj,18}(4,:);
+    ohit = allDataTestsOnly{jj,10};
+    ofa = allDataTestsOnly{jj,11};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -175,15 +174,15 @@ for jj=1:length(firstIdxAnimal)
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
     ylabel('percent correct');
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 4 ']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 4 Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataTestsOnly{firstIdxAnimal(jj),35}=rpc;
-    allDataTestsOnly{firstIdxAnimal(jj),36}=opc;
+    allDataTestsOnly{jj,25}=rpc;
+    allDataTestsOnly{jj,26}=opc;
 
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 5
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),26});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),27});
+    rhit=allDataTestsOnly{jj,17}(5,:); % Dead 5
+    rfa=allDataTestsOnly{jj,18}(5,:);
+    ohit = allDataTestsOnly{jj,12};
+    ofa = allDataTestsOnly{jj,13};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -197,25 +196,25 @@ for jj=1:length(firstIdxAnimal)
         opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
     [h,p,ci,stats] = ttest2(rpc,opc);
     sigstar({[1,2]}, p)
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 5 ']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 5 Inactivation']);
     xticklabels({'light off', 'light on'});
-    allDataTestsOnly{firstIdxAnimal(jj),37}=rpc;
-    allDataTestsOnly{firstIdxAnimal(jj),38}=opc; 
+    allDataTestsOnly{jj,27}=rpc;
+    allDataTestsOnly{jj,28}=opc; 
     
     eeFig.Position(3:4)=[725 475];
-    saveas(gcf,[char(allDataTestsOnly{firstIdxAnimal(jj),1}) '_T_MGB_Delay_PercentCorrect_Opto']);
-    saveas(gcf,[char(allDataTestsOnly{firstIdxAnimal(jj),1}) '_T_MGB_Delay_PercentCorrect_Opto.png']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_Dead_PercentCorrect_Opto']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_Dead_PercentCorrect_Opto.png']);
 end
 
 close all
 %% make plots to compare hit and fa rate with light on vs light off
 
-for jj=1:length(firstIdxAnimal)
+for jj=2:size(allDataTestsOnly,1)
     eeFig=figure(jj+3);hold on;
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Dead 1
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),18});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),19});
+    rhit=allDataTestsOnly{jj,17}(1,:); % Dead 1
+    rfa=allDataTestsOnly{jj,18}(1,:);
+    ohit = allDataTestsOnly{jj,4};
+    ofa = allDataTestsOnly{jj,5};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     subplot(2,3,1)
@@ -233,13 +232,13 @@ for jj=1:length(firstIdxAnimal)
     [h,pFA,ci,stats] = ttest2(rfa,ofa);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('rate');
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 1']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 1 Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 2
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit =cell2mat(allDataTestsOnly{firstIdxAnimal(jj),20});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),21});
+    rhit=allDataTestsOnly{jj,17}(2,:); % Dead 2
+    rfa=allDataTestsOnly{jj,18}(2,:);
+    ohit = allDataTestsOnly{jj,6};
+    ofa = allDataTestsOnly{jj,7};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     subplot(2,3,2)
@@ -257,13 +256,13 @@ for jj=1:length(firstIdxAnimal)
     [h,pFA,ci,stats] = ttest2(rfa,ofa);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('rate');
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 2']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 2 Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 3
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),22});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),23});
+    rhit=allDataTestsOnly{jj,17}(3,:); % Dead 3
+    rfa=allDataTestsOnly{jj,18}(3,:);
+    ohit = allDataTestsOnly{jj,8};
+    ofa = allDataTestsOnly{jj,9};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     rpc = (rhit+(1-rfa))/2*100; 
@@ -283,13 +282,13 @@ for jj=1:length(firstIdxAnimal)
     [h,pFA,ci,stats] = ttest2(rfa,ofa);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('rate');
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 3']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 3 Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
     
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 4
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),24});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),25});
+    rhit=allDataTestsOnly{jj,17}(4,:); % Dead 4
+    rfa=allDataTestsOnly{jj,18}(4,:);
+    ohit = allDataTestsOnly{jj,10};
+    ofa = allDataTestsOnly{jj,11};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     subplot(2,3,4)
@@ -307,13 +306,13 @@ for jj=1:length(firstIdxAnimal)
     [h,pFA,ci,stats] = ttest2(rfa,ofa);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('rate');
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' MGB Delay 4']);
+    title([allDataTestsOnly{jj,1} ' MGB Dead 4 Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
 
-    rhit=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),16}); % Delay 5
-    rfa=cell2mat(allDataTestsOnly{firstIdxAnimal(jj),17});
-    ohit = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),26});
-    ofa = cell2mat(allDataTestsOnly{firstIdxAnimal(jj),27});
+    rhit=allDataTestsOnly{jj,17}(5,:); % Dead 5
+    rfa=allDataTestsOnly{jj,18}(5,:);
+    ohit = allDataTestsOnly{jj,12};
+    ofa = allDataTestsOnly{jj,13};
     rhit(isnan(ohit))=nan;
     rfa(isnan(ofa))=nan;
     subplot(2,3,5)
@@ -331,65 +330,53 @@ for jj=1:length(firstIdxAnimal)
     [h,pFA,ci,stats] = ttest2(rfa,ofa);
     sigstar({[1,2],[3,4]}, [pHit pFA])
     ylabel('rate');
-    title([allDataTestsOnly{firstIdxAnimal(jj),1} ' Delay 5']);
+    title([allDataTestsOnly{jj,1} ' Dead 5 Inactivation']);
     xticklabels({'hit', 'hit','fa','fa'});
 
     eeFig.Position(3:4)=[725 475];
-    saveas(gcf,[char(allDataTestsOnly{firstIdxAnimal(jj),1}) '_T_MGB_Delay_HitFARate_Opto']);
-    saveas(gcf,[char(allDataTestsOnly{firstIdxAnimal(jj),1}) '_T_MGB_Delay_HitFARate_Opto.png']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_Dead_HitFARate_Opto']);
+    saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_Dead_HitFARate_Opto.png']);
 end
 
 %% all animal summary analysis
 % group by animal
-allDataTestsOnly{1,29}='Delay 1 RPC by Sess';
-allDataTestsOnly{1,30}='Delay 1 OPC by Sess';
-allDataTestsOnly{1,31}='Delay 2 RPC by Sess';
-allDataTestsOnly{1,32}='Delay 2 OPC by Sess';
-allDataTestsOnly{1,33}='Delay 3 RPC by Sess';
-allDataTestsOnly{1,34}='Delay 3 OPC by Sess';
-allDataTestsOnly{1,35}='Delay 4 RPC by Sess';
-allDataTestsOnly{1,36}='Delay 4 OPC by Sess';
-allDataTestsOnly{1,37}='Delay 5 RPC by Sess';
-allDataTestsOnly{1,38}='Delay 5 OPC by Sess';
+allDataTestsOnly{1,29}='Dead 1 RPC by Animal';
+allDataTestsOnly{1,30}='Dead 1 OPC by Animal';
+allDataTestsOnly{1,31}='Dead 2 RPC by Animal';
+allDataTestsOnly{1,32}='Dead 2 OPC by Animal';
+allDataTestsOnly{1,33}='Dead 3 RPC by Animal';
+allDataTestsOnly{1,34}='Dead 3 OPC by Animal';
+allDataTestsOnly{1,35}='Dead 4 RPC by Animal';
+allDataTestsOnly{1,36}='Dead 4 OPC by Animal';
+allDataTestsOnly{1,37}='Dead 5 RPC by Animal';
+allDataTestsOnly{1,38}='Dead 5 OPC by Animal';
+allDataTestsOnly{1,39}='Dead 1 RPC by Sess';
+allDataTestsOnly{1,40}='Dead 1 OPC by Sess';
+allDataTestsOnly{1,41}='Dead 2 RPC by Sess';
+allDataTestsOnly{1,42}='Dead 2 OPC by Sess';
+allDataTestsOnly{1,43}='Dead 3 RPC by Sess';
+allDataTestsOnly{1,44}='Dead 3 OPC by Sess';
+allDataTestsOnly{1,45}='Dead 4 RPC by Sess';
+allDataTestsOnly{1,46}='Dead 4 OPC by Sess';
+allDataTestsOnly{1,47}='Dead 5 RPC by Sess';
+allDataTestsOnly{1,48}='Dead 5 OPC by Sess';
 clear qqq wwFig rpc opc
-[allDataTestsOnly]=byAnimalPercentCorrectDelay(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor);
+[allDataTestsOnly]=byAnimalPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
 close all
 clear qqq wwFig rpc opc % now group by session, percent correct for Test
 % [allDataTestsOnly]=bySessPercentCorrectDead(allDataTestsOnly,reinfcolor,optocolor);
 close all
  %% now do by animal for hit and FA for Test animals
 % tempTestsOnly is the IC test animals, mgbTempTestsOnly is the MGB animals
+byAnimalHFADead(allDataTestsOnly,reinfcolor,optocolor);
 close all
-[allDataTestsOnly]=byAnimalHFADead(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor);
-close all
-% bySessHFADead(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor);
+
+% bySessHFADead(allDataTestsOnly,reinfcolor,optocolor);
 % close all
 %%
 % now do the anova
-[anovaMat]=anova2OptoPerAnimalDead(allDataTestsOnly,firstIdxAnimal,reinfcolor,optocolor);
-anovaInteractionPlotDelay(anovaMat,firstIdxAnimal,allDataTestsOnly) 
-cd('O:\sjk\Figures\MGB IC Opto');
-save DelayData.mat anovaMat firstIdxAnimal allDataTestsOnly
-%%
-load('DelayData.mat')
-allDataTestsOnlyDelay=allDataTestsOnly;
-anovaMatDelay=anovaMat;
-load('mgbOptoData.mat')
-
-anovaOptoAndDelay(allDataTestsOnly,allDataTestsOnlyDelay,anovaMat,anovaMatDelay);
-
-
-
-%% make plot to compare lick latency, for each animal and across animals 
-lickLatOptoPerAnimalDead(allDataTestsOnly,reinfcolor,optocolor)
-
-%% AC Expert Data
-cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials
-expertACSummaryData=load('O:\sjk\Behavior\AC9010Expert\summary_90optoexpert_day.mat'); 
-expertACSummaryData=expertACSummaryData.summary_data;
-expertACRawData=load('O:\sjk\Behavior\AC9010Expert\summary_90optoexpert_lickraster.mat');
-
-plotACExpertData(expertACSummaryData);
+% [aovMGB,statsMGB]=anova2OptoPerAnimalDead(allDataTestsOnly);
+% aovMGB
 
 %% compare differences in percent correct across each light off vs light on condition
 %this is by session
@@ -432,3 +419,13 @@ for ff=2:4
     saveas(gcf,[ char(allDataTestsOnly{ff,1}) '_Difference_T_MGB_PercentCorrect_Opto.png']);
 end
 
+%% make plot to compare lick latency, for each animal and across animals 
+lickLatOptoPerAnimalDead(allDataTestsOnly,reinfcolor,optocolor)
+
+%% AC Expert Data
+cd('O:\sjk\Behavior\AC9010Expert'); % this is celine's expert data where she inactivated on 90% of trials
+expertACSummaryData=load('O:\sjk\Behavior\AC9010Expert\summary_90optoexpert_day.mat'); 
+expertACSummaryData=expertACSummaryData.summary_data;
+expertACRawData=load('O:\sjk\Behavior\AC9010Expert\summary_90optoexpert_lickraster.mat');
+
+plotACExpertData(expertACSummaryData);
