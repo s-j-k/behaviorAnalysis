@@ -19,7 +19,7 @@ optomeanMat(2,:)=[];optomeanMat(3,:)=[];optomeanMat(4,:)=[];
 optomeanMat{2,15}=optomeanMat{4,15}(1:3,1);
 optomeanMat{3,15}=optomeanMat{4,15}(1:3,2);
 optomeanMat{4,15}=optomeanMat{4,15}(1:3,3);
-%% get the behavior data as one big double
+% get the behavior data as one big double
 for qq=2:size(optomeanMat,1)
     clear newMat
     for rr=1:size(optomeanMat{2,15},1)-1
@@ -35,7 +35,7 @@ for qq=2:size(optomeanMat,1)
     end
     optomeanMat(qq,17)={newMat};
 end
-%%
+%
 % cohortRange=1:6;
 % allCohorts=loadAllOptoCohorts(cohortRange);
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
@@ -48,7 +48,7 @@ reinfcolor= [0.4,0.4,0.4];
 optocolor=[102/255 178/255 255/255];
 
 %% lick latency plots, by trial
-byTrialPlotsDelay(allDataTestsOnly,optomeanMat,allLickData,reinfcolor,optocolor)
+byTrialPlotsDelay(allDataTestsOnly,optomeanMat,allLickDataMice,reinfcolor,optocolor)
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session

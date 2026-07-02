@@ -712,150 +712,209 @@ CTXT=2;
     
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
-count=0;
+
 
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%% all animals, by individual, scatterplt %%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    % not sure how to deal with this yet (:
-    days=1:5;
-    for yy=1:length(allLicksTest)
-        for gg=1:5
+%     %first reorganinze the lick mat file 
+    count=0;
+    for qq=1:length(allLicksTest)
+        for aa=1:length(allLicksTest{1,qq})
             count=count+1;
-            licks=allLicksTest{yy,1};
-            % now get the relevant days
-            fullDays=days{yy+1,4};
-            toneDays=days{yy+1,5};
-            licksRFT=licks{fullDays(1,gg)+1,1};
-            licksRFF=licks{fullDays(1,gg)+1,2};
-            licksFT=licks{fullDays(1,gg)+1,3};
-            licksFF=licks{fullDays(1,gg)+1,4};
-            licksCFT=licks{fullDays(1,gg)+1,7};
-            licksCFF=licks{fullDays(1,gg)+1,8};
-
-            licksRTT=licks{toneDays(1,gg)+1,1};
-            licksRTF=licks{toneDays(1,gg)+1,2};
-            licksTT=licks{toneDays(1,gg)+1,5};
-            licksTF=licks{toneDays(1,gg)+1,6};
-            licksCTT=licks{toneDays(1,gg)+1,7};
-            licksCTF=licks{toneDays(1,gg)+1,8};
-
-            tempLickMat=NaN(300,60);
-            rFTLickMat=NaN(300,60);
-            rFFLickMat=NaN(300,60);
-            fTLickMat=NaN(300,60);
-            fFLickMat=NaN(300,60);
-            cFTLickMat=NaN(300,60);
-            cFFLickMat=NaN(300,60);
-            rTTLickMat=NaN(300,60);
-            rTFLickMat=NaN(300,60);
-            tTLickMat=NaN(300,60);
-            tFLickMat=NaN(300,60);
-            cTTLickMat=NaN(300,60);
-            cTFLickMat=NaN(300,60);
-            % get consummatory licks
-            for pp=1:2 % for which opto condition it is
-                if pp==1
-                    dayIdx=fullDays(1,gg);
-                else
-                    dayIdx=toneDays(1,gg);
+            if aa==1
+                allLicks{count,1}=allLicksTest{1,qq}{aa,1};
+                allLicks{count,2}=allLicksTest{1,qq}{aa,2};
+            else
+                temp=allLicksTest{1,qq}{aa,1};
+                allLicks{count,1}=temp(2:end,:);
+                temp=allLicksTest{1,qq}{aa,2};
+                allLicks{count,2}=temp;
+            end
+        end
+    end
+    allLicksByConditionVert=vertcat(allLicks{:,1}); % this is by each session (10) and animal
+    allLicksVert=vertcat(allLicks{:,2});
+    count=0;
+    allDays={'sk198','sk203','sk204';[0,5,1],[0,2,1],[0,2,1];...
+        [3,4,0],[3,4,0],[3,4,0];...
+        [5,1,0],[5,1,0],[5,2,0];[5,0,2],[5,2,0],[5,1,0];...
+        [3,4,0],[3,4,0],[3,0,4]};
+    % allDays is organized by session and opto condition (ctxt 0, ctxt 5,ctxt 6). 
+    % '0,2,1' means for that session, there were 
+    % no full trial conditions (context 1), 
+    % delay 2 was tone (context 5)
+    % delay 1 was choice (context 6)
+    
+    for nbsubj=1:3
+        days=allDays(2:6,nbsubj);
+        subjDays=vertcat(days{:});
+        count=count+1;
+        % now get the relevant days
+        [delay1Day,~]=find(subjDays==1); 
+        [delay2Day,~]=find(subjDays==2); 
+        [delay3Day,~]=find(subjDays==3); 
+        [delay4Day,~]=find(subjDays==4); 
+        [delay5Day,~]=find(subjDays==5); 
+        if nbsubj==1
+            sessRange=(1:length(days))+nbsubj;
+            countday=4;
+        else
+            sessRange=(1:length(days))+nbsubj+countday;
+            countday=countday+4;
+        end
+        STIM=5;CHOICE=7;FULL=3;
+        animalConditionLicks=allLicksByConditionVert(sessRange(1):sessRange(5),:);
+        animalAllLicks=allLicksVert((sessRange(1):sessRange(5))-1,:);
+        for gg=1:size(subjDays,1) %make this flexible to iterate through all delay types
+            if any(subjDays(gg,:)==1) % delay 1
+                conditions=allDays{gg+1};
+                optoCtxt=find(conditions==1);
+                licksRD1T=animalConditionLicks{gg,1};
+                licksRD1F=animalConditionLicks{gg,2};
+                if optoCtxt==2 % this is a stimulus condition
+                    licksD1T=animalConditionLicks{gg,STIM};
+                    licksD1F=animalConditionLicks{gg,STIM+1};
+                elseif optoCtxt==1
+                    % this is a full condition
+                    licksD1T=animalConditionLicks{gg,FULL};
+                    licksD1F=animalConditionLicks{gg,FULL+1};
+                elseif optoCtxt==3 % choice condition
+                    licksD1T=animalConditionLicks{gg,CHOICE};
+                    licksD1F=animalConditionLicks{gg,CHOICE+1};
                 end
-                nextIdx=1; %templicks is all of the lick data for that session;
-                sessAllLicks=allLicksTest{yy,2}{dayIdx};
-                exampleSession=allDataTestsOnly{yy+1,26}; 
-                exampleTrials=find(exampleSession(:,1)==dayIdx);
-                exampleTrials=exampleSession(exampleTrials,:);
-                for tt=1:size(exampleTrials)
-                    nextIdxTemp=find(sessAllLicks>exampleTrials(tt,6));
-                    try
-                        nextIdx(tt+1)=nextIdxTemp(1);
-                    catch
-                        disp(tt)
-                    end
+                tempLickMat=NaN(300,60);
+                rD1TLickMat=NaN(300,60);
+                rD1FLickMat=NaN(300,60);
+                D1TLickMat=NaN(300,60);
+                D1FLickMat=NaN(300,60);
+                
+            elseif any(subjDays(gg,:)==2) % delay 2
+                conditions=allDays{gg+1};
+                optoCtxt=find(conditions==1);
+                licksRD2T=animalConditionLicks{gg,1};
+                licksRD2F=animalConditionLicks{gg,2};
+                if optoCtxt==2 % this is a stimulus condition
+                    licksD2T=animalConditionLicks{gg,STIM};
+                    licksD2F=animalConditionLicks{gg,STIM+1};
+                elseif optoCtxt==1
+                    % this is a full condition
+                    licksD2T=animalConditionLicks{gg,FULL};
+                    licksD2F=animalConditionLicks{gg,FULL+1};
+                elseif optoCtxt==3 % choice condition
+                    licksD2T=animalConditionLicks{gg,CHOICE};
+                    licksD2F=animalConditionLicks{gg,CHOICE+1};
                 end
-                for yu=1:length(nextIdx)-1
-                    tempLickMat(yu,1:length(sessAllLicks(nextIdx(yu):nextIdx(yu+1)-1)))=sessAllLicks(nextIdx(yu):nextIdx(yu+1)-1);
+            elseif any(subjDays(gg,:)==3) % delay 3
+                conditions=allDays{gg+1};
+                optoCtxt=find(conditions==1);
+                licksRD3T=animalConditionLicks{gg,1};
+                licksRD3F=animalConditionLicks{gg,2};
+                if optoCtxt==2 % this is a stimulus condition
+                    licksD3T=animalConditionLicks{gg,STIM};
+                    licksD3F=animalConditionLicks{gg,STIM+1};
+                elseif optoCtxt==1
+                    % this is a full condition
+                    licksD3T=animalConditionLicks{gg,FULL};
+                    licksD3F=animalConditionLicks{gg,FULL+1};
+                elseif optoCtxt==3 % choice condition
+                    licksD3T=animalConditionLicks{gg,CHOICE};
+                    licksD3F=animalConditionLicks{gg,CHOICE+1};
                 end
-
-                if pp==1
-                    %now tempLickMat is the licks, for each trial, for the entire session
-                    %sort tempLickMat now by tone and context/condition
-                    reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-                    reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-                    fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
-                    fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
-                    choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-                    choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-                    reinfFTLicks=tempLickMat(reinfTIdx,:);
-                    reinfFFLicks=tempLickMat(reinfFIdx,:);
-                    fullTLicks=tempLickMat(fullTIdx,:);
-                    fullFLicks=tempLickMat(fullFIdx,:);
-                    choiceFTLicks=tempLickMat(choiceTIdx,:);
-                    choiceFFLicks=tempLickMat(choiceFIdx,:);
-                else
-                    reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-                    reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-                    toneTIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
-                    toneFIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
-                    choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-                    choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-
-                    reinfTTLicks=tempLickMat(reinfTIdx,:);
-                    reinfTFLicks=tempLickMat(reinfFIdx,:);
-                    toneTLicks=tempLickMat(toneTIdx,:);
-                    toneFLicks=tempLickMat(toneFIdx,:);
-                    choiceFTLicks=tempLickMat(choiceTIdx,:);
-                    choiceFFLicks=tempLickMat(choiceFIdx,:);
+            elseif any(subjDays(gg,:)==4) % delay 4
+                conditions=allDays{gg+1};
+                optoCtxt=find(conditions==1);
+                licksRD4T=animalConditionLicks{gg,1};
+                licksRD4F=animalConditionLicks{gg,2};
+                if optoCtxt==2 % this is a stimulus condition
+                    licksD4T=animalConditionLicks{gg,STIM};
+                    licksD4F=animalConditionLicks{gg,STIM+1};
+                elseif optoCtxt==1
+                    % this is a full condition
+                    licksD4T=animalConditionLicks{gg,FULL};
+                    licksD4F=animalConditionLicks{gg,FULL+1};
+                elseif optoCtxt==3 % choice condition
+                    licksD4T=animalConditionLicks{gg,CHOICE};
+                    licksD4F=animalConditionLicks{gg,CHOICE+1};
                 end
-
-                if pp==1
-                    reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-                    reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-                    fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
-                    fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
-                    choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-                    choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-                    for ym=1:length(nextIdx)-1
-                        rFTLickMat(ym,1:length(licksRFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksRFT(nextIdx(ym):nextIdx(ym+1)-1);
-                        rFFLickMat(ym,1:length(licksRFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksRFF(nextIdx(ym):nextIdx(ym+1)-1);
-                        fTLickMat(ym,1:length(licksFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksFT(nextIdx(ym):nextIdx(ym+1)-1);
-                        fFLickMat(ym,1:length(licksFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksFF(nextIdx(ym):nextIdx(ym+1)-1);
-                        cFTLickMat(ym,1:length(licksCFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksCFT(nextIdx(ym):nextIdx(ym+1)-1);
-                        cFFLickMat(ym,1:length(licksCFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksCFF(nextIdx(ym):nextIdx(ym+1)-1);
-                    end
-                    rFTLickMat=rFTLickMat(reinfTIdx,:);
-                    rFFLickMat=rFFLickMat(reinfFIdx,:);
-                    fTLickMat=fTLickMat(fullTIdx,:);
-                    fFLickMat=fFLickMat(fullFIdx,:);
-                    cFTLickMat=cFTLickMat(choiceTIdx,:);
-                    cFFLickMat=cFFLickMat(choiceFIdx,:);
-                else
-                    reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-                    reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-                    toneTIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==1);
-                    toneFIdx=find(exampleTrials(1:300,2)==5 & exampleTrials(1:300,3)==2);
-                    choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-                    choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-                    for ym=1:length(nextIdx)-1
-                        rTTLickMat(ym,1:length(licksRTT(nextIdx(ym):nextIdx(ym+1)-1)))=licksRTT(nextIdx(ym):nextIdx(ym+1)-1);
-                        rTFLickMat(ym,1:length(licksRTF(nextIdx(ym):nextIdx(ym+1)-1)))=licksRTF(nextIdx(ym):nextIdx(ym+1)-1);
-                        tTLickMat(ym,1:length(licksTT(nextIdx(ym):nextIdx(ym+1)-1)))=licksTT(nextIdx(ym):nextIdx(ym+1)-1);
-                        tFLickMat(ym,1:length(licksTF(nextIdx(ym):nextIdx(ym+1)-1)))=licksTF(nextIdx(ym):nextIdx(ym+1)-1);
-                        cTTLickMat(ym,1:length(licksCTT(nextIdx(ym):nextIdx(ym+1)-1)))=licksCTT(nextIdx(ym):nextIdx(ym+1)-1);
-                        cTFLickMat(ym,1:length(licksCTF(nextIdx(ym):nextIdx(ym+1)-1)))=licksCTF(nextIdx(ym):nextIdx(ym+1)-1);
-                    end
-                    rTTLickMat=rTTLickMat(reinfTIdx,:);
-                    rTFLickMat=rTFLickMat(reinfFIdx,:);
-                    tTLickMat=tTLickMat(toneTIdx,:);
-                    tFLickMat=tFLickMat(toneFIdx,:);
-                    cTTLickMat=cTTLickMat(choiceTIdx,:);
-                    cTFLickMat=cTFLickMat(choiceFIdx,:);
+            elseif any(subjDays(gg,:)==5) % delay 5
+                conditions=allDays{gg+1};
+                optoCtxt=find(conditions==1);
+                licksRD5T=animalConditionLicks{gg,1};
+                licksRD5F=animalConditionLicks{gg,2};
+                if optoCtxt==2 % this is a stimulus condition
+                    licksD5T=animalConditionLicks{gg,STIM};
+                    licksD5F=animalConditionLicks{gg,STIM+1};
+                elseif optoCtxt==1
+                    % this is a full condition
+                    licksD5T=animalConditionLicks{gg,FULL};
+                    licksD5F=animalConditionLicks{gg,FULL+1};
+                elseif optoCtxt==3 % choice condition
+                    licksD5T=animalConditionLicks{gg,CHOICE};
+                    licksD5F=animalConditionLicks{gg,CHOICE+1};
                 end
             end
+            
+                
+            % get consummatory licks
+            nextIdx=1; 
+            sessLicks=animalAllLicks{delay1Day(gg)};
+            % stopped here
+            exampleSession=optomeanMat{nbsubj+1,17}; 
+            exampleTrials=find(exampleSession(:,1)==gg);
+            exampleTrials=exampleSession(exampleTrials,:);
+            for tt=1:size(exampleTrials)
+                nextIdxTemp=find(sessLicks>exampleTrials(tt,6));
+                try
+                    nextIdx(tt+1)=nextIdxTemp(1);
+                catch
+                    disp(tt)
+                end
+            end
+            for yu=1:length(nextIdx)-1
+                tempLickMat(yu,1:length(sessLicks(nextIdx(yu):nextIdx(yu+1)-1)))=sessLicks(nextIdx(yu):nextIdx(yu+1)-1);
+            end
 
+            %now tempLickMat is the licks, for each trial, for the entire session
+            % sort tempLickMat now by tone and context/condition
+            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
+            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
+            fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
+            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
+            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+            reinfTLicks=tempLickMat(reinfTIdx,:);
+            reinfFLicks=tempLickMat(reinfFIdx,:);
+            fullTLicks=tempLickMat(fullTIdx,:);
+            fullFLicks=tempLickMat(fullFIdx,:);
+            choiceTLicks=tempLickMat(choiceTIdx,:);
+            choiceFLicks=tempLickMat(choiceFIdx,:);
 
+            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
+            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
+            fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
+            fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
+            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
+            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
+            for ym=1:length(nextIdx)-1
+                rFTLickMat(ym,1:length(licksRFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksRFT(nextIdx(ym):nextIdx(ym+1)-1);
+                rFFLickMat(ym,1:length(licksRFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksRFF(nextIdx(ym):nextIdx(ym+1)-1);
+                fTLickMat(ym,1:length(licksFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksFT(nextIdx(ym):nextIdx(ym+1)-1);
+                fFLickMat(ym,1:length(licksFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksFF(nextIdx(ym):nextIdx(ym+1)-1);
+                cFTLickMat(ym,1:length(licksCFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksCFT(nextIdx(ym):nextIdx(ym+1)-1);
+                cFFLickMat(ym,1:length(licksCFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksCFF(nextIdx(ym):nextIdx(ym+1)-1);
+            end
+            rFTLickMat=rFTLickMat(reinfTIdx,:);
+            rFFLickMat=rFFLickMat(reinfFIdx,:);
+            fTLickMat=fTLickMat(fullTIdx,:);
+            fFLickMat=fFLickMat(fullFIdx,:);
+            cFTLickMat=cFTLickMat(choiceTIdx,:);
+            cFFLickMat=cFFLickMat(choiceFIdx,:);
+        end
+
+        
             lickLatRFT=allMiceRFT{1,count}(:,LICKL);
             lickLatRFF=allMiceRFF{1,count}(:,LICKL);
             lickLatFullT=allMiceFullT{1,count}(:,LICKL);
@@ -1022,8 +1081,7 @@ count=0;
                 saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFAFull_Opto']);
                 saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFAFull_Opto.png']);   
             end
-        end
-    end    
+    end 
     
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

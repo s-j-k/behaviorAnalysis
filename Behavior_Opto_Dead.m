@@ -103,7 +103,7 @@ for nbsubj = 1:nSubj % through subjects
     rates = nan(1,10);
     nctxt = nan(1,18);
     % go through protocols
-    counter=1;  
+    counter=1;  buffer=1;
     for nbproto = 1:nProtocol
         proto=deadProtocol{nbproto};
         switch proto
@@ -396,7 +396,7 @@ for nbsubj = 1:nSubj % through subjects
         end   
         
         allLickData{nbproto,1}=lickAnimalData;
-        allLickData{nbproto,2}=licks;    
+        allLickData{nbproto,2}=licks; 
         lickhistcOFF{nbproto} = lickhistcoff;
         lickhistcON{nbproto} = lickhistcon;
         lickhistrhit{nbproto} = lickhistr_hit;
@@ -602,6 +602,7 @@ for nbsubj = 1:nSubj % through subjects
         delayRates{pp,12}=rates(ww,7);delayRates{pp,13}=rates(ww,8);
     end
     delayRates{pp,14}=[NaN];delayRates{pp,15}=[NaN];
+    allLickDataMice{nbsubj}=allLickData;
     
 %% TO PLOT OPTO
 optoplot=1;
@@ -765,7 +766,7 @@ lickHistMat{2,19} = lickhistotcr_allMice;
 lickHistMat{2,20} = lickhistocmiss_allMice; 
 lickHistMat{2,21} = lickhistoccr_allMice;
 
-save('deadSummaryData.mat','delayRates','lickHistMat','optomeanMat','allLickData','explist');
+save('deadSummaryData.mat','delayRates','lickHistMat','optomeanMat','allLickDataMice','explist');
 disp('saved opto data to mat file.');
 
    %% now make plots averaged across test and ctl for MGB
