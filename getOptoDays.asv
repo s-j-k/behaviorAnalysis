@@ -32,16 +32,14 @@ function [days]=getOptoDays
     % iterate through getExpDays and get out the relevant information
     [subjlist, explist, pathsave]=getCohort(17);
     for ee=1:length(subjlist)
-        [mgbDays, icDays, expRange,dreadds,subjNumber] = getExpDays(pathsave, ee);
+        [mgbDays, icDays, expRange,dreadds,subjNumber] = getExpDays(path, nbsubj)
         days{13+ee,1}=subjNumber;days{13+ee,2}=mgbDays;days{13+ee,2}=expRange;
-        if length(expRange)>3
-            days{13+ee,4}=[expRange(1),expRange(3)];days{13+ee,5}=[expRange(2),expRange(4)];
-        elseif length(expRange)==2
-            days{13+ee,4}=[expRange(1)];days{13+ee,5}=[expRange(2)];
-        else
-            days{13+ee,4}=[expRange(1)];
-        end
-    end
+        if ee==1
+            days{13+ee,4}=[9,11];days{13+ee,5}=[10,15];
+        elseif ee=2
+            days{13+ee,4}=[9,11];days{13+ee,5}=[10,15];
+        elseif ee=3
+            days{13+ee,4}=[9,11];days{13+ee,5}=[10,15];
     
     
 end

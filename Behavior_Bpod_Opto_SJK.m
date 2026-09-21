@@ -622,7 +622,7 @@ for nbsubj = 1:nSubj % through animals
     
 %% make plots summarizing performance across training
     filetype='.fig';
-    makesumperfplot=0;
+    makesumperfplot=1;
     
     if makesumperfplot==1
         perfFig=figure;
@@ -797,41 +797,41 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
         end
         
     else
-%         eeeFig=figure('Position', [10 10 725 220]);hold on;
-%         subplot(3,3,1);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
-%             mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
-%         eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-%         scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%         scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%         eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-%         scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%         scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%         xticklabels({'hit','fa'}); ylabel('Average Action Rate'); legend('light off','light on');
-%         title([subjlist{nbsubj} ' (' expnames{explist(nbsubj)} ') ' 'Full Trial Opto']);
-% 
-%         subplot(3,3,2);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
-%             mean(rates(expRange,2)) nanmean(rates(expRange,16))]); %hit, full opto hit, fa, opto fa
-%         eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
-%         scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%         scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%         eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-%         scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%         scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%         xticklabels({'hit','fa'}); title('Tone Only Opto');
-%     %     legend('light off','light on');
-% 
-%         subplot(3,3,3);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,17)); ...
-%             mean(rates(expRange,2)) nanmean(rates(expRange,18))]); %hit, full opto hit, fa, opto fa
-%         eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
-%         scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%         scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
-%         eee(2).CData=[optocolor;optocolor];ylim([0 1]);
-%         scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%         scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
-%         xticklabels({'hit','fa'}); title('Choice Only Opto');
-%     %     legend('light off','light on');
-%     % 
-% 
+        eeeFig=figure('Position', [10 10 725 220]);hold on;
+        subplot(3,3,1);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,5)); ...
+            mean(rates(expRange,2)) nanmean(rates(expRange,6))]); %hit, full opto hit, fa, opto fa
+        eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+        scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,5)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,6)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        xticklabels({'hit','fa'}); ylabel('Average Action Rate'); legend('light off','light on');
+        title([subjlist{nbsubj} ' (' expnames{explist(nbsubj)} ') ' 'Full Trial Opto']);
+
+        subplot(3,3,2);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,15)); ...
+            mean(rates(expRange,2)) nanmean(rates(expRange,16))]); %hit, full opto hit, fa, opto fa
+        eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+        scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,15)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,16)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        xticklabels({'hit','fa'}); title('Tone Only Opto');
+    %     legend('light off','light on');
+
+        subplot(3,3,3);eee=bar([mean(rates(expRange,1)) nanmean(rates(expRange,17)); ...
+            mean(rates(expRange,2)) nanmean(rates(expRange,18))]); %hit, full opto hit, fa, opto fa
+        eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor]; hold on;
+        scatter(repmat(eee(1).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,1)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        scatter(repmat(eee(1).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,2)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
+        eee(2).CData=[optocolor;optocolor];ylim([0 1]);
+        scatter(repmat(eee(2).XEndPoints(1),size(rates(expRange,1),1),1),(rates(expRange,17)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange,1),1),2),(rates(expRange,18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
+        xticklabels({'hit','fa'}); title('Choice Only Opto');
+    %     legend('light off','light on');
+    % 
+
 %         subplot(3,3,4);eee=bar([mean(rates(expRange(mgbDays),1)) nanmean(rates(expRange(mgbDays),5)); ...
 %             mean(rates(expRange(mgbDays),2)) nanmean(rates(expRange(mgbDays),6))]); %hit, full opto hit, fa, opto fa
 %         eee(1).FaceColor='flat'; eee(2).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor];hold on;
@@ -899,13 +899,13 @@ if optoplot==1 % now make bar graphs, averaged, for all conditions
 %         scatter(repmat(eee(2).XEndPoints(2),size(rates(expRange(icDays),1),1),2),(rates(expRange(icDays),18)),'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 %         xticklabels({'hit','fa'}); title('IC Choice Opto');
 %         % legend('light off','light on');
-% 
-%         if savefig
-%             cd(pathsave);
-%             saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.' filetype]);
-%             saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.png']);
-%             close(eeeFig);
-%         end
+
+        if savefig
+            cd(pathsave);
+            saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.' filetype]);
+            saveas(eeeFig,[subjlist{nbsubj} '-OptoBarScatter-' num2str(nbins) '.png']);
+            close(eeeFig);
+        end
 
         optomeanMat{nbsubj+nbsubj,1}=subjlist(nbsubj);
         optomeanMat{nbsubj+nbsubj,2}=mean(rates(:,1));
@@ -1241,10 +1241,7 @@ end
 % % cond = 'nonlearnerremoved';
 % % explist = [2 1 2 2 1 0 2 1 0 1 0 0]; % all bad removed
 % % cond = 'badremoved';
-% % cd060 (test): good then bad
-% % cd065 (test): no learning at all
-% % cd063 (ctl): no learning, only one day with perf>1
-% % cd066 (ctl): good then bad
+
 % ctl = find(explist==2);
 % test = find(explist==1);
 % savefig = false;
@@ -2630,10 +2627,6 @@ title(['Light OFF vs ON, p=' num2str(p)]);
 % cond = 'nonlearnerremoved';
 % explist = [2 1 2 2 1 0 2 1 0 1 0 0 1 1 1 2]; % all bad removed
 % cond = 'badremoved';
-% cd060 (test): good then bad
-% cd065 (test): no learning at all
-% cd063 (ctl): no learning, only one day with perf>1
-% cd066 (ctl): good then bad
 
 % explist = [2 1 2 1 1 2 1 2 2 1 2 1 1 1 2 1]; % 90-10, cohorts 1+2
 % explist = [0 0 0 1 0 2 1 2 2 1 2 1 1 1 2 1]; % 90-10, cohorts 1+2, non learner removed

@@ -1,715 +1,127 @@
 function byTrialPlotsDelay(allDataTestsOnly,optomeanMat,allLicksTest,reinfcolor,optocolor)
 CTXT=2;
-% this code is throwing errors likely because the context variable is not
-% consistent across animals
 
-% plot to make rolling behavior average
-    counter=1;counter1=1;counter2=1;counter3=1;counter4=1;counter5=1;
+% Build the delay matrices in mouse/session order. Each row in a given
+% delay matrix represents one unique session for one mouse.
+    delayBySession={...
+        [0,5,1],[0,2,1],[0,2,1];...
+        [3,4,0],[3,4,0],[3,4,0];...
+        [5,1,0],[5,1,0],[5,2,0];...
+        [5,0,2],[5,2,0],[5,1,0];...
+        [3,4,0],[3,4,0],[3,0,4]};
+    contextOrder=[1,5,6];
+    delayCounter=ones(1,5);
+
+    delayRTargetIdx=cell(1,5); delayRFoilIdx=cell(1,5);
+    delayTargetIdx=cell(1,5);  delayFoilIdx=cell(1,5);
+    delayRTarget=cell(1,5);    delayRFoil=cell(1,5);
+    delayTarget=cell(1,5);     delayFoil=cell(1,5);
+    delayRT=cell(1,5);         delayRF=cell(1,5);
+    delayT=cell(1,5);          delayF=cell(1,5);
+    delaySessionKey=cell(1,5);
+
     for nbsubj=2:size(optomeanMat,1)
-        exampleSession=optomeanMat{nbsubj,17}; 
-        for ww=1:5
-            % this needs to flexibly filter for each day and trial type
-            sessionId = ww; 
-            exampleTrials=find(exampleSession(:,1)==sessionId);
-            exampleTrials=exampleSession(exampleTrials,:);
-            % reinf data never changes context across sessions, so it's all
-            % the same
-            reinfDataD1TargetIdx=find(exampleTrials(:,CTXT)==2 & exampleTrials(:,3)==1);
-            reinfDataD1FoilIdx=find(exampleTrials(:,CTXT)==2 & exampleTrials(:,3)==2);
-            reinfDataD1Target=exampleTrials(reinfDataD1TargetIdx,:);
-            reinfDataD1Foil=exampleTrials(reinfDataD1FoilIdx,:);
-            % now relabel misses as zeroes instead of twos
-            % CTXT = 2; TONE = 3; OUTCOME = 4; 
-            missIdx=find(reinfDataD1Target(:,4)==2);
-            reinfDataD1Target(missIdx,4)=0;
-            %relabel CR and FA as 0 and 1
-            crIdx=find(reinfDataD1Foil(:,4)==4);
-            reinfDataD1Foil(crIdx,4)=0;
-            faIdx=find(reinfDataD1Foil(:,4)==3);
-            reinfDataD1Foil(faIdx,4)=1;
-            
-            if ww == 1 % this is the first repetition fo the delay data 
-                if nbsubj==2
-                    % context 5 is delay 5
-                    % context 6 is delay 1
-                    delay5D1TargetIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==1);
-                    delay5D1FoilIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==2);
-                    delay5D1Target=exampleTrials(delay5D1TargetIdx,:);
-                    delay5D1Foil=exampleTrials(delay5D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay5D1Target(:,4)==2);
-                    delay5D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay5D1Foil(:,4)==4);
-                    delay5D1Foil(crIdx,4)=0;
-                    faIdx=find(delay5D1Foil(:,4)==3);
-                    delay5D1Foil(faIdx,4)=1;
+        exampleSession=optomeanMat{nbsubj,17};
+        mouseIdx=nbsubj-1;
 
-                    delay1D1TargetIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==1);
-                    delay1D1FoilIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==2);
-                    delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
-                    delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay1D1Target(:,4)==2);
-                    delay1D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay1D1Foil(:,4)==4);
-                    delay1D1Foil(crIdx,4)=0;
-                    faIdx=find(delay1D1Foil(:,4)==3);
-                    delay1D1Foil(faIdx,4)=1;
+        for sessionId=1:size(delayBySession,1)
+            exampleTrials=exampleSession(exampleSession(:,1)==sessionId,:);
 
-                    allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
-                    allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
-                    allMiceDelay5TargetIdx(counter5,:)=delay5D1TargetIdx;
-                    allMiceDelay5FoilIdx(counter5,:)=delay5D1FoilIdx;
-                    allMiceDelay1TargetIdx(counter1,:)=delay1D1TargetIdx;
-                    allMiceDelay1FoilIdx(counter1,:)=delay1D1FoilIdx;
+            reinfTargetIdx=find(exampleTrials(:,CTXT)==2 & exampleTrials(:,3)==1);
+            reinfFoilIdx=find(exampleTrials(:,CTXT)==2 & exampleTrials(:,3)==2);
+            reinfTarget=exampleTrials(reinfTargetIdx,:);
+            reinfFoil=exampleTrials(reinfFoilIdx,:);
+            reinfTarget(reinfTarget(:,4)==2,4)=0;
+            reinfFoil(reinfFoil(:,4)==4,4)=0;
+            reinfFoil(reinfFoil(:,4)==3,4)=1;
 
-                    allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
-                    allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
-                    allMiceDelay5Target(counter5,:)=delay5D1Target(1:35,4);
-                    allMiceDelay5Foil(counter5,:)=delay5D1Foil(1:35,4);
-                    allMiceDelay1Target(counter1,:)=delay1D1Target(1:35,4);
-                    allMiceDelay1Foil(counter1,:)=delay1D1Foil(1:35,4);
-
-                    allMiceRT{counter}=reinfDataD1Target;
-                    allMiceRF{counter}=reinfDataD1Foil;
-                    allMiceDelay5T{counter5}=delay5D1Target;
-                    allMiceDelay5F{counter5}=delay5D1Foil;
-                    allMiceDelay1T{counter1}=delay1D1Target;
-                    allMiceDelay1F{counter1}=delay1D1Foil;
-                    counter=counter+1;counter1=counter1+1;counter5=counter5+1;
-            
-                else
-                    % context 5 is delay 2
-                    % context 6 is delay 1
-                    delay2D1TargetIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==1);
-                    delay2D1FoilIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==2);
-                    delay2D1Target=exampleTrials(delay2D1TargetIdx,:);
-                    delay2D1Foil=exampleTrials(delay2D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay2D1Target(:,4)==2);
-                    delay2D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay2D1Foil(:,4)==4);
-                    delay2D1Foil(crIdx,4)=0;
-                    faIdx=find(delay2D1Foil(:,4)==3);
-                    delay2D1Foil(faIdx,4)=1;
-
-                    delay1D1TargetIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==1);
-                    delay1D1FoilIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==2);
-                    delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
-                    delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay1D1Target(:,4)==2);
-                    delay1D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay1D1Foil(:,4)==4);
-                    delay1D1Foil(crIdx,4)=0;
-                    faIdx=find(delay1D1Foil(:,4)==3);
-                    delay1D1Foil(faIdx,4)=1;
-
-                    allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
-                    allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
-                    allMiceDelay2TargetIdx(counter2,:)=delay2D1TargetIdx;
-                    allMiceDelay2FoilIdx(counter2,:)=delay2D1FoilIdx;
-                    allMiceDelay1TargetIdx(counter1,:)=delay1D1TargetIdx;
-                    allMiceDelay1FoilIdx(counter1,:)=delay1D1FoilIdx;
-
-                    allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
-                    allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
-                    allMiceDelay2Target(counter2,:)=delay2D1Target(1:35,4);
-                    allMiceDelay2Foil(counter2,:)=delay2D1Foil(1:35,4);
-                    allMiceDelay1Target(counter1,:)=delay1D1Target(1:35,4);
-                    allMiceDelay1Foil(counter1,:)=delay1D1Foil(1:35,4);
-
-                    allMiceRT{counter}=reinfDataD1Target;
-                    allMiceRF{counter}=reinfDataD1Foil;
-                    allMiceDelay2T{counter2}=delay2D1Target;
-                    allMiceDelay2F{counter2}=delay2D1Foil;
-                    allMiceDelay1T{counter1}=delay1D1Target;
-                    allMiceDelay1F{counter1}=delay1D1Foil;
-                    counter=counter+1;counter1=counter1+1;counter2=counter2+1;
+            sessionDelays=delayBySession{sessionId,mouseIdx};
+            for conditionIdx=1:numel(contextOrder)
+                delayNumber=sessionDelays(conditionIdx);
+                if delayNumber==0
+                    continue
                 end
-                
-            elseif ww==2
-                % context 1 is delay 3
-                % context 5 is delay 4
-                delay3D1TargetIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==1);
-                delay3D1FoilIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==2);
-                delay3D1Target=exampleTrials(delay3D1TargetIdx,:);
-                delay3D1Foil=exampleTrials(delay3D1FoilIdx,:);
-                % now relabel false alarms as zeroes instead of twos
-                missIdx=find(delay3D1Target(:,4)==2);
-                delay3D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay3D1Foil(:,4)==4);
-                delay3D1Foil(crIdx,4)=0;
-                faIdx=find(delay3D1Foil(:,4)==3);
-                delay3D1Foil(faIdx,4)=1;
 
-                delay4D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                delay4D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                delay4D1Target=exampleTrials(delay4D1TargetIdx,:);
-                delay4D1Foil=exampleTrials(delay4D1FoilIdx,:);
-                % now relabel false alarms as zeroes instead of twos
-                missIdx=find(delay4D1Target(:,4)==2);
-                delay4D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay4D1Foil(:,4)==4);
-                delay4D1Foil(crIdx,4)=0;
-                faIdx=find(delay4D1Foil(:,4)==3);
-                delay4D1Foil(faIdx,4)=1;
-            
-                allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
-                allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
-                allMiceDelay3TargetIdx(counter,:)=delay3D1TargetIdx;
-                allMiceDelay3FoilIdx(counter,:)=delay3D1FoilIdx;
-                allMiceDelay4TargetIdx(counter,:)=delay4D1TargetIdx;
-                allMiceDelay4FoilIdx(counter,:)=delay4D1FoilIdx;
+                conditionContext=contextOrder(conditionIdx);
+                targetIdx=find(exampleTrials(1:300,CTXT)==conditionContext & ...
+                    exampleTrials(1:300,3)==1);
+                foilIdx=find(exampleTrials(1:300,CTXT)==conditionContext & ...
+                    exampleTrials(1:300,3)==2);
+                target=exampleTrials(targetIdx,:);
+                foil=exampleTrials(foilIdx,:);
+                target(target(:,4)==2,4)=0;
+                foil(foil(:,4)==4,4)=0;
+                foil(foil(:,4)==3,4)=1;
 
-                allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
-                allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
-                allMiceDelay3Target(counter3,:)=delay3D1Target(1:35,4);
-                allMiceDelay3Foil(counter3,:)=delay3D1Foil(1:35,4);
-                allMiceDelay4Target(counter4,:)=delay4D1Target(1:35,4);
-                allMiceDelay4Foil(counter4,:)=delay4D1Foil(1:35,4);
-
-                allMiceRT{counter}=reinfDataD1Target;
-                allMiceRF{counter}=reinfDataD1Foil;
-                allMiceDelay3T{counter3}=delay3D1Target;
-                allMiceDelay3F{counter3}=delay3D1Foil;
-                allMiceDelay4T{counter4}=delay4D1Target;
-                allMiceDelay4F{counter4}=delay4D1Foil;
-                counter=counter+1;counter4=counter4+1;counter3=counter3+1;
-            elseif ww==3 
-                % CNTEXT 1 IS DELAY 5
-                % CONTEXT 5 is delay 1
-                % 6/27/26 Needs flexibility for the third animal, where exception is
-                % context 5 is delay 2
-                delay5D1TargetIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==1);
-                delay5D1FoilIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==2);
-                delay5D1Target=exampleTrials(delay5D1TargetIdx,:);
-                delay5D1Foil=exampleTrials(delay5D1FoilIdx,:);
-                % now relabel false alarms as zeroes instead of twos
-                missIdx=find(delay5D1Target(:,4)==2);
-                delay5D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay5D1Foil(:,4)==4);
-                delay5D1Foil(crIdx,4)=0;
-                faIdx=find(delay5D1Foil(:,4)==3);
-                delay5D1Foil(faIdx,4)=1;
-                allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
-                allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
-                allMiceDelay5TargetIdx(counter5,:)=delay5D1TargetIdx;
-                allMiceDelay5FoilIdx(counter5,:)=delay5D1FoilIdx;
-                allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
-                allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
-                allMiceDelay5Target(counter5,:)=delay5D1Target(1:35,4);
-                allMiceDelay5Foil(counter5,:)=delay5D1Foil(1:35,4);
-                allMiceRT{counter}=reinfDataD1Target;
-                allMiceRF{counter}=reinfDataD1Foil;
-                allMiceDelay5T{counter3}=delay5D1Target;
-                allMiceDelay5F{counter3}=delay5D1Foil;
-                counter5=counter5+1;counter=counter+1;
-                if nbsubj==4
-                    delay2D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                    delay2D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                    delay2D1Target=exampleTrials(delay2D1TargetIdx,:);
-                    delay2D1Foil=exampleTrials(delay2D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay2D1Target(:,4)==2);
-                    delay2D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay2D1Foil(:,4)==4);
-                    delay2D1Foil(crIdx,4)=0;
-                    faIdx=find(delay2D1Foil(:,4)==3);
-                    delay2D1Foil(faIdx,4)=1;
-                    allMiceDelay2TargetIdx(counter2,:)=delay2D1TargetIdx;
-                    allMiceDelay2FoilIdx(counter2,:)=delay2D1FoilIdx;
-                    allMiceDelay2Target(counter2,:)=delay2D1Target(1:35,4);
-                    allMiceDelay2Foil(counter2,:)=delay2D1Foil(1:35,4);
-                    allMiceDelay2T{counter2}=delay2D1Target;
-                    allMiceDelay2F{counter2}=delay2D1Foil;
-                    counter2=counter2+1;
-                else
-                    delay1D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                    delay1D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                    delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
-                    delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay1D1Target(:,4)==2);
-                    delay1D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay1D1Foil(:,4)==4);
-                    delay1D1Foil(crIdx,4)=0;
-                    faIdx=find(delay1D1Foil(:,4)==3);
-                    delay1D1Foil(faIdx,4)=1;
-                    allMiceDelay1TargetIdx(counter1,:)=delay1D1TargetIdx;
-                    allMiceDelay1FoilIdx(counter1,:)=delay1D1FoilIdx;
-                    allMiceDelay1Target(counter1,:)=delay1D1Target(1:35,4);
-                    allMiceDelay1Foil(counter1,:)=delay1D1Foil(1:35,4);
-                    allMiceDelay1T{counter1}=delay1D1Target;
-                    allMiceDelay1F{counter1}=delay1D1Foil;
-                    counter1=counter1+1;
-                end
-            elseif ww==4
-                % context 1 is delay 5 
-                % context 6 delay 2
-                delay5D1TargetIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==1);
-                delay5D1FoilIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==2);
-                delay5D1Target=exampleTrials(delay5D1TargetIdx,:);
-                delay5D1Foil=exampleTrials(delay5D1FoilIdx,:);
-                % now relabel false alarms as zeroes instead of twos
-                missIdx=find(delay5D1Target(:,4)==2);
-                delay5D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay5D1Foil(:,4)==4);
-                delay5D1Foil(crIdx,4)=0;
-                faIdx=find(delay5D1Foil(:,4)==3);
-                delay5D1Foil(faIdx,4)=1;
-                
-                if nbsubj==4
-                    delay1D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                    delay1D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                    delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
-                    delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay1D1Target(:,4)==2);
-                    delay1D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay1D1Foil(:,4)==4);
-                    delay1D1Foil(crIdx,4)=0;
-                    faIdx=find(delay1D1Foil(:,4)==3);
-                    delay1D1Foil(faIdx,4)=1;
-                    allMiceDelay1TargetIdx(counter1,:)=delay1D1TargetIdx;
-                    allMiceDelay1FoilIdx(counter1,:)=delay1D1FoilIdx;
-                    allMiceDelay1Target(counter1,:)=delay1D1Target(1:35,4);
-                    allMiceDelay1Foil(counter1,:)=delay1D1Foil(1:35,4);
-                    allMiceDelay1T{counter1}=delay1D1Target;
-                    allMiceDelay1F{counter1}=delay1D1Foil;
-                    counter1=counter1+1;
-                else
-                    if nbsubj==2
-                        delay2D1TargetIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==1);
-                        delay2D1FoilIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==2);
-                    elseif nbsubj==3
-                        delay2D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                        delay2D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                    end
-                    delay2D1Target=exampleTrials(delay2D1TargetIdx,:);
-                    delay2D1Foil=exampleTrials(delay2D1FoilIdx,:);
-                    % now relabel false alarms as zeroes instead of twos
-                    missIdx=find(delay2D1Target(:,4)==2);
-                    delay2D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay2D1Foil(:,4)==4);
-                    delay2D1Foil(crIdx,4)=0;
-                    faIdx=find(delay2D1Foil(:,4)==3);
-                    delay2D1Foil(faIdx,4)=1;
-
-                    allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
-                    allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
-                    allMiceDelay5TargetIdx(counter5,:)=delay5D1TargetIdx;
-                    allMiceDelay5FoilIdx(counter5,:)=delay5D1FoilIdx;
-                    allMiceDelay2TargetIdx(counter1,:)=delay2D1TargetIdx;
-                    allMiceDelay2FoilIdx(counter1,:)=delay2D1FoilIdx;
-
-                    allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
-                    allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
-                    allMiceDelay5Target(counter5,:)=delay5D1Target(1:35,4);
-                    allMiceDelay5Foil(counter5,:)=delay5D1Foil(1:35,4);
-                    allMiceDelay2Target(counter1,:)=delay2D1Target(1:35,4);
-                    allMiceDelay2Foil(counter1,:)=delay2D1Foil(1:35,4);
-
-                    allMiceRT{counter}=reinfDataD1Target;
-                    allMiceRF{counter}=reinfDataD1Foil;
-                    allMiceDelay5T{counter3}=delay5D1Target;
-                    allMiceDelay5F{counter3}=delay5D1Foil;
-                    allMiceDelay2T{counter2}=delay2D1Target;
-                    allMiceDelay2F{counter2}=delay2D1Foil;
-                    counter=counter+1;counter2=counter2+1;counter5=counter5+1;
-                end
-            
-            
-            elseif ww==5
-            % context 1 is delay 3
-            % context 5 is delay 4
-                delay3D1TargetIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==1);
-                delay3D1FoilIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==2);
-                delay3D1Target=exampleTrials(delay3D1TargetIdx,:);
-                delay3D1Foil=exampleTrials(delay3D1FoilIdx,:);
-                % now relabel false alarms as zeroes instead of twos
-                missIdx=find(delay3D1Target(:,4)==2);
-                delay3D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay3D1Foil(:,4)==4);
-                delay3D1Foil(crIdx,4)=0;
-                faIdx=find(delay3D1Foil(:,4)==3);
-                delay3D1Foil(faIdx,4)=1;
-
-                if nbsubj==4 
-                    delay4D1TargetIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==1);
-                    delay4D1FoilIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==2);
-                else
-                    delay4D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                    delay4D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                end
-                delay4D1Target=exampleTrials(delay4D1TargetIdx,:);
-                delay4D1Foil=exampleTrials(delay4D1FoilIdx,:);
-                % now relabel false alarms as zeroes instead of twos
-                missIdx=find(delay4D1Target(:,4)==2);
-                delay4D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay4D1Foil(:,4)==4);
-                delay4D1Foil(crIdx,4)=0;
-                faIdx=find(delay4D1Foil(:,4)==3);
-                delay4D1Foil(faIdx,4)=1;
-            
-                allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
-                allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
-                allMiceDelay3TargetIdx(counter,:)=delay3D1TargetIdx;
-                allMiceDelay3FoilIdx(counter,:)=delay3D1FoilIdx;
-                allMiceDelay4TargetIdx(counter,:)=delay4D1TargetIdx;
-                allMiceDelay4FoilIdx(counter,:)=delay4D1FoilIdx;
-
-                allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
-                allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
-                allMiceDelay3Target(counter3,:)=delay3D1Target(1:35,4);
-                allMiceDelay3Foil(counter3,:)=delay3D1Foil(1:35,4);
-                allMiceDelay4Target(counter4,:)=delay4D1Target(1:35,4);
-                allMiceDelay4Foil(counter4,:)=delay4D1Foil(1:35,4);
-
-                allMiceRT{counter}=reinfDataD1Target;
-                allMiceRF{counter}=reinfDataD1Foil;
-                allMiceDelay3T{counter3}=delay3D1Target;
-                allMiceDelay3F{counter3}=delay3D1Foil;
-                allMiceDelay4T{counter4}=delay4D1Target;
-                allMiceDelay4F{counter4}=delay4D1Foil;
-                counter=counter+1;counter4=counter4+1;counter3=counter3+1;
-            end 
-        end
-        
-        clear reinfDataD1 reinfDataD1Target reinfDataD1Foil
-        counter=1;counter1=1;counter2=1;counter3=1;counter4=1;counter5=1;
-        for ee=1:5 % this is the sessionid
-            exampleTrials=find(exampleSession(:,1)==ee);
-            exampleTrials=exampleSession(exampleTrials,:);
-            reinfDataD1TargetIdx=find(exampleTrials(:,CTXT)==2 & exampleTrials(:,3)==1);
-            reinfDataD1FoilIdx=find(exampleTrials(:,CTXT)==2 & exampleTrials(:,3)==2);
-            reinfDataD1Target=exampleTrials(reinfDataD1TargetIdx,:);
-            reinfDataD1Foil=exampleTrials(reinfDataD1FoilIdx,:);
-            % now relabel misses as zeroes instead of twos
-            missIdx=find(reinfDataD1Target(:,4)==2);
-            reinfDataD1Target(missIdx,4)=0;
-            %relabel CR and FA as 0 and 1
-            crIdx=find(reinfDataD1Foil(:,4)==4);
-            reinfDataD1Foil(crIdx,4)=0;
-            faIdx=find(reinfDataD1Foil(:,4)==3);
-            reinfDataD1Foil(faIdx,4)=1;
-            allMiceRTargetIdx(counter,:)=reinfDataD1TargetIdx;
-            allMiceRFoilIdx(counter,:)=reinfDataD1FoilIdx;
-            allMiceRTarget(counter,:)=reinfDataD1Target(1:70,4);
-            allMiceRFoil(counter,:)=reinfDataD1Foil(1:70,4);
-            allMiceRT{counter}=reinfDataD1Target;
-            allMiceRF{counter}=reinfDataD1Foil;
-            
-            counter=counter+1;
-            
-            if ee==1% day 1
-                %Tone (context 5) is delay 5
-                % and choice (context 6) is delay 1
-                delay1D1TargetIdx=find(exampleTrials(1:300,CTXT)==6 & exampleTrials(1:300,3)==1);
-                delay1D1FoilIdx=find(exampleTrials(1:300,CTXT)==6 & exampleTrials(1:300,3)==2);
-                delay1D1Target=exampleTrials(delay1D1FoilIdx,:);
-                delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
-                missIdx=find(delay1D1Target(:,4)==2);
-                delay1D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay1D1Foil(:,4)==4);
-                delay1D1Foil(crIdx,4)=0;
-                faIdx=find(delay1D1Foil(:,4)==3);
-                delay1D1Foil(faIdx,4)=1;
-
-                allMiceDelay1FTargetIdx(counter1,:)=delay1D1TargetIdx;
-                allMiceDelay1FFoilIdx(counter1,:)=delay1D1FoilIdx;
-                allMiceDelay1Target(counter1,:)=delay1D1Target(1:35,4);
-                allMiceDelay1Foil(counter1,:)=delay1D1Foil(1:35,4);
-                allMiceDelay1T{counter1}=delay1D1Target;
-                allMiceDelay1F{counter1}=delay1D1Foil;
-                counter1=counter1+1;
-                if nbsubj==2
-                    delay5D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                    delay5D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                    delay5D1Target=exampleTrials(delay5D1TargetIdx,:);
-                    delay5D1Foil=exampleTrials(delay5D1FoilIdx,:);
-                    missIdx=find(delay5D1Target(:,4)==2);
-                    delay5D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay5D1Foil(:,4)==4);
-                    delay5D1Foil(crIdx,4)=0;
-                    faIdx=find(delay5D1Foil(:,4)==3);
-                    delay5D1Foil(faIdx,4)=1;
-                    allMiceDelay5TargetIdx(counter5,:)=delay5D1TargetIdx;
-                    allMiceDelay5FoilIdx(counter5,:)=delay5D1FoilIdx;
-                    allMiceDelay5Target(counter5,:)=delay5D1Target(1:35,4);
-                    allMiceDelay5Foil(counter5,:)=delay5D1Foil(1:35,4);
-                    allMiceDelay5T{counter5}=delay5D1Target;
-                    allMiceDelay5F{counter5}=delay5D1Foil;
-                    counter5=counter5+1;
-                else
-                    delay2D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                    delay2D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                    delay2D1Target=exampleTrials(delay2D1TargetIdx,:);
-                    delay2D1Foil=exampleTrials(delay2D1FoilIdx,:);
-                    missIdx=find(delay2D1Target(:,4)==2);
-                    delay2D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay2D1Foil(:,4)==4);
-                    delay2D1Foil(crIdx,4)=0;
-                    faIdx=find(delay2D1Foil(:,4)==3);
-                    delay2D1Foil(faIdx,4)=1;
-                    allMiceDelay2TargetIdx(counter2,:)=delay2D1TargetIdx;
-                    allMiceDelay2FoilIdx(counter2,:)=delay2D1FoilIdx;
-                    allMiceDelay2Target(counter2,:)=delay2D1Target(1:35,4);
-                    allMiceDelay2Foil(counter2,:)=delay2D1Foil(1:35,4);
-                    allMiceDelay2T{counter2}=delay2D1Target;
-                    allMiceDelay2F{counter2}=delay2D1Foil;
-                    counter2=counter2+1;
-                end
-                
-            elseif ee==2
-            % this is context 1 is delay 3
-            % context 5 is delay 4
-                delay4D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                delay4D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                delay4D1Target=exampleTrials(delay4D1TargetIdx,:);
-                delay4D1Foil=exampleTrials(delay4D1FoilIdx,:);
-                missIdx=find(delay4D1Target(:,4)==2);
-                delay4D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay4D1Foil(:,4)==4);
-                delay4D1Foil(crIdx,4)=0;
-                faIdx=find(delay4D1Foil(:,4)==3);
-                delay4D1Foil(faIdx,4)=1;
-
-                delay3D1TargetIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==1);
-                delay3D1FoilIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==2);
-                delay3D1Target=exampleTrials(delay3D1FoilIdx,:);
-                delay3D1Foil=exampleTrials(delay3D1FoilIdx,:);
-                missIdx=find(delay3D1Target(:,4)==2);
-                delay3D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay3D1Foil(:,4)==4);
-                delay3D1Foil(crIdx,4)=0;
-                faIdx=find(delay3D1Foil(:,4)==3);
-                delay3D1Foil(faIdx,4)=1;
-
-                allMiceDelay4TargetIdx(counter4,:)=delay4D1TargetIdx;
-                allMiceDelay4FoilIdx(counter4,:)=delay4D1FoilIdx;
-                allMiceDelay4Target(counter4,:)=delay4D1Target(1:35,4);
-                allMiceDelay4Foil(counter4,:)=delay4D1Foil(1:35,4);
-                allMiceDelay4T{counter4}=delay4D1Target;
-                allMiceDelay4F{counter4}=delay4D1Foil;
-                
-                allMiceDelay3FTargetIdx(counter4,:)=delay3D1TargetIdx;
-                allMiceDelay3FFoilIdx(counter4,:)=delay3D1FoilIdx;
-                allMiceDelay3Target(counter3,:)=delay3D1Target(1:35,4);
-                allMiceDelay3Foil(counter3,:)=delay3D1Foil(1:35,4);
-                allMiceDelay3T{counter3}=delay3D1Target;
-                allMiceDelay3F{counter3}=delay3D1Foil;
-
-                counter3=counter3+1;counter4=counter4+1;
-                
-            elseif ee==3 
-               % context 1 is delay 5
-                % context 5 delay 1
-                delay5D1TargetIdx=find(exampleTrials(:,CTXT)==1 & exampleTrials(:,3)==1);
-                delay5D1FoilIdx=find(exampleTrials(:,CTXT)==1 & exampleTrials(:,3)==2);
-                delay5D1Target=exampleTrials(delay5D1TargetIdx,:);
-                delay5D1Foil=exampleTrials(delay5D1FoilIdx,:);
-                missIdx=find(delay5D1Target(:,4)==2);
-                delay5D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay5D1Foil(:,4)==4);
-                delay5D1Foil(crIdx,4)=0;
-                faIdx=find(delay5D1Foil(:,4)==3);
-                delay5D1Foil(faIdx,4)=1;
-                
-                allMiceDelay5TargetIdx(counter5,:)=delay5D1TargetIdx;
-                allMiceDelay5FoilIdx(counter5,:)=delay5D1FoilIdx;
-                allMiceDelay5Target(counter5,:)=delay5D1Target(1:35,4);
-                allMiceDelay5Foil(counter5,:)=delay5D1Foil(1:35,4);
-                allMiceDelay5T{counter5}=delay5D1Target;
-                allMiceDelay5F{counter5}=delay5D1Foil;
-                counter5=counter5+1;
-                
-                if nbsubj==4
-                    delay2D1TargetIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==1);
-                    delay2D1FoilIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==2);
-                    delay2D1Target=exampleTrials(delay2D1FoilIdx,:);
-                    delay2D1Foil=exampleTrials(delay2D1FoilIdx,:);
-                    missIdx=find(delay2D1Target(:,4)==2);
-                    delay2D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay2D1Foil(:,4)==4);
-                    delay2D1Foil(crIdx,4)=0;
-                    faIdx=find(delay2D1Foil(:,4)==3);
-                    delay2D1Foil(faIdx,4)=1;
-                    allMiceDelay2FTargetIdx(counter1,:)=delay2D1TargetIdx;
-                    allMiceDelay2FFoilIdx(counter1,:)=delay2D1FoilIdx;
-                    allMiceDelay2Target(counter1,:)=delay2D1Target(1:35,4);
-                    allMiceDelay2Foil(counter1,:)=delay2D1Foil(1:35,4);
-                    allMiceDelay2T{counter1}=delay2D1Target;
-                    allMiceDelay2F{counter1}=delay2D1Foil;
-                    counter2=counter2+1;    
-                else
-                    delay1D1TargetIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==1);
-                    delay1D1FoilIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==2);
-                    delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
-                    delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
-                    missIdx=find(delay1D1Target(:,4)==2);
-                    delay1D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay1D1Foil(:,4)==4);
-                    delay1D1Foil(crIdx,4)=0;
-                    faIdx=find(delay1D1Foil(:,4)==3);
-                    delay1D1Foil(faIdx,4)=1;
-                    allMiceDelay1Target(counter1,:)=delay1D1Target(1:35,4);
-                    allMiceDelay1Foil(counter1,:)=delay1D1Foil(1:35,4);
-                    allMiceDelay1T{counter1}=delay1D1Target;
-                    allMiceDelay1F{counter1}=delay1D1Foil;
-                    counter1=counter1+1;
-                end
-            elseif ee==4 
-                % context 1 is delay 5
-                % context 5 delay 2
-                delay5D1TargetIdx=find(exampleTrials(:,CTXT)==1 & exampleTrials(:,3)==1);
-                delay5D1FoilIdx=find(exampleTrials(:,CTXT)==1 & exampleTrials(:,3)==2);
-                delay5D1Target=exampleTrials(delay5D1TargetIdx,:);
-                delay5D1Foil=exampleTrials(delay5D1FoilIdx,:);
-                missIdx=find(delay5D1Target(:,4)==2);
-                delay5D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay5D1Foil(:,4)==4);
-                delay5D1Foil(crIdx,4)=0;
-                faIdx=find(delay5D1Foil(:,4)==3);
-                delay5D1Foil(faIdx,4)=1;
-                allMiceDelay5TargetIdx(counter5,:)=delay5D1TargetIdx;
-                allMiceDelay5FoilIdx(counter5,:)=delay5D1FoilIdx;
-                allMiceDelay5Target(counter5,:)=delay5D1Target(1:35,4);
-                allMiceDelay5Foil(counter5,:)=delay5D1Foil(1:35,4);
-                allMiceDelay5T{counter5}=delay5D1Target;
-                allMiceDelay5F{counter5}=delay5D1Foil;
-                counter5=counter5+1;
-                
-                if nbsubj==2
-                    delay2D1TargetIdx=find(exampleTrials(1:300,CTXT)==6 & exampleTrials(1:300,3)==1);
-                    delay2D1FoilIdx=find(exampleTrials(1:300,CTXT)==6 & exampleTrials(1:300,3)==2);
-                    delay2D1Target=exampleTrials(delay2D1FoilIdx,:);
-                    delay2D1Foil=exampleTrials(delay2D1FoilIdx,:);
-                    missIdx=find(delay2D1Target(:,4)==2);
-                    delay2D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay2D1Foil(:,4)==4);
-                    delay2D1Foil(crIdx,4)=0;
-                    faIdx=find(delay2D1Foil(:,4)==3);
-                    delay2D1Foil(faIdx,4)=1;
-                    allMiceDelay2FTargetIdx(counter1,:)=delay2D1TargetIdx;
-                    allMiceDelay2FFoilIdx(counter1,:)=delay2D1FoilIdx;
-                    allMiceDelay2Target(counter1,:)=delay2D1Target(1:35,4);
-                    allMiceDelay2Foil(counter1,:)=delay2D1Foil(1:35,4);
-                    allMiceDelay2T{counter1}=delay2D1Target;
-                    allMiceDelay2F{counter1}=delay2D1Foil;
-                    counter2=counter2+1; 
-                elseif nbsubj==3
-                    delay2D1TargetIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==1);
-                    delay2D1FoilIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==2);
-                    delay2D1Target=exampleTrials(delay2D1FoilIdx,:);
-                    delay2D1Foil=exampleTrials(delay2D1FoilIdx,:);
-                    missIdx=find(delay2D1Target(:,4)==2);
-                    delay2D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay2D1Foil(:,4)==4);
-                    delay2D1Foil(crIdx,4)=0;
-                    faIdx=find(delay2D1Foil(:,4)==3);
-                    delay2D1Foil(faIdx,4)=1;
-                    allMiceDelay2FTargetIdx(counter1,:)=delay2D1TargetIdx;
-                    allMiceDelay2FFoilIdx(counter1,:)=delay2D1FoilIdx;
-                    allMiceDelay2Target(counter1,:)=delay2D1Target(1:35,4);
-                    allMiceDelay2Foil(counter1,:)=delay2D1Foil(1:35,4);
-                    allMiceDelay2T{counter1}=delay2D1Target;
-                    allMiceDelay2F{counter1}=delay2D1Foil;
-                    counter2=counter2+1; 
-                else
-                    delay1D1TargetIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==1);
-                    delay1D1FoilIdx=find(exampleTrials(1:300,CTXT)==5 & exampleTrials(1:300,3)==2);
-                    delay1D1Target=exampleTrials(delay1D1TargetIdx,:);
-                    delay1D1Foil=exampleTrials(delay1D1FoilIdx,:);
-                    missIdx=find(delay1D1Target(:,4)==2);
-                    delay1D1Target(missIdx,4)=0;
-                    %relabel CR and FA as 0 and 1
-                    crIdx=find(delay1D1Foil(:,4)==4);
-                    delay1D1Foil(crIdx,4)=0;
-                    faIdx=find(delay1D1Foil(:,4)==3);
-                    delay1D1Foil(faIdx,4)=1;
-                    allMiceDelay1Target(counter1,:)=delay1D1Target(1:35,4);
-                    allMiceDelay1Foil(counter1,:)=delay1D1Foil(1:35,4);
-                    allMiceDelay1T{counter1}=delay1D1Target;
-                    allMiceDelay1F{counter1}=delay1D1Foil;
-                    counter1=counter1+1;
-                end
-                
-            elseif ee==5
-            % context 1 is delay 3
-            % context 5 is delay 4
-                if nbsubj==4
-                    delay4D1TargetIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==1);
-                    delay4D1FoilIdx=find(exampleTrials(:,CTXT)==6 & exampleTrials(:,3)==2);
-                else
-                    delay4D1TargetIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==1);
-                    delay4D1FoilIdx=find(exampleTrials(:,CTXT)==5 & exampleTrials(:,3)==2);
-                end
-                delay4D1Target=exampleTrials(delay4D1TargetIdx,:);
-                delay4D1Foil=exampleTrials(delay4D1FoilIdx,:);
-                missIdx=find(delay4D1Target(:,4)==2);
-                delay4D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay4D1Foil(:,4)==4);
-                delay4D1Foil(crIdx,4)=0;
-                faIdx=find(delay4D1Foil(:,4)==3);
-                delay4D1Foil(faIdx,4)=1;
-                allMiceDelay4TargetIdx(counter4,:)=delay4D1TargetIdx;
-                allMiceDelay4FoilIdx(counter4,:)=delay4D1FoilIdx;
-                allMiceDelay4Target(counter4,:)=delay4D1Target(1:35,4);
-                allMiceDelay4Foil(counter4,:)=delay4D1Foil(1:35,4);
-                allMiceDelay4T{counter4}=delay4D1Target;
-                allMiceDelay4F{counter4}=delay4D1Foil;
-                
-                delay3D1TargetIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==1);
-                delay3D1FoilIdx=find(exampleTrials(1:300,CTXT)==1 & exampleTrials(1:300,3)==2);
-                delay3D1Target=exampleTrials(delay3D1FoilIdx,:);
-                delay3D1Foil=exampleTrials(delay3D1FoilIdx,:);
-                missIdx=find(delay3D1Target(:,4)==2);
-                delay3D1Target(missIdx,4)=0;
-                %relabel CR and FA as 0 and 1
-                crIdx=find(delay3D1Foil(:,4)==4);
-                delay3D1Foil(crIdx,4)=0;
-                faIdx=find(delay3D1Foil(:,4)==3);
-                delay3D1Foil(faIdx,4)=1;
-                
-                allMiceDelay3FTargetIdx(counter4,:)=delay3D1TargetIdx;
-                allMiceDelay3FFoilIdx(counter4,:)=delay3D1FoilIdx;
-                allMiceDelay3Target(counter3,:)=delay3D1Target(1:35,4);
-                allMiceDelay3Foil(counter3,:)=delay3D1Foil(1:35,4);
-                allMiceDelay3T{counter3}=delay3D1Target;
-                allMiceDelay3F{counter3}=delay3D1Foil;
-
-                counter=counter+1;counter3=counter3+1;counter4=counter4+1;
+                row=delayCounter(delayNumber);
+                delaySessionKey{delayNumber}(row,:)=[mouseIdx,sessionId];
+                delayRTargetIdx{delayNumber}(row,:)=reinfTargetIdx;
+                delayRFoilIdx{delayNumber}(row,:)=reinfFoilIdx;
+                delayTargetIdx{delayNumber}(row,:)=targetIdx;
+                delayFoilIdx{delayNumber}(row,:)=foilIdx;
+                delayRTarget{delayNumber}(row,:)=reinfTarget(1:70,4);
+                delayRFoil{delayNumber}(row,:)=reinfFoil(1:70,4);
+                delayTarget{delayNumber}(row,:)=target(1:35,4);
+                delayFoil{delayNumber}(row,:)=foil(1:35,4);
+                delayRT{delayNumber}{row}=reinfTarget;
+                delayRF{delayNumber}{row}=reinfFoil;
+                delayT{delayNumber}{row}=target;
+                delayF{delayNumber}{row}=foil;
+                delayCounter(delayNumber)=row+1;
             end
-        end    
+        end
     end
-    
+
+    numberOfMice=size(optomeanMat,1)-1;
+    for delayNumber=1:5
+        sessionKeys=delaySessionKey{delayNumber};
+        expectedRows=0;
+        for mouseIdx=1:numberOfMice
+            for sessionId=1:size(delayBySession,1)
+                expectedRows=expectedRows+nnz(delayBySession{sessionId,mouseIdx}==delayNumber);
+            end
+        end
+        assert(size(sessionKeys,1)==expectedRows, ...
+            'Missing session rows for delay %d: expected %d, found %d.', ...
+            delayNumber,expectedRows,size(sessionKeys,1));
+        assert(size(unique(sessionKeys,'rows'),1)==size(sessionKeys,1), ...
+            'Duplicate mouse/session rows found for delay %d.',delayNumber);
+    end
+    allMiceDelay1RTargetIdx=delayRTargetIdx{1}; allMiceDelay1RFoilIdx=delayRFoilIdx{1};
+    allMiceDelay1TargetIdx=delayTargetIdx{1}; allMiceDelay1FoilIdx=delayFoilIdx{1};
+    allMiceDelay1RTarget=delayRTarget{1}; allMiceDelay1RFoil=delayRFoil{1};
+    allMiceDelay1Target=delayTarget{1}; allMiceDelay1Foil=delayFoil{1};
+    allMiceDelay1RT=delayRT{1}; allMiceDelay1RF=delayRF{1};
+    allMiceDelay1T=delayT{1}; allMiceDelay1F=delayF{1};
+
+    allMiceDelay2RTargetIdx=delayRTargetIdx{2}; allMiceDelay2RFoilIdx=delayRFoilIdx{2};
+    allMiceDelay2TargetIdx=delayTargetIdx{2}; allMiceDelay2FoilIdx=delayFoilIdx{2};
+    allMiceDelay2RTarget=delayRTarget{2}; allMiceDelay2RFoil=delayRFoil{2};
+    allMiceDelay2Target=delayTarget{2}; allMiceDelay2Foil=delayFoil{2};
+    allMiceDelay2RT=delayRT{2}; allMiceDelay2RF=delayRF{2};
+    allMiceDelay2T=delayT{2}; allMiceDelay2F=delayF{2};
+
+    allMiceDelay3RTargetIdx=delayRTargetIdx{3}; allMiceDelay3RFoilIdx=delayRFoilIdx{3};
+    allMiceDelay3TargetIdx=delayTargetIdx{3}; allMiceDelay3FoilIdx=delayFoilIdx{3};
+    allMiceDelay3RTarget=delayRTarget{3}; allMiceDelay3RFoil=delayRFoil{3};
+    allMiceDelay3Target=delayTarget{3}; allMiceDelay3Foil=delayFoil{3};
+    allMiceDelay3RT=delayRT{3}; allMiceDelay3RF=delayRF{3};
+    allMiceDelay3T=delayT{3}; allMiceDelay3F=delayF{3};
+
+    allMiceDelay4RTargetIdx=delayRTargetIdx{4}; allMiceDelay4RFoilIdx=delayRFoilIdx{4};
+    allMiceDelay4TargetIdx=delayTargetIdx{4}; allMiceDelay4FoilIdx=delayFoilIdx{4};
+    allMiceDelay4RTarget=delayRTarget{4}; allMiceDelay4RFoil=delayRFoil{4};
+    allMiceDelay4Target=delayTarget{4}; allMiceDelay4Foil=delayFoil{4};
+    allMiceDelay4RT=delayRT{4}; allMiceDelay4RF=delayRF{4};
+    allMiceDelay4T=delayT{4}; allMiceDelay4F=delayF{4};
+
+    allMiceDelay5RTargetIdx=delayRTargetIdx{5}; allMiceDelay5RFoilIdx=delayRFoilIdx{5};
+    allMiceDelay5TargetIdx=delayTargetIdx{5}; allMiceDelay5FoilIdx=delayFoilIdx{5};
+    allMiceDelay5RTarget=delayRTarget{5}; allMiceDelay5RFoil=delayRFoil{5};
+    allMiceDelay5Target=delayTarget{5}; allMiceDelay5Foil=delayFoil{5};
+    allMiceDelay5RT=delayRT{5}; allMiceDelay5RF=delayRF{5};
+    allMiceDelay5T=delayT{5}; allMiceDelay5F=delayF{5};
+
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
 START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 
@@ -742,13 +154,18 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
         [3,4,0],[3,4,0],[3,4,0];...
         [5,1,0],[5,1,0],[5,2,0];[5,0,2],[5,2,0],[5,1,0];...
         [3,4,0],[3,4,0],[3,0,4]};
+    ctxtOrder=[1,5,6];
     % allDays is organized by session and opto condition (ctxt 0, ctxt 5,ctxt 6). 
     % '0,2,1' means for that session, there were 
     % no full trial conditions (context 1), 
     % delay 2 was tone (context 5)
     % delay 1 was choice (context 6)
-    
     for nbsubj=1:3
+        [tempLickMat,rD1TLickMat,rD1FLickMat,D1TLickMat,D1FLickMat,...
+        rD2TLickMat, rD2FLickMat, D2TLickMat, D2FLickMat, rD3TLickMat, rD3FLickMat, ...
+        D3TLickMat, D3FLickMat, rD4TLickMat, rD4FLickMat, D4TLickMat, D4FLickMat, ...
+        rD5TLickMat, rD5FLickMat, D5TLickMat, D5FLickMat]=initDelayMat;
+
         days=allDays(2:6,nbsubj);
         subjDays=vertcat(days{:});
         count=count+1;
@@ -770,187 +187,331 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
         animalAllLicks=allLicksVert((sessRange(1):sessRange(5))-1,:);
         for gg=1:size(subjDays,1) %make this flexible to iterate through all delay types
             if any(subjDays(gg,:)==1) % delay 1
-                conditions=allDays{gg+1};
+                conditions=allDays{gg+1,nbsubj};
                 optoCtxt=find(conditions==1);
+                optoConditionbyCtxt=ctxtOrder(optoCtxt);
                 licksRD1T=animalConditionLicks{gg,1};
                 licksRD1F=animalConditionLicks{gg,2};
                 if optoCtxt==2 % this is a stimulus condition
                     licksD1T=animalConditionLicks{gg,STIM};
                     licksD1F=animalConditionLicks{gg,STIM+1};
+                    ctxtFlag=STIM;
                 elseif optoCtxt==1
                     % this is a full condition
                     licksD1T=animalConditionLicks{gg,FULL};
                     licksD1F=animalConditionLicks{gg,FULL+1};
+                    ctxtFlag=FULL;
                 elseif optoCtxt==3 % choice condition
                     licksD1T=animalConditionLicks{gg,CHOICE};
                     licksD1F=animalConditionLicks{gg,CHOICE+1};
+                    ctxtFlag=CHOICE;
                 end
-                tempLickMat=NaN(300,60);
-                rD1TLickMat=NaN(300,60);
-                rD1FLickMat=NaN(300,60);
-                D1TLickMat=NaN(300,60);
-                D1FLickMat=NaN(300,60);
-                
+
             elseif any(subjDays(gg,:)==2) % delay 2
-                conditions=allDays{gg+1};
-                optoCtxt=find(conditions==1);
+                conditions=allDays{gg+1,nbsubj};
+                optoCtxt=find(conditions==2);
+                optoConditionbyCtxt=ctxtOrder(optoCtxt);
                 licksRD2T=animalConditionLicks{gg,1};
                 licksRD2F=animalConditionLicks{gg,2};
                 if optoCtxt==2 % this is a stimulus condition
+                    ctxtFlag=STIM;
                     licksD2T=animalConditionLicks{gg,STIM};
                     licksD2F=animalConditionLicks{gg,STIM+1};
                 elseif optoCtxt==1
                     % this is a full condition
+                    ctxtFlag=FULL;
                     licksD2T=animalConditionLicks{gg,FULL};
                     licksD2F=animalConditionLicks{gg,FULL+1};
                 elseif optoCtxt==3 % choice condition
+                    ctxtFlag=CHOICE;
                     licksD2T=animalConditionLicks{gg,CHOICE};
                     licksD2F=animalConditionLicks{gg,CHOICE+1};
                 end
             elseif any(subjDays(gg,:)==3) % delay 3
-                conditions=allDays{gg+1};
-                optoCtxt=find(conditions==1);
+                conditions=allDays{gg+1,nbsubj};
+                optoCtxt=find(conditions==3);
+                optoConditionbyCtxt=ctxtOrder(optoCtxt);
                 licksRD3T=animalConditionLicks{gg,1};
                 licksRD3F=animalConditionLicks{gg,2};
                 if optoCtxt==2 % this is a stimulus condition
+                    ctxtFlag=STIM;
                     licksD3T=animalConditionLicks{gg,STIM};
                     licksD3F=animalConditionLicks{gg,STIM+1};
                 elseif optoCtxt==1
                     % this is a full condition
+                    ctxtFlag=FULL;
                     licksD3T=animalConditionLicks{gg,FULL};
                     licksD3F=animalConditionLicks{gg,FULL+1};
                 elseif optoCtxt==3 % choice condition
+                    ctxtFlag=CHOICE;
                     licksD3T=animalConditionLicks{gg,CHOICE};
                     licksD3F=animalConditionLicks{gg,CHOICE+1};
                 end
             elseif any(subjDays(gg,:)==4) % delay 4
-                conditions=allDays{gg+1};
-                optoCtxt=find(conditions==1);
+                conditions=allDays{gg+1,nbsubj};
+                optoCtxt=find(conditions==4);
+                optoConditionbyCtxt=ctxtOrder(optoCtxt);
                 licksRD4T=animalConditionLicks{gg,1};
                 licksRD4F=animalConditionLicks{gg,2};
                 if optoCtxt==2 % this is a stimulus condition
+                    ctxtFlag=STIM;
                     licksD4T=animalConditionLicks{gg,STIM};
                     licksD4F=animalConditionLicks{gg,STIM+1};
                 elseif optoCtxt==1
                     % this is a full condition
+                    ctxtFlag=FULL;
                     licksD4T=animalConditionLicks{gg,FULL};
                     licksD4F=animalConditionLicks{gg,FULL+1};
                 elseif optoCtxt==3 % choice condition
+                    ctxtFlag=CHOICE;
                     licksD4T=animalConditionLicks{gg,CHOICE};
                     licksD4F=animalConditionLicks{gg,CHOICE+1};
                 end
             elseif any(subjDays(gg,:)==5) % delay 5
-                conditions=allDays{gg+1};
-                optoCtxt=find(conditions==1);
+                conditions=allDays{gg+1,nbsubj};
+                optoCtxt=find(conditions==5);
+                optoConditionbyCtxt=ctxtOrder(optoCtxt);
                 licksRD5T=animalConditionLicks{gg,1};
                 licksRD5F=animalConditionLicks{gg,2};
                 if optoCtxt==2 % this is a stimulus condition
-                    licksD5T=animalConditionLicks{gg,STIM};
+                    ctxtFlag=STIM;licksD5T=animalConditionLicks{gg,STIM};
                     licksD5F=animalConditionLicks{gg,STIM+1};
                 elseif optoCtxt==1
                     % this is a full condition
+                    ctxtFlag=FULL;
                     licksD5T=animalConditionLicks{gg,FULL};
                     licksD5F=animalConditionLicks{gg,FULL+1};
                 elseif optoCtxt==3 % choice condition
+                     ctxtFlag=CHOICE;
                     licksD5T=animalConditionLicks{gg,CHOICE};
                     licksD5F=animalConditionLicks{gg,CHOICE+1};
                 end
             end
             
-                
             % get consummatory licks
-            nextIdx=1; 
-            sessLicks=animalAllLicks{delay1Day(gg)};
-            % stopped here
+            sessLicks=animalAllLicks{gg};
             exampleSession=optomeanMat{nbsubj+1,17}; 
             exampleTrials=find(exampleSession(:,1)==gg);
             exampleTrials=exampleSession(exampleTrials,:);
-            for tt=1:size(exampleTrials)
-                nextIdxTemp=find(sessLicks>exampleTrials(tt,6));
-                try
-                    nextIdx(tt+1)=nextIdxTemp(1);
-                catch
-                    disp(tt)
+            
+%             nextIdx=1; 
+%             for tt=1:size(exampleTrials)
+%                 nextIdxTemp=find(sessLicks>exampleTrials(tt,6));
+%                 try
+%                     nextIdx(tt+1)=nextIdxTemp(1);
+%                 catch
+%                     disp(tt)
+%                 end
+%             end
+
+            nTrials = size(exampleTrials,1);
+            nextIdx = nan(1,nTrials);
+            nextIdx(1) = 1;
+
+            for tt = 1:nTrials
+                idx = find(sessLicks > exampleTrials(tt,6), 1, 'first');
+
+                if isempty(idx)
+                    % End boundary: one position beyond the final lick
+                    nextIdx(tt+1) = numel(sessLicks) + 1;
+
+                    warning('No lick after trial %d; trial time=%g, last lick=%g', ...
+                        tt, exampleTrials(tt,6), sessLicks(end));
+                else
+                    nextIdx(tt+1) = idx;
                 end
             end
+            
             for yu=1:length(nextIdx)-1
                 tempLickMat(yu,1:length(sessLicks(nextIdx(yu):nextIdx(yu+1)-1)))=sessLicks(nextIdx(yu):nextIdx(yu+1)-1);
             end
 
             %now tempLickMat is the licks, for each trial, for the entire session
             % sort tempLickMat now by tone and context/condition
-            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-            fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
-            fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
-            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-            reinfTLicks=tempLickMat(reinfTIdx,:);
-            reinfFLicks=tempLickMat(reinfFIdx,:);
-            fullTLicks=tempLickMat(fullTIdx,:);
-            fullFLicks=tempLickMat(fullFIdx,:);
-            choiceTLicks=tempLickMat(choiceTIdx,:);
-            choiceFLicks=tempLickMat(choiceFIdx,:);
+            if any(subjDays(gg,:)==1) % delay 1
+                reinfD1TIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==1);
+                reinfD1FIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==2);
+                reinfD1TLicks=tempLickMat(reinfD1TIdx,:);
+                reinfD1FLicks=tempLickMat(reinfD1FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    rD1TLickMat(ym,1:length(licksRD1T(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD1T(nextIdx(ym):nextIdx(ym+1)-1);
+                    rD1FLickMat(ym,1:length(licksRD1F(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD1F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                rD1TLickMatAll{gg}=rD1TLickMat(reinfD1TIdx,1:60); %there's a bug somewhere making a ton of 0's--where?
+                rD1FLickMatAll{gg}=rD1FLickMat(reinfD1FIdx,1:60);
 
-            reinfTIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==1);
-            reinfFIdx=find(exampleTrials(1:300,2)==2 & exampleTrials(1:300,3)==2);
-            fullTIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==1);
-            fullFIdx=find(exampleTrials(1:300,2)==1 & exampleTrials(1:300,3)==2);
-            choiceTIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==1);
-            choiceFIdx=find(exampleTrials(1:300,2)==6 & exampleTrials(1:300,3)==2);
-            for ym=1:length(nextIdx)-1
-                rFTLickMat(ym,1:length(licksRFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksRFT(nextIdx(ym):nextIdx(ym+1)-1);
-                rFFLickMat(ym,1:length(licksRFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksRFF(nextIdx(ym):nextIdx(ym+1)-1);
-                fTLickMat(ym,1:length(licksFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksFT(nextIdx(ym):nextIdx(ym+1)-1);
-                fFLickMat(ym,1:length(licksFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksFF(nextIdx(ym):nextIdx(ym+1)-1);
-                cFTLickMat(ym,1:length(licksCFT(nextIdx(ym):nextIdx(ym+1)-1)))=licksCFT(nextIdx(ym):nextIdx(ym+1)-1);
-                cFFLickMat(ym,1:length(licksCFF(nextIdx(ym):nextIdx(ym+1)-1)))=licksCFF(nextIdx(ym):nextIdx(ym+1)-1);
+                D1TIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==1);
+                D1FIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==2);
+                D1TLicks=tempLickMat(D1TIdx,:);
+                D1FLicks=tempLickMat(D1FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    D1TLickMat(ym,1:length(licksD1T(nextIdx(ym):nextIdx(ym+1)-1)))=licksD1T(nextIdx(ym):nextIdx(ym+1)-1);
+                    D1FLickMat(ym,1:length(licksD1F(nextIdx(ym):nextIdx(ym+1)-1)))=licksD1F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                D1TLickMatAll{gg}=D1TLickMat(D1TIdx,1:60);
+                D1FLickMatAll{gg}=D1FLickMat(D1FIdx,1:60);
+
+                
+            elseif any(subjDays(gg,:)==2) % delay 2
+                reinfD2TIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==1);
+                reinfD2FIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==2);
+                reinfD2TLicks=tempLickMat(reinfD2TIdx,:);
+                reinfD2FLicks=tempLickMat(reinfD2FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    rD2TLickMat(ym,1:length(licksRD2T(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD2T(nextIdx(ym):nextIdx(ym+1)-1);
+                    rD2FLickMat(ym,1:length(licksRD2F(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD2F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                rD2TLickMatAll{gg}=rD2TLickMat(reinfD2TIdx,1:60);
+                rD2FLickMatAll{gg}=rD2FLickMat(reinfD2FIdx,1:60);
+
+                D2TIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==1);
+                D2FIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==2);
+                D2TLicks=tempLickMat(D2TIdx,:);
+                D2FLicks=tempLickMat(D2FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    D2TLickMat(ym,1:length(licksD2T(nextIdx(ym):nextIdx(ym+1)-1)))=licksD2T(nextIdx(ym):nextIdx(ym+1)-1);
+                    D2FLickMat(ym,1:length(licksD2F(nextIdx(ym):nextIdx(ym+1)-1)))=licksD2F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                D2TLickMatAll{gg}=D2TLickMat(D2TIdx,1:60);
+                D2FLickMatAll{gg}=D2FLickMat(D2FIdx,1:60);
+            elseif any(subjDays(gg,:)==3) % delay 3
+                reinfD3TIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==1);
+                reinfD3FIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==2);
+                reinfD3TLicks=tempLickMat(reinfD3TIdx,:);
+                reinfD3FLicks=tempLickMat(reinfD3FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    rD3TLickMat(ym,1:length(licksRD3T(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD3T(nextIdx(ym):nextIdx(ym+1)-1);
+                    rD3FLickMat(ym,1:length(licksRD3F(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD3F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                rD3TLickMatAll{gg}=rD3TLickMat(reinfD3TIdx,1:60);
+                rD3FLickMatAll{gg}=rD3FLickMat(reinfD3FIdx,1:60);
+
+                D3TIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==1);
+                D3FIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==2);
+                D3TLicks=tempLickMat(D3TIdx,:);
+                D3FLicks=tempLickMat(D3FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    D3TLickMat(ym,1:length(licksD3T(nextIdx(ym):nextIdx(ym+1)-1)))=licksD3T(nextIdx(ym):nextIdx(ym+1)-1);
+                    D3FLickMat(ym,1:length(licksD3F(nextIdx(ym):nextIdx(ym+1)-1)))=licksD3F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                D3TLickMatAll{gg}=D3TLickMat(D3TIdx,1:60);
+                D3FLickMatAll{gg}=D3FLickMat(D3FIdx,1:60);
+            elseif any(subjDays(gg,:)==4) % delay 4
+                reinfD4TIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==1);
+                reinfD4FIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==2);
+                reinfD4TLicks=tempLickMat(reinfD4TIdx,:);
+                reinfD4FLicks=tempLickMat(reinfD4FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    rD4TLickMat(ym,1:length(licksRD4T(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD4T(nextIdx(ym):nextIdx(ym+1)-1);
+                    rD4FLickMat(ym,1:length(licksRD4F(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD4F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                rD4TLickMat=rD4TLickMat(reinfD4TIdx,1:60);
+                rD4FLickMat=rD4FLickMat(reinfD4FIdx,1:60);
+
+                D4TIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==1);
+                D4FIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==2);
+                D4TLicks=tempLickMat(D4TIdx,:);
+                D4FLicks=tempLickMat(D4FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    D4TLickMat(ym,1:length(licksD4T(nextIdx(ym):nextIdx(ym+1)-1)))=licksD4T(nextIdx(ym):nextIdx(ym+1)-1);
+                    D4FLickMat(ym,1:length(licksD4F(nextIdx(ym):nextIdx(ym+1)-1)))=licksD4F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                D4TLickMatAll(gg)=D4TLickMat(D4TIdx,1:60);
+                D4FLickMatAll(gg)=D4FLickMat(D4FIdx,1:60);
+            elseif any(subjDays(gg,:)==5) % delay 5
+                reinfD5TIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==1);
+                reinfD5FIdx=find(exampleTrials(1:300,CTXT)==2 & exampleTrials(1:300,3)==2);
+                reinfD5TLicks=tempLickMat(reinfD5TIdx,:);
+                reinfD5FLicks=tempLickMat(reinfD5FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    rD5TLickMat(ym,1:length(licksRD5T(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD5T(nextIdx(ym):nextIdx(ym+1)-1);
+                    rD5FLickMat(ym,1:length(licksRD5F(nextIdx(ym):nextIdx(ym+1)-1)))=licksRD5F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                rD5TLickMatAll{gg}=rD5TLickMat(reinfD5TIdx,1:60);
+                rD5FLickMatAll{gg}=rD5FLickMat(reinfD5FIdx,1:60);
+
+                D5TIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==1);
+                D5FIdx=find(exampleTrials(1:300,CTXT)==optoConditionbyCtxt & exampleTrials(1:300,3)==2);
+                D5TLicks=tempLickMat(D5TIdx,:);
+                D5FLicks=tempLickMat(D5FIdx,:);
+                for ym=1:length(nextIdx)-1
+                    D5TLickMat(ym,1:length(licksD5T(nextIdx(ym):nextIdx(ym+1)-1)))=licksD5T(nextIdx(ym):nextIdx(ym+1)-1);
+                    D5FLickMat(ym,1:length(licksD5F(nextIdx(ym):nextIdx(ym+1)-1)))=licksD5F(nextIdx(ym):nextIdx(ym+1)-1);
+                end
+                D5TLickMatAll(gg)=D5TLickMat(D5TIdx,1:60);
+                D5FLickMatAll(gg)=D5FLickMat(D5FIdx,1:60);
             end
-            rFTLickMat=rFTLickMat(reinfTIdx,:);
-            rFFLickMat=rFFLickMat(reinfFIdx,:);
-            fTLickMat=fTLickMat(fullTIdx,:);
-            fFLickMat=fFLickMat(fullFIdx,:);
-            cFTLickMat=cFTLickMat(choiceTIdx,:);
-            cFFLickMat=cFFLickMat(choiceFIdx,:);
+            
         end
 
+        % this part does not need to be in the loop
+        % this is fixed 7/3/26
+        lickLatRD1T=allMiceDelay1RT{1,count}(:,LICKL);
+        lickLatRD1F=allMiceDelay1RF{1,count}(:,LICKL);
+        lickLatD1T=allMiceDelay1T{1,count}(:,LICKL);
+        lickLatD1F=allMiceDelay1F{1,count}(:,LICKL);
+        lickLatRD1TNoNan=lickLatRD1T(~isnan(lickLatRD1T));
+        lickLatRD1FNoNan=lickLatRD1F(~isnan(lickLatRD1F));
+        lickLatD1TNoNan=lickLatD1T(~isnan(lickLatD1T));
+        lickLatD1FNoNan=lickLatD1F(~isnan(lickLatD1F));
         
-            lickLatRFT=allMiceRFT{1,count}(:,LICKL);
-            lickLatRFF=allMiceRFF{1,count}(:,LICKL);
-            lickLatFullT=allMiceFullT{1,count}(:,LICKL);
-            lickLatFullF=allMiceFullF{1,count}(:,LICKL);
-            lickLatCFullT=allMiceCFT{1,count}(:,LICKL);
-            lickLatCFullF=allMiceCFF{1,count}(:,LICKL);
+        lickLatRD2T=allMiceDelay2RT{1,count}(:,LICKL);
+        lickLatRD2F=allMiceDelay2RF{1,count}(:,LICKL);
+        lickLatD2T=allMiceDelay2T{1,count}(:,LICKL);
+        lickLatD2F=allMiceDelay2F{1,count}(:,LICKL);
+        lickLatRD2TNoNan=lickLatRD2T(~isnan(lickLatRD2T));
+        lickLatRD2FNoNan=lickLatRD2F(~isnan(lickLatRD2F));
+        lickLatD2TNoNan=lickLatD2T(~isnan(lickLatD2T));
+        lickLatD2FNoNan=lickLatD2F(~isnan(lickLatD2F));
 
-            lickLatRTT=allMiceRTT{1,count}(:,LICKL);
-            lickLatRTF=allMiceRTF{1,count}(:,LICKL);
-            lickLatToneT=allMiceToneT{1,count}(:,LICKL);
-            lickLatToneF=allMiceToneF{1,count}(:,LICKL);
-            lickLatCT=allMiceCTT{1,count}(:,LICKL);
-            lickLatCF=allMiceCTF{1,count}(:,LICKL);
+        lickLatRD3T=allMiceDelay3RT{1,count}(:,LICKL);
+        lickLatRD3F=allMiceDelay3RF{1,count}(:,LICKL);
+        lickLatD3T=allMiceDelay3T{1,count}(:,LICKL);
+        lickLatD3F=allMiceDelay3F{1,count}(:,LICKL);
+        lickLatRD3TNoNan=lickLatRD3T(~isnan(lickLatRD3T));
+        lickLatRD3FNoNan=lickLatRD3F(~isnan(lickLatRD3F));
+        lickLatD3TNoNan=lickLatD3T(~isnan(lickLatD3T));
+        lickLatD3FNoNan=lickLatD3F(~isnan(lickLatD3F));
 
-            lickLatRFTNoNan=lickLatRFT(~isnan(lickLatRFT));
-            lickLatRFFNoNan=lickLatRFF(~isnan(lickLatRFF));    
-            lickLatFullTNoNan=lickLatFullT(~isnan(lickLatFullT));
-            lickLatFullFNoNan=lickLatFullF(~isnan(lickLatFullF));
-            lickLatCFullTNoNan=lickLatCFullT(~isnan(lickLatCFullT));
-            lickLatCFullFNoNan=lickLatCFullF(~isnan(lickLatCFullF));
+        lickLatRD4T=allMiceDelay4RT{1,count}(:,LICKL);
+        lickLatRD4F=allMiceDelay4RF{1,count}(:,LICKL);
+        lickLatD4T=allMiceDelay4T{1,count}(:,LICKL);
+        lickLatD4F=allMiceDelay4F{1,count}(:,LICKL);
+        lickLatRD4TNoNan=lickLatRD4T(~isnan(lickLatRD4T));
+        lickLatRD4FNoNan=lickLatRD4F(~isnan(lickLatRD4F));
+        lickLatD4TNoNan=lickLatD4T(~isnan(lickLatD4T));
+        lickLatD4FNoNan=lickLatD4F(~isnan(lickLatD4F));
 
-            lickLatRToneTNoNan=lickLatRTT(~isnan(lickLatRTT));
-            lickLatToneTNoNan=lickLatToneT(~isnan(lickLatToneT));
-            lickLatRToneFNoNan=lickLatRTF(~isnan(lickLatRTF));
-            lickLatToneFNoNan=lickLatToneF(~isnan(lickLatToneF));
-            lickLatCTNoNan=lickLatCT(~isnan(lickLatCT));
-            lickLatCFNoNan=lickLatCF(~isnan(lickLatCF));
+        lickLatRD5T=allMiceDelay5RT{1,count}(:,LICKL);
+        lickLatRD5F=allMiceDelay5RF{1,count}(:,LICKL);
+        lickLatD5T=allMiceDelay5T{1,count}(:,LICKL);
+        lickLatD5F=allMiceDelay5F{1,count}(:,LICKL);
+        lickLatRD5TNoNan=lickLatRD5T(~isnan(lickLatRD5T));
+        lickLatRD5FNoNan=lickLatRD5F(~isnan(lickLatRD5F));
+        lickLatD5TNoNan=lickLatD5T(~isnan(lickLatD5T));
+        lickLatD5FNoNan=lickLatD5F(~isnan(lickLatD5F));
 
-            % now remove the probe block indices
-            %'Condition','Trial indices','No probe indicies','Miss idx no probe'
-            idxAllMice={'Reinf Tone T',allMiceRTTargetIdx;'Reinf Tone F',allMiceRTFoilIdx;...
-                'Tone T',allMiceToneTargetIdx;'Tone F',allMiceToneFoilIdx;...
-                'Choice Tone T',allMiceChoiceTTargetIdx;'Choice Tone F',allMiceChoiceTFoilIdx;...
-                'Reinf Full T',allMiceRFTargetIdx;'Reinf Full F',allMiceRFFoilIdx;...
-                'Full T',allMiceDelay1TargetIdx;'Full F',allMiceFullFoilIdx;...
-                'Choice Full T',allMiceChoiceFTargetIdx;'Choice Full F',allMiceChoiceFFoilIdx};
+        % now remove the probe block indices
+        %'Condition','Trial indices','No probe indicies','Miss idx no probe'
+        idxAllMice={'Reinf Delay1 T',allMiceDelay1RTargetIdx;'Reinf Delay1 F',allMiceDelay1RFoilIdx;...
+            'Delay1 T',allMiceDelay1TargetIdx;'Delay1 F',allMiceDelay1FoilIdx;...
+            'Reinf Delay2 T',allMiceDelay2RTargetIdx;'Reinf Delay2 F',allMiceDelay2RFoilIdx;...
+            'Delay2 T',allMiceDelay2TargetIdx;'Delay2 F',allMiceDelay2FoilIdx;...
+            'Reinf Delay3 T',allMiceDelay3RTargetIdx;'Reinf Delay3 F',allMiceDelay3RFoilIdx;...
+            'Delay3 T',allMiceDelay3TargetIdx;'Delay3 F',allMiceDelay3FoilIdx;...
+            'Reinf Delay4 T',allMiceDelay4RTargetIdx;'Reinf Delay4 F',allMiceDelay4RFoilIdx;...
+            'Delay4 T',allMiceDelay4TargetIdx;'Delay4 F',allMiceDelay4FoilIdx;...
+            'Reinf Delay5 T',allMiceDelay5RTargetIdx;'Reinf Delay5 F',allMiceDelay5RFoilIdx;...
+            'Delay5 T',allMiceDelay5TargetIdx;'Delay5 F',allMiceDelay5FoilIdx};
+
+        % column 4 records [mouse index, session index] for every matrix row
+        for delayNumber=1:5
+            rowOffset=(delayNumber-1)*4;
+            for conditionRow=1:4
+                idxAllMice{rowOffset+conditionRow,4}=delaySessionKey{delayNumber};
+            end
+        end
+        
             for yi=1:length(idxAllMice)
                 for oo=1:size(idxAllMice{yi,2},1)
                     probeIdx=find(idxAllMice{yi,2}(oo,:)>140);
@@ -961,125 +522,139 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
 
 
             %add open circles aligned to 0 for the misses
-            missIdx=find(allMiceRFTarget(count,:)==0);
-            missFIdx=find(allMiceFullTarget(count,:)==0);
-            missFCIdx=find(allMiceCFTarget(count,:)==0);
-            missRTIdx=find(allMiceRTTarget(count,:)==0);
-            missTIdx=find(allMiceToneTarget(count,:)==0);
-            missTCIdx=find(allMiceCTTarget(count,:)==0);
-            crIdx=find(allMiceRFFoil(count,:)==0);
-            crFIdx=find(allMiceFullFoil(count,:)==0);
-            crFCIdx=find(allMiceCFFoil(count,:)==0);
-            crRTIdx=find(allMiceRTFoil(count,:)==0);
-            crTIdx=find(allMiceToneFoil(count,:)==0);
-            crTCIdx=find(allMiceCTFoil(count,:)==0);
+            missRD1Idx=find(allMiceDelay1RTarget(count,:)==0);
+            missRD2Idx=find(allMiceDelay2RTarget(count,:)==0);
+            missRD3Idx=find(allMiceDelay3RTarget(count,:)==0);
+            missRD4Idx=find(allMiceDelay4RTarget(count,:)==0);
+            missRD5Idx=find(allMiceDelay5RTarget(count,:)==0);
+            
+            missD1Idx=find(allMiceDelay1Target(count,:)==0);
+            missD2Idx=find(allMiceDelay2Target(count,:)==0);
+            missD3Idx=find(allMiceDelay3Target(count,:)==0);
+            missD4dx=find(allMiceDelay4Target(count,:)==0);
+            missD5Idx=find(allMiceDelay5Target(count,:)==0);
+            
+            crRD1Idx=find(allMiceDelay1RFoil(count,:)==0);
+            crRD2Idx=find(allMiceDelay2RFoil(count,:)==0);
+            crRD3Idx=find(allMiceDelay3RFoil(count,:)==0);
+            crRD4Idx=find(allMiceDelay4RFoil(count,:)==0);
+            crRD5Idx=find(allMiceDelay5RFoil(count,:)==0);
+            
+            crD1Idx=find(allMiceDelay1Foil(count,:)==0);
+            crD2Idx=find(allMiceDelay2Foil(count,:)==0);
+            crD3Idx=find(allMiceDelay3Foil(count,:)==0);
+            crD4Idx=find(allMiceDelay4Foil(count,:)==0);
+            crD5Idx=find(allMiceDelay5Foil(count,:)==0);
             % need to fix this to use the new indexing without probe
-            animalCell=allDataTestsOnly{yy+1,1}{1};
+            animalCell=allDays{1,nbsubj};
             sz=10;licksColor=[0.9 0.9 0.9];
             
-            scatterPSTH=0;
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %stopped here 7/7/26
+            scatterPSTH=1;missColor=[1.0, 0.27, 0.0];
             if scatterPSTH==1
-
-                hitFullFig=figure;
-                subplot(5,1,1);scatter(rFTLickMat,idxAllMice{7,3}(count,:)',sz,licksColor,'filled');
-                hold on;scatter(lickLatRFT,idxAllMice{7,3}(count,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
+                hitFullFigD1=figure;
+                delayLabel=find(cellfun(@(x) contains(x, 'Delay1'), idxAllMice(:,1)));
+                rCount=idxAllMice{delayLabel(1),4}(count,2);
+                subplot(2,3,1);scatter(rD1TLickMatAll{count},idxAllMice{delayLabel(1),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatRD1T,idxAllMice{delayLabel(1),3}(count,:)',sz,reinfcolor,'filled');
+                title('Light off, Hit');xlim([-0.5 3]);
                 ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
-                scatter(zeros(1,length(missIdx)),idxAllMice{7,3}(count,missIdx)',sz,reinfcolor);
-
-                subplot(5,1,2);scatter(fTLickMat,idxAllMice{9,3}(count,:)',sz,licksColor,'filled');
-                hold on;scatter(lickLatFullT,idxAllMice{9,3}(count,:)',sz,optocolor,'filled'); title('Full, Hit');xlim([0 2]);
+                scatter(ones(1,length(missRD1Idx))*3,idxAllMice{delayLabel(1),3}(count,missRD1Idx)',sz,missColor);
+                subplot(2,3,2);scatter(D1TLickMatAll{count},idxAllMice{delayLabel(3),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatD1T,idxAllMice{delayLabel(3),3}(count,:)',sz,optocolor,'filled'); title('Delay 1, Hit');xlim([0 2]);
                 ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
-                scatter(zeros(1,length(missFIdx)),idxAllMice{9,3}(count,missFIdx)',sz,optocolor);ylabel('Trial');
-
-                subplot(5,1,3);scatter(cFTLickMat,idxAllMice{11,3}(count,:)',sz,licksColor,'filled');
-                hold on;scatter(lickLatCFullT,idxAllMice{11,3}(count,:)',sz,optocolor,'filled');title('Choice, Hit');xlim([0 2]);
+                scatter(ones(1,length(missD1Idx))*3,idxAllMice{delayLabel(3),3}(count,missD1Idx)',sz,missColor);ylabel('Trial');
+                subplot(2,3,3);shadedErrorBar(1:length(lickLatRD1TNoNan),lickLatRD1TNoNan,std(lickLatRD1TNoNan)); 
+                hold on;shadedErrorBar(1:length(lickLatD1TNoNan),lickLatD1TNoNan(1:length(lickLatD1TNoNan)),std(lickLatD1TNoNan),'b');ylabel('First lick latency (s)');
+                xlim([1 20]);box off;title('Delay 1, Hit');
+                subplot(2,3,4);scatter(rD1FLickMatAll{count},idxAllMice{delayLabel(2),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatRD1F,idxAllMice{delayLabel(2),3}(count,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);
                 ylabel('Trial');xlabel('Time (s)');xlim([-0.5 3]);ylim([0 280]);
-                scatter(zeros(1,length(missFCIdx)),idxAllMice{11,3}(count,missFCIdx)',sz,optocolor);ylabel('Trial');
+                scatter(ones(1,length(crRD1Idx))*3,idxAllMice{2,3}(count,crRD1Idx)',sz,reinfcolor);ylabel('Trial');
+                subplot(2,3,5);scatter(D1FLickMatAll{count},idxAllMice{delayLabel(4),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatD1F,idxAllMice{delayLabel(4),3}(count,:)',sz,optocolor,'filled'); title('Delay 1, FA');xlim([0 2]);
+                ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(missD1Idx))*3,idxAllMice{delayLabel(4),3}(count,missD1Idx)',sz,optocolor);ylabel('Trial');
+                subplot(2,3,6);shadedErrorBar(1:length(lickLatRD1FNoNan),lickLatRD1FNoNan,std(lickLatRD1FNoNan)); 
+                hold on;shadedErrorBar(1:length(lickLatD1FNoNan),lickLatD1FNoNan(1:length(lickLatD1FNoNan)),std(lickLatD1FNoNan),'b');ylabel('First lick latency (s)');
+                xlim([1 20]);box off;title('Delay 1, FA');
+                hitFullFigD1.Position(3:4)=[550 350];
+                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Delay1']);
+                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Delay1.png']);    
 
-                subplot(5,1,4);shadedErrorBar(1:length(lickLatRFTNoNan),lickLatRFTNoNan,std(lickLatRFTNoNan)); 
-                hold on;shadedErrorBar(1:length(lickLatFullTNoNan),lickLatFullTNoNan(1:length(lickLatFullTNoNan)),std(lickLatFullTNoNan),'b');ylabel('First lick latency (s)');
-                xlim([1 20]);box off;title('Full');
-                subplot(5,1,5);shadedErrorBar(1:length(lickLatRFTNoNan),lickLatRFTNoNan(1:length(lickLatRFTNoNan)),std(lickLatRFTNoNan));
-                hold on;shadedErrorBar(1:length(lickLatCFullTNoNan),lickLatCFullTNoNan,std(lickLatCFullTNoNan),'b');box off;title('Choice');
-                xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
-                hitFullFig.Position(3:4)=[250 875];
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalHitFull_Opto']);
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalHitFull_Opto.png']);    
+                %%%%%%%%%%%% Delay 2
+                FigD2=figure;
+                delayLabel=find(cellfun(@(x) contains(x, 'Delay2'), idxAllMice(:,1)));
+                rCount=idxAllMice{delayLabel(1),4}(count,2);
+                subplot(2,3,1);scatter(rD2TLickMatAll{rCount},idxAllMice{delayLabel(1),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatRD2T,idxAllMice{delayLabel(1),3}(count,:)',sz,reinfcolor,'filled');
+                title('Light off, Hit');xlim([0 2]);
+                ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(missRD2Idx))*3,idxAllMice{delayLabel(1),3}(count,missRD2Idx)',sz,missColor);
+                subplot(2,3,2);scatter(D2TLickMatAll{rCount},idxAllMice{delayLabel(3),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatD2T,idxAllMice{delayLabel(3),3}(count,:)',sz,optocolor,'filled'); title('Delay 2, Hit');xlim([0 2]);
+                ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(missD2Idx))*3,idxAllMice{delayLabel(3),3}(count,missD2Idx)',sz,missColor);ylabel('Trial');
+                subplot(2,3,3);shadedErrorBar(1:length(lickLatRD2TNoNan),lickLatRD2TNoNan,std(lickLatRD2TNoNan)); 
+                hold on;shadedErrorBar(1:length(lickLatD2TNoNan),lickLatD2TNoNan(1:length(lickLatD2TNoNan)),std(lickLatD2TNoNan),'b');ylabel('First lick latency (s)');
+                xlim([1 20]);box off;title('Delay 2, Hit');
+                subplot(2,3,4);scatter(rD2FLickMatAll{rCount},idxAllMice{delayLabel(2),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatRD2F,idxAllMice{delayLabel(2),3}(count,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);
+                ylabel('Trial');xlabel('Time (s)');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(crRD2Idx))*3,idxAllMice{delayLabel(2),3}(count,crRD2Idx)',sz,optocolor);ylabel('Trial');
+                subplot(2,3,5);scatter(D2FLickMatAll{rCount},idxAllMice{delayLabel(4),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatD2F,idxAllMice{delayLabel(4),3}(count,:)',sz,optocolor,'filled'); title('Delay 2, FA');xlim([0 2]);
+                ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(missD2Idx))*3,idxAllMice{delayLabel(4),3}(count,missD2Idx)',sz,optocolor);ylabel('Trial');
+                subplot(2,3,6);shadedErrorBar(1:length(lickLatRD2FNoNan),lickLatRD2FNoNan,std(lickLatRD2FNoNan)); 
+                hold on;shadedErrorBar(1:length(lickLatD2FNoNan),lickLatD2FNoNan(1:length(lickLatD2FNoNan)),std(lickLatD2FNoNan),'b');ylabel('First lick latency (s)');
+                xlim([1 20]);box off;title('Delay 2, FA');
+                FigD2.Position(3:4)=[550 350];
+                saveas(gcf,[animalCell 'D' num2str(gg) '_Delay2']);
+                saveas(gcf,[animalCell 'D' num2str(gg) '_Delay2.png']);
 
-                hitFig=figure;
-                subplot(5,1,1);scatter(rTTLickMat,idxAllMice{1,3}(count,:)',sz,licksColor,'filled');
-                hold on;scatter(lickLatRTT,idxAllMice{1,3}(count,:)',sz,reinfcolor,'filled');title('Light off, Hit');xlim([0 2]);
-                ylabel('Trial');scatter(zeros(1,length(missRTIdx)),idxAllMice{1,3}(count,missRTIdx)',sz,reinfcolor);
-                xlim([-0.5 3]);ylim([0 280]);
-                subplot(5,1,2);scatter(tTLickMat,idxAllMice{3,3}(count,:)',sz,licksColor,'filled');
-                hold on;scatter(lickLatToneT,idxAllMice{3,3}(count,:)',sz,optocolor,'filled'); title('Stimulus, Hit');xlim([0 2]);
-                ylabel('Trial');scatter(zeros(1,length(missTIdx)),idxAllMice{3,3}(count,missTIdx)',sz,optocolor);
-                xlim([-0.5 3]);ylim([0 280]);
-                subplot(5,1,3);hold on;title('Stimulus, Hit');xlim([0 2]);ylim([0 280]);
-                scatter(cTTLickMat,idxAllMice{5,3}(count,:)',sz,licksColor,'filled');
-                scatter(lickLatCT,idxAllMice{5,3}(count,:)',sz,optocolor,'filled'); 
-                scatter(zeros(1,length(missTCIdx)),idxAllMice{5,3}(count,missTCIdx)',sz,optocolor);
-                title('Choice, Hit');xlim([0 2]);
-                ylabel('Trial');xlabel('Time (s)');hold on;xlim([-0.5 3]);
+                
+                
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                % left off here 7/17/26
+                %%%%%%%%%%%% Delay 3
+                FigD3=figure;
+                delayLabel=find(cellfun(@(x) contains(x, 'Delay3'), idxAllMice(:,1)));
+                rCount=idxAllMice{1,4}(delayLabel(1),2);
+                subplot(2,3,1);scatter(rD2TLickMatAll{rCount},idxAllMice{delayLabel(1),3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatRD2T,idxAllMice{delayLabel(1),3}(count,:)',sz,reinfcolor,'filled');
+                title('Light off, Hit');xlim([0 2]);
+                ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(missRD2Idx))*3,idxAllMice{5,3}(count,missRD2Idx)',sz,missColor);
 
-                subplot(5,1,4);title('Stimulus');hold on;shadedErrorBar(1:length(lickLatRToneTNoNan),lickLatRToneTNoNan(1:length(lickLatRToneTNoNan)),std(lickLatRToneTNoNan));
-                shadedErrorBar(1:length(lickLatToneTNoNan),lickLatToneTNoNan,std(lickLatToneTNoNan),'b');ylabel('First lick latency (s)');
-                xlim([1 20]);box off;ylim([-0.5 4.5]);
-                subplot(5,1,5);title('Choice');hold on;shadedErrorBar(1:length(lickLatRToneTNoNan),lickLatRToneTNoNan(1:length(lickLatRToneTNoNan)),std(lickLatRToneTNoNan));
-                shadedErrorBar(1:length(lickLatCTNoNan),lickLatCTNoNan,std(lickLatCTNoNan),'b');box off;
-                xlabel('Hit Trial');ylabel('First lick latency (s)');xlim([1 20]);ylim([-0.5 4.5]);
-                hitFig.Position(3:4)=[250 875];
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalHit_Opto']);
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalHit_Opto.png']);    
+                subplot(2,3,2);scatter(D2TLickMatAll{rCount},idxAllMice{7,3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatD2T,idxAllMice{7,3}(count,:)',sz,optocolor,'filled'); title('Delay 2, Hit');xlim([0 2]);
+                ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(missD2Idx))*3,idxAllMice{7,3}(count,missD2Idx)',sz,missColor);ylabel('Trial');
 
-                FAFig=figure;
-                subplot(5,1,1);hold on;scatter(rTFLickMat,idxAllMice{2,3}(count,:)',sz,licksColor,'filled');
-                scatter(lickLatRTF,idxAllMice{2,3}(count,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
-                ylabel('Trial');scatter(zeros(1,length(crRTIdx)),idxAllMice{2,3}(count,crRTIdx)',sz,reinfcolor);
-                xlim([-0.5 3]);ylim([0 280]);
-                subplot(5,1,2);hold on;scatter(tFLickMat,idxAllMice{4,3}(count,:)',sz,licksColor,'filled');
-                scatter(lickLatToneF,idxAllMice{4,3}(count,:)',sz,optocolor,'filled'); title('Stimulus');xlim([0 2]);ylim([1 300]);
-                scatter(zeros(1,length(crTIdx)),idxAllMice{4,3}(count,crTIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-                ylabel('Trial');
-                subplot(5,1,3);hold on;scatter(cTFLickMat,idxAllMice{6,3}(count,:)',sz,licksColor,'filled');
-                scatter(lickLatCF,idxAllMice{6,3}(count,:)',sz,optocolor,'filled');title('Choice');xlim([0 2]);ylim([1 300]);
-                scatter(zeros(1,length(crTCIdx)),idxAllMice{6,3}(count,crTCIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-                ylabel('Trial');xlabel('Time (s)');
+                subplot(2,3,3);shadedErrorBar(1:length(lickLatRD2TNoNan),lickLatRD2TNoNan,std(lickLatRD2TNoNan)); 
+                hold on;shadedErrorBar(1:length(lickLatD2TNoNan),lickLatD2TNoNan(1:length(lickLatD2TNoNan)),std(lickLatD2TNoNan),'b');ylabel('First lick latency (s)');
+                xlim([1 20]);box off;title('Delay 2, Hit');
 
-                subplot(5,1,4);shadedErrorBar(1:length(lickLatRToneFNoNan),lickLatRToneFNoNan,std(lickLatRToneFNoNan)); 
-                hold on;shadedErrorBar(1:length(lickLatToneFNoNan),lickLatToneFNoNan,std(lickLatToneFNoNan),'b');ylabel('First lick latency (s)');
-                xlim([1 20]);box off;title('Stimulus');
-                subplot(5,1,5);shadedErrorBar(1:length(lickLatRToneFNoNan),lickLatRToneFNoNan,std(lickLatRToneFNoNan)); 
-                hold on;shadedErrorBar(1:length(lickLatCFNoNan),lickLatCFNoNan,std(lickLatCFNoNan),'b');box off;
-                xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 20]);title('Choice');
-                FAFig.Position(3:4)=[250 875];
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFA_Opto']);
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFA_Opto.png']);    
+                subplot(2,3,4);scatter(rD2FLickMatAll{rCount},idxAllMice{6,3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatRD2F,idxAllMice{6,3}(count,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);
+                ylabel('Trial');xlabel('Time (s)');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(crRD2Idx))*3,idxAllMice{6,3}(count,crRD2Idx)',sz,optocolor);ylabel('Trial');
 
-                FAFullFig=figure;
-                subplot(5,1,1);hold on;scatter(rFFLickMat,idxAllMice{8,3}(count,:)',sz,licksColor,'filled');
-                scatter(lickLatRFF,idxAllMice{8,3}(count,:)',sz,reinfcolor,'filled');title('Light off, FA');xlim([0 2]);ylim([1 300]);
-                ylabel('Trial');scatter(zeros(1,length(crIdx)),idxAllMice{8,3}(count,crIdx)',sz,reinfcolor);
-                xlim([-0.5 3]);ylim([0 280]);
-                subplot(5,1,2);hold on;scatter(fFLickMat,idxAllMice{10,3}(count,:)',sz,licksColor,'filled');
-                scatter(lickLatFullF,idxAllMice{10,3}(count,:)',sz,optocolor,'filled'); title('Full');xlim([0 2]);ylim([1 300]);
-                scatter(zeros(1,length(crFIdx)),idxAllMice{10,3}(count,crFIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-                ylabel('Trial');
-                subplot(5,1,3);hold on;scatter(cFFLickMat,idxAllMice{12,3}(count,:)',sz,licksColor,'filled');
-                scatter(lickLatCFullF,idxAllMice{12,3}(count,:)',sz,optocolor,'filled');title('Choice');
-                xlim([0 2]);ylim([1 300]);
-                scatter(zeros(1,length(crFCIdx)),idxAllMice{12,3}(count,crFCIdx)',sz,optocolor);xlim([-0.5 3]);ylim([0 280]);
-                ylabel('Trial');xlabel('Time (s)');
-                subplot(5,1,4);shadedErrorBar(1:length(lickLatRFFNoNan),lickLatRFFNoNan(1:length(lickLatRFFNoNan)),std(lickLatRFFNoNan));
-                hold on;shadedErrorBar(1:length(lickLatFullFNoNan),lickLatFullFNoNan,std(lickLatFullFNoNan),'b');ylabel('First lick latency (s)');
-                xlim([1 10]);box off;
-                subplot(5,1,5);shadedErrorBar(1:length(lickLatRFFNoNan),lickLatRFFNoNan(1:length(lickLatRFFNoNan)),std(lickLatRFFNoNan));
-                hold on;shadedErrorBar(1:length(lickLatCFullFNoNan),lickLatCFullFNoNan,std(lickLatCFullFNoNan),'b');box off;
-                xlabel('FA Trial');ylabel('First lick latency (s)');xlim([1 10]);
-                FAFullFig.Position(3:4)=[250 875];
+                subplot(2,3,5);scatter(D2FLickMatAll{rCount},idxAllMice{8,3}(count,:)',sz,licksColor,'filled');
+                hold on;scatter(lickLatD2F,idxAllMice{8,3}(count,:)',sz,optocolor,'filled'); title('Delay 2, FA');xlim([0 2]);
+                ylabel('Trial');xlim([-0.5 3]);ylim([0 280]);
+                scatter(ones(1,length(missD2Idx))*3,idxAllMice{8,3}(count,missD2Idx)',sz,optocolor);ylabel('Trial');
 
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFAFull_Opto']);
-                saveas(gcf,[animalCell 'D' num2str(gg) '_T_MGB_Example_AnimalFAFull_Opto.png']);   
+                subplot(2,3,6);shadedErrorBar(1:length(lickLatRD2FNoNan),lickLatRD2FNoNan,std(lickLatRD2FNoNan)); 
+                hold on;shadedErrorBar(1:length(lickLatD2FNoNan),lickLatD2FNoNan(1:length(lickLatD2FNoNan)),std(lickLatD2FNoNan),'b');ylabel('First lick latency (s)');
+                xlim([1 20]);box off;title('Delay 2, FA');
+
+                FigD2.Position(3:4)=[550 350];
+                saveas(gcf,[animalCell 'D' num2str(gg) '_Delay2']);
+                saveas(gcf,[animalCell 'D' num2str(gg) '_Delay2.png']);
             end
     end 
     
@@ -1120,13 +695,13 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
     
   
     %add bar plot aligned to 4s for misses
-    missIdx=find(allMiceRFTarget==0);
+    missRD1Idx=find(allMiceRFTarget==0);
     missFIdx=find(allMiceFullTarget==0);
     missFCIdx=find(allMiceCFTarget==0);
     missRTIdx=find(allMiceRTTarget==0);
     missTIdx=find(allMiceToneTarget==0);
     missTCIdx=find(allMiceCTTarget==0);
-    crIdx=find(allMiceRFFoil==0);
+    crRD1Idx=find(allMiceRFFoil==0);
     crFIdx=find(allMiceFullFoil==0);
     crFCIdx=find(allMiceCFFoil==0);
     crRTIdx=find(allMiceRTFoil==0);
@@ -1154,7 +729,7 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
     plot(bins,RFTHist,'Color',reinfcolor,'LineWidth',2);xlim([-0.5 4]);
     ylabel('p(licks)');xlabel('Time of first lick(s)');ylim([0 0.6]);
     yyaxis right;ylabel('% of misses');
-    hold on; rftMiss=bar(4,length(missIdx)/(size(allMiceRFTarget,1)*size(allMiceRFTarget,2)));
+    hold on; rftMiss=bar(4,length(missRD1Idx)/(size(allMiceRFTarget,1)*size(allMiceRFTarget,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off;ylim([0 1]);
     subplot(2,3,5);hold off;
     plot(bins,FullTHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.6]);xlim([-0.5 4]);
@@ -1216,7 +791,7 @@ START = 5; STOP = 6; TONE_T = 7; LICKL = 8; LICKR = 9;
     ylabel('% of misses');
     xlim([-0.5 4]);xlabel('Time of first lick(s)');
     yyaxis right;ylabel('p(licks)');
-    hold on; rftMiss=bar(4,length(crIdx)/(size(allMiceRFFoil,1)*size(allMiceRFFoil,2)));
+    hold on; rftMiss=bar(4,length(crRD1Idx)/(size(allMiceRFFoil,1)*size(allMiceRFFoil,2)));
     rftMiss(1).FaceColor='flat'; rftMiss(1).CData=[noLickColor];box off
 	ylim([0 1]);
     subplot(2,3,5);plot(bins,FullFHist,'Color',optocolor,'LineWidth',2);xlabel('Time of first lick(s)');ylim([0 0.5]);xlim([-0.5 4]);

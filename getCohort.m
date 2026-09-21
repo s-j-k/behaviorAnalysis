@@ -84,6 +84,16 @@ switch cohort
     subjlist={'sk198','sk203','sk204'}; %GTACR
     explist=[1 1 1];   
     
+    case 16 % power curve parameter hell
+    pathsave='O:\sjk\Behavior\cohort_13\';
+    subjlist={'sk331','sk332','sk333','sk334','sk335'}; %GTACR
+    explist=[1 1 1 1 1];   
+    
+    case 17 %delay period data
+    pathsave='O:\sjk\Behavior\cohort_14_LGN\';
+    subjlist={'sk338','sk339','sk340','sk341','sk342','sk343'}; %GTACR
+    explist=[1 1 1 1 1 1];   
+    
     otherwise
         disp('Cohort not found');    
 end

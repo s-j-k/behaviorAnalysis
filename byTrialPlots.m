@@ -350,7 +350,7 @@ count=0;
             animalCell=allDataTestsOnly{yy+1,1}{1};
             sz=10;licksColor=[0.9 0.9 0.9];
             
-            scatterPSTH=0;
+            scatterPSTH=1;
             if scatterPSTH==1
 
                 hitFullFig=figure;
