@@ -30,9 +30,9 @@ function [days]=getOptoDays
     %these are animals 8 through 13 
     %cohort 14
     % iterate through getExpDays and get out the relevant information
-    [subjlist, explist, pathsave]=getCohort(17);
+    [subjlist, explist, pathsave]=getCohort(16);
     for ee=1:length(subjlist)
-        [mgbDays, icDays, expRange,dreadds,subjNumber] = getExpDays(pathsave, ee);
+        [mgbDays, ~, expRange,~,subjNumber] = getExpDays(pathsave, ee);
         days{13+ee,1}=subjNumber;days{13+ee,2}=mgbDays;days{13+ee,2}=expRange;
         if length(expRange)>3
             days{13+ee,4}=[expRange(1),expRange(3)];days{13+ee,5}=[expRange(2),expRange(4)];

@@ -1,8 +1,9 @@
 function [allDataCtlOnly,allDataTestsOnly]=byAnimalHFA(allDataTestsOnly,allDataCtlOnly,icDataTestsOnly,reinfcolor,optocolor)
 
 ppFig=figure(15);
-
-xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
+numSubj=size(allDataTestsOnly,1)-1;
+xVector = ones(1,numSubj*2);
+xVector(2:2:10)=xVector(2:2:10)+1;
 xoVector = xVector+2;
 rpc=NaN;opc=NaN;
 for jj=2:size(allDataTestsOnly,1)
@@ -36,21 +37,19 @@ scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
 scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),1), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor,'jitter','on', 'jitterAmount',0.2);
 hitAndFa = [rhit(1) rfa(1) rhit(2) rfa(2) rhit(3) rfa(3) ...
-    rhit(4) rfa(4) rhit(5) rfa(5) rhit(6) rfa(6)];
+    rhit(4) rfa(4) rhit(5) rfa(5)];
 ohitAndFa = [ohit(1) ofa(1) ohit(2) ofa(2) ohit(3) ofa(3) ...
-    ohit(4) ofa(4) ohit(5) ofa(5) ohit(6) ofa(6)];
+    ohit(4) ofa(4) ohit(5) ofa(5)];
 line([1 2],hitAndFa(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],hitAndFa(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([3 4],ohitAndFa(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 allDataTestsOnly{2,39}=[pHit pFA];box off;
@@ -85,21 +84,19 @@ scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
 scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),1), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor,'jitter','on', 'jitterAmount',0.2);
 hitAndFa = [rhit(1) rfa(1) rhit(2) rfa(2) rhit(3) rfa(3) ...
-    rhit(4) rfa(4) rhit(5) rfa(5) rhit(6) rfa(6)];
+    rhit(4) rfa(4) rhit(5) rfa(5)];
 ohitAndFa = [ohit(1) ofa(1) ohit(2) ofa(2) ohit(3) ofa(3) ...
-    ohit(4) ofa(4) ohit(5) ofa(5) ohit(6) ofa(6)];
+    ohit(4) ofa(4) ohit(5) ofa(5)];
 line([1 2],hitAndFa(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],hitAndFa(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([3 4],ohitAndFa(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 allDataTestsOnly{2,40}=[pHit pFA];box off;
@@ -134,21 +131,19 @@ scatter(repmat(ppp(1).XEndPoints(3),size(ohit,2),1), ...
 scatter(repmat(ppp(1).XEndPoints(4),size(ofa,2),1), ...
     ofa,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor,'jitter','on', 'jitterAmount',0.2);
 hitAndFa = [rhit(1) rfa(1) rhit(2) rfa(2) rhit(3) rfa(3) ...
-    rhit(4) rfa(4) rhit(5) rfa(5) rhit(6) rfa(6)];
+    rhit(4) rfa(4) rhit(5) rfa(5)];
 ohitAndFa = [ohit(1) ofa(1) ohit(2) ofa(2) ohit(3) ofa(3) ...
-    ohit(4) ofa(4) ohit(5) ofa(5) ohit(6) ofa(6)];
+    ohit(4) ofa(4) ohit(5) ofa(5)];
 line([1 2],hitAndFa(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],hitAndFa(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],hitAndFa(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([3 4],ohitAndFa(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([3 4],ohitAndFa(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,pHit,ci,stats] = ttest2(rhit,ohit);
 [h,pFA,ci,stats] = ttest2(rfa,ofa);
 allDataTestsOnly{2,41}=[pHit pFA];
@@ -1089,7 +1084,7 @@ scatter(repmat(ddd(1).XEndPoints(2),size(mean(dp_oFull),2),1), ...
 [h,p,ci,stats] = ttest2(mean(dp_r),mean(dp_oFull));
 sigstar({[1,2]}, p)
 dprimeVals = [dp_r_An(1) dp_oFull_An(1) dp_r_An(2) dp_oFull_An(2) dp_r_An(3) dp_oFull_An(3) ...
-    dp_r_An(4) dp_oFull_An(4) dp_r_An(5) dp_oFull_An(5) dp_r_An(6) dp_oFull_An(6)];
+    dp_r_An(4) dp_oFull_An(4) dp_r_An(5) dp_oFull_An(5)];
 % line([xVector],dprimeVals, 'LineWidth', 0.5, 'Color', [0 0 0]);
 xVector=xVector(~isnan(dprimeVals));
 dprimeVals=dprimeVals(~isnan(dprimeVals));
@@ -1098,7 +1093,6 @@ line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,45}=p;
 allDataTestsOnly{2,39} = [dp_r_An; dp_oFull_An];
 
@@ -1193,13 +1187,12 @@ scatter(repmat(ddd(1).XEndPoints(2),size(mean(dp_otFull),2),1), ...
 [h,p,ci,stats] = ttest2(mean(dp_r),mean(dp_otFull));
 sigstar({[1,2]}, p)
 dprimeVals = [dp_r_An(1) dp_oFull_An(1) dp_r_An(2) dp_oFull_An(2) dp_r_An(3) dp_oFull_An(3) ...
-    dp_r_An(4) dp_oFull_An(4) dp_r_An(5) dp_oFull_An(5) dp_r_An(6) dp_oFull_An(6)];
+    dp_r_An(4) dp_oFull_An(4) dp_r_An(5) dp_oFull_An(5)];
 line([1 2],dprimeVals(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,46}=p;
 allDataTestsOnly{2,40} = [dp_r_An; dp_oFull_An];
 allDataTestsOnly{4,40} = [c_rAn; c_oFullAn];
@@ -1294,13 +1287,12 @@ scatter(repmat(ddd(1).XEndPoints(2),size(mean(dp_ocFull),2),1), ...
 [h,p,ci,stats] = ttest2(mean(dp_r),mean(dp_ocFull));
 sigstar({[1,2]}, p)
 dprimeVals = [dp_r_An(1) dp_oFull_An(1) dp_r_An(2) dp_oFull_An(2) dp_r_An(3) dp_oFull_An(3) ...
-    dp_r_An(4) dp_oFull_An(4) dp_r_An(5) dp_oFull_An(5) dp_r_An(6) dp_oFull_An(6)];
+    dp_r_An(4) dp_oFull_An(4) dp_r_An(5) dp_oFull_An(5)];
 line([1 2],dprimeVals(1:2), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(3:4), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(5:6), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(7:8), 'LineWidth', 0.5, 'Color', [0 0 0]);
 line([1 2],dprimeVals(9:10), 'LineWidth', 0.5, 'Color', [0 0 0]);
-line([1 2],dprimeVals(11:12), 'LineWidth', 0.5, 'Color', [0 0 0]);
 allDataTestsOnly{2,47}=p;
 allDataTestsOnly{2,41} = [dp_r_An; dp_oFull_An];
 allDataTestsOnly{4,41} = [c_rAn; c_oFullAn];
@@ -1315,7 +1307,7 @@ saveas(gcf,['By Animal_T_MGB_dp_bar_Opto.pdf']);
 
 %% IC D' plot test animals IC, plot d' with the bar plot, per animal 
 clear dprimeFIg
-dprimeFig=figure(21);xVector = [1 2 1 2 1 2];
+dprimeFig=figure(27);xVector = [1 2 1 2 1 2];
 hold on;
 clear rhit ohit rfa ofa ohittemp rhittemp fahittemp ofatemp
 rhit=NaN;ohit=NaN;rfa=NaN;ofa=NaN;

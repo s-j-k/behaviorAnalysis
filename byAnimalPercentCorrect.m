@@ -12,7 +12,7 @@ function [mgbTempTestsOnly,allDataTestsOnly,allDataCtlOnly]=byAnimalPercentCorre
 % mgbTempTestsOnly(5,:)=allDataTestsOnly(6,:);
 % mgbTempTestsOnly(6,:)=allDataTestsOnly(7,:);
 
-xVector = [1 2 1 2 1 2 1 2 1 2 1 2];
+xVector = [1 2 1 2 1 2 1 2 1 2];
 % discount sk194, fiber missing from right side
 % for 194-196, the height of the implant over the MGB (which connects to
 % the patch cord) was too short, so the transmittance was poor
@@ -24,7 +24,7 @@ wwFig=figure(10);
 subplot(2,3,1)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
-    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6)];
+    rpc(4) opc(4) rpc(5) opc(5)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -32,7 +32,7 @@ scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
+sigstar({[1,2]}, p); box off;
 ylabel('percent correct');
 title(['MGB Full Trial Inactivation']);
 xticklabels({'light off', 'light on'});
@@ -47,14 +47,14 @@ end
 subplot(2,3,2)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
-    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6)];
+    rpc(4) opc(4) rpc(5) opc(5)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
 scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
-[h,p,ci,stats] = ttest2(rpc,opc);
+[h,p,ci,stats] = ttest2(rpc,opc); box off;
 sigstar({[1,2]}, p)
 title(['MGB Tone Inactivation']);
 xticklabels({'light off', 'light on'});
@@ -67,7 +67,7 @@ end
 subplot(2,3,3)
 qqq=bar([nanmean(rpc) nanmean(opc)]); hold on;
 percentCorrect = [rpc(1) opc(1) rpc(2) opc(2) rpc(3) opc(3) ...
-    rpc(4) opc(4) rpc(5) opc(5) rpc(6) opc(6)];
+    rpc(4) opc(4) rpc(5) opc(5)];
 qqq(1).FaceColor='flat'; qqq(1).CData=[reinfcolor;optocolor];hold on;
 scatter(repmat(qqq(1).XEndPoints(1),size(rpc,1),1), ...
     rpc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',reinfcolor);
@@ -75,7 +75,7 @@ scatter(repmat(qqq(1).XEndPoints(2),size(opc,1),1), ...
     opc,'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',optocolor);
 line([xVector],percentCorrect, 'LineWidth', 0.5, 'Color', [0 0 0]);
 [h,p,ci,stats] = ttest2(rpc,opc);
-sigstar({[1,2]}, p)
+sigstar({[1,2]}, p);box off;
 title(['MGB Choice Inactivation']);
 xticklabels({'light off', 'light on'});
 wwFig.Position(3:4)=[725 475];

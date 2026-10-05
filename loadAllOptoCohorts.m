@@ -122,16 +122,16 @@ function [allCohorts, allLickMat,allLicks,expList] = loadAllOptoCohorts(cohortRa
         clear cohort1 cohort2 cohort3 cohort6 optomeanMat
     else
 %         allLickMat=extractCellArray(lickMat6, lickMat13);
-        allLickMat=extractCellArray(lickMat14);
-        allLicks =licks14;
+        allLickMat=extractCellArray(lickMat13);
+        allLicks =licks13;
 %         allLicks=vertcat(licks6, licks13);
 %         allCohorts=vertcat(cohort6, cohort13);
-        allCohorts=cohort14;
+        allCohorts=cohort13;
 %         expList=vertcat(expList6',expList13');
-        expList=expList14';
+        expList=expList13';
 %         allCohorts(17,:)=[];
 %         save('allOptoCohortData.mat','allCohorts','cohort6','cohort13','allLickMat','allLicks','expList');
-        save('allOptoCohortData.mat','allCohorts','cohort14','allLickMat','allLicks','expList');
+        save('allOptoCohortData.mat','allCohorts','cohort13','allLickMat','allLicks','expList');
         cd('O:\sjk\Figures\MGB IC Opto')
         clear cohort14 optomeanMat
     end

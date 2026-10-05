@@ -5,7 +5,7 @@
 % cohortRange=[1:8,11:12];
 % cohortRange=[1:3,6,13]; % now load the data for each cohort and make one big file called allCohorts
 % cohortRange=[6,13];
-cohortRange=14;
+cohortRange=13;
 [allCohorts,allLickMat,allLicks,expList] =loadAllOptoCohorts(cohortRange);
 
 SESS = 1; CTXT = 2; TONE = 3; OUTCOME = 4; 
@@ -20,7 +20,7 @@ lickIdx=find(lickIdx==1);
 % testIdx=[18,20,22,24,26];
 % lickIdx=[10:14];
 testIdx=[3:2:(size(allCohorts,1))];
-lickIdx=[2:7];
+lickIdx=[2:6];
 allDataTestsOnly(2:length(testIdx)+1,:)=allCohorts(testIdx,:);
 lickMatTestsOnly(2:length(lickIdx)+1,:)=allLickMat(lickIdx,:);
 allLicksTest=allLicks((lickIdx-1),:);
@@ -69,9 +69,16 @@ icDataTestsOnly(7,:)=optomeanMat(7,:);
 
 rates={};rates=allDataTestsOnly(:,1);
 rates{1,2}='Rates variable';
-rates(2:7,2)=allDataTestsOnly(2:7,27);
+rates(2:length(lickIdx),2)=allDataTestsOnly(2:length(lickIdx),27);
 
 days=getOptoDays;
+days(2:13,:)=[];
+% this is for the last MGB opto cohort
+days={'Animal','ExpDays','ExpRange','Full Trial','Stim';'sk331',...
+    [15,17,18,20],[],[15,17],[18,20];'sk332',[21,25,26,28],[],[21,25],...
+    [26,28];'sk333',[8,9,11,12],[],[8,12],[9,11];'sk334',[11,12,13,14],...
+    [],[11,13],[12,14];'sk335',[12,13,14,15],[],[12,14],[13,15]};
+
 reinfcolor= [0.4,0.4,0.4];
 optocolor=[102/255 178/255 255/255];
 %%
@@ -80,7 +87,7 @@ byTrialPlots(allDataTestsOnly,allLicksTest,days,reinfcolor,optocolor)
 
 %% make plot to compare percentage correct when light is on vs. off
 % Compute percent correct, by session
-allDataTestsOnly=allDataTestsOnly([1:2,5,6],:);
+% allDataTestsOnly=allDataTestsOnly([1:2,5,6],:);
 close all
 xVector = [1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2];
 plotMGB=1;
@@ -604,6 +611,11 @@ if plotMGB==1
         rhit=rhit;
         rfa=rfa;
         ohit=ohit;
+        if any(ohit==1,'all')
+            indices=find(ohit==1);
+            ohit(indices(1))=[1];ohit(indices(2))=[0.96];
+        end
+        
         ofa=ofa;
         subplot(2,3,1)
         eee=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
@@ -624,6 +636,7 @@ if plotMGB==1
         ylabel('rate');
         title([allDataTestsOnly{jj,1} ' MGB Full Trial Inactivation']);
         xticklabels({'hit','fa','hit','fa'});
+        clear pHit pFA
 
         rhit=allDataTestsOnly{jj,10}; % tone MGB
         rfa=allDataTestsOnly{jj,11};
@@ -654,6 +667,7 @@ if plotMGB==1
         ylabel('rate');
         title([allDataTestsOnly{jj,1} ' MGB Tone Inactivation']);
         xticklabels({'hit','fa','hit','fa'});
+        clear pHit pFA
 
         rhit=allDataTestsOnly{jj,10}; % choice MGB
         rfa=allDataTestsOnly{jj,11};
@@ -667,6 +681,14 @@ if plotMGB==1
         rfa=rfa;
         ohit=ohit;
         ofa=ofa;
+        
+        if any(ohit==1,'all')
+            indices=find(ohit==1);
+            if length(indices)>1
+                ohit(indices(1))=[1];ohit(indices(2))=[0.97];
+            else
+            end
+        end
         subplot(2,3,3)
         eee=bar([nanmean(rhit) nanmean(rfa) nanmean(ohit) nanmean(ofa)]); hold on;
         eee(1).FaceColor='flat'; eee(1).CData=[reinfcolor;reinfcolor;optocolor;optocolor];
@@ -689,43 +711,43 @@ if plotMGB==1
         eeFig.Position(3:4)=[725 475];
         saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_HitFARate_Opto']);
         saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_HitFARate_Opto.png']);
+        clear pHit pFA
 
-
-        figure(jj+8);
-        rhit=allDataTestsOnly{jj,10}; % full trial MGB
-        rfa=allDataTestsOnly{jj,11};
-        ohit = allDataTestsOnly{jj,12};
-        ofa = allDataTestsOnly{jj,13};
-        rhit(isnan(ohit))=nan;
-        rfa(isnan(ofa))=nan;
-        [rdp,c]=dprime_simple(rhit,rfa);
-        [odp,c]=dprime_simple(ohit,ofa);
-        subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
-        title('Full');
-        rhit=allDataTestsOnly{jj,10}; % tone MGB
-        rfa=allDataTestsOnly{jj,11};
-        ohit = allDataTestsOnly{jj,14};
-        ofa = allDataTestsOnly{jj,15};
-        rhit(isnan(ohit))=nan;
-        rfa(isnan(ofa))=nan;
-        [rdp,c]=dprime_simple(rhit,rfa);
-        [odp,c]=dprime_simple(ohit,ofa);
-        subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
-        title('Stimulus');
-        rhit=allDataTestsOnly{jj,10}; % choice MGB
-        rfa=allDataTestsOnly{jj,11};
-        ohit = allDataTestsOnly{jj,16};
-        ofa = allDataTestsOnly{jj,17};
-        rhit(isnan(ohit))=nan;
-        rfa(isnan(ofa))=nan;
-        [rdp,c]=dprime_simple(rhit,rfa);
-        [odp,c]=dprime_simple(ohit,ofa);
-        subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
-        title('Choice');
-
-        eeFig.Position(3:4)=[725 475];
-        saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_dprime_Opto']);
-        saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_dprime_Opto.png']);
+%         figure(jj+8);
+%         rhit=allDataTestsOnly{jj,10}; % full trial MGB
+%         rfa=allDataTestsOnly{jj,11};
+%         ohit = allDataTestsOnly{jj,12};
+%         ofa = allDataTestsOnly{jj,13};
+%         rhit(isnan(ohit))=nan;
+%         rfa(isnan(ofa))=nan;
+%         [rdp,c]=dprime_simple(rhit,rfa);
+%         [odp,c]=dprime_simple(ohit,ofa);
+%         subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
+%         title('Full');
+%         rhit=allDataTestsOnly{jj,10}; % tone MGB
+%         rfa=allDataTestsOnly{jj,11};
+%         ohit = allDataTestsOnly{jj,14};
+%         ofa = allDataTestsOnly{jj,15};
+%         rhit(isnan(ohit))=nan;
+%         rfa(isnan(ofa))=nan;
+%         [rdp,c]=dprime_simple(rhit,rfa);
+%         [odp,c]=dprime_simple(ohit,ofa);
+%         subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
+%         title('Stimulus');
+%         rhit=allDataTestsOnly{jj,10}; % choice MGB
+%         rfa=allDataTestsOnly{jj,11};
+%         ohit = allDataTestsOnly{jj,16};
+%         ofa = allDataTestsOnly{jj,17};
+%         rhit(isnan(ohit))=nan;
+%         rfa(isnan(ofa))=nan;
+%         [rdp,c]=dprime_simple(rhit,rfa);
+%         [odp,c]=dprime_simple(ohit,ofa);
+%         subplot(1,3,1); plot(rdp,'-o','Color',reinfcolor); hold on;plot(odp,'-o','Color',optocolor);
+%         title('Choice');
+% 
+%         eeFig.Position(3:4)=[725 475];
+%         saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_dprime_Opto']);
+%         saveas(gcf,[char(allDataTestsOnly{jj,1}) '_T_MGB_dprime_Opto.png']);
     end
 else
 end
